@@ -1,0 +1,10 @@
+# Every HYPOTHETICAL parameter of the FullLoad model lives here, each with a rationale line.
+# Nothing in this file is a Europress price, cost or adoption figure. Values are filled in as the
+# market simulation and business case are built (PRODUCT.md §3, §6). Owner of the values: business-case teammate.
+#
+# Format:
+#   name:
+#     value: <number or list for sensitivity>
+#     unit: <unit>
+#     rationale: <one line: why this value>
+{}

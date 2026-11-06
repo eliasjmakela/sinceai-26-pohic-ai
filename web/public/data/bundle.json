@@ -1,0 +1,197 @@
+{
+  "fleet": {
+    "devices": {
+      "assumptions": [],
+      "formula": "count(devices)",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "devices.device_id"
+      ],
+      "tag": "observed",
+      "unit": "count",
+      "value": 447
+    },
+    "devices_with_weighing": {
+      "assumptions": [],
+      "formula": "count(devices where has_weight_measurement)",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "devices.has_weight_measurement"
+      ],
+      "tag": "observed",
+      "unit": "count",
+      "value": 404
+    },
+    "fill_at_lift_histogram": [
+      {
+        "bin_pct": 0,
+        "lifts": 455
+      },
+      {
+        "bin_pct": 10,
+        "lifts": 789
+      },
+      {
+        "bin_pct": 20,
+        "lifts": 1059
+      },
+      {
+        "bin_pct": 30,
+        "lifts": 1166
+      },
+      {
+        "bin_pct": 40,
+        "lifts": 1142
+      },
+      {
+        "bin_pct": 50,
+        "lifts": 1421
+      },
+      {
+        "bin_pct": 60,
+        "lifts": 2356
+      },
+      {
+        "bin_pct": 70,
+        "lifts": 2887
+      },
+      {
+        "bin_pct": 80,
+        "lifts": 2849
+      },
+      {
+        "bin_pct": 90,
+        "lifts": 3918
+      }
+    ],
+    "fill_by_trigger": [
+      {
+        "lifts": 8814,
+        "median_fill_pct": 82.0,
+        "trigger_type": "ON_CALL_ORDER"
+      },
+      {
+        "lifts": 4898,
+        "median_fill_pct": 51.8,
+        "trigger_type": "SCHEDULED"
+      },
+      {
+        "lifts": 2181,
+        "median_fill_pct": 43.7,
+        "trigger_type": "MAX_INTERVAL_RULE"
+      },
+      {
+        "lifts": 1043,
+        "median_fill_pct": 38.5,
+        "trigger_type": "CUSTOMER_REQUEST"
+      },
+      {
+        "lifts": 955,
+        "median_fill_pct": 97.3,
+        "trigger_type": "AD_HOC_CUSTOMER"
+      },
+      {
+        "lifts": 112,
+        "median_fill_pct": 51.1,
+        "trigger_type": "RESCHEDULED"
+      },
+      {
+        "lifts": 31,
+        "median_fill_pct": 47.2,
+        "trigger_type": "CUSTOMER_REQUEST_PRE_CLOSURE"
+      },
+      {
+        "lifts": 8,
+        "median_fill_pct": 28.3,
+        "trigger_type": "DECOMMISSION"
+      }
+    ],
+    "gross_charges_eur": {
+      "assumptions": [],
+      "formula": "sum(amount_eur) over all invoice lines except MATERIAL_CREDIT",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "invoice_lines.line_type",
+        "invoice_lines.amount_eur"
+      ],
+      "tag": "observed",
+      "unit": "EUR",
+      "value": 6331728.62
+    },
+    "low_fill_lift_share_pct": {
+      "assumptions": [],
+      "formula": "completed lifts with fill before lift < 60 % / completed lifts with a fill reading",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.status",
+        "collection_events.device_fill_pct_before"
+      ],
+      "tag": "observed",
+      "unit": "%",
+      "value": 33.4
+    },
+    "tonne_charges_eur": {
+      "assumptions": [],
+      "formula": "sum(amount_eur) where line_type in ['PROCESSING', 'HAUL_PER_TONNE']",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "invoice_lines.line_type",
+        "invoice_lines.amount_eur"
+      ],
+      "tag": "observed",
+      "unit": "EUR",
+      "value": 1965620.63
+    },
+    "tonnes_per_year": {
+      "assumptions": [
+        "Device-side estimate; lifts without a device weight are not counted"
+      ],
+      "formula": "sum(device_estimated_collected_kg) / 1000 over completed lifts",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg"
+      ],
+      "tag": "estimated",
+      "unit": "t",
+      "value": 37428.7
+    },
+    "trip_charges_eur": {
+      "assumptions": [],
+      "formula": "sum(amount_eur) where line_type in ['LIFT_FEE', 'TRANSPORT', 'FUEL_SURCHARGE', 'EMERGENCY_SURCHARGE', 'REMOTE_SURCHARGE', 'WASTED_TRIP_FEE', 'CANCELLATION_FEE']",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "invoice_lines.line_type",
+        "invoice_lines.amount_eur"
+      ],
+      "tag": "observed",
+      "unit": "EUR",
+      "value": 3577031.11
+    },
+    "trip_share_pct": {
+      "assumptions": [],
+      "formula": "trip_charges / gross_charges",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "invoice_lines.line_type",
+        "invoice_lines.amount_eur"
+      ],
+      "tag": "observed",
+      "unit": "%",
+      "value": 56.5
+    }
+  },
+  "provenance": {
+    "data": "competition",
+    "kit_version": "1.0.1",
+    "synthetic": true
+  },
+  "schema_version": 1
+}
