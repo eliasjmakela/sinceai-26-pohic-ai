@@ -188,10 +188,344 @@
       "value": 56.5
     }
   },
+  "forecast": {
+    "by_material": [
+      {
+        "devices": 57,
+        "material_stream": "biowaste",
+        "own_error_median_pct": 8.0,
+        "peer_error_median_pct": 29.5
+      },
+      {
+        "devices": 119,
+        "material_stream": "cardboard",
+        "own_error_median_pct": 8.8,
+        "peer_error_median_pct": 31.2
+      },
+      {
+        "devices": 11,
+        "material_stream": "mixed_plastic",
+        "own_error_median_pct": 33.9,
+        "peer_error_median_pct": 31.1
+      },
+      {
+        "devices": 110,
+        "material_stream": "mixed_waste",
+        "own_error_median_pct": 12.7,
+        "peer_error_median_pct": 36.3
+      },
+      {
+        "devices": 24,
+        "material_stream": "paper",
+        "own_error_median_pct": 10.6,
+        "peer_error_median_pct": 52.4
+      },
+      {
+        "devices": 64,
+        "material_stream": "plastic_film",
+        "own_error_median_pct": 10.4,
+        "peer_error_median_pct": 43.9
+      }
+    ],
+    "method": {
+      "devices": 385,
+      "heldout_months": 3,
+      "history_months": 9,
+      "min_peers": 3,
+      "peer_definition": "same material stream and container size, excluding the device itself (material only if fewer than MIN_PEERS)"
+    },
+    "own_better_share_pct": {
+      "assumptions": [
+        "Synthetic data: the size of the gap depends on how different the generator makes individual devices",
+        "Device-side weight estimates stand in for the operator's weighbridge history",
+        "Seasonality cannot be learned from 12 months; the forecast is a plain mean"
+      ],
+      "formula": "share of devices where own-history error < peer error",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.actual_at",
+        "collection_events.status",
+        "devices.material_stream",
+        "devices.container_volume_m3"
+      ],
+      "tag": "estimated",
+      "unit": "%",
+      "value": 83.6
+    },
+    "own_history_error_median_pct": {
+      "assumptions": [
+        "Synthetic data: the size of the gap depends on how different the generator makes individual devices",
+        "Device-side weight estimates stand in for the operator's weighbridge history",
+        "Seasonality cannot be learned from 12 months; the forecast is a plain mean"
+      ],
+      "formula": "median |own-history mean - actual| / actual",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.actual_at",
+        "collection_events.status",
+        "devices.material_stream",
+        "devices.container_volume_m3"
+      ],
+      "tag": "estimated",
+      "unit": "%",
+      "value": 10.0
+    },
+    "own_history_error_p80_pct": {
+      "assumptions": [
+        "Synthetic data: the size of the gap depends on how different the generator makes individual devices",
+        "Device-side weight estimates stand in for the operator's weighbridge history",
+        "Seasonality cannot be learned from 12 months; the forecast is a plain mean"
+      ],
+      "formula": "80th percentile of own-history relative error",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.actual_at",
+        "collection_events.status",
+        "devices.material_stream",
+        "devices.container_volume_m3"
+      ],
+      "tag": "estimated",
+      "unit": "%",
+      "value": 23.5
+    },
+    "peer_error_median_pct": {
+      "assumptions": [
+        "Synthetic data: the size of the gap depends on how different the generator makes individual devices",
+        "Device-side weight estimates stand in for the operator's weighbridge history",
+        "Seasonality cannot be learned from 12 months; the forecast is a plain mean"
+      ],
+      "formula": "median |peer mean - actual| / actual",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.actual_at",
+        "collection_events.status",
+        "devices.material_stream",
+        "devices.container_volume_m3"
+      ],
+      "tag": "estimated",
+      "unit": "%",
+      "value": 37.3
+    },
+    "peer_error_p80_pct": {
+      "assumptions": [
+        "Synthetic data: the size of the gap depends on how different the generator makes individual devices",
+        "Device-side weight estimates stand in for the operator's weighbridge history",
+        "Seasonality cannot be learned from 12 months; the forecast is a plain mean"
+      ],
+      "formula": "80th percentile of peer relative error",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.actual_at",
+        "collection_events.status",
+        "devices.material_stream",
+        "devices.container_volume_m3"
+      ],
+      "tag": "estimated",
+      "unit": "%",
+      "value": 95.0
+    }
+  },
   "provenance": {
     "data": "competition",
     "kit_version": "1.0.1",
     "synthetic": true
   },
-  "schema_version": 1
+  "schema_version": 1,
+  "trips": {
+    "actual_lifts": {
+      "assumptions": [
+        "Lift triggered at 90 % of the device's full payload, extrapolated from its own lifts (conservative)",
+        "Maximum interval per material from the starter kit",
+        "Devices with fewer than 3 usable lifts are excluded, not imputed",
+        "Ignores closures, peaks and overflow risk days: simulation, not a saving"
+      ],
+      "formula": "count of completed lifts (modelled devices)",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.device_fill_pct_before",
+        "collection_events.status",
+        "collection_events.actual_at",
+        "devices.material_stream",
+        "devices.collection_policy",
+        "configs/assumptions.yaml: materials.*.max_days_between"
+      ],
+      "tag": "observed",
+      "unit": "count",
+      "value": 15805
+    },
+    "by_material": [
+      {
+        "actual_lifts": 3611,
+        "devices": 58,
+        "material_stream": "biowaste",
+        "reduction_pct": 9.8,
+        "weight_triggered_lifts": 3256
+      },
+      {
+        "actual_lifts": 5541,
+        "devices": 122,
+        "material_stream": "cardboard",
+        "reduction_pct": 16.8,
+        "weight_triggered_lifts": 4611
+      },
+      {
+        "actual_lifts": 358,
+        "devices": 11,
+        "material_stream": "mixed_plastic",
+        "reduction_pct": 25.1,
+        "weight_triggered_lifts": 268
+      },
+      {
+        "actual_lifts": 3984,
+        "devices": 107,
+        "material_stream": "mixed_waste",
+        "reduction_pct": 21.5,
+        "weight_triggered_lifts": 3128
+      },
+      {
+        "actual_lifts": 465,
+        "devices": 21,
+        "material_stream": "paper",
+        "reduction_pct": 23.2,
+        "weight_triggered_lifts": 357
+      },
+      {
+        "actual_lifts": 1846,
+        "devices": 66,
+        "material_stream": "plastic_film",
+        "reduction_pct": 20.2,
+        "weight_triggered_lifts": 1474
+      }
+    ],
+    "by_policy": [
+      {
+        "actual_lifts": 2286,
+        "collection_policy": "FIXED_SCHEDULE",
+        "devices": 44,
+        "reduction_pct": 38.1,
+        "weight_triggered_lifts": 1415
+      },
+      {
+        "actual_lifts": 2256,
+        "collection_policy": "HYBRID",
+        "devices": 39,
+        "reduction_pct": 30.6,
+        "weight_triggered_lifts": 1566
+      },
+      {
+        "actual_lifts": 11263,
+        "collection_policy": "ON_CALL",
+        "devices": 302,
+        "reduction_pct": 10.2,
+        "weight_triggered_lifts": 10113
+      }
+    ],
+    "devices_excluded": 19,
+    "devices_interval_bound": 118,
+    "devices_modelled": 385,
+    "lift_reduction_pct": {
+      "assumptions": [
+        "Lift triggered at 90 % of the device's full payload, extrapolated from its own lifts (conservative)",
+        "Maximum interval per material from the starter kit",
+        "Devices with fewer than 3 usable lifts are excluded, not imputed",
+        "Ignores closures, peaks and overflow risk days: simulation, not a saving"
+      ],
+      "formula": "1 - weight_triggered_lifts / actual_lifts",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.device_fill_pct_before",
+        "collection_events.status",
+        "collection_events.actual_at",
+        "devices.material_stream",
+        "devices.collection_policy",
+        "configs/assumptions.yaml: materials.*.max_days_between"
+      ],
+      "tag": "simulated",
+      "unit": "%",
+      "value": 17.2
+    },
+    "tonnes_per_lift_actual": {
+      "assumptions": [
+        "Lift triggered at 90 % of the device's full payload, extrapolated from its own lifts (conservative)",
+        "Maximum interval per material from the starter kit",
+        "Devices with fewer than 3 usable lifts are excluded, not imputed",
+        "Ignores closures, peaks and overflow risk days: simulation, not a saving"
+      ],
+      "formula": "tonnes / actual lifts",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.device_fill_pct_before",
+        "collection_events.status",
+        "collection_events.actual_at",
+        "devices.material_stream",
+        "devices.collection_policy",
+        "configs/assumptions.yaml: materials.*.max_days_between"
+      ],
+      "tag": "estimated",
+      "unit": "t",
+      "value": 2.35
+    },
+    "tonnes_per_lift_weighted": {
+      "assumptions": [
+        "Lift triggered at 90 % of the device's full payload, extrapolated from its own lifts (conservative)",
+        "Maximum interval per material from the starter kit",
+        "Devices with fewer than 3 usable lifts are excluded, not imputed",
+        "Ignores closures, peaks and overflow risk days: simulation, not a saving"
+      ],
+      "formula": "tonnes / weight-triggered lifts",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.device_fill_pct_before",
+        "collection_events.status",
+        "collection_events.actual_at",
+        "devices.material_stream",
+        "devices.collection_policy",
+        "configs/assumptions.yaml: materials.*.max_days_between"
+      ],
+      "tag": "simulated",
+      "unit": "t",
+      "value": 2.84
+    },
+    "weight_triggered_lifts": {
+      "assumptions": [
+        "Lift triggered at 90 % of the device's full payload, extrapolated from its own lifts (conservative)",
+        "Maximum interval per material from the starter kit",
+        "Devices with fewer than 3 usable lifts are excluded, not imputed",
+        "Ignores closures, peaks and overflow risk days: simulation, not a saving"
+      ],
+      "formula": "sum over devices of max(ceil(annual kg / (0.9 x full payload)), interval bound)",
+      "row_ids": [],
+      "sigma": null,
+      "sources": [
+        "collection_events.device_estimated_collected_kg",
+        "collection_events.device_fill_pct_before",
+        "collection_events.status",
+        "collection_events.actual_at",
+        "devices.material_stream",
+        "devices.collection_policy",
+        "configs/assumptions.yaml: materials.*.max_days_between"
+      ],
+      "tag": "simulated",
+      "unit": "count",
+      "value": 13094
+    }
+  }
 }

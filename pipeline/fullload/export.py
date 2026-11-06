@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from . import fleet
+from . import fleet, forecast, trips
 from .config import BUNDLE_PATH, data_root, profile_name
 from .kit import KIT_VERSION, open_dataset
 
@@ -19,7 +19,9 @@ def build_bundle(data: str | None = None) -> dict:
             "schema_version": SCHEMA_VERSION,
             "provenance": {"kit_version": KIT_VERSION, "data": profile_name(root), "synthetic": True},
             "fleet": fleet.fleet_facts(con),
-            # Next sections, in build order (PRODUCT.md §6): forecast, trips, market, heroes, reconcile, business.
+            "forecast": forecast.forecast_facts(con),
+            "trips": trips.trips_facts(con),
+            # Next sections, in build order (PRODUCT.md §6): market, heroes, reconcile, business.
         }
     finally:
         con.close()

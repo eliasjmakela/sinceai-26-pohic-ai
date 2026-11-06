@@ -56,3 +56,21 @@ def test_labels_only_read_by_allowed_modules():
 def test_kit_baselines_importable():
     from fullload.kit import baseline
     assert hasattr(baseline("b1_economic_calculator"), "compute")
+
+
+def test_forecast_shows_history_advantage(bundle):
+    f = bundle["forecast"]
+    assert f["method"]["devices"] > 0
+    assert f["own_history_error_median_pct"]["value"] < f["peer_error_median_pct"]["value"]
+
+
+def test_trips_model_conserves_tonnage_and_respects_interval():
+    from fullload.config import data_root
+    from fullload.kit import open_dataset
+    from fullload.trips import TARGET_SHARE, device_trips
+    df = device_trips(open_dataset(data_root("quickstart")))
+    ok = df[df.weight_trips.notna()]
+    assert len(ok) > 0
+    # enough capacity for the same waste: trips x (target share x payload) >= annual kg
+    assert (ok.weight_trips * TARGET_SHARE * ok.full_payload_kg >= ok.annual_kg - 1e-6).all()
+    assert (ok.weight_trips >= ok.interval_bound).all()
