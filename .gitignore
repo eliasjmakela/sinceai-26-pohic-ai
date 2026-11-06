@@ -1,0 +1,22 @@
+# Starter kit + data (large, no licence file) — see PRODUCT.md §7.2
+resources/
+# Python envs and caches
+venv/
+.venv/
+**/.venv/
+__pycache__/
+*.egg-info/
+pipeline/.cache/
+# Kickoff audio and whisper outputs (keep the .txt transcript)
+*.m4a
+Röst*.json
+Röst*.srt
+Röst*.tsv
+Röst*.vtt
+# Node
+node_modules/
+web/dist/
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
