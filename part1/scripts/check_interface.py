@@ -1,5 +1,6 @@
 """QG6 check: sigma_tiers.json has exactly the shape of briefs/PART1_WEIGHING.md section 4, chosen_tier is T1,
-and the comparison table in WEIGHING_CONCEPT.md is byte-identical to the generated table (same numbers)."""
+and the comparison, error-budget and accuracy tables in WEIGHING_CONCEPT.md are verbatim copies of the
+generated tables (same numbers)."""
 from __future__ import annotations
 
 import json
@@ -48,10 +49,10 @@ def main() -> int:
             errs.append(f"{t['id']}.suits {t['suits']}")
         if not all(s.startswith("[") and s.endswith("]") for s in t["sources"]):
             errs.append(f"{t['id']}.sources {t['sources']}")
-    table = (GEN / "tiers_table.md").read_text()
     d1 = (PART1 / "WEIGHING_CONCEPT.md").read_text()
-    if table.strip() not in d1:
-        errs.append("WEIGHING_CONCEPT.md does not contain generated/tiers_table.md verbatim")
+    for name in ("tiers_table.md", "error_budget.md", "accuracy_summary.md"):
+        if (GEN / name).read_text().strip() not in d1:
+            errs.append(f"WEIGHING_CONCEPT.md does not contain generated/{name} verbatim")
     print("sigma_tiers.json + D1 table:", "OK" if not errs else "FAIL")
     for e in errs:
         print("  -", e)

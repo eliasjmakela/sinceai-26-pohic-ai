@@ -90,7 +90,7 @@ TIERS = [
 
 def tiers_table_md() -> str:
     lines = [
-        "| Tier | Name | σ rel % (low / mid / high) | σ abs kg floor (low / mid / high) | BOM € per device | Install h | Weak for | Evidence | Sources |",
+        "| Tier | Name | σ rel % (low / mid / high) | σ abs kg floor (low / mid / high) | BOM EUR per device | Install h | Weak for | Evidence | Sources |",
         "|---|---|---|---|---|---|---|---|---|",
     ]
     for t in TIERS:

@@ -113,8 +113,24 @@ def main(argv=None):
     md.append(f"Dataset's own simulated device vs ticket: {recon['pairs']} pairs, median |difference| "
               f"{recon['median_abs_diff_pct']} %, p95 {recon['p95_abs_diff_pct']} %.")
     (GEN / "accuracy_value.md").write_text("\n".join(md) + "\n")
+    (GEN / "accuracy_summary.md").write_text(summary_md(rows, tiers))
     print("\n".join(md))
     chart(sweep, rows, tiers)
+
+
+def summary_md(rows, tiers) -> str:
+    """Mid-sigma summary table pasted verbatim into WEIGHING_CONCEPT.md section 8 (checked by check_interface.py)."""
+    out = ["| Tier (mid σ) | 2.5–3.5 t loads within ±100 kg | median cost-per-tonne error | +10 % over-billing flagged on one load | false alarms | loads to see a 3 % difference |",
+           "|---|---|---|---|---|---|"]
+    for t in tiers:
+        r = next(x for x in rows if x["tier"] == t["id"] and x["level"] == "mid")
+        cells = [f"{t['id']} ({r['sigma_rel_pct']:g} %, {r['sigma_abs_kg']:.0f} kg)", f"{r['within_100kg_2.5_3.5t']:.0%}",
+                 f"{r['median_eur_per_t_error_pct']:.1f} %", f"{r['detects_+10pct_on_one_load']:.0%}",
+                 f"{100 * r['false_alarm_rate']:.1f} %", str(r["loads_to_see_3pct_difference"])]
+        if t["id"] == "T1":
+            cells = [f"**{c}**" for c in cells]
+        out.append("| " + " | ".join(cells) + " |")
+    return "\n".join(out) + "\n"
 
 
 def chart(sweep, rows, tiers):
@@ -132,7 +148,7 @@ def chart(sweep, rows, tiers):
             ax.plot([mid["sigma_rel_pct"]], [mid[key]], "o", markersize=8, color=TIER_COLOR[t["id"]],
                     markeredgecolor="#fcfcfb", markeredgewidth=2, zorder=5)
             ax.annotate(f"{t['id']} {mid[key]:.0%}", (mid["sigma_rel_pct"], mid[key]), textcoords="offset points",
-                        xytext=(6, 6), fontsize=9, color=INK)
+                        xytext=(6, -14) if t["id"] == "T1" else (6, 6), fontsize=9, color=INK)
         ax.set_xscale("log")
         ax.set_xticks([0.25, 0.5, 1, 2, 5, 10, 20], ["0.25", "0.5", "1", "2", "5", "10", "20"])
         ax.set_ylim(0, 1.12)
@@ -140,7 +156,7 @@ def chart(sweep, rows, tiers):
         ax.set_title(title, loc="left", fontsize=10)
         ax.set_xlabel("weighing error σ, % of load (log scale)")
     axes[0].axhline(0.95, color=INK, linestyle=(0, (4, 3)), linewidth=1)
-    axes[0].text(2.6, 0.965, "95 %: dataset's simulation target,\nnot a Europress specification", fontsize=7.5, color=INK2, va="bottom")
+    axes[0].text(4.6, 0.965, "95 %: dataset's simulation target,\nnot a Europress specification", fontsize=7.5, color=INK2, va="bottom")
     fig.suptitle("Accuracy → value: re-measuring synthetic reference loads with each tier's error model "
                  "(dot = tier mid, band = tier low–high,\ngrey line = σ sweep with a 30 kg floor)", x=0.01, ha="left", fontsize=10, color=INK)
     fig.tight_layout()
