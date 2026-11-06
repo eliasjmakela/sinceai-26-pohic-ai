@@ -1,0 +1,25 @@
+# Part 1 quality-gate self-check
+
+Branch `part1-weighing`, checked 7 Nov 2026. The line numbers refer to `part1/WEIGHING_CONCEPT.md` (D1) unless
+another file is named. This is a self-check, so the supervisor should re-verify every row.
+
+| Gate | Result | Evidence |
+|---|---|---|
+| **QG1 Brief coverage** | PASS | The coverage table at D1:343–358 maps 12 brief items to non-empty sections: principle §2 (D1:50), placement §3.1/§3.2 (D1:84, 101), BOM/cost §4 (D1:119), installation and retrofit §5 (D1:160), calibration §6 (D1:184), error sources §7 (D1:216), accuracy reasoning §1/§7/§8 (D1:33, 216, 256), validation §9 (D1:282), limitations §10 (D1:294), comparison §11 (D1:318) |
+| **QG2 Sourced costs** | PASS | `grep -n "€" WEIGHING_CONCEPT.md \| grep -v "\[[0-9]\+\]" \| grep -vi "team estimate"` returns no lines. Every cost is a range. Currency conversions are stated as a team assumption (D1 §4). URLs that opened on 6 Nov 2026: [8] KERN CT 5000-3Q1 (€435 net), [9] KERN CJ X468 (€130 net), [6] Electrokit HX711 (45 SEK), [4] DigiKey (pack of 5), [12] Hyva, [13] Recycling Product News, [15] EUR-Lex. [5], [10] and [11] block automated fetching, so their prices come from the shop's search listing, and D1 marks them that way |
+| **QG3 No over-claiming** | PASS | A grep for `proven\|validated\|guarantee\|certified accuracy\|europress specification` hits only D1:26, 30, 254, 272, 287. Every hit is inside the required phrase "the dataset's simulation target, not a Europress specification". Each σ is tagged: estimate (T0, T1), literature (T2), simulation target (±100 kg). "Untested" appears in the intro, §7, §9 and §10 |
+| **QG4 Machine-type correctness** | PASS | COMBI §3.1 (D1:84–99): the whole unit is weighed, the tare is zeroed when the emptied unit is set back down, and the sensor travels with the unit and must survive hook-lift and road transport. DUO §3.2 (D1:101–117): gauges on the stationary rails, the compactor on its own feet so only the container is weighed, re-zero at container exchange (handles a different tare), press-coupling gating. Mechanical assumptions are listed in §14 items 1–4 and 6 |
+| **QG5 Reproducible data claims** | PASS | One command: `part1/scripts/reproduce.sh`. Two consecutive runs gave identical SHA-256 for `sigma_tiers.json`, `generated/*` and `figures/*.svg` (`diff run1.sha run2.sha` → IDENTICAL). Seed 1, sorted SQL, `svg.hashsalt` fixed, no date metadata. A grep for `private_evaluation\|labels_dev` in `scripts/` hits only the refusal guard at `scripts/common.py:30`, and `check_public_root` rejects any root not named `public`. Data access goes through `europress_data.sdk.open_dataset`. D1's data numbers (5,787 tickets, 641 in band, 91 %/1.7 %/85 %, 2.1 %/11.5 %, the drift device IDs and dates, 17/7 devices) come from `generated/accuracy_value.*`, `accuracy_summary.md` and `drift_watch.json` |
+| **QG6 Interface valid** | PASS | `scripts/check_interface.py` prints `sigma_tiers.json + D1 table: OK`. It checks exact key sets at the top level and per tier, the value types, low ≤ mid ≤ high, the evidence_tag vocabulary, `chosen_tier == "T1"`, ids T0/T1/T2, and that D1 contains `generated/tiers_table.md`, `error_budget.md` and `accuracy_summary.md` verbatim (D1 §11, §7, §8). Both the JSON and the table are generated from `scripts/tiers.py` |
+| **QG7 Consistent with PRODUCT.md** | PASS | T1 chosen with T0/T2 as alternatives (D1:11–18). Hardware free to the customer and funded by Europress, paid back from operators' per-tonne fees (D1:19–20, 156). Europress never transports (D1:20, 365). The product is called "FullLoad". "SMART" appears only for the existing modem and service (e.g. "SMART modem"), never in a product name |
+| **QG8 Licences** | PASS | `THIRD_PARTY_part1.md` lists all 17 packages from `requirements-lock.txt` plus pip and the editable starter kit, with licences from package metadata. It also lists the tools (Python, Inkscape previews, font, Claude Code), the datasets and web sources [4]–[15]. The figures are self-made (placement.svg drawn by hand, the other three from matplotlib) |
+| **QG9 Scope respected** | PASS | `git diff --name-only main...part1-weighing \| grep -v '^part1/' \| wc -l` → 0. No web UI, no pressure ML model, no hardware simulation beyond re-sampling loads for one chart. About 3.5 h of agent work |
+| **QG10 Limitations stated** | PASS | §10 (D1:294–316) names: untested, biowaste/back-pressure (T0), humidity/moisture, temperature drift, off-centre loads, the press cycle, plus COMBI durability, operator ticket dependence, legal-for-trade and small loads |
+| **QG11 Human-review list** | PASS | §14 (D1:408–430) is the last section and has 10 concrete items |
+
+## Notes for the supervisor
+
+- D1 runs to about 5,300 words including tables and references, so it is at the upper end of the 4–6 page target.
+- `open_dataset` exposes label views for the whole public root. The Part 1 SQL reads only `collection_events`,
+  `weighbridge_tickets` and `devices`.
+- pandas 3.1.1 and pyarrow 26.0.1 installed on Python 3.14 without problems.
