@@ -9,7 +9,7 @@ One line per question. Write the answer under each one and update PRODUCT.md whe
 4. Would Europress be comfortable selling to operators a product whose free customer side encourages customers to tender on per-kg terms?
 5. **Who owns the compactor's weight and collection data**: the customer who leases/owns the machine, or Europress? Can Europress share forecasts with any operator?
 6. Today SMART auto-orders at about 80 % fill. Can the order trigger move to weight, sent to whichever operator holds the contract?
-7. Our default: the certified weighbridge stays the billing weight, the device weight checks it (EU rules need an approved instrument for billing). Would customers and operators ever agree by contract to bill on device weight, and has Europress looked at certification?
+7. Billing stays on the operator's certified weighbridge as today; our gauges only produce planning and service data. Does that match how Europress sees it? And what did Europress already try for weighing (you mentioned earlier attempts)?
 
 ## Weighing (keep short)
 8. Can you share the **pressure time-series examples** you offered (ram position + pressure over a cycle)? What sample rate does SMART log?

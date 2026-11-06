@@ -41,12 +41,16 @@ and efficient operators, including new entrants, can win.
 - **Customers use it for free**: they see how full their containers are when emptied, what per-kg billing would
   simulate to for them, and they get the prompt to tender on per-kg terms. **The customer decides to tender.**
 - **Europress stays a technology company**: it never drives trucks, contracts transport or takes a transport margin.
-- **The weight is shared and trusted**: the same verified weight is visible to customer and operator; it is not a tool
-  for one side to police the other. It is used for **forecasts, weight-triggered lifts and checking the per-kg bill**.
-  The **billing (settlement) weight stays the operator's certified weighbridge** by default: using a device weight as a
-  billing basis in the EU needs an approved non-automatic weighing instrument (Directive 2014/31/EU), which cheap
-  strain gauges are not designed to be. Device-weight settlement is an option only where both parties agree to it in
-  their contract, or as a later certified product. Never claim the device weight is legal for trade.
+- **Billing stays as it is today (decided)**: the final bill is based on the operator's certified weighbridge, exactly as
+  now. That keeps billing legal: in the EU a weight used to set a price must come from an approved non-automatic weighing
+  instrument (Directive 2014/31/EU), which cheap strain gauges are not designed to be. We do not propose device-weight billing.
+- **The cheap gauges produce the data for the service**: forecasts, weight-triggered pickups and the per-site tonnage
+  that operators need to price per kg. For that, ballpark accuracy (T1, about ±2 %) is plenty.
+- **Cross-check (side benefit, but a strong one)**: the same device weight is visible to customer and operator, so a
+  difference from the weighbridge figure is flagged for a human to look at. That gives the customer peace of mind and
+  the operator a solid reason to report honestly. Part 1's estimate for T1 (branch `part1-weighing`, synthetic):
+  a +10 % tonnage difference is flagged on ~85 % of single loads, and a 3 % systematic difference shows after ~2 loads.
+  Never claim the device weight is legal for trade.
 
 Pitch line: *"Today the weight — and the knowledge of every site — belongs to the incumbent. FullLoad puts it in the
 compactor, so every operator can compete per kilo."*
@@ -120,7 +124,7 @@ One screen state per beat; the presenter never types. Every screen has a deep li
 | 2 | 1:00–1:35 | **Customer view (free)** | Hero customer: a year of lifts coloured by fill at lift; per-trip cost today vs simulated per-kg cost (± band) | Proposal: "Tender your collection on per-kg terms" → customer **Approves** → tender brief | "The customer decides. FullLoad gives them the evidence." |
 | 3 | 1:35–2:05 | **Operator view (paid)** | The same site through an operator's eyes: forecast tonnage with Europress data (±10 %) vs without (±38 %) → the per-kg price an operator can safely bid | "Without the data only the incumbent can bid per kilo. With FullLoad, anyone can." |
 | 4 | 2:05–3:20 | **WOW: the market, before ↔ after** | One region. Toggle *Per trip, private data ↔ Per kg, FullLoad*: trips fall, tonnes per trip rise, customer €/t falls, entrants win tenders, concentration drops, Europress fee revenue appears. Drag sliders (entrant cost, σ) to show the effect holds. | "Same waste, fewer trucks, more competition. Europress doesn't drive a single truck." |
-| 5 | 3:20–3:50 | **A weight both sides trust** | One lift: device weight vs weighbridge vs invoice with ± σ, "weights agree within ± σ → bill confirmed"; a second case where **our own sensor drifted** → recalibration proposal | "Per-kg billing needs a weight both sides can check. Sometimes the error is ours." |
+| 5 | 3:20–3:50 | **Cheap gauges, honest data** | Billing stays on the certified weighbridge, as today. One lift: device weight vs weighbridge with ± σ, "within tolerance"; a second case where **our own sensor drifted** → caught by the cross-check → recalibration proposal | "The bill stays on the certified scale. Our gauges only need to be honest enough to plan, and they check themselves." |
 | 6 | 3:50–4:30 | **The business** | Operators pay per verified tonne; customers free, sensors included; sliders for fee and operator adoption; Europress ARR minus the sensor subsidy, payback per device, sensitivity; SMART integration diagram + API payload. All tagged *hypothetical*. | "Weigh at source. Pay per kilo. Let every operator compete." |
 
 **The wow is beat 4.** Build the simulation first, polish it most.
@@ -329,7 +333,7 @@ commit. Include the starter kit and dataset (terms to confirm), fonts/icons, hos
 | Per-kg pricing looks worse for some customers | Show the distribution, not only the hero; say who loses (e.g. dense, already-full sites) |
 | 12 months of data cannot show "time of year" knowledge | State it; the asymmetry is measured on 3-month horizons; seasonality is a named limitation |
 | Free sensors don't pay back | Business case shows sensor cost per device vs per-tonne fee per device-year; payback months on screen; T0 as the zero-hardware fallback |
-| Device weight presented as a legal-for-trade billing weight | Wording: device weight checks the bill, the certified weighbridge settles it (§1); device settlement only by contract agreement |
+| Device weight presented as a legal-for-trade billing weight | Wording rule (§1): billing stays on the certified weighbridge as today; device weight is planning and service data |
 | Europress hears the model as going into transport | Always: operators pay a service fee per verified tonne; Europress never contracts transport |
 | Part 1 scores low because it is "only decent" | D1 ticks every brief item; the slider ties it to the simulation; skip depth, never an item |
 | Simulation overruns | Fallback: static before/after table for the hero region with the same numbers, no sliders |
