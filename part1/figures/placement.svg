@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 470" width="1100" height="470" font-family="DejaVu Sans, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">T1 strain-gauge placement, COMBI and DUO</title>
+  <desc id="d">Side-view sketch, not to scale. COMBI: four gauge points on the base frame above the four support zones; the sensors travel with the unit. DUO: four gauge points on the stationary container rails; the compactor is not on the rails, so only the container is weighed.</desc>
+  <!-- Self-made sketch for FullLoad Part 1. Not to scale; no Europress drawings used. -->
+  <style>
+    .ink{fill:#0b0b0b} .ink2{fill:#52514e} .t{font-size:13px} .s{font-size:11px} .h{font-size:15px;font-weight:bold}
+    .steel{fill:#d9dde3;stroke:#52514e;stroke-width:1.5}
+    .unit{fill:#eef3fa;stroke:#52514e;stroke-width:1.5}
+    .press{fill:#dfe9f6;stroke:#52514e;stroke-width:1.5}
+    .gauge{fill:#2a78d6;stroke:#fcfcfb;stroke-width:2}
+    .wire{fill:none;stroke:#2a78d6;stroke-width:1.5;stroke-dasharray:5 3}
+    .load{fill:none;stroke:#52514e;stroke-width:1.2;marker-end:url(#arr)}
+    .ground{stroke:#52514e;stroke-width:2}
+    .box{fill:#fcfcfb;stroke:#2a78d6;stroke-width:1.5}
+  </style>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#52514e"/>
+    </marker>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#b9b8b2" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="1100" height="470" fill="#fcfcfb"/>
+
+  <!-- ============ COMBI ============ -->
+  <text x="20" y="28" class="h ink">COMBI: one unit, lifted and trucked away whole</text>
+  <text x="20" y="47" class="s ink2">Gauges travel with the unit: they must survive hook-lift</text><text x="20" y="61" class="s ink2">loading, road vibration, wash-down and frost.</text>
+  <!-- ground -->
+  <line x1="20" y1="300" x2="470" y2="300" class="ground"/>
+  <rect x="20" y="300" width="450" height="10" fill="url(#hatch)"/>
+  <!-- body: container + integrated press -->
+  <rect x="70" y="140" width="290" height="125" class="unit" rx="4"/>
+  <rect x="360" y="170" width="80" height="95" class="press" rx="4"/>
+  <text x="200" y="207" class="t ink" text-anchor="middle">container (waste)</text>
+  <text x="400" y="212" class="s ink" text-anchor="middle">press +</text>
+  <text x="400" y="226" class="s ink" text-anchor="middle">ram</text>
+  <!-- hook-lift arm A-frame at front -->
+  <path d="M440 200 L462 200 L462 120" fill="none" stroke="#52514e" stroke-width="5"/>
+  <text x="466" y="118" class="s ink2">hook</text>
+  <!-- base frame (skid rail) -->
+  <rect x="60" y="265" width="390" height="16" class="steel"/>
+  <text x="250" y="277" class="s ink" text-anchor="middle">base frame / skid rails (both sides)</text>
+  <!-- supports: rear rollers + front skid shoes -->
+  <circle cx="80" cy="290" r="10" class="steel"/>
+  <rect x="410" y="281" width="34" height="19" class="steel"/>
+  <text x="62" y="325" class="s ink2">rear rollers</text>
+  <text x="378" y="325" class="s ink2">front skid shoes</text>
+  <!-- gauges G1..G4 (G3/G4 on far side rail, drawn dashed outline) -->
+  <rect x="96" y="263" width="14" height="14" class="gauge"/>
+  <rect x="384" y="263" width="14" height="14" class="gauge"/>
+  <text x="103" y="257" class="s ink" text-anchor="middle">G1</text>
+  <text x="391" y="257" class="s ink" text-anchor="middle">G2</text>
+  <text x="20" y="345" class="s ink2">G3, G4 mirror G1, G2 on the far-side rail. Each G = weld-on or</text><text x="20" y="359" class="s ink2">bonded full bridge, sealed and covered.</text>
+  <!-- load arrows -->
+  <path d="M120 100 L120 135" class="load"/>
+  <text x="128" y="112" class="s ink2">gross = unit tare + waste</text>
+  <!-- amp + modem -->
+  <rect x="300" y="64" width="150" height="44" class="box" rx="4"/>
+  <text x="375" y="82" class="s ink" text-anchor="middle">4-ch bridge amp</text>
+  <text x="375" y="97" class="s ink" text-anchor="middle">→ SMART modem</text>
+  <path d="M110 270 C 140 236, 280 236, 300 100" class="wire"/>
+  <path d="M398 268 C 470 230, 470 140, 440 108" class="wire"/>
+  <text x="20" y="381" class="s ink2">Zero: read when the emptied unit is set back down (tare).</text><text x="20" y="395" class="s ink2">Weigh: average at rest, ram retracted.</text><text x="20" y="417" class="s ink2">Assumption: unit rests on four support zones on a level pad (review item).</text>
+
+  <!-- divider -->
+  <line x1="540" y1="20" x2="540" y2="425" stroke="#e4e3df" stroke-width="2"/>
+
+  <g transform="translate(50,0)">
+  <!-- ============ DUO ============ -->
+  <text x="510" y="28" class="h ink">DUO: compactor stays, only the container is swapped</text>
+  <text x="510" y="47" class="s ink2">Gauges stay on the stationary rails: they weigh the container</text><text x="510" y="61" class="s ink2">only and re-zero at every container exchange.</text>
+  <line x1="510" y1="300" x2="960" y2="300" class="ground"/>
+  <rect x="510" y="300" width="450" height="10" fill="url(#hatch)"/>
+  <!-- stationary compactor (own feet, NOT on rails) -->
+  <rect x="820" y="170" width="120" height="110" class="press" rx="4"/>
+  <rect x="830" y="280" width="16" height="20" class="steel"/>
+  <rect x="914" y="280" width="16" height="20" class="steel"/>
+  <text x="880" y="215" class="s ink" text-anchor="middle">stationary</text>
+  <text x="880" y="229" class="s ink" text-anchor="middle">compactor</text>
+  <text x="880" y="243" class="s ink" text-anchor="middle">(own feet)</text>
+  <!-- detachable container -->
+  <rect x="560" y="140" width="250" height="122" class="unit" rx="4"/>
+  <text x="685" y="200" class="t ink" text-anchor="middle">detachable container</text>
+  <!-- container rollers / skids -->
+  <circle cx="580" cy="271" r="8" class="steel"/>
+  <rect x="770" y="262" width="30" height="10" class="steel"/>
+  <!-- rails -->
+  <rect x="545" y="279" width="270" height="12" class="steel"/>
+  <text x="680" y="325" class="s ink" text-anchor="middle">container rails on site (both sides), anchored at ends</text>
+  <rect x="548" y="291" width="12" height="9" class="steel"/>
+  <rect x="800" y="291" width="12" height="9" class="steel"/>
+  <!-- gap at interface -->
+  <line x1="815" y1="180" x2="815" y2="262" stroke="#0b0b0b" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <text x="812" y="134" class="s ink2" text-anchor="end">coupling: read with ram retracted</text>
+  <!-- gauges -->
+  <rect x="590" y="278" width="14" height="14" class="gauge"/>
+  <rect x="752" y="278" width="14" height="14" class="gauge"/>
+  <text x="597" y="351" class="s ink" text-anchor="middle">G1</text>
+  <text x="759" y="351" class="s ink" text-anchor="middle">G2</text>
+  <path d="M597 340 L597 296" class="load" style="marker-end:none"/>
+  <path d="M759 340 L759 296" class="load" style="marker-end:none"/>
+  <path d="M600 100 L600 135" class="load"/>
+  <text x="608" y="112" class="s ink2">container + waste only</text>
+  <!-- amp -->
+  <rect x="810" y="64" width="150" height="44" class="box" rx="4"/>
+  <text x="885" y="82" class="s ink" text-anchor="middle">4-ch bridge amp</text>
+  <text x="885" y="97" class="s ink" text-anchor="middle">in compactor cabinet</text>
+  <path d="M597 280 C 620 230, 800 160, 860 108" class="wire"/>
+  <path d="M759 280 C 790 240, 860 180, 900 108" class="wire"/>
+  <text x="510" y="381" class="s ink2">Zero: when an empty container docks (SMART exchange signal</text><text x="510" y="395" class="s ink2">or weight step). G3, G4 mirror G1, G2 on the far rail.</text><text x="510" y="417" class="s ink2">Assumption: rails are a separate part carrying the whole container.</text>
+  </g>
+
+  <!-- legend -->
+  <rect x="20" y="444" width="12" height="12" class="gauge"/>
+  <text x="38" y="455" class="s ink">strain-gauge point (full bridge)</text>
+  <path d="M250 450 L290 450" class="wire"/>
+  <text x="296" y="455" class="s ink">shielded cable to amplifier</text>
+  <text x="1080" y="455" class="s ink2" text-anchor="end">Sketch, not to scale. Team drawing.</text>
+</svg>
