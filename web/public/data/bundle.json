@@ -335,6 +335,988 @@
       "value": 95.0
     }
   },
+  "market": {
+    "default": {
+      "rows": [
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0001",
+          "europress_fee": 117925.5,
+          "incumbent": "OP-B",
+          "keeps_today": false,
+          "lifts_after": 168,
+          "lifts_before": 212,
+          "operator_margin_after": 827396.3867070447,
+          "operator_margin_before": 1154996.5999999996,
+          "price_after": 4702933.285352011,
+          "price_before": 5774983,
+          "tonnes": 393.085,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0007",
+          "europress_fee": 390889.38,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 395,
+          "lifts_before": 523,
+          "operator_margin_after": 1674601.2867531758,
+          "operator_margin_before": 2251748.0,
+          "price_after": 9264776.308053367,
+          "price_before": 11258740,
+          "tonnes": 1302.9646,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0009",
+          "europress_fee": 15663.0,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 20,
+          "lifts_before": 25,
+          "operator_margin_after": 57931.55494066025,
+          "operator_margin_before": 83829.79999999999,
+          "price_after": 341849.9149406603,
+          "price_before": 419149,
+          "tonnes": 52.21,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0013",
+          "europress_fee": 60162.6,
+          "incumbent": "OP-A",
+          "keeps_today": false,
+          "lifts_after": 197,
+          "lifts_before": 206,
+          "operator_margin_after": 648412.4750881074,
+          "operator_margin_before": 871998.3999999999,
+          "price_after": 3652042.140688551,
+          "price_before": 4359992,
+          "tonnes": 200.542,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0016",
+          "europress_fee": 41958.00000000001,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 55,
+          "lifts_before": 65,
+          "operator_margin_after": 431392.1027267985,
+          "operator_margin_before": 501734.0,
+          "price_after": 2376077.7334960294,
+          "price_before": 2508670,
+          "tonnes": 139.86,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0022",
+          "europress_fee": 54133.5,
+          "incumbent": "OP-A",
+          "keeps_today": false,
+          "lifts_after": 90,
+          "lifts_before": 90,
+          "operator_margin_after": 505270.4998201416,
+          "operator_margin_before": 643815.0,
+          "price_after": 2850753.0667785807,
+          "price_before": 3219075,
+          "tonnes": 180.445,
+          "winner_after": "NEW-1"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0023",
+          "europress_fee": 521401.92,
+          "incumbent": "OP-B",
+          "keeps_today": false,
+          "lifts_after": 711,
+          "lifts_before": 832,
+          "operator_margin_after": 3840795.221255757,
+          "operator_margin_before": 4800080.800000001,
+          "price_after": 21669571.23707353,
+          "price_before": 24000404,
+          "tonnes": 1738.0064,
+          "winner_after": "NEW-1"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0033",
+          "europress_fee": 761889.4199999999,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 705,
+          "lifts_before": 817,
+          "operator_margin_after": 4493189.75422591,
+          "operator_margin_before": 4865413.3999999985,
+          "price_after": 23117221.97863227,
+          "price_before": 24327067,
+          "tonnes": 2539.6313999999998,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0034",
+          "europress_fee": 97521.0,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 133,
+          "lifts_before": 150,
+          "operator_margin_after": 682006.7571979845,
+          "operator_margin_before": 746741.3999999999,
+          "price_after": 3551981.554531318,
+          "price_before": 3733707,
+          "tonnes": 325.07,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0036",
+          "europress_fee": 61518.0,
+          "incumbent": "OP-A",
+          "keeps_today": false,
+          "lifts_after": 116,
+          "lifts_before": 160,
+          "operator_margin_after": 371178.4657434698,
+          "operator_margin_before": 564350.0,
+          "price_after": 1933203.2177838534,
+          "price_before": 2821750,
+          "tonnes": 205.06,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0037",
+          "europress_fee": 38736.0,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 74,
+          "lifts_before": 84,
+          "operator_margin_after": 428369.32278503804,
+          "operator_margin_before": 501898.7999999998,
+          "price_after": 2240280.7132612285,
+          "price_before": 2509494,
+          "tonnes": 129.12,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0038",
+          "europress_fee": 126784.5,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 129,
+          "lifts_before": 139,
+          "operator_margin_after": 669333.6210238254,
+          "operator_margin_before": 680748.7999999998,
+          "price_after": 3323214.385772027,
+          "price_before": 3403744,
+          "tonnes": 422.615,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0042",
+          "europress_fee": 40349.16,
+          "incumbent": "OP-A",
+          "keeps_today": false,
+          "lifts_after": 81,
+          "lifts_before": 84,
+          "operator_margin_after": 435074.64559374563,
+          "operator_margin_before": 540833.6000000001,
+          "price_after": 2550002.695897242,
+          "price_before": 2704168,
+          "tonnes": 134.49720000000002,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0043",
+          "europress_fee": 126499.05,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 200,
+          "lifts_before": 252,
+          "operator_margin_after": 662386.4542286885,
+          "operator_margin_before": 921102.7999999998,
+          "price_after": 3865022.659784244,
+          "price_before": 4605514,
+          "tonnes": 421.6635,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0045",
+          "europress_fee": 259321.22999999998,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 463,
+          "lifts_before": 524,
+          "operator_margin_after": 1921164.880182976,
+          "operator_margin_before": 2540141.5999999996,
+          "price_after": 11518130.380411984,
+          "price_before": 12700708,
+          "tonnes": 864.4041,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0046",
+          "europress_fee": 36097.77,
+          "incumbent": "OP-A",
+          "keeps_today": false,
+          "lifts_after": 72,
+          "lifts_before": 73,
+          "operator_margin_after": 396937.6047365153,
+          "operator_margin_before": 494397.19999999995,
+          "price_after": 2368917.4002082995,
+          "price_before": 2471986,
+          "tonnes": 120.32589999999999,
+          "winner_after": "OP-E"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0050",
+          "europress_fee": 78879.0,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 132,
+          "lifts_before": 179,
+          "operator_margin_after": 435339.67626757454,
+          "operator_margin_before": 646771.1999999997,
+          "price_after": 2443133.606375895,
+          "price_before": 3233856,
+          "tonnes": 262.93,
+          "winner_after": "OP-B"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0057",
+          "europress_fee": 14043.0,
+          "incumbent": "OP-E",
+          "keeps_today": false,
+          "lifts_after": 30,
+          "lifts_before": 41,
+          "operator_margin_after": 91739.79317983409,
+          "operator_margin_before": 142439.0,
+          "price_after": 513058.17188697745,
+          "price_before": 712195,
+          "tonnes": 46.81,
+          "winner_after": "OP-B"
+        },
+        {
+          "contestable_after": true,
+          "contestable_today": false,
+          "customer_id": "ORG-0059",
+          "europress_fee": 46846.5,
+          "incumbent": "OP-B",
+          "keeps_today": false,
+          "lifts_after": 81,
+          "lifts_before": 99,
+          "operator_margin_after": 450712.46205660515,
+          "operator_margin_before": 645397.5999999996,
+          "price_after": 2609769.2893293328,
+          "price_before": 3226988,
+          "tonnes": 156.155,
+          "winner_after": "OP-B"
+        }
+      ],
+      "summary": {
+        "accounts": 19,
+        "accounts_contestable_after": 19,
+        "accounts_contestable_today": 0,
+        "accounts_keep_today": 0,
+        "accounts_switched": 9,
+        "cost_per_t_after": 10886.106760713674,
+        "cost_per_t_before": 12245.70334432887,
+        "customer_cost_after": 104891939.7402574,
+        "customer_cost_before": 117992190,
+        "europress_fee": 2890618.53,
+        "hhi_after": 6083.01496901723,
+        "hhi_before": 5200.645971780593,
+        "lifts_after": 3852,
+        "lifts_before": 4555,
+        "operator_margin_after": 19023232.964513853,
+        "operator_margin_before": 23598437.999999996,
+        "share_after": {
+          "NEW-1": 0.1991045909471839,
+          "OP-A": 0.0,
+          "OP-B": 0.048352454171806614,
+          "OP-E": 0.7525429548810094
+        },
+        "share_before": {
+          "NEW-1": 0.0,
+          "OP-A": 0.08726887597997927,
+          "OP-B": 0.2373796171575777,
+          "OP-E": 0.6753515068624428
+        },
+        "t_per_lift_after": 2.5014005970924194,
+        "t_per_lift_before": 2.1153446981339186,
+        "tonnes": 9635.3951
+      }
+    },
+    "headline": {
+      "accounts_switched": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "accounts whose tender winner is not the incumbent",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "simulated",
+        "unit": "count",
+        "value": 9
+      },
+      "contestable_after": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "accounts where a challenger's per-kg bid (FullLoad forecast) beats today's price",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "simulated",
+        "unit": "count",
+        "value": 19
+      },
+      "contestable_before": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "accounts where a challenger's per-kg bid (peer forecast, sigma_ent) beats today's price",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "simulated",
+        "unit": "count",
+        "value": 0
+      },
+      "cost_per_t_after": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "sum of after-regime prices / tonnes",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "simulated",
+        "unit": "EUR/t",
+        "value": 108.86
+      },
+      "cost_per_t_before": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "today's tendered charges / tonnes (observed)",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "observed",
+        "unit": "EUR/t",
+        "value": 122.46
+      },
+      "europress_fee_eur": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "fee per tonne x tonnes",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": 28906.19
+      },
+      "incumbent_margin_before_eur": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "today's price - cost_share x today's price",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": 235984.38
+      },
+      "lifts_after": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "weight-triggered lifts (trips model)",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "simulated",
+        "unit": "count",
+        "value": 3852
+      },
+      "lifts_before": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "actual completed lifts",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "observed",
+        "unit": "count",
+        "value": 4555
+      },
+      "operator_margin_after_eur": {
+        "assumptions": [
+          "One region, one tender round, closed-form bids; no routing, capacity limits or learning",
+          "Operator cost = cost_share x today's price (hypothetical, params.yaml)",
+          "Forecast errors from the pipeline's backtest on synthetic data",
+          "Simulation, not a prediction of real prices or savings"
+        ],
+        "formula": "tender price - winner's cost",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "invoice_lines.amount_eur",
+          "invoice_lines.line_type",
+          "invoices.contract_id",
+          "contracts.device_id",
+          "devices.customer_id",
+          "devices.operator_id",
+          "sites.region_code",
+          "collection_events (trips model)"
+        ],
+        "tag": "simulated",
+        "unit": "EUR",
+        "value": 190232.33
+      }
+    },
+    "inputs": [
+      {
+        "actual_lifts": 212,
+        "customer_id": "ORG-0001",
+        "devices": 6,
+        "incumbent": "OP-B",
+        "kg": 393085.0,
+        "tonne_cents": 3294603,
+        "trip_cents": 2480380,
+        "weight_lifts": 168
+      },
+      {
+        "actual_lifts": 523,
+        "customer_id": "ORG-0007",
+        "devices": 10,
+        "incumbent": "OP-E",
+        "kg": 1302964.6,
+        "tonne_cents": 2026021,
+        "trip_cents": 9232719,
+        "weight_lifts": 395
+      },
+      {
+        "actual_lifts": 25,
+        "customer_id": "ORG-0009",
+        "devices": 1,
+        "incumbent": "OP-E",
+        "kg": 52210.0,
+        "tonne_cents": 0,
+        "trip_cents": 419149,
+        "weight_lifts": 20
+      },
+      {
+        "actual_lifts": 206,
+        "customer_id": "ORG-0013",
+        "devices": 9,
+        "incumbent": "OP-A",
+        "kg": 200542.0,
+        "tonne_cents": 806830,
+        "trip_cents": 3553162,
+        "weight_lifts": 197
+      },
+      {
+        "actual_lifts": 65,
+        "customer_id": "ORG-0016",
+        "devices": 2,
+        "incumbent": "OP-E",
+        "kg": 139860.0,
+        "tonne_cents": 1661977,
+        "trip_cents": 846693,
+        "weight_lifts": 55
+      },
+      {
+        "actual_lifts": 90,
+        "customer_id": "ORG-0022",
+        "devices": 3,
+        "incumbent": "OP-A",
+        "kg": 180445.0,
+        "tonne_cents": 1519762,
+        "trip_cents": 1699313,
+        "weight_lifts": 90
+      },
+      {
+        "actual_lifts": 832,
+        "customer_id": "ORG-0023",
+        "devices": 19,
+        "incumbent": "OP-B",
+        "kg": 1738006.4,
+        "tonne_cents": 10930747,
+        "trip_cents": 13069657,
+        "weight_lifts": 711
+      },
+      {
+        "actual_lifts": 817,
+        "customer_id": "ORG-0033",
+        "devices": 14,
+        "incumbent": "OP-E",
+        "kg": 2539631.4,
+        "tonne_cents": 9742242,
+        "trip_cents": 14584825,
+        "weight_lifts": 705
+      },
+      {
+        "actual_lifts": 150,
+        "customer_id": "ORG-0034",
+        "devices": 6,
+        "incumbent": "OP-E",
+        "kg": 325070.0,
+        "tonne_cents": 1367768,
+        "trip_cents": 2365939,
+        "weight_lifts": 133
+      },
+      {
+        "actual_lifts": 160,
+        "customer_id": "ORG-0036",
+        "devices": 4,
+        "incumbent": "OP-A",
+        "kg": 205060.0,
+        "tonne_cents": 342636,
+        "trip_cents": 2479114,
+        "weight_lifts": 116
+      },
+      {
+        "actual_lifts": 84,
+        "customer_id": "ORG-0037",
+        "devices": 3,
+        "incumbent": "OP-E",
+        "kg": 129120.0,
+        "tonne_cents": 48086,
+        "trip_cents": 2461408,
+        "weight_lifts": 74
+      },
+      {
+        "actual_lifts": 139,
+        "customer_id": "ORG-0038",
+        "devices": 3,
+        "incumbent": "OP-E",
+        "kg": 422615.0,
+        "tonne_cents": 0,
+        "trip_cents": 3403744,
+        "weight_lifts": 129
+      },
+      {
+        "actual_lifts": 84,
+        "customer_id": "ORG-0042",
+        "devices": 3,
+        "incumbent": "OP-A",
+        "kg": 134497.2,
+        "tonne_cents": 944263,
+        "trip_cents": 1759905,
+        "weight_lifts": 81
+      },
+      {
+        "actual_lifts": 252,
+        "customer_id": "ORG-0043",
+        "devices": 7,
+        "incumbent": "OP-E",
+        "kg": 421663.5,
+        "tonne_cents": 920777,
+        "trip_cents": 3684737,
+        "weight_lifts": 200
+      },
+      {
+        "actual_lifts": 524,
+        "customer_id": "ORG-0045",
+        "devices": 17,
+        "incumbent": "OP-E",
+        "kg": 864404.1,
+        "tonne_cents": 3864413,
+        "trip_cents": 8836295,
+        "weight_lifts": 463
+      },
+      {
+        "actual_lifts": 73,
+        "customer_id": "ORG-0046",
+        "devices": 2,
+        "incumbent": "OP-A",
+        "kg": 120325.9,
+        "tonne_cents": 1254070,
+        "trip_cents": 1217916,
+        "weight_lifts": 72
+      },
+      {
+        "actual_lifts": 179,
+        "customer_id": "ORG-0050",
+        "devices": 5,
+        "incumbent": "OP-E",
+        "kg": 262930.0,
+        "tonne_cents": 311394,
+        "trip_cents": 2922462,
+        "weight_lifts": 132
+      },
+      {
+        "actual_lifts": 41,
+        "customer_id": "ORG-0057",
+        "devices": 2,
+        "incumbent": "OP-E",
+        "kg": 46810.0,
+        "tonne_cents": 0,
+        "trip_cents": 712195,
+        "weight_lifts": 30
+      },
+      {
+        "actual_lifts": 99,
+        "customer_id": "ORG-0059",
+        "devices": 4,
+        "incumbent": "OP-B",
+        "kg": 156155.0,
+        "tonne_cents": 0,
+        "trip_cents": 3226988,
+        "weight_lifts": 81
+      }
+    ],
+    "operators": [
+      "OP-A",
+      "OP-B",
+      "OP-E"
+    ],
+    "params": {
+      "cost_share": 0.8,
+      "cost_spread": 0.06,
+      "density_benefit": 0.1,
+      "entrant_cost_advantage": 0.05,
+      "europress_fee_cents_per_t": 300,
+      "min_margin": 0.08,
+      "new_entrants": 1,
+      "risk_z": 1.0,
+      "sigma_sensor": 0.02
+    },
+    "parity": [
+      {
+        "params": {
+          "cost_share": 0.8,
+          "cost_spread": 0.06,
+          "density_benefit": 0.1,
+          "entrant_cost_advantage": 0.05,
+          "europress_fee_cents_per_t": 300,
+          "min_margin": 0.08,
+          "new_entrants": 1,
+          "risk_z": 1.0,
+          "sigma_sensor": 0.02
+        },
+        "summary": {
+          "accounts": 19,
+          "accounts_contestable_after": 19,
+          "accounts_contestable_today": 0,
+          "accounts_keep_today": 0,
+          "accounts_switched": 9,
+          "cost_per_t_after": 10886.106760713674,
+          "cost_per_t_before": 12245.70334432887,
+          "customer_cost_after": 104891939.7402574,
+          "customer_cost_before": 117992190,
+          "europress_fee": 2890618.53,
+          "hhi_after": 6083.01496901723,
+          "hhi_before": 5200.645971780593,
+          "lifts_after": 3852,
+          "lifts_before": 4555,
+          "operator_margin_after": 19023232.964513853,
+          "operator_margin_before": 23598437.999999996,
+          "share_after": {
+            "NEW-1": 0.1991045909471839,
+            "OP-A": 0.0,
+            "OP-B": 0.048352454171806614,
+            "OP-E": 0.7525429548810094
+          },
+          "share_before": {
+            "NEW-1": 0.0,
+            "OP-A": 0.08726887597997927,
+            "OP-B": 0.2373796171575777,
+            "OP-E": 0.6753515068624428
+          },
+          "t_per_lift_after": 2.5014005970924194,
+          "t_per_lift_before": 2.1153446981339186,
+          "tonnes": 9635.3951
+        }
+      },
+      {
+        "params": {
+          "cost_share": 0.8,
+          "cost_spread": 0.06,
+          "density_benefit": 0.1,
+          "entrant_cost_advantage": 0.05,
+          "europress_fee_cents_per_t": 300,
+          "min_margin": 0.08,
+          "new_entrants": 0,
+          "risk_z": 1.0,
+          "sigma_sensor": 0.02
+        },
+        "summary": {
+          "accounts": 19,
+          "accounts_contestable_after": 18,
+          "accounts_contestable_today": 0,
+          "accounts_keep_today": 0,
+          "accounts_switched": 8,
+          "cost_per_t_after": 11146.024923214742,
+          "cost_per_t_before": 12245.70334432887,
+          "customer_cost_after": 107396353.92962119,
+          "customer_cost_before": 117992190,
+          "europress_fee": 2890618.53,
+          "hhi_after": 6275.55888120063,
+          "hhi_before": 5200.645971780593,
+          "lifts_after": 3852,
+          "lifts_before": 4555,
+          "operator_margin_after": 21106325.89209223,
+          "operator_margin_before": 23598437.999999996,
+          "share_after": {
+            "OP-A": 0.0,
+            "OP-B": 0.24745704511899053,
+            "OP-E": 0.7525429548810094
+          },
+          "share_before": {
+            "OP-A": 0.08726887597997927,
+            "OP-B": 0.2373796171575777,
+            "OP-E": 0.6753515068624428
+          },
+          "t_per_lift_after": 2.5014005970924194,
+          "t_per_lift_before": 2.1153446981339186,
+          "tonnes": 9635.3951
+        }
+      },
+      {
+        "params": {
+          "cost_share": 0.8,
+          "cost_spread": 0.06,
+          "density_benefit": 0.1,
+          "entrant_cost_advantage": 0.15,
+          "europress_fee_cents_per_t": 300,
+          "min_margin": 0.08,
+          "new_entrants": 2,
+          "risk_z": 1.0,
+          "sigma_sensor": 0.05
+        },
+        "summary": {
+          "accounts": 19,
+          "accounts_contestable_after": 19,
+          "accounts_contestable_today": 4,
+          "accounts_keep_today": 0,
+          "accounts_switched": 19,
+          "cost_per_t_after": 9939.247159193084,
+          "cost_per_t_before": 12245.70334432887,
+          "customer_cost_after": 95768573.37537797,
+          "customer_cost_before": 117992190,
+          "europress_fee": 2890618.53,
+          "hhi_after": 5308.247364152927,
+          "hhi_before": 5200.645971780593,
+          "lifts_after": 3852,
+          "lifts_before": 4555,
+          "operator_margin_after": 17699783.894061383,
+          "operator_margin_before": 23598437.999999996,
+          "share_after": {
+            "NEW-1": 0.6241465593870664,
+            "NEW-2": 0.3758534406129334,
+            "OP-A": 0.0,
+            "OP-B": 0.0,
+            "OP-E": 0.0
+          },
+          "share_before": {
+            "NEW-1": 0.0,
+            "NEW-2": 0.0,
+            "OP-A": 0.08726887597997927,
+            "OP-B": 0.2373796171575777,
+            "OP-E": 0.6753515068624428
+          },
+          "t_per_lift_after": 2.5014005970924194,
+          "t_per_lift_before": 2.1153446981339186,
+          "tonnes": 9635.3951
+        }
+      },
+      {
+        "params": {
+          "cost_share": 0.8,
+          "cost_spread": 0.06,
+          "density_benefit": 0.1,
+          "entrant_cost_advantage": 0.05,
+          "europress_fee_cents_per_t": 0,
+          "min_margin": 0.08,
+          "new_entrants": 1,
+          "risk_z": 0.5,
+          "sigma_sensor": 0.02
+        },
+        "summary": {
+          "accounts": 19,
+          "accounts_contestable_after": 19,
+          "accounts_contestable_today": 4,
+          "accounts_keep_today": 0,
+          "accounts_switched": 9,
+          "cost_per_t_after": 10036.149735289102,
+          "cost_per_t_before": 12245.70334432887,
+          "customer_cost_after": 96702267.98227091,
+          "customer_cost_before": 117992190,
+          "europress_fee": 0.0,
+          "hhi_after": 6083.01496901723,
+          "hhi_before": 5200.645971780593,
+          "lifts_after": 3852,
+          "lifts_before": 4555,
+          "operator_margin_after": 13677416.630877385,
+          "operator_margin_before": 23598437.999999996,
+          "share_after": {
+            "NEW-1": 0.1991045909471839,
+            "OP-A": 0.0,
+            "OP-B": 0.048352454171806614,
+            "OP-E": 0.7525429548810094
+          },
+          "share_before": {
+            "NEW-1": 0.0,
+            "OP-A": 0.08726887597997927,
+            "OP-B": 0.2373796171575777,
+            "OP-E": 0.6753515068624428
+          },
+          "t_per_lift_after": 2.5014005970924194,
+          "t_per_lift_before": 2.1153446981339186,
+          "tonnes": 9635.3951
+        }
+      }
+    ],
+    "region": "FI-01",
+    "sigma_ent": 0.3726,
+    "sigma_inc": 0.1004
+  },
   "premature": {
     "by_policy": [
       {

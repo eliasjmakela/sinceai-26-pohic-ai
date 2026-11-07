@@ -7,4 +7,40 @@
 #     value: <number or list for sensitivity>
 #     unit: <unit>
 #     rationale: <one line: why this value>
-{}
+market:   # PLACEHOLDER values until the business-case teammate signs them off (PRODUCT.md §9)
+  cost_share:
+    value: 0.80
+    unit: share of today's price
+    rationale: placeholder; operator's cost to serve as a share of what it charges today (incumbent markup 25 % on cost)
+  min_margin:
+    value: 0.08
+    unit: share of cost
+    rationale: placeholder; the lowest margin an operator accepts in a competitive tender
+  risk_z:
+    value: 1.0
+    unit: standard deviations
+    rationale: placeholder; an operator prices in one standard deviation of volume-forecast error
+  new_entrants:
+    value: 1
+    unit: count
+    rationale: placeholder; operators from outside the region that bid once FullLoad data is available
+  entrant_cost_advantage:
+    value: 0.05
+    unit: share of cost
+    rationale: placeholder; a new, efficiency-driven operator (e.g. subcontractor-based) runs 5 % cheaper
+  cost_spread:
+    value: 0.06
+    unit: share of cost
+    rationale: placeholder; operators' cost for the same account differs by up to ±6 % (route fit, depot distance)
+  density_benefit:
+    value: 0.10
+    unit: share of cost at 100 % regional share
+    rationale: placeholder; denser routes make an operator with a large regional share cheaper (a real advantage, kept after FullLoad)
+  europress_fee_eur_per_t:
+    value: 3.0
+    unit: EUR per verified tonne
+    rationale: placeholder; FullLoad service fee paid by the operator
+  sigma_sensor:
+    value: 0.02
+    unit: relative 1-sigma
+    rationale: placeholder until Part 1 v2 lands; systematic sensor error added to the forecast error after FullLoad

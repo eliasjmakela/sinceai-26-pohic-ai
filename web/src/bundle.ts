@@ -28,12 +28,23 @@ export interface Fleet {
   fill_by_trigger: { trigger_type: string; lifts: number; median_fill_pct: number }[]
 }
 
+export interface Market {
+  region: string
+  operators: string[]
+  sigma_inc: number
+  sigma_ent: number
+  params: import('./market/model').Params
+  inputs: import('./market/model').Account[]
+  headline: Record<string, Figure>
+}
+
 export interface Bundle {
   schema_version: 1
   provenance: { kit_version: string; data: string; synthetic: boolean }
   fleet: Fleet
   forecast: Record<string, unknown>
   trips: Record<string, unknown>
+  market: Market
 }
 
 // Statically imported so the demo has no runtime fetch. The pipeline test checks tags and sources.
