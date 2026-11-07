@@ -37,15 +37,19 @@ and efficient operators, including new entrants, can win.
 - **Operators pay**: a **service fee per verified tonne**, as a SMART add-on. They get site forecasts, weight-triggered
   lift orders and a verified weight to check every bill against. It is what lets them offer per-kg prices without risk.
 - **The weighing hardware is free for customers**, funded (or subsidised) by Europress and paid back from the operators'
-  per-tonne fees. Working assumption: **cheap strain gauges** (tier T1, §7.5). The business case must show this payback.
+  per-tonne fees. Concept: decided by the Part 1 v2 analysis (`briefs/WEIGHING_V2.md`, §7.5), with the full
+  installed cost per device as the input. The business case must show this payback.
 - **Customers use it for free**: they see how full their containers are when emptied, what per-kg billing would
   simulate to for them, and they get the prompt to tender on per-kg terms. **The customer decides to tender.**
+  It must be effortless (a property manager spends ~3 % of working time on waste): plain-language AI reports that say
+  what the data means and which decision to take, and value **between tenders** too (contracts run ~3 years), e.g.
+  service-level follow-up and monthly reports, so Europress stays present all the time.
 - **Europress stays a technology company**: it never drives trucks, contracts transport or takes a transport margin.
 - **Billing stays as it is today (decided)**: the final bill is based on the operator's certified weighbridge, exactly as
   now. That keeps billing legal: in the EU a weight used to set a price must come from an approved non-automatic weighing
   instrument (Directive 2014/31/EU), which cheap strain gauges are not designed to be. We do not propose device-weight billing.
 - **The cheap gauges produce the data for the service**: forecasts, weight-triggered pickups and the per-site tonnage
-  that operators need to price per kg. For that, ballpark accuracy (T1, about ±2 %) is plenty.
+  that operators need to price per kg. For that, ballpark accuracy (a few %) is plenty.
 - **Cross-check (side benefit, but a strong one)**: the same device weight is visible to customer and operator, so a
   difference from the weighbridge figure is flagged for a human to look at. That gives the customer peace of mind and
   the operator a solid reason to report honestly. Part 1's estimate for T1 (branch `part1-weighing`, synthetic):
@@ -58,10 +62,11 @@ compactor, so every operator can compete per kilo."*
 ### Where we put our effort
 - **The business model and the market before/after is our differentiator** and gets most of the effort. It came from
   domain knowledge in our team and lines up with what Europress said at kickoff.
-- **Part 1 (weighing) is "complete and decent", not deep.** It is 25 % of the score and a required deliverable, so every
-  element the brief lists must be present (principle, placement, BOM/cost, installation, calibration, error sources,
-  validation plan). Agents draft it; a teammate reviews it. In the demo: one short beat plus the accuracy slider.
-  Tommi called the value part "maybe the beef in the whole system". Coder time on Part 1: at most about 10 %.
+- **Part 1 (weighing) is now a real second track (changed 7 Nov after talking to Tommi).** Weight is what blocks
+  Europress today ("we always stop halfway"), and he wants the pitch to show *how* we get it. A supervised agent
+  deepens the concept (`briefs/WEIGHING_V2.md`: hopper-stage weighing and weighing guide rails as co-leads, full
+  installed cost, fleet self-calibration as our software edge); a teammate reviews it. The coder's time stays on the
+  pipeline and demo; the demo's sensor beat grows to about a minute.
 
 ## 2. What Europress told us at kickoff (Tommi Häkkinen, 6 Nov) — design constraints
 
@@ -78,6 +83,19 @@ Source: kickoff recording transcript (`Röst 261106_182238.txt` in the project r
 | SMART Insights is in only ~**15 %** of the installed base; digital services are the most profitable; small customers are hard to sell to. | Free customer side solves the small-customer sales problem; operators pay. |
 | Transport is usually a **fixed price per lift**, agreed between operator and customer; treatment fees are much higher. | Confirms the per-trip pricing the model attacks. |
 | "I'm interested in how you managed to utilise AI capabilities … e.g. better end-customer experience." | One bounded AI feature for the customer (§7.6) and one pitch slide on how we built with AI agents. |
+
+**Follow-up talk, 7 Nov** (`Since.AI.2.txt`, Finnish):
+
+| What was said | What it means for us |
+|---|---|
+| On our incumbent-data thesis: "a good starting point… probably something the market needs"; "you're on the right track". | The business model stands. |
+| Contracts run ~3 years with service-level terms (e.g. response times), then are re-tendered, mostly on price, which can backfire. | Tendering happens rarely; the customer view must also give value between tenders. |
+| Serving operators is part of Europress strategy; an operator that gains an edge would also promote Europress machines. | Operator-paid model fits; operators become a sales channel. |
+| Think it through from the buyer's / property manager's view; they spend ~3 % of their time on waste. Free AI reports that explain the data and the decision. | Customer side: effortless, AI-written reports (§7.6 moves from nice-to-have towards must-have). |
+| Without weight "we always stop halfway"; show how we get the weight, pitched as if selling to him. | Part 1 becomes a real track (§1). |
+| Europress already has scale platforms under the unit, but they are "almost as expensive" (as the machine). A COMBI costs ~€20–25k; ~€2,000 for weighing came up as the reference. | Cost reference for Part 1: full installed cost vs ~€2k; platform scales are the prior attempt to beat. |
+| Weigh at the feed hopper and sum the charges, instead of weighing the whole container; "not trivial, but easier than the alternatives". | Lead hypothesis H1 in `briefs/WEIGHING_V2.md`, credited to Europress. |
+| Big chains (e.g. Kesko) have ~100 machines, shopping centres ~20; roughly 10,000 machines mentioned. | Market sizing for the business case. |
 
 ## 3. The market before/after simulation (the centrepiece)
 
@@ -113,19 +131,19 @@ cost advantage, number of entrants, sensor/forecast σ (connects to Part 1).
 one tender round). The bidding maths is simple enough to run in the browser for the sliders; the data-derived
 inputs are precomputed.
 
-## 4. Demo storyline (target 4:30, hard max 5:00)
+## 4. Demo storyline (target 4:40, hard max 5:00)
 
 One screen state per beat; the presenter never types. Every screen has a deep link (`/#/beat-2`).
 
 | # | Time | Beat | On screen | Line |
 |---|---|---|---|---|
-| 0 | 0:00–0:30 | **Paid per trip** | Fleet strip: 447 devices, ~37,600 t/year, "€3.6 M of €6.3 M is paid per trip", fill-at-lift histogram (1 in 3 under 60 %) | "Customers pay for trips. Only the operator knows the tonnes." |
-| 1 | 0:30–1:00 | **Weight at the source (Part 1, short)** | Chosen concept: **T1 cheap strain gauges**, free for the customer (Europress-funded). Alternatives beside it: T0 virtual weight (existing pressure + fill, €0 BOM), T2 load cells. Placement, BOM, calibration, σ. Accuracy slider. | "Ballpark but close is enough, and cheap enough that Europress can give it away." |
-| 2 | 1:00–1:35 | **Customer view (free)** | Hero customer: a year of lifts coloured by fill at lift; per-trip cost today vs simulated per-kg cost (± band) | Proposal: "Tender your collection on per-kg terms" → customer **Approves** → tender brief | "The customer decides. FullLoad gives them the evidence." |
-| 3 | 1:35–2:05 | **Operator view (paid)** | The same site through an operator's eyes: forecast tonnage with Europress data (±10 %) vs without (±38 %) → the per-kg price an operator can safely bid | "Without the data only the incumbent can bid per kilo. With FullLoad, anyone can." |
-| 4 | 2:05–3:20 | **WOW: the market, before ↔ after** | One region. Toggle *Per trip, private data ↔ Per kg, FullLoad*: trips fall, tonnes per trip rise, customer €/t falls, entrants win tenders, concentration drops, Europress fee revenue appears. Drag sliders (entrant cost, σ) to show the effect holds. | "Same waste, fewer trucks, more competition. Europress doesn't drive a single truck." |
-| 5 | 3:20–3:50 | **Cheap gauges, honest data** | Billing stays on the certified weighbridge, as today. One lift: device weight vs weighbridge with ± σ, "within tolerance"; a second case where **our own sensor drifted** → caught by the cross-check → recalibration proposal | "The bill stays on the certified scale. Our gauges only need to be honest enough to plan, and they check themselves." |
-| 6 | 3:50–4:30 | **The business** | Operators pay per verified tonne; customers free, sensors included; sliders for fee and operator adoption; Europress ARR minus the sensor subsidy, payback per device, sensitivity; SMART integration diagram + API payload. All tagged *hypothetical*. | "Weigh at source. Pay per kilo. Let every operator compete." |
+| 0 | 0:00–0:25 | **Paid per trip** | Fleet strip: 447 devices, ~37,600 t/year, "€3.6 M of €6.3 M is paid per trip", fill-at-lift histogram (1 in 3 under 60 %) | "Customers pay for trips. Only the operator knows the tonnes." |
+| 1 | 0:25–1:25 | **How we get the weight (Part 1)** | The chosen concept from `briefs/WEIGHING_V2.md` (hopper weighing or weighing rails, decided by the v2 analysis) on a COMBI/DUO sketch; full installed cost vs the ~€2k reference and vs today's platform scales; how the fleet calibrates itself from shared weighbridge tickets (learning curve); accuracy slider. | "Cheap enough that Europress can give it away, and it gets more accurate with every ticket." |
+| 2 | 1:25–1:55 | **Customer view (free)** | Hero customer: a year of lifts coloured by fill at lift; per-trip cost today vs simulated per-kg cost (± band) | Proposal: "Tender your collection on per-kg terms" → customer **Approves** → tender brief | "The customer decides. FullLoad gives them the evidence." |
+| 3 | 1:55–2:20 | **Operator view (paid)** | The same site through an operator's eyes: forecast tonnage with Europress data (±10 %) vs without (±38 %) → the per-kg price an operator can safely bid | "Without the data only the incumbent can bid per kilo. With FullLoad, anyone can." |
+| 4 | 2:20–3:30 | **WOW: the market, before ↔ after** | One region. Toggle *Per trip, private data ↔ Per kg, FullLoad*: trips fall, tonnes per trip rise, customer €/t falls, entrants win tenders, concentration drops, Europress fee revenue appears. Drag sliders (entrant cost, σ) to show the effect holds. | "Same waste, fewer trucks, more competition. Europress doesn't drive a single truck." |
+| 5 | 3:30–3:55 | **Cheap sensors, honest data** | Billing stays on the certified weighbridge, as today. One lift: device weight vs weighbridge with ± σ, "within tolerance"; a second case where **our own sensor drifted** → caught by the cross-check → recalibration proposal | "The bill stays on the certified scale. Our gauges only need to be honest enough to plan, and they check themselves." |
+| 6 | 3:55–4:40 | **The business** | Operators pay per verified tonne; customers free, sensors included; sliders for fee and operator adoption; Europress ARR minus the sensor subsidy, payback per device, sensitivity; SMART integration diagram + API payload. All tagged *hypothetical*. | "Weigh at source. Pay per kilo. Let every operator compete." |
 
 **The wow is beat 4.** Build the simulation first, polish it most.
 
@@ -267,8 +285,10 @@ implementation, guarded by a parity test on fixed inputs.
 - Operators in a region: `collection_events.operator_id` × `sites.region_code`.
 
 ### 7.5 Part 1 in the demo
-**Target level: complete and decent.** D1 must tick every item the brief lists and no more. In the app: tier cards
-plus the slider only. No pressure-signal models, hardware simulations or extra Part 1 screens.
+**Target level (changed 7 Nov): a deep, defensible concept** per `briefs/WEIGHING_V2.md`. The v1 tiers below are the
+baseline the v2 analysis compares against; the chosen concept may change to hopper weighing (H1) or weighing guide
+rails (H5). In the app: beat 1 shows the chosen concept, its installed cost, the self-calibration learning curve and
+the slider. The coder does not build hardware models; the Part 1 agent's scripts produce the numbers.
 - **T1 strain gauges — the chosen concept (working assumption).** Bonded/weld-on strain gauges on the frame or
   container rails + a cheap amplifier on the SMART modem. Low cost, retrofit-friendly, per-unit calibration,
   temperature-sensitive. Free to the customer; its cost per device is an input to the business case payback.
@@ -335,7 +355,7 @@ commit. Include the starter kit and dataset (terms to confirm), fonts/icons, hos
 | Free sensors don't pay back | Business case shows sensor cost per device vs per-tonne fee per device-year; payback months on screen; T0 as the zero-hardware fallback |
 | Device weight presented as a legal-for-trade billing weight | Wording rule (§1): billing stays on the certified weighbridge as today; device weight is planning and service data |
 | Europress hears the model as going into transport | Always: operators pay a service fee per verified tonne; Europress never contracts transport |
-| Part 1 scores low because it is "only decent" | D1 ticks every brief item; the slider ties it to the simulation; skip depth, never an item |
+| Part 1 looks weak because no one on the team is a mechanical engineer | Claims ledger, shown working, prior-art check and red-team pass (`briefs/WEIGHING_V2.md`); questions for a Europress engineer; Tommi's hopper hint credited |
 | Simulation overruns | Fallback: static before/after table for the hero region with the same numbers, no sliders |
 | Projector / Wi-Fi / laptop failure | Offline build on two laptops + recorded video + screenshots in slides |
 
