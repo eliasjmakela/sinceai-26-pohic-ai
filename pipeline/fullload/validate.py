@@ -7,6 +7,10 @@
    F1 and explained cases flagged (EARLY_JUSTIFIED traps) are the kit's numbers.
 2. Task B2: the FullLoad scorecard (`scorecard.py`) vs `labels_dev/operator_scorecard` with the kit's
    `evaluate.score_b2`, validation months only; kit B5 on the same rows for reference.
+3. Economics check: "today's price" in the market model is the invoiced amount. Per collection (joined by
+   operator_job_ref), invoiced totals vs the contract-expected amount in `labels_dev/reference_economics`, plus how
+   constant the contract collection cost per lift is (the market model scales trip costs with the number of lifts).
+4. Trips check: lifts the trips model removes vs lifts labelled PREMATURE_UNJUSTIFIED, per device, validation period.
 
 Leakage guards:
   * the split must exist in the package manifest (the kit scorer silently scores everything otherwise);
@@ -131,6 +135,69 @@ def scorecard_validation(root: Path) -> dict:
     return ours
 
 
+def economics_check(root: Path, period: tuple[str, str]) -> dict:
+    from .fleet import TONNE_LINES, TRIP_LINES, _in
+    a, b = period
+    con = open_dataset(root)
+    ref = f"read_parquet('{_labels_dir(root) / 'reference_economics.parquet'}')"
+    n, inv_total, exp_total, exact, inv_tendered, ref_tendered = con.execute(f"""
+        WITH r AS (SELECT * FROM {ref} WHERE service_date >= DATE '{a}' AND service_date < DATE '{b}'),
+             l AS (SELECT operator_job_ref, sum(amount_eur) AS total,
+                          sum(amount_eur) FILTER (WHERE line_type IN {_in(TRIP_LINES + TONNE_LINES)}) AS tendered
+                   FROM invoice_lines GROUP BY 1)
+        SELECT count(*), sum(l.total), sum(r.expected_invoice_amount_eur),
+               avg(CASE WHEN abs(l.total - r.expected_invoice_amount_eur) <= 0.01 THEN 1.0 ELSE 0.0 END),
+               sum(l.tendered), sum(r.collection_cost_eur + r.processing_cost_eur)
+        FROM r JOIN collection_events c USING (collection_id) JOIN l USING (operator_job_ref)""").fetchone()
+    cv = con.execute(f"""
+        SELECT median(cv), quantile_cont(cv, 0.9) FROM (
+          SELECT device_id, stddev_samp(collection_cost_eur) / nullif(avg(collection_cost_eur), 0) AS cv
+          FROM {ref} WHERE status = 'COMPLETED' AND service_date >= DATE '{a}' AND service_date < DATE '{b}'
+          GROUP BY 1 HAVING count(*) >= 3)""").fetchone()
+    con.close()
+    return {"collections": int(n), "invoiced_eur": round(inv_total, 2), "contract_expected_eur": round(exp_total, 2),
+            "invoiced_vs_expected_pct": round(100 * (inv_total / exp_total - 1), 2),
+            "collections_exact_to_cent_pct": round(100 * exact, 1),
+            "tendered_invoiced_eur": round(inv_tendered, 2), "collection_plus_processing_expected_eur": round(ref_tendered, 2),
+            "per_lift_collection_cost_cv_median": round(cv[0], 3), "per_lift_collection_cost_cv_p90": round(cv[1], 3),
+            "reading": ("Today's price = invoiced amount, which matches the contract-expected amount to the cent for most "
+                        "collections; the rest are billing discrepancies. Collection cost per lift is close to constant per "
+                        "device (median CV), so scaling trip costs with the number of lifts is a fair approximation.")}
+
+
+def trips_check(root: Path, period: tuple[str, str]) -> dict:
+    from .trips import device_trips
+    a, b = period
+    con = open_dataset(root)
+    tr = device_trips(con)
+    tr = tr[tr.weight_trips.notna()].copy()
+    tr["removed_share"] = (1 - tr.weight_trips.astype(float) / tr.actual_lifts).clip(lower=0)
+    lab = con.execute(f"""SELECT device_id, count(*) AS labelled FROM read_parquet('{_labels_dir(root) / 'anomaly_labels.parquet'}')
+                          WHERE label_family = '{FAMILY}' AND event_at >= TIMESTAMPTZ '{a}' AND event_at < TIMESTAMPTZ '{b}'
+                          GROUP BY 1""").df()
+    lifts = con.execute(f"""SELECT device_id, count(*) AS lifts FROM collection_events WHERE status = 'COMPLETED'
+                            AND actual_at >= TIMESTAMPTZ '{a}' AND actual_at < TIMESTAMPTZ '{b}' GROUP BY 1""").df()
+    con.close()
+    x = tr.merge(lifts, on="device_id").merge(lab, on="device_id", how="left").fillna({"labelled": 0})
+    x["removed"] = x.removed_share * x.lifts
+    by = (x.groupby("collection_policy")[["lifts", "removed", "labelled"]].sum().reset_index()
+          .sort_values("collection_policy"))
+    total = float(x.lifts.sum())
+    return {"devices": int(len(x)), "lifts": int(total),
+            "model_removed_lifts": round(float(x.removed.sum())), "labelled_premature_lifts": int(x.labelled.sum()),
+            "model_removed_pct": round(100 * float(x.removed.sum()) / total, 1),
+            "labelled_premature_pct": round(100 * float(x.labelled.sum()) / total, 1),
+            "per_device_pearson": round(float(x.removed.corr(x.labelled)), 3),
+            "per_device_spearman": round(float(x.removed.corr(x.labelled, method="spearman")), 3),
+            "labelled_devices": int((x.labelled > 0).sum()),
+            "labelled_devices_also_reduced": int(((x.labelled > 0) & (x.removed > 0.5)).sum()),
+            "by_policy": [{"policy": r.collection_policy, "lifts": int(r.lifts), "model_removed": round(float(r.removed)),
+                           "labelled_premature": int(r.labelled)} for r in by.itertuples()],
+            "reading": ("The labels count only lifts the dataset calls unjustified today. The trips model also merges lifts "
+                        "that are justified under today's fill-based rules but unnecessary with a weight trigger. Read the "
+                        "labelled share as a lower bound and the model's share as an upper estimate.")}
+
+
 def validation_facts(root: Path) -> dict:
     period = _period(root)
     if period is None:
@@ -138,6 +205,7 @@ def validation_facts(root: Path) -> dict:
     rows, variant = premature_validation(root, period[1])
     return {"split": SPLIT, "available": True, "period": list(period), "family": FAMILY,
             "premature": rows, "premature_variant": variant, "scorecard_b2": scorecard_validation(root),
+            "economics_check": economics_check(root, period), "trips_check": trips_check(root, period),
             "method": ("Kit scorer europress_data.evaluate (score_b, score_b2), validation split. FullLoad rule on the "
                        "as-of view at the validation end; kit B2 rules and B4 gradient boosting as run by the kit "
                        "(B4 trained on train-period labels).")}

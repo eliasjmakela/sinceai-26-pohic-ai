@@ -5674,6 +5674,18 @@
   },
   "validation": {
     "available": true,
+    "economics_check": {
+      "collection_plus_processing_expected_eur": 503408.89,
+      "collections": 1586,
+      "collections_exact_to_cent_pct": 97.6,
+      "contract_expected_eur": 409441.1,
+      "invoiced_eur": 410821.03,
+      "invoiced_vs_expected_pct": 0.34,
+      "per_lift_collection_cost_cv_median": 0.093,
+      "per_lift_collection_cost_cv_p90": 0.359,
+      "reading": "Today's price = invoiced amount, which matches the contract-expected amount to the cent for most collections; the rest are billing discrepancies. Collection cost per lift is close to constant per device (median CV), so scaling trip costs with the number of lifts is a fair approximation.",
+      "tendered_invoiced_eur": 464321.6
+    },
     "family": "PREMATURE_UNJUSTIFIED",
     "method": "Kit scorer europress_data.evaluate (score_b, score_b2), validation split. FullLoad rule on the as-of view at the validation end; kit B2 rules and B4 gradient boosting as run by the kit (B4 trained on train-period labels).",
     "period": [
@@ -5765,6 +5777,39 @@
       },
       "rows": 14
     },
-    "split": "validation"
+    "split": "validation",
+    "trips_check": {
+      "by_policy": [
+        {
+          "labelled_premature": 58,
+          "lifts": 397,
+          "model_removed": 152,
+          "policy": "FIXED_SCHEDULE"
+        },
+        {
+          "labelled_premature": 53,
+          "lifts": 404,
+          "model_removed": 128,
+          "policy": "HYBRID"
+        },
+        {
+          "labelled_premature": 54,
+          "lifts": 1915,
+          "model_removed": 213,
+          "policy": "ON_CALL"
+        }
+      ],
+      "devices": 380,
+      "labelled_devices": 78,
+      "labelled_devices_also_reduced": 66,
+      "labelled_premature_lifts": 165,
+      "labelled_premature_pct": 6.1,
+      "lifts": 2716,
+      "model_removed_lifts": 493,
+      "model_removed_pct": 18.1,
+      "per_device_pearson": 0.852,
+      "per_device_spearman": 0.381,
+      "reading": "The labels count only lifts the dataset calls unjustified today. The trips model also merges lifts that are justified under today's fill-based rules but unnecessary with a weight trigger. Read the labelled share as a lower bound and the model's share as an upper estimate."
+    }
   }
 }
