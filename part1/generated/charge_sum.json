@@ -1,0 +1,162 @@
+{
+ "kg_per_cycle_p10_p50_p90": [
+  10.1,
+  22.9,
+  33.3
+ ],
+ "levels": {
+  "high": {
+   "all": {
+    "floor_after_pct": 4.88,
+    "rms_before_pct": 13.27
+   },
+   "per_material": {
+    "biowaste": {
+     "closed_form_before_pct": 9.57,
+     "closed_form_floor_pct": 6.75,
+     "floor_after_pct": 6.1,
+     "n": 1206,
+     "rms_before_pct": 15.15
+    },
+    "cardboard": {
+     "closed_form_before_pct": 13.3,
+     "closed_form_floor_pct": 5.57,
+     "floor_after_pct": 4.23,
+     "n": 1864,
+     "rms_before_pct": 11.82
+    },
+    "mixed_plastic": {
+     "closed_form_before_pct": 12.5,
+     "closed_form_floor_pct": 6.19,
+     "floor_after_pct": 5.58,
+     "n": 172,
+     "rms_before_pct": 14.36
+    },
+    "mixed_waste": {
+     "closed_form_before_pct": 10.43,
+     "closed_form_floor_pct": 5.89,
+     "floor_after_pct": 4.44,
+     "n": 1470,
+     "rms_before_pct": 12.94
+    },
+    "paper": {
+     "closed_form_before_pct": 10.78,
+     "closed_form_floor_pct": 6.5,
+     "floor_after_pct": 5.03,
+     "n": 144,
+     "rms_before_pct": 13.45
+    },
+    "plastic_film": {
+     "closed_form_before_pct": 12.4,
+     "closed_form_floor_pct": 5.97,
+     "floor_after_pct": 4.8,
+     "n": 771,
+     "rms_before_pct": 13.76
+    }
+   }
+  },
+  "low": {
+   "all": {
+    "floor_after_pct": 2.1,
+    "rms_before_pct": 6.32
+   },
+   "per_material": {
+    "biowaste": {
+     "closed_form_before_pct": 3.58,
+     "closed_form_floor_pct": 2.49,
+     "floor_after_pct": 2.08,
+     "n": 1206,
+     "rms_before_pct": 4.15
+    },
+    "cardboard": {
+     "closed_form_before_pct": 7.37,
+     "closed_form_floor_pct": 2.15,
+     "floor_after_pct": 2.28,
+     "n": 1864,
+     "rms_before_pct": 8.3
+    },
+    "mixed_plastic": {
+     "closed_form_before_pct": 6.49,
+     "closed_form_floor_pct": 2.32,
+     "floor_after_pct": 2.28,
+     "n": 172,
+     "rms_before_pct": 6.64
+    },
+    "mixed_waste": {
+     "closed_form_before_pct": 4.73,
+     "closed_form_floor_pct": 2.25,
+     "floor_after_pct": 1.71,
+     "n": 1470,
+     "rms_before_pct": 4.15
+    },
+    "paper": {
+     "closed_form_before_pct": 4.81,
+     "closed_form_floor_pct": 2.42,
+     "floor_after_pct": 2.03,
+     "n": 144,
+     "rms_before_pct": 5.08
+    },
+    "plastic_film": {
+     "closed_form_before_pct": 6.47,
+     "closed_form_floor_pct": 2.26,
+     "floor_after_pct": 2.32,
+     "n": 771,
+     "rms_before_pct": 7.12
+    }
+   }
+  },
+  "mid": {
+   "all": {
+    "floor_after_pct": 2.88,
+    "rms_before_pct": 8.22
+   },
+   "per_material": {
+    "biowaste": {
+     "closed_form_before_pct": 5.4,
+     "closed_form_floor_pct": 3.86,
+     "floor_after_pct": 3.3,
+     "n": 1206,
+     "rms_before_pct": 6.83
+    },
+    "cardboard": {
+     "closed_form_before_pct": 8.87,
+     "closed_form_floor_pct": 3.27,
+     "floor_after_pct": 2.79,
+     "n": 1864,
+     "rms_before_pct": 8.95
+    },
+    "mixed_plastic": {
+     "closed_form_before_pct": 8.06,
+     "closed_form_floor_pct": 3.57,
+     "floor_after_pct": 2.95,
+     "n": 172,
+     "rms_before_pct": 8.88
+    },
+    "mixed_waste": {
+     "closed_form_before_pct": 6.33,
+     "closed_form_floor_pct": 3.43,
+     "floor_after_pct": 2.37,
+     "n": 1470,
+     "rms_before_pct": 5.85
+    },
+    "paper": {
+     "closed_form_before_pct": 6.5,
+     "closed_form_floor_pct": 3.73,
+     "floor_after_pct": 3.19,
+     "n": 144,
+     "rms_before_pct": 10.11
+    },
+    "plastic_film": {
+     "closed_form_before_pct": 8.02,
+     "closed_form_floor_pct": 3.46,
+     "floor_after_pct": 3.15,
+     "n": 771,
+     "rms_before_pct": 11.13
+    }
+   }
+  }
+ },
+ "median_charges_per_lift": 78.0,
+ "n_devices": 368,
+ "n_lifts": 5627
+}

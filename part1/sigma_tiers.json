@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "chosen_tier": "H1",
+  "tiers": [
+    {
+      "id": "T0",
+      "name": "Virtual weight (existing hydraulic pressure + fill)",
+      "principle": "Estimate the load from the existing hydraulic back-pressure fingerprint, ram position and fill level with a per-device density model calibrated against shared weighbridge tickets.",
+      "sigma_rel_pct": {
+        "low": 5.0,
+        "mid": 10.0,
+        "high": 20.0
+      },
+      "sigma_abs_kg": {
+        "low": 100.0,
+        "mid": 150.0,
+        "high": 300.0
+      },
+      "bom_eur_per_device": {
+        "low": 0,
+        "high": 50
+      },
+      "install_hours": {
+        "low": 0,
+        "high": 1
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [
+        "BIOWASTE",
+        "WET_CARDBOARD",
+        "MIXED_WASTE"
+      ],
+      "evidence_tag": "estimate",
+      "sources": [
+        "[1]",
+        "[3]",
+        "[13]"
+      ]
+    },
+    {
+      "id": "T1",
+      "name": "Cheap strain gauges on frame / container rails",
+      "principle": "Four strain-gauge full bridges on the load-carrying frame (COMBI) or the container rails (DUO) read by a low-cost 24-bit bridge amplifier on the SMART modem, auto-zeroed after each lift.",
+      "sigma_rel_pct": {
+        "low": 1.2,
+        "mid": 2.8,
+        "high": 5.3
+      },
+      "sigma_abs_kg": {
+        "low": 20.0,
+        "mid": 30.0,
+        "high": 50.0
+      },
+      "bom_eur_per_device": {
+        "low": 100,
+        "high": 480
+      },
+      "install_hours": {
+        "low": 4,
+        "high": 8
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [
+        "LOADS_UNDER_0.5T",
+        "COMBI_SUPPORT_CHANGES"
+      ],
+      "evidence_tag": "estimate",
+      "sources": [
+        "[4]",
+        "[5]",
+        "[6]",
+        "[7]",
+        "[14]"
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "Shear-beam load cells under the frame",
+      "principle": "Four C3 shear-beam load cells under the DUO container frame or the COMBI base frame, a summing box and a weighing transmitter connected to the SMART modem.",
+      "sigma_rel_pct": {
+        "low": 0.3,
+        "mid": 0.6,
+        "high": 1.0
+      },
+      "sigma_abs_kg": {
+        "low": 10.0,
+        "mid": 15.0,
+        "high": 25.0
+      },
+      "bom_eur_per_device": {
+        "low": 1160,
+        "high": 2600
+      },
+      "install_hours": {
+        "low": 8,
+        "high": 16
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [],
+      "evidence_tag": "literature",
+      "sources": [
+        "[8]",
+        "[9]",
+        "[10]",
+        "[11]",
+        "[12]",
+        "[13]",
+        "[26]"
+      ]
+    },
+    {
+      "id": "H1",
+      "name": "Hopper-stage weighing plate + fleet self-calibration (hopper idea: Europress)",
+      "principle": "A small load-cell plate in the charging chamber weighs each charge before and after the ram stroke; the device sums the charges and the fleet calibrates the sum from shared weighbridge tickets.",
+      "sigma_rel_pct": {
+        "low": 2.3,
+        "mid": 3.4,
+        "high": 5.4
+      },
+      "sigma_abs_kg": {
+        "low": 5.0,
+        "mid": 10.0,
+        "high": 20.0
+      },
+      "bom_eur_per_device": {
+        "low": 270,
+        "high": 1430
+      },
+      "install_hours": {
+        "low": 10,
+        "high": 20
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [
+        "RETROFIT_UNITS",
+        "BIOWASTE_LIQUIDS",
+        "NEW_DEVICE_BEFORE_TICKETS"
+      ],
+      "evidence_tag": "estimate",
+      "sources": [
+        "[22]",
+        "[25]",
+        "[28]",
+        "[29]",
+        "[36]"
+      ]
+    },
+    {
+      "id": "H5",
+      "name": "Weighing guide rails (team idea)",
+      "principle": "The unit (COMBI) or container (DUO) rests only on two guide rails, each on two shear-beam load cells with overload stops and side restraint; weight = sum of the four cells, re-tared at every exchange.",
+      "sigma_rel_pct": {
+        "low": 0.6,
+        "mid": 1.0,
+        "high": 2.0
+      },
+      "sigma_abs_kg": {
+        "low": 10.0,
+        "mid": 20.0,
+        "high": 40.0
+      },
+      "bom_eur_per_device": {
+        "low": 1310,
+        "high": 3100
+      },
+      "install_hours": {
+        "low": 12,
+        "high": 24
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [
+        "SITES_WITHOUT_RAILS",
+        "ICE_AND_DEBRIS"
+      ],
+      "evidence_tag": "estimate",
+      "sources": [
+        "[8]",
+        "[12]",
+        "[13]",
+        "[20]",
+        "[26]",
+        "[27]"
+      ]
+    },
+    {
+      "id": "PS",
+      "name": "Platform scale under the whole unit (Europress's existing option)",
+      "principle": "A steel weighing platform or weighing beams with ramps on a foundation; the whole unit or container stands on it.",
+      "sigma_rel_pct": {
+        "low": 0.2,
+        "mid": 0.5,
+        "high": 1.0
+      },
+      "sigma_abs_kg": {
+        "low": 10.0,
+        "mid": 20.0,
+        "high": 40.0
+      },
+      "bom_eur_per_device": {
+        "low": 4800,
+        "high": 12000
+      },
+      "install_hours": {
+        "low": 16,
+        "high": 32
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [
+        "COST"
+      ],
+      "evidence_tag": "estimate",
+      "sources": [
+        "[27]",
+        "[36]"
+      ]
+    }
+  ]
+}

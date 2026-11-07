@@ -1,0 +1,59 @@
+{
+ "fusion_h1_h2_mid": {
+  "fused_rms_pct": 3.25,
+  "h1_rms_pct": 3.38,
+  "h1_robust_sigma_pct": 3.15,
+  "lifts": 3741,
+  "share_t0_used": 0.942,
+  "t0_robust_sigma_pct": 8.6,
+  "weight_on_h1": 0.881
+ },
+ "jam_detection": {
+  "biowaste": {
+   "cycles_per_day": 9.5,
+   "hours_to_10_strokes": 25.3
+  },
+  "cardboard": {
+   "cycles_per_day": 20.1,
+   "hours_to_10_strokes": 12.0
+  },
+  "mixed_plastic": {
+   "cycles_per_day": 8.2,
+   "hours_to_10_strokes": 29.3
+  },
+  "mixed_waste": {
+   "cycles_per_day": 10.8,
+   "hours_to_10_strokes": 22.1
+  },
+  "paper": {
+   "cycles_per_day": 3.1,
+   "hours_to_10_strokes": 78.4
+  },
+  "plastic_film": {
+   "cycles_per_day": 8.1,
+   "hours_to_10_strokes": 29.5
+  }
+ },
+ "t0_fill_only": {
+  "lifts": 3741,
+  "median_abs_pct": 5.8,
+  "median_abs_pct_by_material": {
+   "biowaste": 6.9,
+   "cardboard": 5.6,
+   "mixed_plastic": 6.4,
+   "mixed_waste": 5.7,
+   "paper": 5.0,
+   "plastic_film": 5.3
+  },
+  "p90_abs_pct": 20.0,
+  "rms_pct": 89.5,
+  "robust_sigma_pct": 8.6
+ },
+ "t0_plus_press_index": {
+  "lifts": 1835,
+  "median_abs_pct": 7.7,
+  "rms_pct": 72.2,
+  "same_lifts_fill_only_median_abs_pct": 5.7,
+  "same_lifts_fill_only_rms_pct": 84.4
+ }
+}

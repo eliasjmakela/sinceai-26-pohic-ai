@@ -1,0 +1,715 @@
+{
+ "devices_without_ticket_sharing": 78,
+ "levels": {
+  "high": {
+   "after_10_plus": {
+    "device_only_pct": 5.44,
+    "fleet_h2_pct": 5.44,
+    "none_pct": 14.29
+   },
+   "after_1_to_3": {
+    "device_only_pct": 6.74,
+    "fleet_h2_pct": 6.06,
+    "none_pct": 13.99
+   },
+   "curve": [
+    {
+     "device_only_pct": 13.76,
+     "fleet_h2_pct": 6.63,
+     "lifts": 368,
+     "n_tickets_seen": 0,
+     "none_pct": 13.76
+    },
+    {
+     "device_only_pct": 7.5,
+     "fleet_h2_pct": 6.3,
+     "lifts": 368,
+     "n_tickets_seen": 1,
+     "none_pct": 13.8
+    },
+    {
+     "device_only_pct": 6.58,
+     "fleet_h2_pct": 6.06,
+     "lifts": 365,
+     "n_tickets_seen": 2,
+     "none_pct": 14.2
+    },
+    {
+     "device_only_pct": 6.05,
+     "fleet_h2_pct": 5.79,
+     "lifts": 357,
+     "n_tickets_seen": 3,
+     "none_pct": 13.98
+    },
+    {
+     "device_only_pct": 6.03,
+     "fleet_h2_pct": 5.96,
+     "lifts": 347,
+     "n_tickets_seen": 4,
+     "none_pct": 13.8
+    },
+    {
+     "device_only_pct": 5.52,
+     "fleet_h2_pct": 5.62,
+     "lifts": 338,
+     "n_tickets_seen": 5,
+     "none_pct": 13.96
+    },
+    {
+     "device_only_pct": 5.7,
+     "fleet_h2_pct": 5.62,
+     "lifts": 314,
+     "n_tickets_seen": 6,
+     "none_pct": 14.06
+    },
+    {
+     "device_only_pct": 5.01,
+     "fleet_h2_pct": 5.06,
+     "lifts": 286,
+     "n_tickets_seen": 7,
+     "none_pct": 14.02
+    },
+    {
+     "device_only_pct": 5.61,
+     "fleet_h2_pct": 5.59,
+     "lifts": 258,
+     "n_tickets_seen": 8,
+     "none_pct": 14.34
+    },
+    {
+     "device_only_pct": 5.87,
+     "fleet_h2_pct": 5.87,
+     "lifts": 245,
+     "n_tickets_seen": 9,
+     "none_pct": 14.83
+    },
+    {
+     "device_only_pct": 5.26,
+     "fleet_h2_pct": 5.33,
+     "lifts": 229,
+     "n_tickets_seen": 10,
+     "none_pct": 14.14
+    },
+    {
+     "device_only_pct": 5.34,
+     "fleet_h2_pct": 5.37,
+     "lifts": 210,
+     "n_tickets_seen": 11,
+     "none_pct": 14.13
+    },
+    {
+     "device_only_pct": 5.45,
+     "fleet_h2_pct": 5.4,
+     "lifts": 196,
+     "n_tickets_seen": 12,
+     "none_pct": 14.79
+    },
+    {
+     "device_only_pct": 5.35,
+     "fleet_h2_pct": 5.37,
+     "lifts": 170,
+     "n_tickets_seen": 13,
+     "none_pct": 14.13
+    },
+    {
+     "device_only_pct": 5.18,
+     "fleet_h2_pct": 5.08,
+     "lifts": 154,
+     "n_tickets_seen": 14,
+     "none_pct": 14.44
+    },
+    {
+     "device_only_pct": 6.19,
+     "fleet_h2_pct": 6.15,
+     "lifts": 138,
+     "n_tickets_seen": 15,
+     "none_pct": 15.04
+    },
+    {
+     "device_only_pct": 5.7,
+     "fleet_h2_pct": 5.71,
+     "lifts": 126,
+     "n_tickets_seen": 16,
+     "none_pct": 14.83
+    },
+    {
+     "device_only_pct": 4.7,
+     "fleet_h2_pct": 4.75,
+     "lifts": 115,
+     "n_tickets_seen": 17,
+     "none_pct": 14.39
+    },
+    {
+     "device_only_pct": 4.83,
+     "fleet_h2_pct": 4.82,
+     "lifts": 106,
+     "n_tickets_seen": 18,
+     "none_pct": 14.88
+    },
+    {
+     "device_only_pct": 5.26,
+     "fleet_h2_pct": 5.22,
+     "lifts": 92,
+     "n_tickets_seen": 19,
+     "none_pct": 13.98
+    },
+    {
+     "device_only_pct": 5.07,
+     "fleet_h2_pct": 5.13,
+     "lifts": 80,
+     "n_tickets_seen": 20,
+     "none_pct": 12.97
+    },
+    {
+     "device_only_pct": 6.33,
+     "fleet_h2_pct": 6.3,
+     "lifts": 68,
+     "n_tickets_seen": 21,
+     "none_pct": 15.51
+    },
+    {
+     "device_only_pct": 4.82,
+     "fleet_h2_pct": 4.77,
+     "lifts": 61,
+     "n_tickets_seen": 22,
+     "none_pct": 13.34
+    },
+    {
+     "device_only_pct": 5.23,
+     "fleet_h2_pct": 5.28,
+     "lifts": 55,
+     "n_tickets_seen": 23,
+     "none_pct": 14.7
+    },
+    {
+     "device_only_pct": 5.84,
+     "fleet_h2_pct": 5.82,
+     "lifts": 49,
+     "n_tickets_seen": 24,
+     "none_pct": 14.74
+    },
+    {
+     "device_only_pct": 5.38,
+     "fleet_h2_pct": 5.4,
+     "lifts": 42,
+     "n_tickets_seen": 25,
+     "none_pct": 13.94
+    },
+    {
+     "device_only_pct": 4.88,
+     "fleet_h2_pct": 4.87,
+     "lifts": 31,
+     "n_tickets_seen": 26,
+     "none_pct": 13.36
+    },
+    {
+     "device_only_pct": 5.33,
+     "fleet_h2_pct": 5.36,
+     "lifts": 29,
+     "n_tickets_seen": 27,
+     "none_pct": 13.51
+    },
+    {
+     "device_only_pct": 5.57,
+     "fleet_h2_pct": 5.59,
+     "lifts": 23,
+     "n_tickets_seen": 28,
+     "none_pct": 11.37
+    },
+    {
+     "device_only_pct": 5.38,
+     "fleet_h2_pct": 5.34,
+     "lifts": 21,
+     "n_tickets_seen": 29,
+     "none_pct": 12.81
+    },
+    {
+     "device_only_pct": 5.78,
+     "fleet_h2_pct": 5.77,
+     "lifts": 386,
+     "n_tickets_seen": ">=30",
+     "none_pct": 14.11
+    }
+   ],
+   "n0": {
+    "device_only_pct": 13.76,
+    "fleet_h2_pct": 6.63,
+    "none_pct": 13.76
+   }
+  },
+  "low": {
+   "after_10_plus": {
+    "device_only_pct": 2.28,
+    "fleet_h2_pct": 2.28,
+    "none_pct": 6.9
+   },
+   "after_1_to_3": {
+    "device_only_pct": 2.9,
+    "fleet_h2_pct": 2.6,
+    "none_pct": 6.93
+   },
+   "curve": [
+    {
+     "device_only_pct": 6.78,
+     "fleet_h2_pct": 2.97,
+     "lifts": 368,
+     "n_tickets_seen": 0,
+     "none_pct": 6.78
+    },
+    {
+     "device_only_pct": 3.28,
+     "fleet_h2_pct": 2.69,
+     "lifts": 368,
+     "n_tickets_seen": 1,
+     "none_pct": 6.91
+    },
+    {
+     "device_only_pct": 2.78,
+     "fleet_h2_pct": 2.6,
+     "lifts": 365,
+     "n_tickets_seen": 2,
+     "none_pct": 6.86
+    },
+    {
+     "device_only_pct": 2.59,
+     "fleet_h2_pct": 2.51,
+     "lifts": 357,
+     "n_tickets_seen": 3,
+     "none_pct": 7.02
+    },
+    {
+     "device_only_pct": 2.56,
+     "fleet_h2_pct": 2.45,
+     "lifts": 347,
+     "n_tickets_seen": 4,
+     "none_pct": 6.88
+    },
+    {
+     "device_only_pct": 2.36,
+     "fleet_h2_pct": 2.32,
+     "lifts": 338,
+     "n_tickets_seen": 5,
+     "none_pct": 6.78
+    },
+    {
+     "device_only_pct": 2.37,
+     "fleet_h2_pct": 2.31,
+     "lifts": 314,
+     "n_tickets_seen": 6,
+     "none_pct": 6.64
+    },
+    {
+     "device_only_pct": 2.44,
+     "fleet_h2_pct": 2.43,
+     "lifts": 286,
+     "n_tickets_seen": 7,
+     "none_pct": 6.66
+    },
+    {
+     "device_only_pct": 2.02,
+     "fleet_h2_pct": 2.02,
+     "lifts": 258,
+     "n_tickets_seen": 8,
+     "none_pct": 6.74
+    },
+    {
+     "device_only_pct": 2.36,
+     "fleet_h2_pct": 2.35,
+     "lifts": 245,
+     "n_tickets_seen": 9,
+     "none_pct": 6.59
+    },
+    {
+     "device_only_pct": 2.16,
+     "fleet_h2_pct": 2.15,
+     "lifts": 229,
+     "n_tickets_seen": 10,
+     "none_pct": 6.71
+    },
+    {
+     "device_only_pct": 2.48,
+     "fleet_h2_pct": 2.48,
+     "lifts": 210,
+     "n_tickets_seen": 11,
+     "none_pct": 6.99
+    },
+    {
+     "device_only_pct": 2.22,
+     "fleet_h2_pct": 2.23,
+     "lifts": 196,
+     "n_tickets_seen": 12,
+     "none_pct": 6.79
+    },
+    {
+     "device_only_pct": 2.26,
+     "fleet_h2_pct": 2.25,
+     "lifts": 170,
+     "n_tickets_seen": 13,
+     "none_pct": 6.97
+    },
+    {
+     "device_only_pct": 2.15,
+     "fleet_h2_pct": 2.15,
+     "lifts": 154,
+     "n_tickets_seen": 14,
+     "none_pct": 7.11
+    },
+    {
+     "device_only_pct": 2.35,
+     "fleet_h2_pct": 2.34,
+     "lifts": 138,
+     "n_tickets_seen": 15,
+     "none_pct": 6.92
+    },
+    {
+     "device_only_pct": 2.51,
+     "fleet_h2_pct": 2.51,
+     "lifts": 126,
+     "n_tickets_seen": 16,
+     "none_pct": 7.17
+    },
+    {
+     "device_only_pct": 1.93,
+     "fleet_h2_pct": 1.93,
+     "lifts": 115,
+     "n_tickets_seen": 17,
+     "none_pct": 7.1
+    },
+    {
+     "device_only_pct": 2.03,
+     "fleet_h2_pct": 2.02,
+     "lifts": 106,
+     "n_tickets_seen": 18,
+     "none_pct": 7.08
+    },
+    {
+     "device_only_pct": 2.31,
+     "fleet_h2_pct": 2.3,
+     "lifts": 92,
+     "n_tickets_seen": 19,
+     "none_pct": 7.02
+    },
+    {
+     "device_only_pct": 2.86,
+     "fleet_h2_pct": 2.85,
+     "lifts": 80,
+     "n_tickets_seen": 20,
+     "none_pct": 7.59
+    },
+    {
+     "device_only_pct": 2.18,
+     "fleet_h2_pct": 2.18,
+     "lifts": 68,
+     "n_tickets_seen": 21,
+     "none_pct": 6.78
+    },
+    {
+     "device_only_pct": 2.17,
+     "fleet_h2_pct": 2.18,
+     "lifts": 61,
+     "n_tickets_seen": 22,
+     "none_pct": 7.28
+    },
+    {
+     "device_only_pct": 2.65,
+     "fleet_h2_pct": 2.64,
+     "lifts": 55,
+     "n_tickets_seen": 23,
+     "none_pct": 7.89
+    },
+    {
+     "device_only_pct": 2.34,
+     "fleet_h2_pct": 2.34,
+     "lifts": 49,
+     "n_tickets_seen": 24,
+     "none_pct": 7.18
+    },
+    {
+     "device_only_pct": 1.66,
+     "fleet_h2_pct": 1.67,
+     "lifts": 42,
+     "n_tickets_seen": 25,
+     "none_pct": 6.57
+    },
+    {
+     "device_only_pct": 2.57,
+     "fleet_h2_pct": 2.55,
+     "lifts": 31,
+     "n_tickets_seen": 26,
+     "none_pct": 7.61
+    },
+    {
+     "device_only_pct": 2.63,
+     "fleet_h2_pct": 2.63,
+     "lifts": 29,
+     "n_tickets_seen": 27,
+     "none_pct": 8.06
+    },
+    {
+     "device_only_pct": 2.61,
+     "fleet_h2_pct": 2.6,
+     "lifts": 23,
+     "n_tickets_seen": 28,
+     "none_pct": 7.07
+    },
+    {
+     "device_only_pct": 1.69,
+     "fleet_h2_pct": 1.69,
+     "lifts": 21,
+     "n_tickets_seen": 29,
+     "none_pct": 7.17
+    },
+    {
+     "device_only_pct": 2.25,
+     "fleet_h2_pct": 2.25,
+     "lifts": 386,
+     "n_tickets_seen": ">=30",
+     "none_pct": 6.08
+    }
+   ],
+   "n0": {
+    "device_only_pct": 6.78,
+    "fleet_h2_pct": 2.97,
+    "none_pct": 6.78
+   }
+  },
+  "mid": {
+   "after_10_plus": {
+    "device_only_pct": 3.4,
+    "fleet_h2_pct": 3.39,
+    "none_pct": 9.55
+   },
+   "after_1_to_3": {
+    "device_only_pct": 4.42,
+    "fleet_h2_pct": 3.97,
+    "none_pct": 9.4
+   },
+   "curve": [
+    {
+     "device_only_pct": 9.53,
+     "fleet_h2_pct": 4.62,
+     "lifts": 368,
+     "n_tickets_seen": 0,
+     "none_pct": 9.53
+    },
+    {
+     "device_only_pct": 4.84,
+     "fleet_h2_pct": 4.01,
+     "lifts": 368,
+     "n_tickets_seen": 1,
+     "none_pct": 9.29
+    },
+    {
+     "device_only_pct": 4.43,
+     "fleet_h2_pct": 4.06,
+     "lifts": 365,
+     "n_tickets_seen": 2,
+     "none_pct": 9.55
+    },
+    {
+     "device_only_pct": 3.91,
+     "fleet_h2_pct": 3.82,
+     "lifts": 357,
+     "n_tickets_seen": 3,
+     "none_pct": 9.35
+    },
+    {
+     "device_only_pct": 3.66,
+     "fleet_h2_pct": 3.49,
+     "lifts": 347,
+     "n_tickets_seen": 4,
+     "none_pct": 9.5
+    },
+    {
+     "device_only_pct": 3.45,
+     "fleet_h2_pct": 3.46,
+     "lifts": 338,
+     "n_tickets_seen": 5,
+     "none_pct": 9.2
+    },
+    {
+     "device_only_pct": 3.04,
+     "fleet_h2_pct": 3.09,
+     "lifts": 314,
+     "n_tickets_seen": 6,
+     "none_pct": 9.28
+    },
+    {
+     "device_only_pct": 3.32,
+     "fleet_h2_pct": 3.33,
+     "lifts": 286,
+     "n_tickets_seen": 7,
+     "none_pct": 9.34
+    },
+    {
+     "device_only_pct": 3.6,
+     "fleet_h2_pct": 3.62,
+     "lifts": 258,
+     "n_tickets_seen": 8,
+     "none_pct": 9.34
+    },
+    {
+     "device_only_pct": 3.71,
+     "fleet_h2_pct": 3.7,
+     "lifts": 245,
+     "n_tickets_seen": 9,
+     "none_pct": 9.95
+    },
+    {
+     "device_only_pct": 3.11,
+     "fleet_h2_pct": 3.07,
+     "lifts": 229,
+     "n_tickets_seen": 10,
+     "none_pct": 9.51
+    },
+    {
+     "device_only_pct": 3.25,
+     "fleet_h2_pct": 3.22,
+     "lifts": 210,
+     "n_tickets_seen": 11,
+     "none_pct": 9.37
+    },
+    {
+     "device_only_pct": 3.97,
+     "fleet_h2_pct": 3.94,
+     "lifts": 196,
+     "n_tickets_seen": 12,
+     "none_pct": 9.71
+    },
+    {
+     "device_only_pct": 3.63,
+     "fleet_h2_pct": 3.6,
+     "lifts": 170,
+     "n_tickets_seen": 13,
+     "none_pct": 9.41
+    },
+    {
+     "device_only_pct": 3.16,
+     "fleet_h2_pct": 3.15,
+     "lifts": 154,
+     "n_tickets_seen": 14,
+     "none_pct": 9.21
+    },
+    {
+     "device_only_pct": 3.21,
+     "fleet_h2_pct": 3.21,
+     "lifts": 138,
+     "n_tickets_seen": 15,
+     "none_pct": 9.47
+    },
+    {
+     "device_only_pct": 3.09,
+     "fleet_h2_pct": 3.1,
+     "lifts": 126,
+     "n_tickets_seen": 16,
+     "none_pct": 9.09
+    },
+    {
+     "device_only_pct": 3.37,
+     "fleet_h2_pct": 3.38,
+     "lifts": 115,
+     "n_tickets_seen": 17,
+     "none_pct": 9.85
+    },
+    {
+     "device_only_pct": 3.81,
+     "fleet_h2_pct": 3.81,
+     "lifts": 106,
+     "n_tickets_seen": 18,
+     "none_pct": 9.77
+    },
+    {
+     "device_only_pct": 3.07,
+     "fleet_h2_pct": 3.06,
+     "lifts": 92,
+     "n_tickets_seen": 19,
+     "none_pct": 9.51
+    },
+    {
+     "device_only_pct": 3.34,
+     "fleet_h2_pct": 3.34,
+     "lifts": 80,
+     "n_tickets_seen": 20,
+     "none_pct": 9.56
+    },
+    {
+     "device_only_pct": 2.92,
+     "fleet_h2_pct": 2.92,
+     "lifts": 68,
+     "n_tickets_seen": 21,
+     "none_pct": 9.35
+    },
+    {
+     "device_only_pct": 3.77,
+     "fleet_h2_pct": 3.79,
+     "lifts": 61,
+     "n_tickets_seen": 22,
+     "none_pct": 9.63
+    },
+    {
+     "device_only_pct": 3.52,
+     "fleet_h2_pct": 3.51,
+     "lifts": 55,
+     "n_tickets_seen": 23,
+     "none_pct": 10.0
+    },
+    {
+     "device_only_pct": 3.25,
+     "fleet_h2_pct": 3.27,
+     "lifts": 49,
+     "n_tickets_seen": 24,
+     "none_pct": 8.75
+    },
+    {
+     "device_only_pct": 4.52,
+     "fleet_h2_pct": 4.52,
+     "lifts": 42,
+     "n_tickets_seen": 25,
+     "none_pct": 10.63
+    },
+    {
+     "device_only_pct": 2.41,
+     "fleet_h2_pct": 2.41,
+     "lifts": 31,
+     "n_tickets_seen": 26,
+     "none_pct": 9.66
+    },
+    {
+     "device_only_pct": 2.94,
+     "fleet_h2_pct": 2.93,
+     "lifts": 29,
+     "n_tickets_seen": 27,
+     "none_pct": 9.09
+    },
+    {
+     "device_only_pct": 2.95,
+     "fleet_h2_pct": 2.95,
+     "lifts": 23,
+     "n_tickets_seen": 28,
+     "none_pct": 9.93
+    },
+    {
+     "device_only_pct": 3.57,
+     "fleet_h2_pct": 3.58,
+     "lifts": 21,
+     "n_tickets_seen": 29,
+     "none_pct": 9.4
+    },
+    {
+     "device_only_pct": 3.43,
+     "fleet_h2_pct": 3.43,
+     "lifts": 386,
+     "n_tickets_seen": ">=30",
+     "none_pct": 9.77
+    }
+   ],
+   "n0": {
+    "device_only_pct": 9.53,
+    "fleet_h2_pct": 4.62,
+    "none_pct": 9.53
+   }
+  }
+ },
+ "n_devices": 368,
+ "n_lifts": 5627
+}

@@ -1,0 +1,34 @@
+{
+  "params": {
+    "rolling_pairs": 7,
+    "baseline_pairs": 10,
+    "band_pct": 5.0,
+    "min_pairs": 30
+  },
+  "devices_with_enough_pairs": 17,
+  "devices_flagged_at_least_once": 7,
+  "examples": {
+    "drifting": {
+      "device_id": "CMP-00315",
+      "equipment_class": "COMBI",
+      "material": "biowaste",
+      "pairs": 42,
+      "baseline_ratio": 0.975,
+      "last_rolling_ratio": 1.317,
+      "first_alarm": "2026-02-16",
+      "pairs_until_first_alarm": 16,
+      "suggested_gain_correction_at_end": 0.74
+    },
+    "healthy": {
+      "device_id": "CMP-00178",
+      "equipment_class": "DUO",
+      "material": "cardboard",
+      "pairs": 53,
+      "baseline_ratio": 0.981,
+      "last_rolling_ratio": 0.971,
+      "first_alarm": null,
+      "pairs_until_first_alarm": null,
+      "suggested_gain_correction_at_end": 1.01
+    }
+  }
+}
