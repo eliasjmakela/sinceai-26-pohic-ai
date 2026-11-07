@@ -30,7 +30,46 @@ def _pct(x: float) -> float:
     return round(100 * x, 1)
 
 
-def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFrame, customer_id: str) -> dict:
+def service_check(con: duckdb.DuckDBPyConnection, root, dev_ids: list[str]) -> dict:
+    """Is the operator delivering what the contract says? Same definitions as the operator scorecard (scorecard.py)."""
+    from .scorecard import ON_TIME_HOURS, SHARED_WITHIN_DAYS, _expected_lines
+    ids = "(" + ", ".join(f"'{d}'" for d in dev_ids) + ")"
+    jobs, lifts, on_time, missed, shared = con.execute(f"""
+        WITH t AS (SELECT operator_job_ref, min(arrival_at) AS arrival_at, min(published_at) AS published_at
+                   FROM weighbridge_tickets GROUP BY 1)
+        SELECT count(*), count(*) FILTER (WHERE c.status IN ('COMPLETED', 'PARTIAL')),
+               count(*) FILTER (WHERE c.status IN ('COMPLETED', 'PARTIAL')
+                                AND abs(epoch(c.actual_at - c.scheduled_at)) <= {ON_TIME_HOURS} * 3600),
+               count(*) FILTER (WHERE c.status = 'MISSED_BY_OPERATOR'),
+               count(*) FILTER (WHERE c.status IN ('COMPLETED', 'PARTIAL')
+                                AND epoch(t.published_at - t.arrival_at) / 86400 <= {SHARED_WITHIN_DAYS})
+        FROM collection_events c LEFT JOIN t USING (operator_job_ref)
+        WHERE c.device_id IN {ids} AND c.status IN ('COMPLETED', 'PARTIAL', 'MISSED_BY_OPERATOR', 'WASTED_TRIP')""").fetchone()
+    il = con.execute(f"""
+        SELECT l.operator_job_ref, l.line_type, CAST(round(l.amount_eur * 100) AS BIGINT) AS cents
+        FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts k ON k.contract_id = i.contract_id
+        WHERE k.device_id IN {ids} AND l.line_type <> 'RENTAL' ORDER BY l.invoice_id, l.line_no""").df()
+    il = il.merge(_expected_lines(root), on=["operator_job_ref", "line_type"], how="left")
+    il["exp_cents"] = il.exp_cents.fillna(0).astype("int64")
+    il.loc[il.duplicated(["operator_job_ref", "line_type"], keep="first"), "exp_cents"] = 0
+    diff = il.cents - il.exp_cents
+    return {
+        "jobs": int(jobs), "lifts": int(lifts),
+        "on_time_share_pct": _pct(on_time / lifts) if lifts else None,
+        "missed_visits": int(missed),
+        "tickets_shared_share_pct": _pct(shared / lifts) if lifts else None,
+        "invoice_lines": int(len(il)), "invoice_lines_differing": int((diff.abs() > 0).sum()),
+        "invoice_above_contract_eur": round(float(diff.clip(lower=0).sum()) / 100, 2),
+        "invoice_below_contract_eur": round(float(-diff.clip(upper=0).sum()) / 100, 2),
+        "definitions": {"on_time": f"lift within {ON_TIME_HOURS} h of the scheduled time",
+                        "ticket_shared": f"weighbridge ticket shared within {SHARED_WITHIN_DAYS} days",
+                        "invoice_difference": "invoice line vs the contract-expected amount (kit B1 calculator)"},
+        "note": "Differences are prompts for review, not accusations: causes include access problems, reschedules, "
+                "data-sharing set-up and calculator gaps.",
+    }
+
+
+def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFrame, customer_id: str, root=None) -> dict:
     region = market["region"]
     row = next(r for r in market["default"]["rows"] if r["customer_id"] == customer_id)
     dev_ids = sorted(devices.loc[devices.customer_id == customer_id, "device_id"])
@@ -63,7 +102,7 @@ def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFram
 
     n_lifts = int(len(lifts))
     low = int((lifts.device_fill_pct_before < LOW_FILL_PCT).sum())
-    flagged = int(lifts.flagged.sum())
+    flagged = int(lifts.flagged.sum())  # lower bound for avoidable visits (rule flags); upper = trips model
     t = row["tonnes"]
     cost_today, price_kg = row["price_before"], row["price_after"]
 
@@ -78,14 +117,22 @@ def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFram
     facts = {
         "customer_name": cust[0], "sector": cust[1], "region": region, "devices": len(dev_ids),
         "lifts": n_lifts, "low_fill_lifts": low, "low_fill_share_pct": _pct(low / n_lifts),
-        "flagged_lifts": flagged, "tonnes": round(t, 1),
+        "flagged_lifts": flagged, "lifts_after_lower": n_lifts - flagged, "tonnes": round(t, 1),
         "cost_today_eur": round(eur_from_cents(round(cost_today))), "cost_per_t_today_eur": round(cost_today / 100 / t, 1),
         "price_per_kg_regime_eur": round(eur_from_cents(round(price_kg))),
         "cost_per_t_after_eur": round(price_kg / 100 / t, 1),
         "saving_pct": _pct(1 - price_kg / cost_today), "saving_eur": round(eur_from_cents(round(cost_today - price_kg))),
-        "lifts_after": row["lifts_after"], "lift_reduction_pct": _pct(1 - row["lifts_after"] / row["lifts_before"]),
+        "lifts_after": row["lifts_after"], "lift_reduction_pct": _pct(1 - row["lifts_after"] / n_lifts),
+        "lifts_removed_upper": n_lifts - row["lifts_after"],
         "incumbent": row["incumbent"], "winner": row["winner_after"],
     }
+    svc = service_check(con, root, dev_ids) if root is not None else None
+    if svc:
+        facts.update({"on_time_share_pct": svc["on_time_share_pct"], "missed_visits": svc["missed_visits"],
+                      "tickets_shared_share_pct": svc["tickets_shared_share_pct"],
+                      "invoice_lines_differing": svc["invoice_lines_differing"],
+                      "invoice_above_contract_eur": round(svc["invoice_above_contract_eur"]),
+                      "on_time_window_h": 2, "ticket_window_days": 7})
     report = load_report(customer_id, facts)
 
     proposal = {
@@ -122,6 +169,7 @@ def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFram
             "saving_pct": fig(facts["saving_pct"], "%", "1 - per-kg price / cost today", tag="simulated"),
         },
         "facts": facts,
+        "service_check": svc,
         "report": report,
         "proposal": proposal,
         "operator_view": {

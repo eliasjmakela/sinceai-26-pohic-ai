@@ -1,4 +1,245 @@
 {
+  "business": {
+    "default": {
+      "cumulative_net_horizon": 4072500.0,
+      "customer_pays": 0.0,
+      "extra_sales_margin": 468750.00000000006,
+      "fee_per_device_year": 240,
+      "investment": 1500000.0,
+      "net_per_year": 928750.0,
+      "opex": 740000,
+      "payback_years": 1.6150740242261103,
+      "service_revenue": 1200000.0
+    },
+    "headline": {
+      "extra_sales_margin_eur": {
+        "assumptions": [],
+        "formula": "devices / renewal years x sales growth x device price x margin",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: business (business team assumptions)",
+          "collection_events (tonnes per device)",
+          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": 468750.0
+      },
+      "investment_eur": {
+        "assumptions": [],
+        "formula": "devices x (T0 share x T0 cost + H1 share x H1 cost)",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: business (business team assumptions)",
+          "collection_events (tonnes per device)",
+          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": 1500000.0
+      },
+      "net_per_year_eur": {
+        "assumptions": [],
+        "formula": "service revenue + extra sales margin - opex",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: business (business team assumptions)",
+          "collection_events (tonnes per device)",
+          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": 928750.0
+      },
+      "payback_years": {
+        "assumptions": [],
+        "formula": "investment / net per year",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: business (business team assumptions)",
+          "collection_events (tonnes per device)",
+          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+        ],
+        "tag": "hypothetical",
+        "unit": "years",
+        "value": 1.6
+      },
+      "service_revenue_eur": {
+        "assumptions": [],
+        "formula": "devices x paying coverage x fee per device-year",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: business (business team assumptions)",
+          "collection_events (tonnes per device)",
+          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": 1200000.0
+      }
+    },
+    "installed_cost_ranges": {
+      "H1_factory_fit": [
+        548,
+        2363
+      ],
+      "T0_factory_fit": [
+        10,
+        125
+      ],
+      "note": "Part 1 installed cost includes 6-year maintenance; opex is counted separately here, so the Part 1 figure slightly double-counts upkeep.",
+      "source": "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+    },
+    "params": {
+      "device_margin": 0.25,
+      "device_price_eur": 22500,
+      "devices_total": 10000,
+      "fee_eur_per_device_month": 20,
+      "fee_eur_per_t": 3.0,
+      "fee_mode": "per_device_month",
+      "h1_cost_eur": 500,
+      "h1_share": 0.3,
+      "horizon_years": 6,
+      "opex_eur_per_device_year": 74,
+      "paying_coverage": 0.5,
+      "renewal_years": 6,
+      "sales_growth": 0.05,
+      "t0_cost_eur": 0,
+      "t0_share": 1.0,
+      "tonnes_per_device_year": 92.6
+    },
+    "parity": [
+      {
+        "params": {
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "devices_total": 10000,
+          "fee_eur_per_device_month": 20,
+          "fee_eur_per_t": 3.0,
+          "fee_mode": "per_device_month",
+          "h1_cost_eur": 500,
+          "h1_share": 0.3,
+          "horizon_years": 6,
+          "opex_eur_per_device_year": 74,
+          "paying_coverage": 0.5,
+          "renewal_years": 6,
+          "sales_growth": 0.05,
+          "t0_cost_eur": 0,
+          "t0_share": 1.0,
+          "tonnes_per_device_year": 92.6
+        },
+        "result": {
+          "cumulative_net_horizon": 4072500.0,
+          "customer_pays": 0.0,
+          "extra_sales_margin": 468750.00000000006,
+          "fee_per_device_year": 240,
+          "investment": 1500000.0,
+          "net_per_year": 928750.0,
+          "opex": 740000,
+          "payback_years": 1.6150740242261103,
+          "service_revenue": 1200000.0
+        }
+      },
+      {
+        "params": {
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "devices_total": 10000,
+          "fee_eur_per_device_month": 20,
+          "fee_eur_per_t": 3.0,
+          "fee_mode": "per_tonne",
+          "h1_cost_eur": 500,
+          "h1_share": 0.3,
+          "horizon_years": 6,
+          "opex_eur_per_device_year": 74,
+          "paying_coverage": 0.5,
+          "renewal_years": 6,
+          "sales_growth": 0.05,
+          "t0_cost_eur": 0,
+          "t0_share": 1.0,
+          "tonnes_per_device_year": 92.6
+        },
+        "result": {
+          "cumulative_net_horizon": 5206499.999999998,
+          "customer_pays": 0.0,
+          "extra_sales_margin": 468750.00000000006,
+          "fee_per_device_year": 277.79999999999995,
+          "investment": 1500000.0,
+          "net_per_year": 1117749.9999999998,
+          "opex": 740000,
+          "payback_years": 1.341981659583986,
+          "service_revenue": 1388999.9999999998
+        }
+      },
+      {
+        "params": {
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "devices_total": 10000,
+          "fee_eur_per_device_month": 20,
+          "fee_eur_per_t": 3.0,
+          "fee_mode": "per_device_month",
+          "h1_cost_eur": 2363,
+          "h1_share": 0.3,
+          "horizon_years": 6,
+          "opex_eur_per_device_year": 74,
+          "paying_coverage": 0.5,
+          "renewal_years": 6,
+          "sales_growth": 0.05,
+          "t0_cost_eur": 125,
+          "t0_share": 1.0,
+          "tonnes_per_device_year": 92.6
+        },
+        "result": {
+          "cumulative_net_horizon": -2766500.0,
+          "customer_pays": 0.0,
+          "extra_sales_margin": 468750.00000000006,
+          "fee_per_device_year": 240,
+          "investment": 8339000.0,
+          "net_per_year": 928750.0,
+          "opex": 740000,
+          "payback_years": 8.978734858681023,
+          "service_revenue": 1200000.0
+        }
+      },
+      {
+        "params": {
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "devices_total": 10000,
+          "fee_eur_per_device_month": 20,
+          "fee_eur_per_t": 3.0,
+          "fee_mode": "per_device_month",
+          "h1_cost_eur": 500,
+          "h1_share": 0.3,
+          "horizon_years": 6,
+          "opex_eur_per_device_year": 74,
+          "paying_coverage": 1.0,
+          "renewal_years": 6,
+          "sales_growth": 0.0,
+          "t0_cost_eur": 0,
+          "t0_share": 1.0,
+          "tonnes_per_device_year": 92.6
+        },
+        "result": {
+          "cumulative_net_horizon": 8460000.0,
+          "customer_pays": 0.0,
+          "extra_sales_margin": 0.0,
+          "fee_per_device_year": 240,
+          "investment": 1500000.0,
+          "net_per_year": 1660000.0,
+          "opex": 740000,
+          "payback_years": 0.9036144578313253,
+          "service_revenue": 2400000.0
+        }
+      }
+    ]
+  },
   "fleet": {
     "devices": {
       "assumptions": [],
@@ -400,16 +641,25 @@
       "devices": 4,
       "flagged_lifts": 31,
       "incumbent": "OP-A",
-      "lift_reduction_pct": 27.5,
+      "invoice_above_contract_eur": 1111,
+      "invoice_lines_differing": 24,
+      "lift_reduction_pct": 28.8,
       "lifts": 163,
       "lifts_after": 116,
+      "lifts_after_lower": 132,
+      "lifts_removed_upper": 47,
       "low_fill_lifts": 81,
       "low_fill_share_pct": 49.7,
+      "missed_visits": 1,
+      "on_time_share_pct": 68.3,
+      "on_time_window_h": 2,
       "price_per_kg_regime_eur": 19332,
       "region": "FI-01",
       "saving_eur": 8885,
       "saving_pct": 31.5,
       "sector": "nonfood_retail",
+      "ticket_window_days": 7,
+      "tickets_shared_share_pct": 93.9,
       "tonnes": 205.1,
       "winner": "OP-E"
     },
@@ -1945,25 +2195,51 @@
         "devices": 4,
         "flagged_lifts": 31,
         "incumbent": "OP-A",
-        "lift_reduction_pct": 27.5,
+        "invoice_above_contract_eur": 1111,
+        "invoice_lines_differing": 24,
+        "lift_reduction_pct": 28.8,
         "lifts": 163,
         "lifts_after": 116,
+        "lifts_after_lower": 132,
+        "lifts_removed_upper": 47,
         "low_fill_lifts": 81,
         "low_fill_share_pct": 49.7,
+        "missed_visits": 1,
+        "on_time_share_pct": 68.3,
+        "on_time_window_h": 2,
         "price_per_kg_regime_eur": 19332,
         "region": "FI-01",
         "saving_eur": 8885,
         "saving_pct": 31.5,
         "sector": "nonfood_retail",
+        "ticket_window_days": 7,
+        "tickets_shared_share_pct": 93.9,
         "tonnes": 205.1,
         "winner": "OP-E"
       },
       "label": "AI-summarized (Claude) from the figures on this page; every number checked against the data",
       "status": "checked",
-      "text": "**What happened this year.** Your 4 compactors in this region were emptied 163 times and produced about 205.1 tonnes of waste. In 81 of those visits (49.7 %) the container was less than 60 % full. 31 visits look early enough that a person should review the schedule behind them.\n\n**What it cost.** Today you pay per visit: about €28,218 over the last 12 months, or €137.6 per tonne.\n\n**What could change.** If your containers were emptied when they are actually full, the same waste would need about 116 visits instead of 163 (27.5 % fewer trucks). In a per-kg tender where every operator can see the same weight data, our simulation puts the price at about €19,332, or €94.3 per tonne: €8,885 (31.5 %) less than today.\n\n**What we suggest you decide.** Invite operators to bid on per-kg terms when your contract comes up, with lifts triggered by weight. Your current operator can bid too. Billing stays on the operator's certified weighbridge, exactly as today.\n\n**What this is not.** These figures are a simulation on synthetic data with assumptions you can see on this page. They are not a guaranteed saving. Nothing is sent to any operator unless you approve it.",
+      "text": "**What happened this year.** Your 4 compactors in this region were emptied 163 times and produced about 205.1 tonnes of waste. In 81 of those visits (49.7 %) the container was less than 60 % full. 31 visits look early enough that a person should review the schedule behind them.\n\n**What it cost.** Today you pay per visit: about €28,218 over the last 12 months, or €137.6 per tonne.\n\n**Is your operator keeping the contract?** 68.3 % of visits happened within 2 hours of the scheduled time, and 1 visit was missed. The weighbridge ticket was shared within 7 days for 93.9 % of visits. 24 invoice lines differ from your contract terms, about €1,111 above what the contract says in total. These are prompts to ask, not accusations: access problems, reschedules or a calculator gap can explain a difference.\n\n**What could change.** If your containers were emptied when they are actually full, the same waste would need between 132 and 116 visits instead of 163: at least the 31 flagged visits fewer, and up to 47 fewer (28.8 %) if every lift were triggered by weight. In a per-kg tender where every operator can see the same weight data, our simulation puts the price at about €19,332, or €94.3 per tonne: €8,885 (31.5 %) less than today.\n\n**What we suggest you decide.** Invite operators to bid on per-kg terms when your contract comes up, with lifts triggered by weight. Your current operator can bid too. Billing stays on the operator's certified weighbridge, exactly as today.\n\n**What this is not.** These figures are a simulation on synthetic data with assumptions you can see on this page. They are not a guaranteed saving. Nothing is sent to any operator unless you approve it.",
       "unmatched_numbers": []
     },
-    "sector": "nonfood_retail"
+    "sector": "nonfood_retail",
+    "service_check": {
+      "definitions": {
+        "invoice_difference": "invoice line vs the contract-expected amount (kit B1 calculator)",
+        "on_time": "lift within 2 h of the scheduled time",
+        "ticket_shared": "weighbridge ticket shared within 7 days"
+      },
+      "invoice_above_contract_eur": 1110.52,
+      "invoice_below_contract_eur": 271.61,
+      "invoice_lines": 712,
+      "invoice_lines_differing": 24,
+      "jobs": 169,
+      "lifts": 164,
+      "missed_visits": 1,
+      "note": "Differences are prompts for review, not accusations: causes include access problems, reschedules, data-sharing set-up and calculator gaps.",
+      "on_time_share_pct": 68.3,
+      "tickets_shared_share_pct": 93.9
+    }
   },
   "heroes": {
     "customer_id": "ORG-0036"
@@ -5811,5 +6087,136 @@
       "per_device_spearman": 0.381,
       "reading": "The labels count only lifts the dataset calls unjustified today. The trips model also merges lifts that are justified under today's fill-based rules but unnecessary with a weight trigger. Read the labelled share as a lower bound and the model's share as an upper estimate."
     }
+  },
+  "value_per_device": {
+    "devices": 385,
+    "note": "Fleet averages on synthetic data; levers overlap partly (fewer trips also lowers cost per tonne), so do not add them up. Team figures: business team analysis, scripts pending.",
+    "rows": [
+      {
+        "lever": "pricing_risk",
+        "needs_weight": "yes: only the weight history removes it",
+        "ours": {
+          "assumptions": [],
+          "formula": "cost_share x tendered x (1+min_margin) x risk_z x (sigma_ent - sigma_inc), mean per device",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.amount_eur",
+            "invoice_lines.line_type",
+            "contracts.device_id",
+            "collection_events",
+            "trips model",
+            "premature-lift rule",
+            "kit B1 calculator",
+            "params.yaml (market)"
+          ],
+          "tag": "hypothetical",
+          "unit": "EUR",
+          "value": 3038
+        },
+        "ours_range": null,
+        "team": 1930,
+        "who": "operator"
+      },
+      {
+        "lever": "avoidable_trips",
+        "needs_weight": "fill level finds them; the weight makes per-kg pricing possible",
+        "ours": {
+          "assumptions": [],
+          "formula": "trip-driven charges x trips-model removed share, mean per device",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.amount_eur",
+            "invoice_lines.line_type",
+            "contracts.device_id",
+            "collection_events",
+            "trips model",
+            "premature-lift rule",
+            "kit B1 calculator",
+            "params.yaml (market)"
+          ],
+          "tag": "simulated",
+          "unit": "EUR",
+          "value": 1547
+        },
+        "ours_range": [
+          891,
+          1547
+        ],
+        "team": 1570,
+        "who": "customer"
+      },
+      {
+        "lever": "expensive_tonnes",
+        "needs_weight": "yes: cost per tonne needs the mass",
+        "ours": {
+          "assumptions": [],
+          "formula": "(cost per tonne - peer median, same material and region)+ x tonnes, mean per device",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.amount_eur",
+            "invoice_lines.line_type",
+            "contracts.device_id",
+            "collection_events",
+            "trips model",
+            "premature-lift rule",
+            "kit B1 calculator",
+            "params.yaml (market)"
+          ],
+          "tag": "estimated",
+          "unit": "EUR",
+          "value": 1455
+        },
+        "ours_range": null,
+        "team": 1245,
+        "who": "customer"
+      },
+      {
+        "lever": "invoice_differences",
+        "needs_weight": "partly (tonnage lines)",
+        "ours": {
+          "assumptions": [],
+          "formula": "invoiced above contract-expected (kit B1), mean per device",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.amount_eur",
+            "invoice_lines.line_type",
+            "contracts.device_id",
+            "collection_events",
+            "trips model",
+            "premature-lift rule",
+            "kit B1 calculator",
+            "params.yaml (market)"
+          ],
+          "tag": "observed",
+          "unit": "EUR",
+          "value": 328
+        },
+        "ours_range": null,
+        "team": 100,
+        "who": "customer"
+      },
+      {
+        "lever": "contamination",
+        "needs_weight": "partly (density)",
+        "note": "not recomputed: quality is assessed only by the operator",
+        "ours": null,
+        "ours_range": null,
+        "team": 400,
+        "who": "customer"
+      },
+      {
+        "lever": "contract_visibility",
+        "needs_weight": "no (service data) / yes (tonnage checks)",
+        "note": "not priced: on-time, missed visits, ticket sharing (beat 2)",
+        "ours": null,
+        "ours_range": null,
+        "team": null,
+        "who": "customer"
+      }
+    ]
   }
 }

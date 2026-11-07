@@ -63,6 +63,19 @@ export function Beat2() {
         </div>
       </div>
 
+      {h.service_check && (
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="mb-3 text-sm font-medium text-slate-900">Is the contract being kept? (visibility you don't have today)</div>
+          <div className="grid gap-4 text-sm sm:grid-cols-4">
+            <div><div className="text-2xl font-semibold tabular-nums">{h.service_check.on_time_share_pct} %</div><div className="text-slate-500">visits on time ({h.service_check.definitions.on_time})</div></div>
+            <div><div className="text-2xl font-semibold tabular-nums">{h.service_check.missed_visits}</div><div className="text-slate-500">missed visits</div></div>
+            <div><div className="text-2xl font-semibold tabular-nums">{h.service_check.tickets_shared_share_pct} %</div><div className="text-slate-500">weighbridge tickets shared ({h.service_check.definitions.ticket_shared})</div></div>
+            <div><div className="text-2xl font-semibold tabular-nums">{h.service_check.invoice_lines_differing} / {h.service_check.invoice_lines}</div><div className="text-slate-500">invoice lines differ from the contract (€{Math.round(h.service_check.invoice_above_contract_eur).toLocaleString('en')} above)</div></div>
+          </div>
+          <p className="mt-3 text-xs text-slate-500">{h.service_check.note}</p>
+        </div>
+      )}
+
       <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>

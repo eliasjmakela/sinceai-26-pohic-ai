@@ -44,6 +44,9 @@ and efficient operators, including new entrants, can win.
   It must be effortless (a property manager spends ~3 % of working time on waste): plain-language AI reports that say
   what the data means and which decision to take, and value **between tenders** too (contracts run ~3 years), e.g.
   service-level follow-up and monthly reports, so Europress stays present all the time.
+  **Visibility is value in itself** (team insight, 7 Nov): the customer sees whether the operator keeps the contract
+  (on-time visits, missed visits, weighbridge-ticket sharing, invoice lines vs contract terms), not only a better price
+  at the next tender. Beat 2 shows this (`customer.service_check`).
 - **Europress stays a technology company**: it never drives trucks, contracts transport or takes a transport margin.
 - **Billing stays as it is today (decided)**: the final bill is based on the operator's certified weighbridge, exactly as
   now. That keeps billing legal: in the EU a weight used to set a price must come from an approved non-automatic weighing

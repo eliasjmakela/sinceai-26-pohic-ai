@@ -79,6 +79,14 @@ export function Beat4() {
         <Kpi label="Customers a challenger can win" before={s.accounts_contestable_today} after={s.accounts_contestable_after} fmt={(v) => `${v} / ${s.accounts}`} showAfter={after} />
       </div>
 
+      {bundle.validation.trips_check && (
+        <p className="text-sm text-slate-600">
+          Fewer visits is a range: the dataset itself labels {bundle.validation.trips_check.labelled_premature_pct} % of lifts as unjustified
+          today (lower bound); a weight trigger removes up to {bundle.validation.trips_check.model_removed_pct} % (validation period, per-device
+          agreement r = {bundle.validation.trips_check.per_device_pearson}).
+        </p>
+      )}
+
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-2">
           <div>

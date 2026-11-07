@@ -73,9 +73,16 @@ pipeline: when a number changes, change it here.
   `pipeline/fullload/reports/`. The build checks that **every number** in the text appears in the facts; it does not
   check wording or reasoning, so a person must read it before it is shown.
 
-## 8. Business case
-- The business-case analysis (value per device, Europress-funded hardware, operator fee, extra machine sales) is
-  being integrated; its scripts are not yet in this repo, so its figures are not yet traceable here.
+## 8. Business case (beat 6, `pipeline/fullload/value.py`, `business.py`)
+- **Value per device is recomputed from our pipeline** and compared with the business team's independent figures.
+  Close: avoidable visits (ours €891–1,547 vs team €1,570), tonnes priced above peers (€1,455 vs €1,245).
+  Higher in ours: operator pricing risk (€3,038 vs €1,930: our forecast-error gap is wider, 27 vs 12 percentage
+  points, and it depends on the market parameters) and invoice above contract (€328 vs €100: the kit's B1 calculator
+  leaves gaps, the same reason the scorecard's invoice metric is weak). Contamination is not recomputed.
+- **The business model uses the business team's assumptions** (params.yaml `business`); its scripts are not yet in
+  this repo, so its inputs are traceable only to their message. With their €500 hopper cost the investment pays back
+  in ~1.6 years; at Part 1's high installed cost (€2,363 factory-fit) payback is ~9 years, beyond the 6-year lease.
+  The hardware cost decides whether the model works.
 - Open: fee per device per month vs per verified tonne; extra machine sales is the most uncertain lever.
 
 ## 9. Not proven / untested (summary)

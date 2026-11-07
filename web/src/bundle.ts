@@ -51,6 +51,9 @@ export interface Hero {
   figures: Record<string, Figure>
   facts: Record<string, number | string>
   report: { status: string; text: string | null; label?: string; unmatched_numbers?: string[] }
+  service_check: { jobs: number; lifts: number; on_time_share_pct: number; missed_visits: number; tickets_shared_share_pct: number;
+    invoice_lines: number; invoice_lines_differing: number; invoice_above_contract_eur: number; invoice_below_contract_eur: number;
+    definitions: Record<string, string>; note: string } | null
   proposal: Record<string, unknown>
   operator_view: {
     devices: { device_id: string; actual_t_per_month: number; own_forecast_t_per_month: number; peer_forecast_t_per_month: number; own_error_pct: number; peer_error_pct: number }[]
@@ -67,6 +70,9 @@ export interface Hero {
   }
 }
 
+export interface ValueRow { lever: string; who: string; needs_weight: string; ours: Figure | null; ours_range: [number, number] | null; team: number | null; note?: string }
+export interface TripsCheck { lifts: number; model_removed_pct: number; labelled_premature_pct: number; per_device_pearson: number }
+
 export interface Bundle {
   schema_version: 1
   provenance: { kit_version: string; data: string; synthetic: boolean }
@@ -75,6 +81,11 @@ export interface Bundle {
   trips: Record<string, unknown>
   market: Market
   hero: Hero
+  value_per_device: { devices: number; rows: ValueRow[]; note: string }
+  business: { params: import('./business/model').BizParams; default: import('./business/model').BizResult;
+    installed_cost_ranges: { H1_factory_fit: [number, number]; T0_factory_fit: [number, number]; source: string; note: string };
+    headline: Record<string, Figure> }
+  validation: { trips_check?: TripsCheck } & Record<string, unknown>
 }
 
 // Statically imported so the demo has no runtime fetch. The pipeline test checks tags and sources.

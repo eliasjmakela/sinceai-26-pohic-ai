@@ -1,6 +1,7 @@
 // Checks web/src/market/model.ts against the parity cases computed by pipeline/fullload/market.py.
 // Run: npm run parity   (Node >= 23 runs TypeScript directly by stripping types)
 import { readFileSync } from 'node:fs'
+import { simulateBusiness } from '../src/business/model.ts'
 import { fnv1a, simulate } from '../src/market/model.ts'
 
 const bundle = JSON.parse(readFileSync(new URL('../public/data/bundle.json', import.meta.url), 'utf-8'))
@@ -18,5 +19,13 @@ for (const [i, c] of m.parity.entries()) {
     if (!ok) { console.error(`case ${i} ${k}: ts=${JSON.stringify(g)} py=${JSON.stringify(want)}`); failures++ }
   }
 }
-console.log(failures ? `PARITY FAILED (${failures})` : `parity OK (${m.parity.length} cases)`)
+for (const [i, c] of bundle.business.parity.entries()) {
+  const got = simulateBusiness(c.params) as unknown as Record<string, number | null>
+  for (const [k, want] of Object.entries(c.result as Record<string, number | null>)) {
+    const g = got[k]
+    const ok = want === null ? g === null : close(g as number, want)
+    if (!ok) { console.error(`business case ${i} ${k}: ts=${g} py=${want}`); failures++ }
+  }
+}
+console.log(failures ? `PARITY FAILED (${failures})` : `parity OK (${m.parity.length} market + ${bundle.business.parity.length} business cases)`)
 process.exit(failures ? 1 : 0)

@@ -44,3 +44,64 @@ market:   # PLACEHOLDER values until the business-case teammate signs them off (
     value: 0.02
     unit: relative 1-sigma
     rationale: placeholder until Part 1 v2 lands; systematic sensor error added to the forecast error after FullLoad
+business:   # business team assumptions (message of 7 Nov; scripts pending in analysis/business/). HYPOTHETICAL.
+  devices_total:
+    value: 10000
+    unit: devices
+    rationale: business team; roughly the installed base Tommi mentioned
+  paying_coverage:
+    value: 0.5
+    unit: share of devices
+    rationale: business team; half of the devices are served by an operator that pays for FullLoad
+  fee_mode:
+    value: per_device_month
+    unit: per_device_month | per_tonne
+    rationale: open decision (PRODUCT.md §1 says per verified tonne; business team models per device per month)
+  fee_eur_per_device_month:
+    value: 20
+    unit: EUR per device per month
+    rationale: business team; within 10-30 % of the operator's avoided pricing risk; Enevo charged EUR 10-14
+  fee_eur_per_t:
+    value: 3.0
+    unit: EUR per verified tonne
+    rationale: same order as EUR 20/month at the fleet's tonnes per device-year
+  t0_share:
+    value: 1.0
+    unit: share of devices
+    rationale: business team; software-only virtual weight on every device
+  t0_cost_eur:
+    value: 0
+    unit: EUR per device
+    rationale: business team (Part 1 v2 installed cost factory-fit EUR 10-125)
+  h1_share:
+    value: 0.3
+    unit: share of devices
+    rationale: business team; hopper weighing where accuracy is worth the money
+  h1_cost_eur:
+    value: 500
+    unit: EUR per device
+    rationale: business team (Part 1 v2 installed cost factory-fit EUR 548-2,363)
+  opex_eur_per_device_year:
+    value: 74
+    unit: EUR per device per year
+    rationale: business team; EUR 0.74 M per year for 10,000 devices
+  sales_growth:
+    value: 0.05
+    unit: share
+    rationale: business team; extra machine sales from operators promoting weighing-capable Europress machines
+  device_price_eur:
+    value: 22500
+    unit: EUR
+    rationale: business team; basic COMBI EUR 20-25k (Tommi)
+  device_margin:
+    value: 0.25
+    unit: share
+    rationale: business team
+  renewal_years:
+    value: 6
+    unit: years
+    rationale: business team; machines renewed every 6 years (lease period)
+  horizon_years:
+    value: 6
+    unit: years
+    rationale: one lease period
