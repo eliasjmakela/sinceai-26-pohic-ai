@@ -77,6 +77,34 @@ CANDIDATES = {
             ("development (NRE)", "rail design, restraint, firmware: €50–150k", nre(50e3, 150e3), nre(50e3, 150e3), "team estimate"),
         ],
     },
+    "H7": {
+        "name": "Hydraulic self-lift on the compactor's own power pack (idea: team)",
+        "lines": [
+            ("sensors", "0–250 bar pressure transducer, rod position switch, oil temperature", (60, 200), (60, 200),
+             "team estimate (no supplier quote yet; [39] lists the sensor inside its €400–800 base system)"),
+            ("electronics", "valve coil driver + inputs on the SMART modem, motion sensor, door / hook interlock", (50, 200),
+             (40, 150), "team estimate"),
+            ("mechanical", "80 mm single-acting cylinder with spring return, ball-joint 300 mm foot, steel housing, bellows, "
+             "scraper; valve section (solenoid, pressure-compensated throttle, load-holding, relief), steel pipe, shear pin; "
+             "local frame reinforcement", (800, 1800), (450, 950),
+             "[39] parts €550–1,100 (retail −50 %, team estimate) + team estimate for reinforcement; retrofit: cut and weld the "
+             "rear frame, extend the valve block"),
+            ("site work", "steel or concrete pad under the foot on gravel / hot asphalt sites; COMBI retrofit: hook-lift round "
+             "trip to a workshop", (0, 550), (0, 150), "team estimate (calc/h7_hydraulic.py ground table)"),
+            ("labour", "retrofit 12–24 h (frame, hydraulics, wiring); factory 3–6 h on the line", lab(12, 24), lab(3, 6),
+             "hours team estimate × rate [24]"),
+            ("calibration", "tare lift, known load (water IBCs) at two positions to fix L / x, firmware set-up",
+             (lab(2, 3)[0] + 50, lab(2, 3)[1] + 150), lab(1, 2), "team estimate × rate [24]"),
+            ("maintenance (6 y)", "bellows, foot and seal check 0.5 h/yr; 30–60 % chance of a seal kit (€80–300 + 2 h); "
+             "20–40 % chance of a new pressure sensor",
+             (6 * 0.5 * RATE_EUR_H[0] + 0.3 * (80 + 2 * RATE_EUR_H[0]) + 0.2 * 60,
+              6 * 0.5 * RATE_EUR_H[1] + 0.6 * (300 + 2 * RATE_EUR_H[1]) + 0.4 * 200),
+             (6 * 0.5 * RATE_EUR_H[0] + 0.3 * (80 + 2 * RATE_EUR_H[0]) + 0.2 * 60,
+              6 * 0.5 * RATE_EUR_H[1] + 0.6 * (300 + 2 * RATE_EUR_H[1]) + 0.4 * 200), "team estimate"),
+            ("development (NRE)", "frame FEA per family, hydraulic circuit, machinery risk assessment and CE file update "
+             "[48], firmware, field test: €150–400k", nre(150e3, 400e3), nre(150e3, 400e3), "team estimate"),
+        ],
+    },
     "T0": {
         "name": "Virtual weight from existing pressure + fill (v1)",
         "lines": [
@@ -134,10 +162,10 @@ CANDIDATES = {
         ],
     },
 }
-ORDER = ["T0", "T1", "H1", "H5", "T2", "PS"]
+ORDER = ["T0", "T1", "H1", "H7", "H5", "T2", "PS"]
 BASIS = {"T0": "team estimate", "T1": "[4][5][6][7][24] + team estimate", "H1": "[6][9][10][22][24][25] + team estimate",
          "H5": "[8][9][10][11][23][24][26] + team estimate", "T2": "[8][9][10][11][24][26] + team estimate",
-         "PS": "[24][27] + team estimate"}
+         "PS": "[24][27] + team estimate", "H7": "[24][39][48] + team estimate"}
 HARDWARE = ("sensors", "electronics", "mechanical")
 
 

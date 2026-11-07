@@ -104,3 +104,41 @@ claim or straightforward physics; **low** = team estimate or guess. "calc/…" a
 Sampling check (WG1): ten numbers drawn from D1 (§0 €548–2,363; §0 9.5 % → 4.6 %; §3.1 0.24–0.48 mm; §3.2 12–78 h;
 §5.3 7–14 t; §6 18–25 %; §6 0.3–0.7 %; §6 €4,800–5,620; §8.1 1–4.5 %; §9 3.38 → 3.25 %) are C60, C40/C42, C23,
 C46, C22, C61, C32, C55, C39, C44.
+
+## H7 hydraulic self-lift (team idea, §19; `calc/h7_hydraulic.py`, `calc/installed_cost.py`)
+
+| # | Claim in D1 | Value | Source | Confidence | How to check |
+|---|---|---|---|---|---|
+| C62 | Cylinder 0.5–1 m from the door end, 10 mm lift, 50 mm stroke, foot 30 mm above runner bottom, 300 × 300 mm foot, 15 s lift and 15 s lower | – | team document [39] | low ([39] itself calls the dimensions assumptions) | Europress drawings, Q11 |
+| C63 | Pivot-to-cylinder distance L | 5.0–6.0 m | team estimate (unit 6–7 m long) | low | drawing |
+| C64 | Door-end share of the machine mass | 0.30–0.45 | 1 − press-end share 0.55–0.70 in `calc/loads.py` (team estimate); press assumed at the hook end | low | Europress datasheet, Q14 |
+| C65 | Waste centre of mass x_w / L | 0.45–0.75 | team estimate | **low** (largest unknown) | §19.11 stages A/B, Q14 |
+| C66 | System pressure | ~200 bar | Tommi [36], as quoted in the review | medium | Q12 |
+| C67 | Cylinder force, empty / full (5 t) | 9–20 kN / 31–57 kN | C4, C5, C63–C65, statics | medium (physics), low (inputs) | load cell under the foot, stage A |
+| C68 | Pressure, 80 mm bore, empty / full; 63 mm bore, full | 18–40 / 61–113 bar; 99–182 bar | C67 / piston area | medium | – |
+| C69 | Worked example: R0 27 bar, R 57 bar; 1 bar ≈ 85 kg of waste (80 mm, x_w/L 0.6) | – | `calc/h7_hydraulic.py` statics | medium | – |
+| C70 | Oil per lift, flow, speed, work | 50 cm³, 0.20 L/min, 0.67 mm/s, 0.6 kJ | area × 10 mm over 15 s; force × 10 mm | high (arithmetic) | – |
+| C71 | Stroke margin left | 10 mm | 50 − 30 − 10 mm [39] | medium | – |
+| C72 | Foot pressure in the heaviest case; allowable bearing (concrete 3, cold asphalt 1, hot asphalt 0.4, gravel 0.3, soft 0.1 MPa); pad sizes 376–753 mm | 0.63 MPa | C67 / 0.09 m²; bearing values team estimate (order of magnitude) | low (bearing values) | geotechnical table, plate-load test |
+| C73 | Seal + guide friction of an 80 mm cylinder | 0.3 / 0.7 / 1.5 kN = 3–17 % of the lightest tare force, 0.5–2.6 % of the heaviest force | team estimate | low | stage A friction log (half the up–down difference) |
+| C74 | Share of friction not cancelled by up/down averaging | 10 / 20 / 30 % | team estimate; principle in [43][44] | low | stage A |
+| C75 | Pressure-sensor repeatability after auto-zero | 0.10 / 0.15 / 0.25 % of 250 bar | team estimate (industrial transducer class; no datasheet fetched) | low–medium | datasheet of the chosen sensor |
+| C76 | Span drift between tare and reading | 0.1 / 0.25 / 0.5 % of R | team estimate | low | climate chamber |
+| C77 | Pivot shift 0.5 / 2 / 5 cm → up to ≈2 % at 5 cm | – | `calc/h7_hydraulic.py` (exact statics including the machine term); the review had 0.8 % without it | medium (physics), low (shift sizes) | survey before and after |
+| C78 | Tare change (rain, ice, residue) 25 / 50 / 150 kg; heavy roof snow ≈0.7–1.4 t (14 m² × 0.5–1 kN/m²) | – | team estimate | low | nightly trend, stage B |
+| C79 | Centre-of-mass error: fixed value 5 / 10 / 20 %; fill model after tickets 2 / 3 / 5 %; two-end geometry residual 0.3 / 0.5 / 1 % | – | team estimate (the calibrated value equals H1's container floor, C35) | **low** | stage B |
+| C80 | Gain and geometry error: before tickets 1 / 2 / 3 %; after H2 0.3 / 0.5 / 1 % | – | team estimate | low | stage A |
+| C81 | H7 1σ at 2.5 t: A 5.3 / 10.7 / 21.9 %, B 2.6 / 4.4 / 9.7 %, C 1.7 / 3.2 / 8.4 %; at 5 t: B 2.2 / 3.5 / 6.8 %, C 0.9 / 1.9 / 4.8 % | – | RSS of C73–C80, `generated/h7_budget.md` | estimate (model output) | stage B |
+| C82 | H7 absolute floor | 40 / 80 / 200 kg | sensor + friction + tare change, `calc/h7_hydraulic.py` | estimate | – |
+| C83 | Accuracy target | 1σ ≤ 5 % (one end) or ≤ 3 % (both ends) after 10 tickets, loads ≥ 2.5 t | team target, untested | – | stage B pass criterion |
+| C84 | Virtual scale (pipeline) | median error 8.3 % uncalibrated, 7.6 % after 5 tickets, 5.5 % monthly; reference shares above ~5 % add little | `web/public/data/bundle.json → virtual_scale` (synthetic, optimistic) | high for the simulation, unknown for real | rerun the pipeline |
+| C85 | Median-abs → 1σ factor; H7 fused with the virtual scale | 1 / 0.6745 (7.6 % → 11.3 %); 2.5 / 4.1 / 7.4 % | normal distribution; inverse variance, assumes independence (optimistic) | medium | – |
+| C86 | Lifts per year per unit | ≈445 (365 nightly + 2 × ~40 pick-ups) | review row 4 (`bundle.json`: 18,042 lifts / 447 devices) | medium | SMART logs |
+| C87 | H7 installed cost: factory-fit €1,034–3,008, retrofit €1,994–6,168; hardware €550–1,300 | – | `calc/installed_cost.py`, every line a team estimate; parts anchored on [39] €550–1,100 (retail −50 %) | low | OEM quotes for cylinder, valve and sensor (Q12) |
+| C88 | Front cylinder for a two-end lift (not in the H7 totals) | €510–1,150 | the H7 sensor + mechanical lines again (team estimate) | low | quote |
+| C89 | H7 accuracy → value at mid (4.4 %, 80 kg): 57 % of 2.5–3.5 t loads within ±100 kg, 41 % of +10 % differences flagged, 9 loads to see 3 % | – | `scripts/accuracy_value.py` with the H7 tier | estimate | rerun |
+| C90 | Machinery Regulation (EU) 2023/1230 applies from 20 Jan 2027 | – | [48] | high | – |
+
+Sampling check for H7: §0 €1,034–3,008 (C87); §0 ≤ 5 % (C83); §19.2 113 bar (C68); §19.2 85 kg per bar (C69);
+§19.2 0.20 L/min (C70); §19.5 ≈2 % pivot (C77); §19.8 4.1 % fused (C85); §19.6 0.63 MPa (C72); §19.6 ≈445 lifts
+(C86); §19.5 €510–1,150 (C88).

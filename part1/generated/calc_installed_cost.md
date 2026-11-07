@@ -10,6 +10,7 @@ Labour at €55–90/h [24]. Reference: ~€2,000 weighing option on a €20,000
 | T0 | Virtual weight from existing pressure + fill (v1) | €0–50 | €10–215 | €10–125 | yes | team estimate |
 | T1 | Strain gauges on frame / container rails (v1 choice) | €95–480 | €419–1,674 | €226–1,179 | yes | [4][5][6][7][24] + team estimate |
 | H1 | Hopper-stage weighing plate (idea: Europress / Tommi) | €270–1,430 | €1,270–4,923 | €548–2,363 | partly | [6][9][10][22][24][25] + team estimate |
+| H7 | Hydraulic self-lift on the compactor's own power pack (idea: team) | €550–1,300 | €1,994–6,168 | €1,034–3,008 | partly | [24][39][48] + team estimate |
 | H5 | Weighing guide rails (idea: team) | €1,310–3,100 | €3,412–10,136 | €2,382–7,056 | no | [8][9][10][11][23][24][26] + team estimate |
 | T2 | Load cells under the unit's own frame (v1) | €1,160–2,600 | €1,960–5,438 | €1,635–4,338 | partly | [8][9][10][11][24][26] + team estimate |
 | PS | Platform scale under the whole unit (Europress's existing option) | €4,800–12,000 | €8,580–23,880 | €7,860–22,160 | no | [24][27] + team estimate |
@@ -58,6 +59,21 @@ Labour at €55–90/h [24]. Reference: ~€2,000 weighing option on a €20,000
 | maintenance (6 y) | clean the seal gap at each service (0.25 h/yr), new seal, 30–40 % chance of one cell | €110–283 | €110–283 | team estimate |
 | development (NRE) | plate design per machine family, firmware gating, field test: €150–400k | €30–200 | €30–200 | team estimate |
 | **total** |  | **€1,270–4,923** | **€548–2,363** | sum of lines |
+
+
+## H7: Hydraulic self-lift on the compactor's own power pack (idea: team)
+
+| H6 line | what | retrofit | factory-fit | source |
+|---|---|---|---|---|
+| sensors | 0–250 bar pressure transducer, rod position switch, oil temperature | €60–200 | €60–200 | team estimate (no supplier quote yet; [39] lists the sensor inside its €400–800 base system) |
+| electronics | valve coil driver + inputs on the SMART modem, motion sensor, door / hook interlock | €50–200 | €40–150 | team estimate |
+| mechanical | 80 mm single-acting cylinder with spring return, ball-joint 300 mm foot, steel housing, bellows, scraper; valve section (solenoid, pressure-compensated throttle, load-holding, relief), steel pipe, shear pin; local frame reinforcement | €800–1,800 | €450–950 | [39] parts €550–1,100 (retail −50 %, team estimate) + team estimate for reinforcement; retrofit: cut and weld the rear frame, extend the valve block |
+| site work | steel or concrete pad under the foot on gravel / hot asphalt sites; COMBI retrofit: hook-lift round trip to a workshop | €0–550 | €0–150 | team estimate (calc/h7_hydraulic.py ground table) |
+| labour | retrofit 12–24 h (frame, hydraulics, wiring); factory 3–6 h on the line | €660–2,160 | €165–540 | hours team estimate × rate [24] |
+| calibration | tare lift, known load (water IBCs) at two positions to fix L / x, firmware set-up | €160–420 | €55–180 | team estimate × rate [24] |
+| maintenance (6 y) | bellows, foot and seal check 0.5 h/yr; 30–60 % chance of a seal kit (€80–300 + 2 h); 20–40 % chance of a new pressure sensor | €234–638 | €234–638 | team estimate |
+| development (NRE) | frame FEA per family, hydraulic circuit, machinery risk assessment and CE file update [48], firmware, field test: €150–400k | €30–200 | €30–200 | team estimate |
+| **total** |  | **€1,994–6,168** | **€1,034–3,008** | sum of lines |
 
 
 ## H5: Weighing guide rails (idea: team)

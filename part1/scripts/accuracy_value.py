@@ -134,7 +134,7 @@ def summary_md(rows, tiers, chosen) -> str:
     return "\n".join(out) + "\n"
 
 
-OFFSET = {"T1": (-40, 5), "H5": (-30, -16), "PS": (-24, 6), "T2": (6, 6), "H1": (6, -14), "T0": (6, 6)}
+OFFSET = {"T1": (-40, 5), "H5": (-30, -16), "PS": (-24, 6), "T2": (6, 6), "H1": (6, -14), "T0": (6, 6), "H7": (6, 8)}
 
 
 def chart(sweep, rows, tiers):

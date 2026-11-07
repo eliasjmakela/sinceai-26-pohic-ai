@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 def main():
     cost = json.loads((PART1 / "installed_cost.json").read_text())
     tiers = {t["id"]: t for t in json.loads((PART1 / "sigma_tiers.json").read_text())["tiers"]}
-    order = ["T0", "T1", "H1", "H5", "T2", "PS"]
+    order = ["T0", "T1", "H1", "H7", "H5", "T2", "PS"]
     style()
     fig, (ax, bx) = plt.subplots(1, 2, figsize=(10, 3.9), gridspec_kw={"width_ratios": [1.6, 1]})
     for i, cid in enumerate(order[::-1]):

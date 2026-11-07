@@ -158,6 +158,48 @@
       ]
     },
     {
+      "id": "H7",
+      "name": "Hydraulic self-lift on the compactor's own power pack (team idea, to explore)",
+      "principle": "A cylinder near the door end of a COMBI, driven by the compactor's own hydraulics, lifts that end ~10 mm at rest; lift/lower pressure average x piston area gives the end reaction, and W = (R - R0) L / x_w gives the waste.",
+      "sigma_rel_pct": {
+        "low": 2.6,
+        "mid": 4.4,
+        "high": 9.7
+      },
+      "sigma_abs_kg": {
+        "low": 40.0,
+        "mid": 80.0,
+        "high": 200.0
+      },
+      "bom_eur_per_device": {
+        "low": 550,
+        "high": 1300
+      },
+      "install_hours": {
+        "low": 12,
+        "high": 24
+      },
+      "suits": [
+        "COMBI"
+      ],
+      "weak_for": [
+        "DUO",
+        "RETROFIT_UNITS",
+        "RAILS_AND_PLINTHS",
+        "SOFT_GROUND",
+        "NEW_DEVICE_BEFORE_TICKETS",
+        "SNOW_ON_ROOF"
+      ],
+      "evidence_tag": "estimate",
+      "sources": [
+        "[39]",
+        "[40]",
+        "[42]",
+        "[43]",
+        "[48]"
+      ]
+    },
+    {
       "id": "H5",
       "name": "Weighing guide rails (team idea)",
       "principle": "The unit (COMBI) or container (DUO) rests only on two guide rails, each on two shear-beam load cells with overload stops and side restraint; weight = sum of the four cells, re-tared at every exchange.",
