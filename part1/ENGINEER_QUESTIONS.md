@@ -39,3 +39,13 @@ own power pack, and the pressure gives the weight.
     pushed towards the door? Does the ram's pressure rise per stroke show how far the packed waste reaches?
 15. **Runners.** How far apart are a CombiMax's runners, and how often is waste loaded off-centre (one side heavier)?
     In winter, do runners freeze to the ground, and is there ice or debris under the front of the runners?
+16. **Front frame (H7-2).** Is there room between the runners about 0.8 m from the front, under the press unit, for
+    an 80 mm cylinder housing with an 80–100 mm stroke? Can the frame there take up to ~65 kN with local
+    reinforcement? Does the truck's tilting frame or roller pass there during pick-up?
+17. **Docked units.** How many COMBIs stand against a wall chute, hood or bin lifter fixed to the building? Would a
+    10–30 mm rise of the press end touch it?
+18. **Pivots.** When one end of a CombiMax is lifted, where does the other end rest: on the rear rollers or on the
+    runner ends? Are the runner fronts curved up, and where does the flat part start?
+19. **DUO coupling and containers.** How is a DUO container coupled to the press (latches, hydraulic clamps)? Does
+    the coupling carry vertical load? Could it be released for ~2 min before pick-up? How many container models
+    rotate through one DUO site?

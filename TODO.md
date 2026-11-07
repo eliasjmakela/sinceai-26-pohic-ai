@@ -25,7 +25,7 @@ teammates. Status: `[ ]` open, `[~]` running, `[x]` done.
 | # | What | Owner | By | Status |
 |---|---|---|---|---|
 | C1 | Stale text cleanup across the repo (MASTER §G): PRODUCT, LIMITATIONS, README, Part 1 §0/§3/§17/§19.8, RED_TEAM R27, sigma_tiers, superseded notes | C (agent) | 21:00 | [~] |
-| C2 | Merge the two-end lift (H7-2, from the team's "duo mechanism" sheet) into Part 1: §20, RED_TEAM R31–R38, ENGINEER_QUESTIONS 16–19, cost lines in `installed_cost.json`, scripts in `part1/calc/h7_2_*.py`. The sheet is a COMBI variant, not the DUO product; DUO stays on H1 / H5 | C | 21:15 | [ ] |
+| C2 | Merge the two-end lift (H7-2, from the team's "duo mechanism" sheet) into Part 1: §20, RED_TEAM R31–R38, ENGINEER_QUESTIONS 16–19, cost lines in `installed_cost.json`, scripts in `part1/calc/h7_2_*.py`. The sheet is a COMBI variant, not the DUO product; DUO stays on H1 / H5 | C | 21:15 | [x] |
 | C3 | **Independent fact-check** of every number on the three pitch screens, the detail screens, `PRICING.md`, the fix list and the one-pagers against `bundle.json` and the sources; report mismatches | C (agent) | 21:45 | [ ] |
 | C4 | Demo freeze checks: `npm run build`, every screen opens with no console errors, arrow-key flow, offline (no network), phone-width sanity, receipts open on every figure | C | 22:00 | [ ] |
 | C5 | **Weighing concept one-pager (deliverable 1, illustrated)**, English, H7-first: principle with the side-view drawing, placement on COMBI, BOM and installed cost, installation, calibration by weighbridge tickets, error budget, safety/CE, the two new risks, validation plan, DUO answer | C (draft) → E (text pass) | 22:30 | [ ] |
