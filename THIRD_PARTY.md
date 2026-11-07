@@ -25,6 +25,7 @@ Part 1 (weighing) sources and packages: `part1/THIRD_PARTY_part1.md` (merged in 
 | threadpoolctl | 3.8.0 | BSD-3-Clause | Permissive (scikit-learn dependency) |
 | Markdown | 3.11.3 | BSD-3-Clause | Permissive (kit dev dependency) |
 | pytest | 9.2.0 | MIT | Development only |
+| ruff | 0.17.4 | MIT | Development only (lint) |
 
 ## Web (demo)
 | Component | Version | Licence | Commercial-use note |

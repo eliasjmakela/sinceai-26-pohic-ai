@@ -20,14 +20,12 @@ from __future__ import annotations
 from pathlib import Path
 
 import duckdb
-import pandas as pd
 
-from .config import EXCLUDED_MATERIALS
 from .figures import Figure
-from .fleet import TONNE_LINES, TRIP_LINES, sql_in
+from .fleet import device_charges
 from .market import load_params
 from .premature import flag_lifts
-from .scorecard import _expected_lines
+from .scorecard import invoice_lines_vs_contract
 from .trips import device_trips
 
 TEAM_FIGURES = {   # business team analysis, 7 Nov (message; scripts pending) -- EUR per device per year
@@ -38,19 +36,8 @@ SOURCES = ("invoice_lines.amount_eur", "invoice_lines.line_type", "contracts.dev
            "trips model", "premature-lift rule", "kit B1 calculator", "params.yaml (market)")
 
 
-def _device_charges(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
-    return con.execute(f"""
-        SELECT k.device_id, d.material_stream, s.region_code,
-               sum(l.amount_eur) FILTER (WHERE l.line_type IN {sql_in(TRIP_LINES)}) AS trip_eur,
-               sum(l.amount_eur) FILTER (WHERE l.line_type IN {sql_in(TONNE_LINES)}) AS tonne_eur
-        FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts k ON k.contract_id = i.contract_id
-        JOIN devices d ON d.device_id = k.device_id JOIN sites s ON s.site_id = d.site_id
-        WHERE d.material_stream NOT IN {sql_in(EXCLUDED_MATERIALS)}
-        GROUP BY ALL ORDER BY 1""").df().fillna({"trip_eur": 0.0, "tonne_eur": 0.0})
-
-
 def value_per_device(con: duckdb.DuckDBPyConnection, root: Path, sigma_inc: float, sigma_ent: float) -> dict:
-    ch = _device_charges(con)
+    ch = device_charges(con).assign(trip_eur=lambda d: d.trip_cents / 100, tonne_eur=lambda d: d.tonne_cents / 100)
     tr = device_trips(con)
     tr = tr[tr.weight_trips.notna()][["device_id", "actual_lifts", "weight_trips", "annual_kg"]]
     df = ch.merge(tr, on="device_id")
@@ -71,13 +58,7 @@ def value_per_device(con: duckdb.DuckDBPyConnection, root: Path, sigma_inc: floa
     med = df.groupby(["material_stream", "region_code"]).cpt.transform("median")
     expensive = float(((df.cpt - med).clip(lower=0) * df.t).fillna(0).mean())
 
-    il = con.execute("""
-        SELECT k.device_id, l.operator_job_ref, l.line_type, CAST(round(l.amount_eur * 100) AS BIGINT) AS cents
-        FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts k ON k.contract_id = i.contract_id
-        WHERE l.line_type <> 'RENTAL' ORDER BY l.invoice_id, l.line_no""").df()
-    il = il.merge(_expected_lines(root), on=["operator_job_ref", "line_type"], how="left")
-    il["exp_cents"] = il.exp_cents.fillna(0).astype("int64")
-    il.loc[il.duplicated(["operator_job_ref", "line_type"], keep="first"), "exp_cents"] = 0
+    il = invoice_lines_vs_contract(con, root)
     over = il.assign(o=(il.cents - il.exp_cents).clip(lower=0)).groupby("device_id").o.sum() / 100
     invoice = float(over.reindex(df.device_id).fillna(0).mean())
 

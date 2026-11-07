@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Figure } from '../bundle'
+import { format } from '../format'
 
 const TAG_STYLE: Record<Figure['tag'], string> = {
   observed: 'bg-emerald-100 text-emerald-800',
@@ -8,15 +9,6 @@ const TAG_STYLE: Record<Figure['tag'], string> = {
   hypothetical: 'bg-rose-100 text-rose-800',
 }
 
-export function format(f: Figure): string {
-  if (f.value === null) return 'cannot be computed'
-  const n = f.value
-  if (f.unit === 'EUR') return n >= 1e6 ? `€${(n / 1e6).toFixed(2)} M` : `€${Math.round(n).toLocaleString('en')}`
-  if (f.unit === 'EUR/t') return `€${n.toFixed(2)}/t`
-  if (f.unit === '%') return `${n.toFixed(1)} %`
-  if (f.unit === 't') return `${Math.round(n).toLocaleString('en')} t`
-  return n.toLocaleString('en')
-}
 
 /** A number with its evidence tag; click opens the receipt (formula, sources, assumptions). */
 export function FigureValue({ figure, label }: { figure: Figure; label: string }) {

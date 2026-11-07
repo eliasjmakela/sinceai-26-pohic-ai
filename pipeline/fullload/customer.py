@@ -33,7 +33,7 @@ def _pct(x: float) -> float:
 
 def service_check(con: duckdb.DuckDBPyConnection, root, dev_ids: list[str]) -> dict:
     """Is the operator delivering what the contract says? Same definitions as the operator scorecard (scorecard.py)."""
-    from .scorecard import ON_TIME_HOURS, SHARED_WITHIN_DAYS, _expected_lines
+    from .scorecard import ON_TIME_HOURS, SHARED_WITHIN_DAYS, invoice_lines_vs_contract
     ids = "(" + ", ".join(f"'{d}'" for d in dev_ids) + ")"
     jobs, lifts, on_time, missed, shared = con.execute(f"""
         WITH t AS (SELECT operator_job_ref, min(arrival_at) AS arrival_at, min(published_at) AS published_at
@@ -46,13 +46,8 @@ def service_check(con: duckdb.DuckDBPyConnection, root, dev_ids: list[str]) -> d
                                 AND epoch(t.published_at - t.arrival_at) / 86400 <= {SHARED_WITHIN_DAYS})
         FROM collection_events c LEFT JOIN t USING (operator_job_ref)
         WHERE c.device_id IN {ids} AND c.status IN ('COMPLETED', 'PARTIAL', 'MISSED_BY_OPERATOR', 'WASTED_TRIP')""").fetchone()
-    il = con.execute(f"""
-        SELECT l.operator_job_ref, l.line_type, CAST(round(l.amount_eur * 100) AS BIGINT) AS cents
-        FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts k ON k.contract_id = i.contract_id
-        WHERE k.device_id IN {ids} AND l.line_type <> 'RENTAL' ORDER BY l.invoice_id, l.line_no""").df()
-    il = il.merge(_expected_lines(root), on=["operator_job_ref", "line_type"], how="left")
-    il["exp_cents"] = il.exp_cents.fillna(0).astype("int64")
-    il.loc[il.duplicated(["operator_job_ref", "line_type"], keep="first"), "exp_cents"] = 0
+    il = invoice_lines_vs_contract(con, root)
+    il = il[il.device_id.isin(dev_ids)]
     diff = il.cents - il.exp_cents
     return {
         "jobs": int(jobs), "lifts": int(lifts),

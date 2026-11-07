@@ -34,7 +34,7 @@ SOURCES = ("collection_events.device_fill_pct_before", "devices.container_volume
 
 
 def lifts(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
-    df = con.execute(f"""
+    df = con.execute("""
         WITH t AS (SELECT operator_job_ref, allocated_net_kg, loads_on_vehicle, tare_method FROM weighbridge_tickets),
         cum AS (SELECT device_id, date, sum(coalesce(compaction_cycles, 0)) OVER (PARTITION BY device_id ORDER BY date) AS cc
                 FROM telemetry_daily_summary),

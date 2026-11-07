@@ -93,9 +93,14 @@ def _service(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
         FROM j GROUP BY ALL""").df()
 
 
-def _billing(con: duckdb.DuckDBPyConnection, root: Path) -> pd.DataFrame:
+def invoice_lines_vs_contract(con: duckdb.DuckDBPyConnection, root: Path) -> pd.DataFrame:
+    """Every invoice line (not RENTAL) with its contract-expected amount (kit B1 calculator), in integer cents.
+
+    A repeated (job, line type) is expected at 0, so a duplicated line counts as a difference. Columns: device_id,
+    operator_id, region_code, month, operator_job_ref, line_type, cents, exp_cents. Sorted by invoice and line.
+    """
     il = con.execute("""
-        SELECT l.invoice_id, l.line_no, l.operator_job_ref, l.line_type,
+        SELECT l.invoice_id, l.line_no, k.device_id, l.operator_job_ref, l.line_type,
                CAST(round(l.amount_eur * 100) AS BIGINT) AS cents,
                i.operator_id, s.region_code, i.billing_period AS month
         FROM invoice_lines l JOIN invoices i USING (invoice_id)
@@ -105,6 +110,11 @@ def _billing(con: duckdb.DuckDBPyConnection, root: Path) -> pd.DataFrame:
     il = il.merge(_expected_lines(root), on=["operator_job_ref", "line_type"], how="left")
     il["exp_cents"] = il.exp_cents.fillna(0).astype("int64")
     il.loc[il.duplicated(["operator_job_ref", "line_type"], keep="first"), "exp_cents"] = 0
+    return il
+
+
+def _billing(con: duckdb.DuckDBPyConnection, root: Path) -> pd.DataFrame:
+    il = invoice_lines_vs_contract(con, root)
     il["discrepant"] = (il.cents - il.exp_cents).abs() > 0
     return il.groupby(KEY, as_index=False).agg(discrepant_line_share=("discrepant", "mean"))
 

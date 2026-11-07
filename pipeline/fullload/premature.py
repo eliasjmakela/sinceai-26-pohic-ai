@@ -85,7 +85,7 @@ def lift_features(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
     cur = f.fixed_schedule_per_week.fillna(0.0)
     # at minimum frequency: no slower schedule option still meets the material's maximum interval
     f["at_min_frequency"] = [pol != "ON_CALL" and not any(mf - 1e-9 <= o < fr for o in SCHEDULE_OPTIONS_PER_WEEK)
-                             for pol, fr, mf in zip(f.collection_policy, cur, min_per_week)]
+                             for pol, fr, mf in zip(f.collection_policy, cur, min_per_week, strict=True)]
     return f.sort_values("collection_id", ignore_index=True)
 
 

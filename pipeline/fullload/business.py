@@ -22,7 +22,7 @@ from dataclasses import asdict, dataclass, replace
 import duckdb
 import yaml
 
-from .config import PARAMS_PATH, REPO_ROOT
+from .config import PARAMS_PATH
 from .figures import Figure
 
 INSTALLED_COST_SOURCE = "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"

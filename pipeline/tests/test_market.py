@@ -23,7 +23,7 @@ def setup():
 def test_before_price_is_observed_invoices(setup):
     acc, ops, s_inc, s_ent, p = setup
     res = market.simulate(acc, ops, s_inc, s_ent, p)
-    for a, r in zip(acc, res["rows"]):
+    for a, r in zip(acc, res["rows"], strict=True):
         assert r["price_before"] == a["trip_cents"] + a["tonne_cents"]
 
 
