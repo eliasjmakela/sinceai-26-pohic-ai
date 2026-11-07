@@ -331,6 +331,10 @@ the slider. The coder does not build hardware models; the Part 1 agent's scripts
 - Every action is a proposal with `requires_human_approval: true`. No button may imply sending anything.
 - Do not put "SMART" in our product name.
 
+**Rules over accuracy (decided 7 Nov)**: transparent, explainable rules beat small accuracy gains. Example: our
+premature-lift rule (F1 0.81, 0 justified lifts flagged, every flag explained) is preferred over the kit's ML baseline
+(F1 0.93, 13 justified lifts flagged, no reasons). ML appears only as the comparison the brief asks for.
+
 **Where not to spend time**
 CSS perfection before freeze, generic components, settings pages, abstractions for future tasks, ML models beyond the
 rules-vs-ML comparison, more than three hero cases. If a chart doesn't serve a line in §4, delete it.
