@@ -54,7 +54,7 @@ export function Today() {
               </div>
             ))}
           </div>
-          <p className="mt-4 text-xs text-slate-500">Per-visit charges ÷ tonnes collected, one year of invoices (synthetic).</p>
+          <p className="mt-4 text-xs text-slate-500">Per-visit charges ÷ tonnes collected, one year of invoices (synthetic). Real HSY data shows the same pattern: about a third of emptyings happen below 50 % full (Paananen, LUT 2024).</p>
         </Card>
         <div className="grid content-start gap-4">
           <FigureValue figure={f.trip_share_pct} label="of all charges are per visit, not per tonne" />

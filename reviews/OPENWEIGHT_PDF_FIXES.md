@@ -83,3 +83,25 @@ The physics and statics of the hydraulic lift (80 mm bore, ~120 bar at 60 kN, fo
 the ±3.3 % device-vs-weighbridge tolerance (say it is the kit's example), the interview quotes (HSY, ~3 % of a
 property manager's time, Insights ~15 %), "1 in 3 lifts under 60 % full", and the up/down averaging that cancels
 seal friction.
+
+## References you can cite (verified to exist; use only for the claim given)
+
+1. **Problem page:** Paananen, P. (2024). *Evaluating the economic impact of implementing fill level sensors in HSY
+   municipal solid waste collection.* Master's thesis, LUT University. https://lutpub.lut.fi/handle/10024/167131 —
+   in real HSY data about a third of emptyings happen below 50 % fill. Say it is crane-emptied municipal mixed-waste
+   containers, not compactors. It also found sensors pay off only with a changed cost structure.
+2. **Core claim:** Weiergraeber, S. & Wolf, C. (2023). Bidder asymmetries in procurement auctions: Efficiency vs.
+   information. *International Journal of Industrial Organization* 87, 102902 — the incumbent's dominance came mainly
+   from better information, not lower cost; removing the information gap raised the chance of picking the most
+   efficient bidder by 48 percentage points (median).
+3. **Core claim, second source:** De Silva, D.G., Dunne, T., Kankanamge, A. & Kosmopoulou, G. (2008). The impact of
+   public information on bidding in highway procurement auctions. *European Economic Review* 52(1), 150–181 —
+   releasing public cost information narrowed the spread of bids, most where cost uncertainty was largest.
+4. **Free for the customer:** Rochet, J.-C. & Tirole, J. (2003). Platform competition in two-sided markets. *Journal
+   of the European Economic Association* 1(4), 990–1029 — on two-sided platforms one side is often subsidised.
+5. **Risks:** Gebauer, H., Fleisch, E. & Friedli, T. (2005). Overcoming the service paradox in manufacturing
+   companies. *European Management Journal* 23(1), 14–26 — service investment often raises costs without matching
+   returns.
+
+Skipped: the "temperature and ≤ 5 % review" for weighing. We could not identify a specific paper; our accuracy
+figures come from our own error budget (Part 1 §19.5) and should be cited as such.
