@@ -96,7 +96,7 @@ footer { color: var(--muted); font-size: 13px; }
     <h2>The idea in one breath</h2>
     <p class="intro">Customers pay per trip, and only the incumbent operator knows each site's volumes. That history is a local monopoly: challengers can't price per kilo without it. OpenWeight puts the weight in the compactor and lets every operator see it on equal terms.</p>
     <details class="card" open><summary><span class="t">Operators pay, customers get it free</span><span class="pill strong">decided</span></summary>
-      <p class="why"><b>Why it matters:</b> Tommi confirmed serving operators is Europress strategy, and SMART Insights reaches only ~15 % of customers. A free customer side avoids the hardest sale. Fee is ~€20 per device per month (business team) or ~€3 per verified tonne; the unit is still open.</p></details>
+      <p class="why"><b>Why it matters:</b> Tommi confirmed serving operators is Europress strategy, and SMART Insights reaches only ~15 % of customers. A free customer side avoids the hardest sale. Fee: €20 per device per month (decided; ≈ €2.6 per tonne in the market model).</p></details>
     <details class="card"><summary><span class="t">Europress never drives a truck</span><span class="pill strong">decided</span></summary>
       <p class="why"><b>Why it matters:</b> Tommi said it plainly at kickoff. Anything that sounds like transport procurement or route optimisation works against us with the Europress judge.</p></details>
     <details class="card"><summary><span class="t">Billing stays on the certified weighbridge</span><span class="pill strong">decided</span></summary>
@@ -124,7 +124,7 @@ footer { color: var(--muted); font-size: 13px; }
         <tr data-s="medium"><td>Region cost per tonne, per-kg tender</td><td class="num">€113 → €99</td><td>Market model; −12 to −15 % across sensitivity</td><td><span class="pill medium">medium</span></td></tr>
         <tr data-s="medium"><td>Customers a challenger can win</td><td class="num">0 → 19 of 19</td><td>Market model; who actually wins is sensitive</td><td><span class="pill medium">medium</span></td></tr>
         <tr data-s="medium"><td>Virtual scale error per lift</td><td class="num">~8 %</td><td>Simulated; ~5.5 % monthly after 5 tickets; likely optimistic</td><td><span class="pill medium">medium</span></td></tr>
-        <tr data-s="weak"><td>Showcase customer saving</td><td class="num">−31.5 %</td><td>Best case by selection rule; say so</td><td><span class="pill weak">weak</span></td></tr>
+        <tr data-s="weak"><td>Showcase customer saving</td><td class="num">−31.9 %</td><td>Best case by selection rule; say so</td><td><span class="pill weak">weak</span></td></tr>
         <tr data-s="weak"><td>Operator pricing-risk value per device</td><td class="num">€2,712 / yr</td><td>Parameter-driven; team says €1,930 or €1,400</td><td><span class="pill weak">weak</span></td></tr>
         <tr data-s="weak"><td>Concentration falls</td><td class="num">HHI rises</td><td>With defaults it goes up (~5,350 → ~6,170); don't claim it</td><td><span class="pill weak">weak</span></td></tr>
       </tbody>
@@ -201,14 +201,14 @@ footer { color: var(--muted); font-size: 13px; }
   <section data-panel="decide" hidden>
     <h2>Open decisions</h2>
     <p class="intro">Tick them off as you decide; ticks stay in this browser only.</p>
-    <div class="card decision"><input type="checkbox" id="d1"><div><label for="d1">One forecast-error figure for the pitch</label><p>10 % vs 37 % (ours, monthly tonnage) or 9 % vs 21 % (team, per visit). Never show both, and keep SMART's "37 % fewer emptyings" apart.</p></div></div>
-    <div class="card decision"><input type="checkbox" id="d2"><div><label for="d2">One customer-saving figure</label><p>Region −12 to −15 % per tonne is the defensible one; the showcase −31.5 % only as a best case.</p></div></div>
-    <div class="card decision"><input type="checkbox" id="d3"><div><label for="d3">Fee unit</label><p>€20 per device per month (team) or ~€3 per verified tonne (fits "pay for tonnes").</p></div></div>
-    <div class="card decision"><input type="checkbox" id="d4"><div><label for="d4">Lead weighing story</label><p>Virtual scale everywhere plus a reference subset: hopper plate, hydraulic self-lift, rails, or a new idea from the team.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d1"><div><label for="d1">One forecast-error figure for the pitch</label><p><b>Decided:</b> ±10 % vs ±37 % (monthly tonnage). The team's 9 % vs 21 % only as corroboration; keep SMART's "37 % fewer emptyings" apart.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d2"><div><label for="d2">One customer-saving figure</label><p><b>Decided:</b> −13 % per tonne in the region (range −12 to −15 %); the showcase −31.9 % only as a best case.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d3"><div><label for="d3">Fee unit</label><p><b>Decided:</b> €20 per device per month. Customers' contracts with operators become per kg; Europress's fee to operators is per device.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d4"><div><label for="d4">Lead weighing story</label><p><b>Decided:</b> virtual scale on every device + a reference subset (hopper plate, credited to Europress; hydraulic self-lift, the team's new idea) + calibration from shared weighbridge tickets.</p></div></div>
     <div class="card decision"><input type="checkbox" id="d5"><div><label for="d5">Demo structure</label><p>Teammate's three views (customer, operator, Europress) vs the current seven beats. Current beats map onto the views.</p></div></div>
-    <div class="card decision"><input type="checkbox" id="d6"><div><label for="d6">Live AI Q&amp;A for customers: in or out</label><p>Today only a frozen, number-checked report exists. Live Q&amp;A adds risk on stage.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d6"><div><label for="d6">Live AI Q&amp;A for customers: in or out</label><p><b>Decided: out.</b> Frozen AI-written report templates, numbers filled from the data and checked.</p></div></div>
     <div class="card decision"><input type="checkbox" id="d7"><div><label for="d7">Business assumptions signed off</label><p>The placeholder values in params.yaml (market and business) need an owner.</p></div></div>
-    <div class="card decision"><input type="checkbox" id="d8"><div><label for="d8">Merge the weighing branch</label><p>After someone checks the 10-item human-review list.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d8"><div><label for="d8">Merge the weighing branch</label><p><b>Done:</b> merged after a review of the 10 items (two doubtful points for the hopper plate). The hydraulic self-lift is being added.</p></div></div>
   </section>
 
   <section data-panel="risks" hidden>
