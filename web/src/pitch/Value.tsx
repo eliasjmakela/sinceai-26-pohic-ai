@@ -73,8 +73,8 @@ export function Value() {
 
       <div className={`space-y-4 transition-opacity duration-500 ${after ? 'opacity-100' : 'pointer-events-none opacity-0'}`}>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi label="Customer cost per tonne" before={s.cost_per_t_before} after={s.cost_per_t_after} fmt={perT} showAfter={after} />
-        <Kpi label="Truck visits per year" before={s.lifts_before} after={s.lifts_after} fmt={(v) => v.toLocaleString('en')} showAfter={after} />
+        <Kpi label={`Customer cost per tonne, region ${m.region}`} before={s.cost_per_t_before} after={s.cost_per_t_after} fmt={perT} showAfter={after} />
+        <Kpi label={`Truck visits per year, region ${m.region}`} before={s.lifts_before} after={s.lifts_after} fmt={(v) => v.toLocaleString('en')} showAfter={after} />
         <Kpi label="Tonnes per visit" before={s.t_per_lift_before} after={s.t_per_lift_after} fmt={(v) => v.toFixed(2)} showAfter={after} />
         <Kpi label="Customers a challenger can win" before={s.accounts_contestable_today} after={s.accounts_contestable_after} fmt={(v) => `${v} / ${s.accounts}`} showAfter={after} />
       </div>

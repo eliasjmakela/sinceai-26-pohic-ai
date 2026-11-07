@@ -37,9 +37,9 @@ market:   # PLACEHOLDER values until the business-case teammate signs them off (
     unit: share of cost at 100 % regional share
     rationale: placeholder; denser routes make an operator with a large regional share cheaper (a real advantage, kept after OpenWeight)
   europress_fee_eur_per_t:
-    value: 2.6
+    value: 3.9
     unit: EUR per tonne (operator's cost of the service)
-    rationale: decided fee of EUR 20 per device per month = EUR 240 per year / 92.6 t per device-year
+    rationale: decided fee of EUR 30 per device per month (PRICING.md) = EUR 360 per year / 92.6 t per device-year
   sigma_sensor:
     value: 0.02
     unit: relative 1-sigma
