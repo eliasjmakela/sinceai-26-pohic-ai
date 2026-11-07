@@ -19,7 +19,7 @@ export function Today() {
         <FigureValue figure={m.headline.contestable_before} label={`of ${m.inputs.length} customers in region ${m.region} a challenger can safely win today`} />
       </div>
       <Card>
-        <Ecosystem mode="today" />
+        <Ecosystem step={0} />
         <p className="mt-2 text-sm text-slate-600">
           Forecasting a site's tonnes: the incumbent, from its own history, ±{Math.round(100 * m.sigma_inc)} %; a challenger, guessing from similar
           sites, ±{Math.round(100 * m.sigma_ent)} % (backtest on the synthetic dataset). A challenger who bids per kilo on a guess must add a risk
