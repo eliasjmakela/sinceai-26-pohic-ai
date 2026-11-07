@@ -24,3 +24,8 @@ web/dist/
 # Agent worktrees
 .claude/worktrees/
 web/.shots/
+Since.AI.2.json
+Since.AI.2.srt
+Since.AI.2.tsv
+Since.AI.2.vtt
+whisper_*.log
