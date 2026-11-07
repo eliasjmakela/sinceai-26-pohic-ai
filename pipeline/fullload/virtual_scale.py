@@ -1,4 +1,4 @@
-"""Virtual scale: how well can a compactor's weight be estimated from signals it already has? (synthetic data)
+"""Virtual scale (roadmap analysis, not in the product claim): estimating weight on older units. (synthetic data)
 
 Model (log-linear, explainable): log(kg) = material + machine type + b1 log(fill x container volume)
                                           + b2 log(1 + compaction cycles since last lift) + b3 log(days since last lift)

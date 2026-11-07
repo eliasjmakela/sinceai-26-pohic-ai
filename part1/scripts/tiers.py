@@ -47,7 +47,7 @@ T1_SIGMA = {k: round(rss([row[i] for row in ERROR_BUDGET_T1]), 1) for i, k in ((
 BOM_CITE = {"T0": "team estimate (software only)", "T1": "[4][5][6][7] + team estimate", "T2": "[8][9][10][11][26] + team estimate",
             "H1": "[6][9][10][22][25] + team estimate", "H5": "[8][9][10][11][23][26] + team estimate",
             "PS": "[27] + team estimate", "H7": "[39] + team estimate"}
-CHOSEN = "H1"
+CHOSEN = "H7"  # 7 Nov evening: H7 on every new COMBI (WEIGHING_CONCEPT §0)
 COST = json.loads((PART1 / "installed_cost.json").read_text())["candidates"]
 CAL = json.loads((GEN / "self_calibration.json").read_text())["levels"]
 H1_SIGMA = {l: round(CAL[l]["after_10_plus"]["fleet_h2_pct"], 1) for l in ("low", "mid", "high")}

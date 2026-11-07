@@ -1,5 +1,9 @@
 # Check: OpenWeight.pdf vs LIITE_perustelut.md vs the repo
 
+> **Superseded on 7 Nov evening — see MASTER.md and PRICING.md.** The €20 fee, the 1.6-year payback and the virtual
+> scale marked "agreed" below are no longer current: the fee is €30 per weighed device per month, every new COMBI
+> gets the H7 self-lift, and the virtual scale is roadmap only. `reviews/OPENWEIGHT_PDF_FIXES.md` has the current fix list.
+
 Checked 7 Nov 2026. Sources: `OpenWeight.pdf` (8 pp., Finnish), `LIITE_perustelut.md` (its appendix), and in this repo
 PRODUCT.md (Figure decisions, §1, §4), LIMITATIONS.md, `web/public/data/bundle.json`, `part1/WEIGHING_CONCEPT.md` §19,
 `reviews/SELF_WEIGHING_PAPER_REVIEW.md`, `pipeline/fullload/params.yaml` and the kit's `docs/BENCHMARK.md` and `docs/ECONOMIC_MODEL.md` (read only).

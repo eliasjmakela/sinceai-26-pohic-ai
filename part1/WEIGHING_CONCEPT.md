@@ -16,59 +16,43 @@ figure carries a tag: *estimate* (team reasoning or a simulation with team-estim
 but are "almost as expensive" [36]; the weight has to come cheap, it "doesn't need to be very accurate", and an
 option around €2,000 on a €20–25k COMBI is what customers would weigh it against [36].
 
-**Our recommendation: one architecture in three layers.** A virtual scale on every device, a real scale on a
-reference subset, and a fleet that calibrates both from the weighbridge tickets operators already have.
+**Our recommendation (changed 7 Nov evening): every new COMBI gets the H7 hydraulic self-lift, factory-fit.** A
+two-end version (H7-2) is an option for higher accuracy. DUO containers have no hydraulics; for DUO the hopper
+plate (H1) or weighing rails (H5) remain the options. Billing stays on the operator's certified weighbridge
+(Directive 2014/31/EU [15]); the device weight is an estimate for planning, forecasts and cross-checks.
 
-1. **A virtual scale on every device** (software on existing signals: fill, compaction cycles, press load). The
-   team pipeline (`virtual_scale`, synthetic data, likely optimistic) gets a median error of about 8 % per lift
-   uncalibrated, 7.6 % after a device's first 5 shared tickets and 5.5 % on monthly totals (PRODUCT.md §1). It
-   reaches the installed base for €10–215 per device (T0, team estimate, §7). In that simulation, raising the share
-   of reference devices above ~5 % adds little. So the real scale does not have to go on every unit.
-2. **A real scale on the reference subset.** We put two candidates forward:
-   - **H1 hopper-stage plate, factory-fit** (your idea, credited to Europress [36]). A small plate in the
-     charging-chamber floor sits on four 500 kg load cells and weighs each charge before and after the ram stroke.
-     The device adds up the charges. The cells never carry the 3–4.5 t machine [18][36], the up to 5 t of waste
-     [36] or the hook-lift forces, and the **same part fits COMBI and DUO**. Cost: €548–2,363 factory-fit (team
-     estimate, §7). Our own review (§18) found **two doubtful points**: the ram may slide over the plate on every
-     stroke (item 2), and an overload-stop gap under 0.5 mm is fragile in a chamber full of grit, ice and leachate
-     (item 3).
-   - **H7 hydraulic self-lift: the team's new idea, worth exploring** (§19). The COMBI uses its own power pack to
-     lift its door end about 10 mm. With the unit at rest, cylinder pressure × piston area gives that end's
-     reaction R, and the waste is W = (R − R0)·L / x_w. Nothing sits in the charging chamber, and no sensor stays in
-     the load path. It adds a cylinder, a valve section and a pressure sensor. Cost: €1,034–3,008 factory-fit,
-     COMBI only (team estimate, §19.7). Accuracy target: **1σ ≤ 5 % on a pick-up weight after 10 tickets**
-     (untested; budget 4.4 % at mid, §19.5). The unknown centre of mass of the waste is the main risk. Lifting both
-     ends removes it, at extra cost (§19.5). Pressure weighing on trucks and forklifts is well known (§11). What we did **not**
-     find is a stationary compactor that lifts itself on its own hydraulics to weigh at the site.
-3. **The fleet calibrates itself** (H2, our software edge). Bias in a cheap scale is stable per device. That holds
-   for H1's wall-hanging share and H7's centre of mass alike. So every weighbridge ticket an operator shares is a
-   free calibration point, and a new device starts from what its sister machines have learned. On the synthetic
-   lift history, H1's container-total error falls from **9.5 % to 4.6 % before the device's first ticket** and to
-   **3.4 % (2.3–5.4 %) after 10 tickets** (*estimate*, §4, Figure 2). For H7 the same mechanism absorbs the
-   geometry and mean centre-of-mass bias (§19.8).
-4. **Good enough for what OpenWeight needs.** Billing stays on the operator's weighbridge (PRODUCT.md §1). For
-   forecasts, weight-triggered pickups and per-site tonnage, a few percent is plenty. Summed over a month of lifts,
-   the per-site error drops further because the per-container errors are independent.
-5. **What we are not sure about** (honest list). For H1: whether a plate can live in the charging chamber (impacts
-   up to ~12 t, 7–14 t of floor pressure on every stroke, §5.3) and how much of a charge hangs on the walls. For
-   H7: the centre of mass at partial fill, seal friction in winter, units standing on rails or plinths that eat the
-   10 mm stroke margin, a 31–57 kN point load on a rear frame not designed for it, and CE work for a machine that
-   lifts itself (§19.6). These decide the bench tests (§14, §19.11).
-6. **Alternatives we costed.** Weighing guide rails (H5, the team's earlier idea) are 3–5× more accurate (≈1 %,
-   *estimate*) but cost €2,382–7,056 even on a new site because of the site work (team estimate, §7). The v1 strain
-   gauges (T1) are cheaper, but on a COMBI they measure frame bending, which changes every time the unit is set down
-   (§10). The platform scale lands at €7,860–22,160 (team estimate on [27]). The app interface keeps **H1** as its
-   chosen tier (`sigma_tiers.json`). H7 is listed beside it as the exploratory option.
+1. **How H7 works** (§19). The COMBI uses its own power pack to lift its door end about 10 mm. With the unit at
+   rest, cylinder pressure × piston area gives that end's reaction R, and the waste is W = (R − R0)·L / x_w.
+   Nothing sits in the charging chamber, and no sensor stays in the load path. It adds a cylinder, a valve section
+   and a pressure sensor. Worked example: tare 27 bar, reading 57 bar, 2.5 t of waste (§19.2).
+2. **Shared weighbridge tickets calibrate it** (H2, §4, §19.8). Bias in a cheap scale is stable per device, so
+   every ticket an operator shares is a free calibration point, and a new unit starts from what its sister
+   machines have learned. Accuracy on a 2.5 t pick-up: about **±10 % 1σ without tickets** and **±4.4 % 1σ after 10
+   tickets** (range 2.6–9.7 %, *estimate*, untested, §19.5). Target ≤ 5 %. Lifting both ends (H7-2) gives 3.2 %
+   at mid, at extra cost.
+3. **Cost.** €1,034–3,008 factory-fit incl. 6 years' upkeep (team estimate, §19.7): capex €800–2,370 plus upkeep
+   €39–106 a year. Retrofit is not recommended (€1,994–6,168). The business case needs H7 capex of at most about
+   €1,020 at a €30 operator fee (`PRICING.md`), so cost is the main risk.
+4. **Good enough for what OpenWeight needs.** For forecasts, weight-triggered pickups and per-site tonnage, a few
+   percent is plenty. Summed over a month of lifts, the per-site error drops further.
+5. **What we are not sure about** (honest list): the centre of mass at partial fill, seal friction in winter, units
+   standing on rails or plinths that eat the 10 mm stroke margin, a 31–57 kN point load on a rear frame not designed
+   for it, sideways tipping, and CE work for a machine that lifts itself (§19.6). These decide the tests (§19.11).
+6. **Alternatives we costed.** **H1 hopper-stage plate** (your idea, credited to Europress [36]): €548–2,363
+   factory-fit, the same part fits COMBI and DUO, but the ram may slide over the plate and the overload gap is
+   fragile (§3, §18). **H5 weighing guide rails**: ≈1 % (*estimate*) but €2,382–7,056 because of site work (§6, §7).
+   **T0 virtual weight** (software on existing signals, §7): not part of the product claim; a roadmap item that
+   could later estimate weights on older units. T1 strain gauges and the platform scale (€7,860–22,160) are in §10.
+   The app interface uses **H7** as its chosen tier (`sigma_tiers.json`).
 
-**Ask:** can a Europress engineer check the charging-chamber questions and the H7 frame, hydraulics and ground
-questions (11–14) in `ENGINEER_QUESTIONS.md`? Would Europress host a bench test of the plate (§14) and one
-self-lift test on a COMBI (§19.11)?
+**Ask:** can a Europress engineer check the H7 frame, hydraulics and ground questions (11–14) in
+`ENGINEER_QUESTIONS.md`, and host one self-lift test on a COMBI (§19.11)?
 
 ## 1. What changed in v2, and the requirement
 
 | v1 (6 Nov) | v2 (7 Nov, after Tommi [36]) |
 |---|---|
-| Chosen concept T1 strain gauges on the frame | **H1 hopper-stage plate + H2 self-calibration**; T1 kept as an alternative with a revised (worse) error budget |
+| Chosen concept T1 strain gauges on the frame | **H1 hopper-stage plate + H2 self-calibration**; T1 kept as an alternative with a revised (worse) error budget. Changed again 7 Nov evening: **H7 on every new COMBI** (§0, §19) |
 | BOM only | **Full installed cost per device** (H6), retrofit and factory-fit, for every candidate |
 | T0/T1/T2 | T0, T1, T2 plus **H1, H5 weighing rails, PS platform scale**; H7 hydraulic self-lift (team idea, §19) |
 | Accuracy goal: ±100 kg on 3 t | Planning grade: "doesn't need to be very accurate, but it must be cheap" [36]; billing stays on the weighbridge |
@@ -102,7 +86,10 @@ From public sources (marked) and our assumptions (marked *assumed*):
    is pulled onto a hook-lift truck and emptied at the treatment site. **DUO:** the compactor stays; only the
    container is detached and exchanged. SMART already logs compaction cycles, fill and a press-load signal [2][3].
 
-## 3. Recommended concept: H1 hopper-stage weighing + H2 self-calibration
+## 3. Alternative: H1 hopper-stage weighing + H2 self-calibration
+
+*Status (7 Nov evening): H7 (§19) is the chosen concept for COMBI. H1 was the earlier recommendation and remains
+an option for DUO, which has no hydraulics. The analysis below is kept as it was.*
 
 ![Figure 1: placement of H1 and H5 on COMBI and DUO](figures/placement_v2.svg)
 
@@ -421,17 +408,18 @@ hardware lines of §7):
 | H5 | Weighing guide rails (team idea) | 0.6 / 1.0 / 2.0 | 10 / 20 / 40 | €1,310–3,100 [8][9][10][11][23][26] + team estimate | 12–24 | SITES_WITHOUT_RAILS, ICE_AND_DEBRIS | estimate | [8] [12] [13] [20] [26] [27] |
 | PS | Platform scale under the whole unit (Europress's existing option) | 0.2 / 0.5 / 1.0 | 10 / 20 / 40 | €4,800–12,000 [27] + team estimate | 16–32 | COST | estimate | [27] [36] |
 
-| | T0 virtual | T1 strain gauges | **H1 hopper plate + H2** | H7 self-lift + H2 | H5 weighing rails | T2 cells in frame | PS platform scale |
+| | T0 virtual | T1 strain gauges | H1 hopper plate + H2 | **H7 self-lift + H2 (chosen)** | H5 weighing rails | T2 cells in frame | PS platform scale |
 |---|---|---|---|---|---|---|---|
 | Installed, factory-fit (§7, team estimate) | €10–125 | €226–1,179 | **€548–2,363** | €1,034–3,008 | €2,382–7,056 | €1,635–4,338 | €7,860–22,160 |
 | 1σ after calibration (*estimate*) | 5–20 % | 1.2–5.3 % | **2.3–5.4 %** | 2.6–9.7 % (one end), 1.7–8.4 % (both ends) | 0.6–2 % | 0.3–1 % | 0.2–1 % |
 | COMBI | yes | gauges travel, frame bending changes per set-down | **yes, isolated from unit load** | yes (new units), lifts its own door end | yes, ground side, 8–9.5 t range | cells travel with the unit | yes |
-| DUO | yes | yes (stationary rails) | **yes, same part** | not costed; speculative variant (§19.3) | yes, coupling bypass risk | per container, impractical | yes |
+| DUO | yes | yes (stationary rails) | **yes, same part** | no hydraulics on a DUO container; H1 or H5 for DUO (§19.3) | yes, coupling bypass risk | per container, impractical | yes |
 | Retrofit | remote | 4–8 h on site | hard (floor cut) | hard (frame, valve block) | site work | hard | site work |
 | Durability risk | none | gauges in the main load path | stops, seal, liquids | seals, foot, ground, rod in transport | ice, debris, set-down | transport shocks | low |
 | Main weakness | outliers, biowaste | support changes on COMBI | bridging bias (needs H2) | centre of mass, ground, CE | cost, site work | cost, transport | cost |
 
-**Why H1 and not the others.**
+**Why H1 was the earlier choice** (superseded 7 Nov evening: H7 on every new COMBI, §0 and §19; H1 stays an option
+for DUO).
 - Against **PS** (the prior attempt [36]) and **H5**: both weigh the whole unit or container, so they need heavy
   cells, restraint and site work, and they cost more than the ~€2,000 reference [36] in our model (team estimate, §7); they are far more
   accurate than planning needs. H5 is the right choice where a site needs near-settlement accuracy (§14 fallbacks).
@@ -441,10 +429,10 @@ hardware lines of §7):
   fallback.
 - Against **H7** (team idea, §19): H7 keeps every sensor out of the charging chamber and out of the load path. That
   avoids H1's two doubtful points. But it costs more, fits only COMBI, and depends on a centre-of-mass model, on
-  the ground and on CE work. We keep H1 as the chosen tier and present H7 as the idea to explore. Both can sit in
-  the reference subset that trains the virtual scale.
-- Against **T0**: T0 needs no hardware and should ship first as software for the installed base, but it is weak for
-  biowaste [3] and has heavy outliers (§9).
+  the ground and on CE work. On 7 Nov evening the team chose H7 for every new COMBI: it is factory-fit, keeps the
+  sensor out of the chamber, and shared tickets calibrate it. H1 stays an option for DUO.
+- Against **T0**: T0 needs no hardware, but it is weak for biowaste [3] and has heavy outliers (§9). It is a
+  roadmap item that could later estimate weights on older units, not part of the product claim.
 
 ## 11. Prior art (WG5) and what is new
 
@@ -566,10 +554,10 @@ there or use H5 at cardboard-heavy sites.
 
 ## 17. How this feeds OpenWeight
 
-The app reads `sigma_tiers.json` (same shape as v1; seven tiers incl. H7; `chosen_tier` = H1). The accuracy slider moves σ
+The app reads `sigma_tiers.json` (same shape as v1; seven tiers incl. H7; `chosen_tier` = H7). The accuracy slider moves σ
 between a tier's low, mid and high values. `installed_cost.json` gives the business case the full installed cost per
-device, retrofit and factory-fit. Beat 1 shows Figure 1, the cost row of §7 and the learning curve (Figure 2).
-Europress measures and verifies, and never transports; OpenWeight is the product name.
+device, retrofit and factory-fit; `pipeline/fullload/pricing.py` splits it into capex and upkeep. Screen 2 shows
+the H7 worked example (§19.2), its installed cost and its accuracy. Europress measures, and never transports; OpenWeight is the product name.
 
 ## References
 
@@ -818,12 +806,12 @@ phrased for Discord, are in `ENGINEER_QUESTIONS.md`):
 | 9 | Plausible order of magnitude | From the load calculations in `calc/loads.py`. |
 | 10 | Partly answered | Tommi: existing scale platforms are "almost as expensive"; the team document names Scaletipper X1 as expensive and limited to bin-fed sites. |
 
-Consequence: H1 has two doubtful mechanical points (2, 3). It stays the factory-fit reference credited to Europress,
-and the hydraulic self-lift (H7) is added as the team's new idea to explore (§19).
+Consequence: H1 has two doubtful mechanical points (2, 3). It stays an option credited to Europress (now for DUO),
+and the hydraulic self-lift (H7, §19) became the chosen concept for every new COMBI on 7 Nov evening.
 
 ## 19. H7: hydraulic self-lift (team idea)
 
-**Status: a new idea to explore, not a design.** H7 comes from the team document [39] (Mike, 7 Nov). It was
+**Status: the chosen concept for every new COMBI (untested).** H7 comes from the team document [39] (Mike, 7 Nov). It was
 reviewed independently (`reviews/PLUS_MALLI_REVIEW.md`), and every number below comes from `calc/h7_hydraulic.py`
 or `calc/installed_cost.py` (team estimates, untested). We kept the PDF's idea and procedure. Where its assumptions
 did not hold, we changed or flagged them (§19.9). Prior art is in §11.
@@ -1068,24 +1056,17 @@ foot pad on soft ground and the CE work in NRE. Against the ~€2,000 reference 
 above H1 factory-fit (€548–2,363). We did not get supplier quotes for the cylinder, valve or sensor, so every H7
 line is a team estimate (ENGINEER_QUESTIONS 12).
 
-### 19.8 How H7 combines with the virtual scale and H2
+### 19.8 How H7 fits OpenWeight
 
-The architecture is the one in PRODUCT.md §1: a virtual scale on every device, trained on a reference subset with a
-real scale, and calibrated per device from shared weighbridge tickets.
-
-1. **H7 as a reference device.** Each pick-up weight is a labelled training point for the virtual scale (`pipeline
-   virtual_scale`: ~8.3 % median error per lift uncalibrated, 7.6 % after 5 tickets, 5.5 % monthly; synthetic,
-   likely optimistic), and it arrives *between* tickets. The nightly readings show how a container gains mass
-   within one fill cycle, which teaches the virtual scale the fill-to-mass curve.
-2. **H2 calibrates H7 itself.** Tickets fit L/x_w(fill) per device, and a new H7 device starts from the fleet
-   prior. This is the step from case A to case B.
-3. **Fusion per lift.** The virtual-scale figure is a median absolute error, which is 7.6 / 0.6745 ≈ 11.3 % as a
-   1σ. Combined by inverse variance with case B, it gives 4.1 % at mid instead of 4.4 %. That is optimistic,
-   because both learn from the same tickets.
-4. **Reach.** In the pipeline simulation, reference shares above ~5 % add little (`virtual_scale.by_reference_share`).
-   So H7 does not need the installed base: new COMBI units are enough for the reference role. That turns the PDF's
-   weakness ("only new units", review §3) into a fit. It also answers the review's business point: H7 is fitted
-   where it trains the whole fleet, not sold as an add-on that brings no revenue.
+1. **H7 on every new COMBI.** Every new unit weighs each pick-up itself; no reference subset is needed. DUO
+   containers have no hydraulics; for DUO the hopper plate (H1) or weighing rails (H5) remain the options.
+2. **Shared tickets calibrate H7** (H2). The operator's certified weighbridge stays the bill. Its tickets fit
+   L/x_w(fill) per device, and a new unit starts from the fleet prior. This is the step from case A (~10 %) to
+   case B (4.4 % at mid).
+3. **Virtual scale: roadmap only.** A software estimate (`pipeline virtual_scale`, ~8 % median error per lift,
+   synthetic, likely optimistic) could later estimate weights on older units, trained on H7 readings. It is not
+   part of the product claim. Fused with case B it would give 4.1 % instead of 4.4 % at mid (optimistic: both learn
+   from the same tickets).
 
 ### 19.9 What we changed or flagged in the team document [39]
 

@@ -58,7 +58,7 @@ pipeline/fullload/    Python package (internal name "fullload"): starter-kit dat
   customer.py         customer and operator views, contract check, AI-summarized report
   value.py            value per device, compared with the business team's figures
   pricing.py          the operator fee and Europress cash flow (mirrored in web/src/pricing/model.ts; PRICING.md)
-  virtual_scale.py    virtual scale accuracy and calibration learning curve
+  virtual_scale.py    roadmap analysis: virtual scale for older units (not in the product claim)
   weighing.py         Part 1 numbers for the demo (installed cost, H7 statics), read from part1/
   validate.py         scores against dev labels (validation split only)
   params.yaml         every hypothetical assumption with its rationale

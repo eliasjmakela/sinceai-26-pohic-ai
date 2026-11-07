@@ -1,6 +1,7 @@
 # Questions for a Europress engineer (Discord-ready, ≤ 14)
 
-Context: our weighing concept v2 (`WEIGHING_CONCEPT.md`) builds on Tommi's hopper idea: a load-cell plate in the
+Context (updated 7 Nov evening): our chosen concept is now the H7 hydraulic self-lift on every new COMBI
+(`WEIGHING_CONCEPT.md` §0, §19; questions 11–14). Questions 1–10 are about the earlier lead and the DUO option, Tommi's hopper idea: a load-cell plate in the
 charging-chamber floor weighs each charge before and after the ram stroke, and the fleet calibrates the sum from
 shared weighbridge tickets. We are not mechanical engineers; these are the facts we could not find publicly.
 

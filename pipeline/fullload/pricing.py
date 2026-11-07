@@ -1,4 +1,4 @@
-"""The operator fee: EUR 20 or EUR 30 per device per month? (PRICING.md)
+"""The operator fee: EUR 30 per weighed device per month, customers free (PRICING.md).
 
 Architecture (decided 7 Nov evening): **every new compactor gets the H7 hydraulic self-lift**; billing stays on
 the operator's certified weighbridge, the device weight is for planning and cross-checks. The cash-flow structure is

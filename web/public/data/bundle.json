@@ -192,7 +192,7 @@
         "band": "under 60 % full",
         "eur_per_t": {
           "assumptions": [
-            "Tonnes are the device-side estimate"
+            "Charges are observed invoices; tonnes are the device-side estimate"
           ],
           "formula": "sum(per-visit charges) / sum(kg collected) x 1000, this band",
           "row_ids": [],
@@ -204,7 +204,7 @@
             "collection_events.device_fill_pct_before",
             "collection_events.device_estimated_collected_kg"
           ],
-          "tag": "observed",
+          "tag": "estimated",
           "unit": "EUR/t",
           "value": 166.8
         },
@@ -247,7 +247,7 @@
         "band": "60–90 % full",
         "eur_per_t": {
           "assumptions": [
-            "Tonnes are the device-side estimate"
+            "Charges are observed invoices; tonnes are the device-side estimate"
           ],
           "formula": "sum(per-visit charges) / sum(kg collected) x 1000, this band",
           "row_ids": [],
@@ -259,7 +259,7 @@
             "collection_events.device_fill_pct_before",
             "collection_events.device_estimated_collected_kg"
           ],
-          "tag": "observed",
+          "tag": "estimated",
           "unit": "EUR/t",
           "value": 69.6
         },
@@ -302,7 +302,7 @@
         "band": "90 % full or more",
         "eur_per_t": {
           "assumptions": [
-            "Tonnes are the device-side estimate"
+            "Charges are observed invoices; tonnes are the device-side estimate"
           ],
           "formula": "sum(per-visit charges) / sum(kg collected) x 1000, this band",
           "row_ids": [],
@@ -314,7 +314,7 @@
             "collection_events.device_fill_pct_before",
             "collection_events.device_estimated_collected_kg"
           ],
-          "tag": "observed",
+          "tag": "estimated",
           "unit": "EUR/t",
           "value": 49.0
         },

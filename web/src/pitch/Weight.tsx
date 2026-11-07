@@ -3,7 +3,7 @@ import { CostStrip } from '../components/CostStrip'
 import { H7Diagram } from '../components/H7Diagram'
 import { Card, TagBadge } from '../components/ui'
 
-/** Pitch screen 2 — how we get the weight: H7 hydraulic self-lift on reference units, a virtual scale on the rest. */
+/** Pitch screen 2 — how we get the weight: H7 hydraulic self-lift on every new COMBI, calibrated by shared weighbridge tickets. */
 export function Weight() {
   const h7 = bundle.weighing.h7
   const retro = bundle.weighing.installed_cost.strip.find((k) => k.id === 'H7')?.retrofit_eur
