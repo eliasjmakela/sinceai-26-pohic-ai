@@ -665,7 +665,9 @@ figure comes from the search listing, as marked.
 - [48] Regulation (EU) 2023/1230 on machinery (applies from 20 Jan 2027; replaces Directive 2006/42/EC).
   https://eur-lex.europa.eu/eli/reg/2023/1230/oj
 - [49] Team sheet *Duo: lift each end once, solve for weight and centre of gravity* (7 Nov 2026, 1 page; local file
-  `duo_mechanism.pdf`). Refers to a technical appendix we have not seen. Review: `reviews/DUO_MECHANISM_REVIEW.md`.
+  `duo_mechanism.pdf`) and its technical appendix `weighing_appendix.py` / `.pdf` (Monte Carlo, seed 42).
+  Reviews: `reviews/DUO_MECHANISM_REVIEW.md`, `reviews/WEIGHING_APPENDIX_REVIEW.md` (the appendix reproduces; the sheet
+  quotes 99.9 % / 95.6 % where the appendix gives 99.8 % / 94.0 %).
 
 ## Appendix A. Installed cost, line by line (`generated/calc_installed_cost.md`)
 
