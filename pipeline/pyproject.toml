@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fullload"
 version = "0.1.0"
-description = "FullLoad pipeline: precomputes the demo bundle from the Europress starter kit data. See PRODUCT.md."
+description = "OpenWeight pipeline (package fullload): precomputes the demo bundle from the Europress starter kit data. See PRODUCT.md."
 requires-python = ">=3.11"
 # The starter kit (europress-smart-material-value-engine) is NOT listed here: it is not on PyPI.
 # Install it first:  pip install -e resources/Europress_SMART_Material_Value_Engine_v1.0.1
@@ -22,7 +22,7 @@ fullload = "fullload.cli:main"
 include = ["fullload*"]
 
 [tool.setuptools.package-data]
-fullload = ["params.yaml"]
+fullload = ["params.yaml", "reports/*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
