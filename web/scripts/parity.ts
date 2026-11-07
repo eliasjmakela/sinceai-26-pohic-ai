@@ -1,8 +1,9 @@
-// Checks web/src/market/model.ts against the parity cases computed by pipeline/fullload/market.py.
+// Checks web/src/market/model.ts and web/src/pricing/model.ts against the parity cases computed by
+// pipeline/fullload/market.py and pipeline/fullload/pricing.py.
 // Run: npm run parity   (Node >= 23 runs TypeScript directly by stripping types)
 import { readFileSync } from 'node:fs'
-import { simulateBusiness } from '../src/business/model.ts'
 import { fnv1a, simulate } from '../src/market/model.ts'
+import { cashFlows, summarise } from '../src/pricing/model.ts'
 
 const bundle = JSON.parse(readFileSync(new URL('../public/data/bundle.json', import.meta.url), 'utf-8'))
 const m = bundle.market
@@ -19,13 +20,15 @@ for (const [i, c] of m.parity.entries()) {
     if (!ok) { console.error(`case ${i} ${k}: ts=${JSON.stringify(g)} py=${JSON.stringify(want)}`); failures++ }
   }
 }
-for (const [i, c] of bundle.business.parity.entries()) {
-  const got = simulateBusiness(c.params) as unknown as Record<string, number | null>
-  for (const [k, want] of Object.entries(c.result as Record<string, number | null>)) {
+for (const [i, c] of bundle.pricing.parity.entries()) {
+  const cfs = cashFlows(c.params, c.fee)
+  cfs.forEach((v, y) => { if (!close(v, c.cash_flows[y])) { console.error(`pricing case ${i} year ${y + 1}: ts=${v} py=${c.cash_flows[y]}`); failures++ } })
+  const got = summarise(cfs, c.params.discount_rate) as unknown as Record<string, number | null>
+  for (const [k, want] of Object.entries(c.summary as Record<string, number | null>)) {
     const g = got[k]
-    const ok = want === null ? g === null : close(g as number, want)
-    if (!ok) { console.error(`business case ${i} ${k}: ts=${g} py=${want}`); failures++ }
+    const ok = want === null ? g === null : Math.abs((g as number) - want) <= 1
+    if (!ok) { console.error(`pricing case ${i} ${k}: ts=${g} py=${want}`); failures++ }
   }
 }
-console.log(failures ? `PARITY FAILED (${failures})` : `parity OK (${m.parity.length} market + ${bundle.business.parity.length} business cases)`)
+console.log(failures ? `PARITY FAILED (${failures})` : `parity OK (${m.parity.length} market + ${bundle.pricing.parity.length} pricing cases)`)
 process.exit(failures ? 1 : 0)

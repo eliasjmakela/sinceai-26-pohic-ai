@@ -6,11 +6,9 @@ import { Card, TagBadge } from '../components/ui'
 /** Pitch screen 2 — how we get the weight: H7 hydraulic self-lift on reference units, a virtual scale on the rest. */
 export function Weight() {
   const h7 = bundle.weighing.h7
-  const vs = bundle.virtual_scale.headline
   const retro = bundle.weighing.installed_cost.strip.find((k) => k.id === 'H7')?.retrofit_eur
   const [lo1, mid1, hi1] = h7.sigma_one_point_pct
   const mid2 = h7.sigma_two_end_pct[1]
-  const pct = (v: number | null) => (v === null ? '—' : `${v.toFixed(1)} %`)
   return (
     <section className="space-y-6">
       <header>
@@ -55,24 +53,21 @@ export function Weight() {
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
-          <div className="text-xs font-semibold uppercase tracking-wide text-teal-700">a · A few units weigh</div>
-          <p className="mt-2 text-sm text-slate-700">About {Math.round(100 * bundle.virtual_scale.reference_share)} % of units carry a real scale: the hydraulic self-lift, or Europress's hopper plate on DUO.</p>
+          <div className="text-xs font-semibold uppercase tracking-wide text-teal-700">a · Every new compactor weighs</div>
+          <p className="mt-2 text-sm text-slate-700">The self-lift is built into every new COMBI at the factory, {bundle.pricing.params.new_units_per_year.toLocaleString('en')} units a year. Each reading goes to SMART with its uncertainty.</p>
         </Card>
         <Card>
-          <div className="flex items-start justify-between">
-            <div className="text-xs font-semibold uppercase tracking-wide text-teal-700">b · Every unit estimates</div><TagBadge tag="simulated" />
-          </div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-teal-700">b · Tickets calibrate it</div>
           <p className="mt-2 text-sm text-slate-700">
-            A virtual scale learns from them and estimates every other lift from fill, compaction cycles and days since the last lift:
-            median error {pct(vs.uncalibrated_lift_error_pct.value)} per lift ({pct(vs.calibrated_lift_error_pct.value)} after 5 tickets,
-            {' '}{pct(vs.calibrated_month_error_pct.value)} per month). Fill level alone: {pct(vs.fill_only_uncalibrated_lift_error_pct.value)}.
+            Each weighbridge ticket the operator shares gives the true weight of one load. Ten tickets fit the unit's own geometry and
+            bring the error from about ±{h7.sigma_one_point_no_tickets_pct} % to ±{mid1} %.
           </p>
         </Card>
         <Card>
           <div className="text-xs font-semibold uppercase tracking-wide text-teal-700">c · The bill stays certified</div>
           <p className="mt-2 text-sm text-slate-700">
-            Billing stays on the operator's certified weighbridge, as today. Every shared ticket checks the device's own estimate;
-            a sensor that drifts is caught and recalibrated.
+            We bill by the real scale: the operator's certified weighbridge, as today. The self-lift gives the estimates for planning,
+            and every shared ticket checks it, so a drifting sensor is caught and recalibrated.
           </p>
         </Card>
       </div>

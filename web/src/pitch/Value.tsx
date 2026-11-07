@@ -40,8 +40,9 @@ export function Value() {
   const s = useMemo(() => simulate(m.inputs, m.operators, m.sigma_inc, m.sigma_ent, m.params).summary, [m])
   const t = bundle.validation.trips_check
   const svc = bundle.hero.service_check
-  const biz = bundle.business
-  const r = biz.default
+  const pr = bundle.pricing
+  const fee = pr.recommended_fee_eur_per_month
+  const h = pr.headline
   const perT = (c: number) => `€${(c / 100).toFixed(0)}/t`
   const saving = Math.round((100 * (s.cost_per_t_before - s.cost_per_t_after)) / s.cost_per_t_before)
   return (
@@ -84,14 +85,15 @@ export function Value() {
           ...(t ? [`${t.labelled_premature_pct}–${t.model_removed_pct} % fewer truck visits`] : []),
           ...(svc ? [`sees whether the contract is kept: ${svc.on_time_share_pct} % of visits on time, ${eur(svc.invoice_above_contract_eur)} invoiced above contract`] : []),
         ]} />
-        <Party who="Operators" pays={`pay €${biz.params.fee_eur_per_device_month} per device per month`} tag="simulated" lines={[
+        <Party who="Operators" pays={`pay €${fee} per weighed device per month`} tag="simulated" lines={[
           `forecast any site at ±${Math.round(100 * m.sigma_inc)} %, not ±${Math.round(100 * m.sigma_ent)} %`,
           'bid per kilo without a risk premium',
           'win customers on efficiency, run fuller trucks',
         ]} />
         <Party who="Europress" pays="becomes a service company" tag="hypothetical" lines={[
-          `${eur(r.service_revenue)} service revenue a year (${biz.params.devices_total.toLocaleString('en')} devices, ${Math.round(100 * biz.params.paying_coverage)} % with a paying operator)`,
-          `weighing investment ${eur(r.investment)}, paid back in ${r.payback_years === null ? 'never' : r.payback_years.toFixed(1)} years`,
+          `every new compactor weighs itself (${pr.params.new_units_per_year.toLocaleString('en')} a year)`,
+          `team model: NPV ${eur(h.team_npv_eur.value ?? 0)} over 10 years, pays back in year ${h.team_payback_year.value}`,
+          `needs the self-lift built for at most €${(h.max_h7_capex_eur.value ?? 0).toLocaleString('en')} (our estimate €${pr.h7_cost.capex_eur[0].toLocaleString('en')}–${pr.h7_cost.capex_eur[1].toLocaleString('en')})`,
           'operators recommend the weighing compactor: more machine sales',
         ]} />
       </div>

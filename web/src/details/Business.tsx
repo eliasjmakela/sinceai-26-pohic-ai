@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react'
 import { bundle } from '../bundle'
-import { simulateBusiness, type BizParams } from '../business/model'
+import { cashFlows, summarise, type PricingParams } from '../pricing/model'
 import { Slider } from '../components/ui'
 
-/** Detail: the business and the SMART integration (PRODUCT.md §4). Slider maths: web/src/business/model.ts. */
+/** Detail: the business, the fee decision and the SMART integration (PRICING.md). Slider maths: web/src/pricing/model.ts. */
 const eur = (v: number) => `${v < 0 ? '−' : ''}${Math.abs(v) >= 1e6 ? `€${(Math.abs(v) / 1e6).toFixed(2)} M` : `€${Math.round(Math.abs(v)).toLocaleString('en')}`}`
 const LEVER: Record<string, string> = {
   pricing_risk: 'Operator: pricing risk removed', avoidable_trips: 'Customer: avoidable half-empty visits',
@@ -28,12 +28,14 @@ const LIFT_ORDER = {
 }
 
 export function Business() {
-  const b = bundle.business
+  const pr = bundle.pricing
   const v = bundle.value_per_device
-  const [p, setP] = useState<BizParams>(b.params)
-  const set = (k: keyof BizParams) => (x: number) => setP({ ...p, [k]: x })
-  const r = useMemo(() => simulateBusiness(p), [p])
-  const h1 = b.installed_cost_ranges.H1_factory_fit
+  const [p, setP] = useState<PricingParams>(pr.params)
+  const [fee, setFee] = useState(pr.recommended_fee_eur_per_month)
+  const set = (k: keyof PricingParams) => (x: number) => setP({ ...p, [k]: x })
+  const cfs = useMemo(() => cashFlows(p, fee), [p, fee])
+  const r = useMemo(() => summarise(cfs, p.discount_rate), [cfs, p.discount_rate])
+  const [capLo, capHi] = pr.h7_cost.capex_eur
   return (
     <section className="space-y-6">
       <header>
@@ -66,41 +68,44 @@ export function Business() {
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-2">
           <div className="flex items-center justify-between">
-            <div className="text-sm font-medium text-slate-900">Europress, {p.devices_total.toLocaleString('en')} devices</div>
+            <div className="text-sm font-medium text-slate-900">Europress over {p.years} years: H7 on every new compactor ({p.new_units_per_year.toLocaleString('en')} a year)</div>
             <span className="rounded bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800">hypothetical</span>
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-4">
             {[
-              ['Weighing investment (one-off)', eur(r.investment)],
-              ['Service revenue / year', eur(r.service_revenue)],
-              ['Extra machine sales margin / year', eur(r.extra_sales_margin)],
-              ['Operating cost / year', eur(-r.opex)],
-              ['Net / year', eur(r.net_per_year)],
-              ['Payback', r.payback_years === null ? 'never' : `${r.payback_years.toFixed(1)} years`],
+              [`NPV at ${Math.round(100 * p.discount_rate)} %`, eur(r.npv_eur)],
+              ['Pays back in', r.payback_year === null ? 'never' : `year ${r.payback_year}`],
+              ['Deepest cash position', eur(r.deepest_eur)],
+              [`Cumulative, year ${p.years}`, eur(r.cumulative_eur)],
             ].map(([k, val]) => (
               <div key={k} className="rounded-lg bg-slate-50 p-3"><div className="text-xs text-slate-500">{k}</div><div className="text-2xl font-semibold tabular-nums">{val}</div></div>
             ))}
           </div>
+          <div className="flex h-24 items-end gap-1" aria-label="Cash flow per year">
+            {cfs.map((c, i) => {
+              const m = Math.max(...cfs.map(Math.abs)) || 1
+              return (
+                <div key={i} className="flex h-full flex-1 flex-col justify-center">
+                  <div className="flex h-1/2 items-end"><div className="w-full rounded-t bg-teal-700" style={{ height: `${c > 0 ? (100 * c) / m : 0}%` }} /></div>
+                  <div className="flex h-1/2 items-start"><div className="w-full rounded-b bg-rose-600" style={{ height: `${c < 0 ? (-100 * c) / m : 0}%` }} /></div>
+                </div>
+              )
+            })}
+          </div>
           <p className="text-sm text-slate-600">
-            Customer pays: <b>€0</b>. Fee per covered device: {eur(r.fee_per_device_year)}/year. Over {p.horizon_years} years: {eur(r.cumulative_net_horizon)} after the investment.
+            Customer pays <b>€0</b>. Cash flow per year above; the model is the team document's (LIITE §6.3), with the H7 cost from Part 1.
+            Break-even fee with Part 1's mid cost: €{pr.scenarios['base (Part 1 installed cost)'].break_even_fee}/month; at €{pr.recommended_fee_eur_per_month} the H7 must cost
+            at most €{pr.max_h7_capex_eur[String(pr.recommended_fee_eur_per_month)]?.toLocaleString('en')}.
           </p>
         </div>
         <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="inline-flex rounded-lg border border-slate-300 p-1 text-xs font-medium">
-            {(['per_device_month', 'per_tonne'] as const).map((m) => (
-              <button key={m} type="button" onClick={() => setP({ ...p, fee_mode: m })}
-                className={`rounded-md px-3 py-1 ${p.fee_mode === m ? 'bg-teal-700 text-white' : 'text-slate-600'}`}>{m === 'per_device_month' ? 'fee per device' : 'fee per tonne'}</button>
-            ))}
-          </div>
-          {p.fee_mode === 'per_device_month'
-            ? <Slider label="Fee per device / month" value={p.fee_eur_per_device_month} min={0} max={60} step={1} fmt={(x) => `€${x}`} onChange={set('fee_eur_per_device_month')} />
-            : <Slider label="Fee per verified tonne" value={p.fee_eur_per_t} min={0} max={10} step={0.5} fmt={(x) => `€${x.toFixed(1)}`} onChange={set('fee_eur_per_t')} />}
-          <Slider label="Devices with a paying operator" value={p.paying_coverage} min={0.1} max={1} step={0.05} fmt={(x) => `${Math.round(100 * x)} %`} onChange={set('paying_coverage')} />
-          <Slider label="Hopper weighing cost / device" value={p.h1_cost_eur} min={0} max={h1[1]} step={50} fmt={(x) => `€${x.toLocaleString('en')}`} onChange={set('h1_cost_eur')} />
-          <Slider label="Devices with hopper weighing" value={p.h1_share} min={0} max={1} step={0.05} fmt={(x) => `${Math.round(100 * x)} %`} onChange={set('h1_share')} />
+          <Slider label="Operator fee per device / month" value={fee} min={10} max={60} step={1} fmt={(x) => `€${x}`} onChange={setFee} />
+          <Slider label="H7 cost per new unit (capex)" value={p.h7_capex_eur} min={500} max={capHi} step={25} fmt={(x) => `€${x.toLocaleString('en')}`} onChange={set('h7_capex_eur')} />
+          <Slider label="Weighed units with a paying operator" value={p.adoption} min={0.2} max={1} step={0.05} fmt={(x) => `${Math.round(100 * x)} %`} onChange={set('adoption')} />
+          <Slider label="Tender package price" value={p.package_eur} min={0} max={1000} step={50} fmt={(x) => `€${x}`} onChange={set('package_eur')} />
           <Slider label="Extra machine sales" value={p.sales_growth} min={0} max={0.15} step={0.01} fmt={(x) => `+${Math.round(100 * x)} %`} onChange={set('sales_growth')} />
-          <p className="text-xs text-slate-500">Hopper cost: business team €500; Part 1 installed cost (factory-fit) €{h1[0].toLocaleString('en')}–{h1[1].toLocaleString('en')}.</p>
-          <button type="button" onClick={() => setP(b.params)} className="text-xs text-slate-500 underline">reset</button>
+          <p className="text-xs text-slate-500">H7 capex (Part 1, factory fit, without the 6-year upkeep): €{capLo.toLocaleString('en')}–{capHi.toLocaleString('en')}; team document €825.</p>
+          <button type="button" onClick={() => { setP(pr.params); setFee(pr.recommended_fee_eur_per_month) }} className="text-xs text-slate-500 underline">reset</button>
         </div>
       </div>
 
@@ -108,7 +113,7 @@ export function Business() {
         <div className="mb-3 text-sm font-medium text-slate-900">How it plugs into SMART</div>
         <div className="grid items-start gap-3 lg:grid-cols-[1fr_auto_1.2fr_auto_1fr]">
           <div className="space-y-3">
-            <Box title="Compactor (Europress)" lines={['fill level, ram pressure, cycles (today)', 'weight: virtual + hopper plate (new)']} />
+            <Box title="Compactor (Europress)" lines={['fill level, ram pressure, cycles (today)', 'weight: hydraulic self-lift on every new unit']} />
             <Box title="Operator weighbridge (optional)" lines={['shared tickets', 'used only to calibrate and cross-check']} tone="amber" />
           </div>
           <div className="self-center text-2xl text-slate-400">→</div>

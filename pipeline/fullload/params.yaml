@@ -44,64 +44,77 @@ market:   # PLACEHOLDER values until the business-case teammate signs them off (
     value: 0.02
     unit: relative 1-sigma
     rationale: placeholder until Part 1 v2 lands; systematic sensor error added to the forecast error after OpenWeight
-business:   # business team assumptions (message of 7 Nov; scripts pending in analysis/business/). HYPOTHETICAL.
-  devices_total:
-    value: 10000
-    unit: devices
-    rationale: business team; roughly the installed base Tommi mentioned
-  paying_coverage:
-    value: 0.5
-    unit: share of devices
-    rationale: business team; half of the devices are served by an operator that pays for OpenWeight
-  fee_mode:
-    value: per_device_month
-    unit: per_device_month | per_tonne
-    rationale: decided 7 Nov (PRODUCT.md, figure decisions); per tonne kept as a sensitivity toggle
-  fee_eur_per_device_month:
-    value: 20
-    unit: EUR per device per month
-    rationale: business team; within 10-30 % of the operator's avoided pricing risk; Enevo charged EUR 10-14
-  fee_eur_per_t:
-    value: 2.6
-    unit: EUR per verified tonne
-    rationale: equivalent of EUR 20 per device per month at 92.6 t per device-year (alternative fee unit, sensitivity only)
-  t0_share:
-    value: 1.0
-    unit: share of devices
-    rationale: business team; software-only virtual weight on every device
-  t0_cost_eur:
-    value: 0
-    unit: EUR per device
-    rationale: business team (Part 1 v2 installed cost factory-fit EUR 10-125)
-  h1_share:
-    value: 0.3
-    unit: share of devices
-    rationale: business team; hopper weighing where accuracy is worth the money
-  h1_cost_eur:
+
+pricing:   # the operator fee decision (PRICING.md, pipeline/fullload/pricing.py). HYPOTHETICAL unless stated.
+  years:
+    value: 10
+    unit: years
+    rationale: same horizon as the team document's cash-flow model (LIITE §6.3)
+  discount_rate:
+    value: 0.08
+    unit: per year
+    rationale: team document (LIITE §6.3), ordinary corporate rate
+  ramp_years:
+    value: 4
+    unit: years
+    rationale: operator adoption grows linearly to the paying share in 4 years (LIITE §6.3)
+  new_units_per_year:
+    value: 1200
+    unit: units
+    rationale: Europress factory output, ~1,200 compactors a year (Tommi, LIITE L6); every new unit gets H7
+  adoption:
+    value: 0.6
+    unit: share of weighed units
+    rationale: team document (LIITE §6.3), a guess; the second most sensitive input
+  platform_eur_per_unit_year:
+    value: 26
+    unit: EUR per weighed unit per year
+    rationale: team document (LIITE §6.3), data and language model
+  fixed_cost_eur_per_year:
+    value: 400000
+    unit: EUR per year
+    rationale: team document (LIITE §6.3), ~3 developers, cloud, partner manager
+  package_eur:
     value: 500
-    unit: EUR per device
-    rationale: business team (Part 1 v2 installed cost factory-fit EUR 548-2,363)
-  opex_eur_per_device_year:
-    value: 74
-    unit: EUR per device per year
-    rationale: business team; EUR 0.74 M per year for 10,000 devices
+    unit: EUR per tender package
+    rationale: team document (LIITE §6.3), ~20 % of the profit of one won contract
+  bidders:
+    value: 2.5
+    unit: operators buying a package per tender
+    rationale: team document (LIITE §6.3), a guess
+  tender_share:
+    value: 0.35
+    unit: share of contracts tendered with OpenWeight
+    rationale: team document (LIITE §6.3), a guess
+  tender_interval_years:
+    value: 3
+    unit: years
+    rationale: contracts retendered about every 3 years (Tommi)
   sales_growth:
     value: 0.05
-    unit: share
-    rationale: business team; extra machine sales from operators promoting weighing-capable Europress machines
+    unit: share of new units
+    rationale: team document and business team, +5 % machine sales, a guess
   device_price_eur:
     value: 22500
     unit: EUR
-    rationale: business team; basic COMBI EUR 20-25k (Tommi)
+    rationale: basic COMBI EUR 20-25k (Tommi)
   device_margin:
     value: 0.25
     unit: share
-    rationale: business team
-  renewal_years:
-    value: 6
-    unit: years
-    rationale: business team; machines renewed every 6 years (lease period)
-  horizon_years:
-    value: 6
-    unit: years
-    rationale: one lease period
+    rationale: team document and business team, a guess
+  fees_eur_per_month:
+    value: [15, 20, 25, 30]
+    unit: EUR per device per month
+    rationale: the two candidates (EUR 20 business team, EUR 30 team document) and their neighbours
+  operator_cost_per_visit_eur:
+    value: [60, 116]
+    unit: EUR
+    rationale: operator's own cost of an avoidable visit (truck + driver); LIITE §1.2 corrected range
+  operator_value_team_eur:
+    value: 1360
+    unit: EUR per device per year
+    rationale: team document's operator gain ~EUR 1,400 with the corrected visit value (LIITE §9, 1,330-1,390)
+  operator_margin_pct:
+    value: [2.7, 8.0]
+    unit: percent of revenue
+    rationale: observed operating margins 2025, Stena Recycling 2.7 %, L&T 8.0 % (LIITE §6.2)

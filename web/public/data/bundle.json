@@ -1,245 +1,4 @@
 {
-  "business": {
-    "default": {
-      "cumulative_net_horizon": 4072500.0,
-      "customer_pays": 0.0,
-      "extra_sales_margin": 468750.00000000006,
-      "fee_per_device_year": 240,
-      "investment": 1500000.0,
-      "net_per_year": 928750.0,
-      "opex": 740000,
-      "payback_years": 1.6150740242261103,
-      "service_revenue": 1200000.0
-    },
-    "headline": {
-      "extra_sales_margin_eur": {
-        "assumptions": [],
-        "formula": "devices / renewal years x sales growth x device price x margin",
-        "row_ids": [],
-        "sigma": null,
-        "sources": [
-          "params.yaml: business (business team assumptions)",
-          "collection_events (tonnes per device)",
-          "part1/installed_cost.json: factory-fit installed cost per concept"
-        ],
-        "tag": "hypothetical",
-        "unit": "EUR",
-        "value": 468750.0
-      },
-      "investment_eur": {
-        "assumptions": [],
-        "formula": "devices x (T0 share x T0 cost + H1 share x H1 cost)",
-        "row_ids": [],
-        "sigma": null,
-        "sources": [
-          "params.yaml: business (business team assumptions)",
-          "collection_events (tonnes per device)",
-          "part1/installed_cost.json: factory-fit installed cost per concept"
-        ],
-        "tag": "hypothetical",
-        "unit": "EUR",
-        "value": 1500000.0
-      },
-      "net_per_year_eur": {
-        "assumptions": [],
-        "formula": "service revenue + extra sales margin - opex",
-        "row_ids": [],
-        "sigma": null,
-        "sources": [
-          "params.yaml: business (business team assumptions)",
-          "collection_events (tonnes per device)",
-          "part1/installed_cost.json: factory-fit installed cost per concept"
-        ],
-        "tag": "hypothetical",
-        "unit": "EUR",
-        "value": 928750.0
-      },
-      "payback_years": {
-        "assumptions": [],
-        "formula": "investment / net per year",
-        "row_ids": [],
-        "sigma": null,
-        "sources": [
-          "params.yaml: business (business team assumptions)",
-          "collection_events (tonnes per device)",
-          "part1/installed_cost.json: factory-fit installed cost per concept"
-        ],
-        "tag": "hypothetical",
-        "unit": "years",
-        "value": 1.6
-      },
-      "service_revenue_eur": {
-        "assumptions": [],
-        "formula": "devices x paying coverage x fee per device-year",
-        "row_ids": [],
-        "sigma": null,
-        "sources": [
-          "params.yaml: business (business team assumptions)",
-          "collection_events (tonnes per device)",
-          "part1/installed_cost.json: factory-fit installed cost per concept"
-        ],
-        "tag": "hypothetical",
-        "unit": "EUR",
-        "value": 1200000.0
-      }
-    },
-    "installed_cost_ranges": {
-      "H1_factory_fit": [
-        548,
-        2363
-      ],
-      "T0_factory_fit": [
-        10,
-        125
-      ],
-      "note": "Part 1 installed cost includes 6-year maintenance; opex is counted separately here, so the Part 1 figure slightly double-counts upkeep.",
-      "source": "part1/installed_cost.json: factory-fit installed cost per concept"
-    },
-    "params": {
-      "device_margin": 0.25,
-      "device_price_eur": 22500,
-      "devices_total": 10000,
-      "fee_eur_per_device_month": 20,
-      "fee_eur_per_t": 2.6,
-      "fee_mode": "per_device_month",
-      "h1_cost_eur": 500,
-      "h1_share": 0.3,
-      "horizon_years": 6,
-      "opex_eur_per_device_year": 74,
-      "paying_coverage": 0.5,
-      "renewal_years": 6,
-      "sales_growth": 0.05,
-      "t0_cost_eur": 0,
-      "t0_share": 1.0,
-      "tonnes_per_device_year": 92.6
-    },
-    "parity": [
-      {
-        "params": {
-          "device_margin": 0.25,
-          "device_price_eur": 22500,
-          "devices_total": 10000,
-          "fee_eur_per_device_month": 20,
-          "fee_eur_per_t": 2.6,
-          "fee_mode": "per_device_month",
-          "h1_cost_eur": 500,
-          "h1_share": 0.3,
-          "horizon_years": 6,
-          "opex_eur_per_device_year": 74,
-          "paying_coverage": 0.5,
-          "renewal_years": 6,
-          "sales_growth": 0.05,
-          "t0_cost_eur": 0,
-          "t0_share": 1.0,
-          "tonnes_per_device_year": 92.6
-        },
-        "result": {
-          "cumulative_net_horizon": 4072500.0,
-          "customer_pays": 0.0,
-          "extra_sales_margin": 468750.00000000006,
-          "fee_per_device_year": 240,
-          "investment": 1500000.0,
-          "net_per_year": 928750.0,
-          "opex": 740000,
-          "payback_years": 1.6150740242261103,
-          "service_revenue": 1200000.0
-        }
-      },
-      {
-        "params": {
-          "device_margin": 0.25,
-          "device_price_eur": 22500,
-          "devices_total": 10000,
-          "fee_eur_per_device_month": 20,
-          "fee_eur_per_t": 2.6,
-          "fee_mode": "per_tonne",
-          "h1_cost_eur": 500,
-          "h1_share": 0.3,
-          "horizon_years": 6,
-          "opex_eur_per_device_year": 74,
-          "paying_coverage": 0.5,
-          "renewal_years": 6,
-          "sales_growth": 0.05,
-          "t0_cost_eur": 0,
-          "t0_share": 1.0,
-          "tonnes_per_device_year": 92.6
-        },
-        "result": {
-          "cumulative_net_horizon": 4095300.0,
-          "customer_pays": 0.0,
-          "extra_sales_margin": 468750.00000000006,
-          "fee_per_device_year": 240.76,
-          "investment": 1500000.0,
-          "net_per_year": 932550.0,
-          "opex": 740000,
-          "payback_years": 1.608492842206852,
-          "service_revenue": 1203800.0
-        }
-      },
-      {
-        "params": {
-          "device_margin": 0.25,
-          "device_price_eur": 22500,
-          "devices_total": 10000,
-          "fee_eur_per_device_month": 20,
-          "fee_eur_per_t": 2.6,
-          "fee_mode": "per_device_month",
-          "h1_cost_eur": 2363,
-          "h1_share": 0.3,
-          "horizon_years": 6,
-          "opex_eur_per_device_year": 74,
-          "paying_coverage": 0.5,
-          "renewal_years": 6,
-          "sales_growth": 0.05,
-          "t0_cost_eur": 125,
-          "t0_share": 1.0,
-          "tonnes_per_device_year": 92.6
-        },
-        "result": {
-          "cumulative_net_horizon": -2766500.0,
-          "customer_pays": 0.0,
-          "extra_sales_margin": 468750.00000000006,
-          "fee_per_device_year": 240,
-          "investment": 8339000.0,
-          "net_per_year": 928750.0,
-          "opex": 740000,
-          "payback_years": 8.978734858681023,
-          "service_revenue": 1200000.0
-        }
-      },
-      {
-        "params": {
-          "device_margin": 0.25,
-          "device_price_eur": 22500,
-          "devices_total": 10000,
-          "fee_eur_per_device_month": 20,
-          "fee_eur_per_t": 2.6,
-          "fee_mode": "per_device_month",
-          "h1_cost_eur": 500,
-          "h1_share": 0.3,
-          "horizon_years": 6,
-          "opex_eur_per_device_year": 74,
-          "paying_coverage": 1.0,
-          "renewal_years": 6,
-          "sales_growth": 0.0,
-          "t0_cost_eur": 0,
-          "t0_share": 1.0,
-          "tonnes_per_device_year": 92.6
-        },
-        "result": {
-          "cumulative_net_horizon": 8460000.0,
-          "customer_pays": 0.0,
-          "extra_sales_margin": 0.0,
-          "fee_per_device_year": 240,
-          "investment": 1500000.0,
-          "net_per_year": 1660000.0,
-          "opex": 740000,
-          "payback_years": 0.9036144578313253,
-          "service_revenue": 2400000.0
-        }
-      }
-    ]
-  },
   "fleet": {
     "devices": {
       "assumptions": [],
@@ -3705,6 +3464,879 @@
       "low_load_share": 0.4
     }
   },
+  "pricing": {
+    "h7_cost": {
+      "capex_eur": [
+        800,
+        2370
+      ],
+      "capex_mid_eur": 1585,
+      "upkeep_eur_per_year": [
+        39,
+        106
+      ],
+      "upkeep_mid_eur_per_year": 73
+    },
+    "headline": {
+      "break_even_fee": {
+        "assumptions": [],
+        "formula": "smallest monthly fee with NPV >= 0",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: pricing",
+          "part1/installed_cost.json",
+          "pipeline/fullload/pricing.py"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR per month",
+        "value": 48
+      },
+      "max_h7_capex_eur": {
+        "assumptions": [],
+        "formula": "highest H7 capex with NPV >= 0 at EUR 30 per month (design-to-cost target)",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: pricing",
+          "part1/installed_cost.json",
+          "pipeline/fullload/pricing.py"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": 1020
+      },
+      "npv_20_eur": {
+        "assumptions": [],
+        "formula": "10-year NPV at 8 %, EUR 20 per device per month",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: pricing",
+          "part1/installed_cost.json",
+          "pipeline/fullload/pricing.py"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": -7168924
+      },
+      "npv_30_eur": {
+        "assumptions": [],
+        "formula": "10-year NPV at 8 %, EUR 30 per device per month",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: pricing",
+          "part1/installed_cost.json",
+          "pipeline/fullload/pricing.py"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": -4530290
+      },
+      "team_npv_eur": {
+        "assumptions": [],
+        "formula": "10-year NPV at EUR 30, team document's H7 EUR 825",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: pricing",
+          "part1/installed_cost.json",
+          "pipeline/fullload/pricing.py"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": 2491463
+      },
+      "team_payback_year": {
+        "assumptions": [],
+        "formula": "payback year at EUR 30, team document's H7 EUR 825",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: pricing",
+          "part1/installed_cost.json",
+          "pipeline/fullload/pricing.py"
+        ],
+        "tag": "hypothetical",
+        "unit": "year",
+        "value": 7
+      }
+    },
+    "max_h7_capex_eur": {
+      "15": 530,
+      "20": 690,
+      "25": 850,
+      "30": 1020
+    },
+    "operator": {
+      "by_fee": [
+        {
+          "fee_eur_per_month": 15,
+          "fee_eur_per_year": 180,
+          "net_hard_gain_eur": [
+            -30,
+            257,
+            682
+          ],
+          "share_of_hard_gain_mid_pct": 41,
+          "share_of_profit_today_pct": [
+            22,
+            65
+          ],
+          "share_of_team_value_pct": 13
+        },
+        {
+          "fee_eur_per_month": 20,
+          "fee_eur_per_year": 240,
+          "net_hard_gain_eur": [
+            -90,
+            197,
+            622
+          ],
+          "share_of_hard_gain_mid_pct": 55,
+          "share_of_profit_today_pct": [
+            29,
+            87
+          ],
+          "share_of_team_value_pct": 18
+        },
+        {
+          "fee_eur_per_month": 25,
+          "fee_eur_per_year": 300,
+          "net_hard_gain_eur": [
+            -150,
+            137,
+            562
+          ],
+          "share_of_hard_gain_mid_pct": 69,
+          "share_of_profit_today_pct": [
+            37,
+            109
+          ],
+          "share_of_team_value_pct": 22
+        },
+        {
+          "fee_eur_per_month": 30,
+          "fee_eur_per_year": 360,
+          "net_hard_gain_eur": [
+            -210,
+            77,
+            502
+          ],
+          "share_of_hard_gain_mid_pct": 82,
+          "share_of_profit_today_pct": [
+            44,
+            130
+          ],
+          "share_of_team_value_pct": 26
+        }
+      ],
+      "fewer_visits_pct": [
+        6.1,
+        18.1
+      ],
+      "hard_gain_eur": [
+        150,
+        437,
+        862
+      ],
+      "profit_per_device_today_eur": [
+        276,
+        818
+      ],
+      "spend_median_eur": 10220,
+      "team_value_eur": 1360,
+      "visits_per_device": 41.1
+    },
+    "params": {
+      "adoption": 0.6,
+      "bidders": 2.5,
+      "device_margin": 0.25,
+      "device_price_eur": 22500,
+      "discount_rate": 0.08,
+      "fees_eur_per_month": [
+        15,
+        20,
+        25,
+        30
+      ],
+      "fixed_cost_eur_per_year": 400000,
+      "h7_capex_eur": 1585,
+      "h7_upkeep_eur_per_unit_year": 73,
+      "new_units_per_year": 1200,
+      "operator_cost_per_visit_eur": [
+        60,
+        116
+      ],
+      "operator_margin_pct": [
+        2.7,
+        8.0
+      ],
+      "operator_value_team_eur": 1360,
+      "package_eur": 500,
+      "platform_eur_per_unit_year": 26,
+      "ramp_years": 4,
+      "sales_growth": 0.05,
+      "tender_interval_years": 3,
+      "tender_share": 0.35,
+      "years": 10
+    },
+    "parity": [
+      {
+        "cash_flows": [
+          -2333850.0,
+          -2107425.0,
+          -1707100.0,
+          -1132875.0,
+          -819500.0,
+          -590500.0,
+          -361500.0,
+          -132500.0,
+          96500.0,
+          325500.0
+        ],
+        "fee": 20,
+        "params": {
+          "adoption": 0.6,
+          "bidders": 2.5,
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "discount_rate": 0.08,
+          "fees_eur_per_month": [
+            15,
+            20,
+            25,
+            30
+          ],
+          "fixed_cost_eur_per_year": 400000,
+          "h7_capex_eur": 1585,
+          "h7_upkeep_eur_per_unit_year": 73,
+          "new_units_per_year": 1200,
+          "operator_cost_per_visit_eur": [
+            60,
+            116
+          ],
+          "operator_margin_pct": [
+            2.7,
+            8.0
+          ],
+          "operator_value_team_eur": 1360,
+          "package_eur": 500,
+          "platform_eur_per_unit_year": 26,
+          "ramp_years": 4,
+          "sales_growth": 0.05,
+          "tender_interval_years": 3,
+          "tender_share": 0.35,
+          "years": 10
+        },
+        "summary": {
+          "cumulative_eur": -8763250,
+          "deepest_eur": -9185250,
+          "npv_eur": -7168924,
+          "payback_year": null
+        }
+      },
+      {
+        "cash_flows": [
+          -2312250.0,
+          -2021025.0,
+          -1512700.0,
+          -787275.0,
+          -387500.0,
+          -72100.0,
+          243300.0,
+          558700.0,
+          874100.0,
+          1189500.0
+        ],
+        "fee": 30,
+        "params": {
+          "adoption": 0.6,
+          "bidders": 2.5,
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "discount_rate": 0.08,
+          "fees_eur_per_month": [
+            15,
+            20,
+            25,
+            30
+          ],
+          "fixed_cost_eur_per_year": 400000,
+          "h7_capex_eur": 1585,
+          "h7_upkeep_eur_per_unit_year": 73,
+          "new_units_per_year": 1200,
+          "operator_cost_per_visit_eur": [
+            60,
+            116
+          ],
+          "operator_margin_pct": [
+            2.7,
+            8.0
+          ],
+          "operator_value_team_eur": 1360,
+          "package_eur": 500,
+          "platform_eur_per_unit_year": 26,
+          "ramp_years": 4,
+          "sales_growth": 0.05,
+          "tender_interval_years": 3,
+          "tender_share": 0.35,
+          "years": 10
+        },
+        "summary": {
+          "cumulative_eur": -4227250,
+          "deepest_eur": -7092850,
+          "npv_eur": -4530290,
+          "payback_year": null
+        }
+      },
+      {
+        "cash_flows": [
+          -1394250.0,
+          -1140225.0,
+          -712300.0,
+          -110475.0,
+          230500.0,
+          487100.0,
+          743700.0,
+          1000300.0,
+          1256900.0,
+          1513500.0
+        ],
+        "fee": 20,
+        "params": {
+          "adoption": 0.6,
+          "bidders": 2.5,
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "discount_rate": 0.08,
+          "fees_eur_per_month": [
+            15,
+            20,
+            25,
+            30
+          ],
+          "fixed_cost_eur_per_year": 400000,
+          "h7_capex_eur": 825,
+          "h7_upkeep_eur_per_unit_year": 50,
+          "new_units_per_year": 1200,
+          "operator_cost_per_visit_eur": [
+            60,
+            116
+          ],
+          "operator_margin_pct": [
+            2.7,
+            8.0
+          ],
+          "operator_value_team_eur": 1360,
+          "package_eur": 500,
+          "platform_eur_per_unit_year": 26,
+          "ramp_years": 4,
+          "sales_growth": 0.05,
+          "tender_interval_years": 3,
+          "tender_share": 0.35,
+          "years": 10
+        },
+        "summary": {
+          "cumulative_eur": 1874750,
+          "deepest_eur": -3357250,
+          "npv_eur": -147171,
+          "payback_year": 9
+        }
+      },
+      {
+        "cash_flows": [
+          -1372650.0,
+          -1053825.0,
+          -517900.0,
+          235125.0,
+          662500.0,
+          1005500.0,
+          1348500.0,
+          1691500.0,
+          2034500.0,
+          2377500.0
+        ],
+        "fee": 30,
+        "params": {
+          "adoption": 0.6,
+          "bidders": 2.5,
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "discount_rate": 0.08,
+          "fees_eur_per_month": [
+            15,
+            20,
+            25,
+            30
+          ],
+          "fixed_cost_eur_per_year": 400000,
+          "h7_capex_eur": 825,
+          "h7_upkeep_eur_per_unit_year": 50,
+          "new_units_per_year": 1200,
+          "operator_cost_per_visit_eur": [
+            60,
+            116
+          ],
+          "operator_margin_pct": [
+            2.7,
+            8.0
+          ],
+          "operator_value_team_eur": 1360,
+          "package_eur": 500,
+          "platform_eur_per_unit_year": 26,
+          "ramp_years": 4,
+          "sales_growth": 0.05,
+          "tender_interval_years": 3,
+          "tender_share": 0.35,
+          "years": 10
+        },
+        "summary": {
+          "cumulative_eur": 6410750,
+          "deepest_eur": -2944375,
+          "npv_eur": 2491463,
+          "payback_year": 7
+        }
+      },
+      {
+        "cash_flows": [
+          -2392000.0,
+          -2340025.0,
+          -2230450.0,
+          -2063275.0,
+          -1982500.0,
+          -1986100.0,
+          -1989700.0,
+          -1993300.0,
+          -1996900.0,
+          -2000500.0
+        ],
+        "fee": 20,
+        "params": {
+          "adoption": 0.4,
+          "bidders": 2.5,
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "discount_rate": 0.08,
+          "fees_eur_per_month": [
+            15,
+            20,
+            25,
+            30
+          ],
+          "fixed_cost_eur_per_year": 400000,
+          "h7_capex_eur": 1585,
+          "h7_upkeep_eur_per_unit_year": 73,
+          "new_units_per_year": 1200,
+          "operator_cost_per_visit_eur": [
+            60,
+            116
+          ],
+          "operator_margin_pct": [
+            2.7,
+            8.0
+          ],
+          "operator_value_team_eur": 1360,
+          "package_eur": 0,
+          "platform_eur_per_unit_year": 26,
+          "ramp_years": 4,
+          "sales_growth": 0.05,
+          "tender_interval_years": 3,
+          "tender_share": 0.35,
+          "years": 10
+        },
+        "summary": {
+          "cumulative_eur": -20974750,
+          "deepest_eur": -20974750,
+          "npv_eur": -14272472,
+          "payback_year": null
+        }
+      },
+      {
+        "cash_flows": [
+          -2377600.0,
+          -2282425.0,
+          -2100850.0,
+          -1832875.0,
+          -1694500.0,
+          -1640500.0,
+          -1586500.0,
+          -1532500.0,
+          -1478500.0,
+          -1424500.0
+        ],
+        "fee": 30,
+        "params": {
+          "adoption": 0.4,
+          "bidders": 2.5,
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "discount_rate": 0.08,
+          "fees_eur_per_month": [
+            15,
+            20,
+            25,
+            30
+          ],
+          "fixed_cost_eur_per_year": 400000,
+          "h7_capex_eur": 1585,
+          "h7_upkeep_eur_per_unit_year": 73,
+          "new_units_per_year": 1200,
+          "operator_cost_per_visit_eur": [
+            60,
+            116
+          ],
+          "operator_margin_pct": [
+            2.7,
+            8.0
+          ],
+          "operator_value_team_eur": 1360,
+          "package_eur": 0,
+          "platform_eur_per_unit_year": 26,
+          "ramp_years": 4,
+          "sales_growth": 0.05,
+          "tender_interval_years": 3,
+          "tender_share": 0.35,
+          "years": 10
+        },
+        "summary": {
+          "cumulative_eur": -17950750,
+          "deepest_eur": -17950750,
+          "npv_eur": -12513382,
+          "payback_year": null
+        }
+      },
+      {
+        "cash_flows": [
+          -1631850.0,
+          -1489800.0,
+          -1173850.0,
+          -684000.0,
+          -455000.0,
+          -226000.0,
+          3000.0,
+          232000.0,
+          461000.0,
+          690000.0
+        ],
+        "fee": 20,
+        "params": {
+          "adoption": 0.6,
+          "bidders": 2.5,
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "discount_rate": 0.08,
+          "fees_eur_per_month": [
+            15,
+            20,
+            25,
+            30
+          ],
+          "fixed_cost_eur_per_year": 400000,
+          "h7_capex_eur": 1000,
+          "h7_upkeep_eur_per_unit_year": 73,
+          "new_units_per_year": 1200,
+          "operator_cost_per_visit_eur": [
+            60,
+            116
+          ],
+          "operator_margin_pct": [
+            2.7,
+            8.0
+          ],
+          "operator_value_team_eur": 1360,
+          "package_eur": 500,
+          "platform_eur_per_unit_year": 26,
+          "ramp_years": 4,
+          "sales_growth": 0,
+          "tender_interval_years": 3,
+          "tender_share": 0.35,
+          "years": 10
+        },
+        "summary": {
+          "cumulative_eur": -4274500,
+          "deepest_eur": -5660500,
+          "npv_eur": -3997609,
+          "payback_year": null
+        }
+      },
+      {
+        "cash_flows": [
+          -1610250.0,
+          -1403400.0,
+          -979450.0,
+          -338400.0,
+          -23000.0,
+          292400.0,
+          607800.0,
+          923200.0,
+          1238600.0,
+          1554000.0
+        ],
+        "fee": 30,
+        "params": {
+          "adoption": 0.6,
+          "bidders": 2.5,
+          "device_margin": 0.25,
+          "device_price_eur": 22500,
+          "discount_rate": 0.08,
+          "fees_eur_per_month": [
+            15,
+            20,
+            25,
+            30
+          ],
+          "fixed_cost_eur_per_year": 400000,
+          "h7_capex_eur": 1000,
+          "h7_upkeep_eur_per_unit_year": 73,
+          "new_units_per_year": 1200,
+          "operator_cost_per_visit_eur": [
+            60,
+            116
+          ],
+          "operator_margin_pct": [
+            2.7,
+            8.0
+          ],
+          "operator_value_team_eur": 1360,
+          "package_eur": 500,
+          "platform_eur_per_unit_year": 26,
+          "ramp_years": 4,
+          "sales_growth": 0,
+          "tender_interval_years": 3,
+          "tender_share": 0.35,
+          "years": 10
+        },
+        "summary": {
+          "cumulative_eur": 261500,
+          "deepest_eur": -4354500,
+          "npv_eur": -1358974,
+          "payback_year": 10
+        }
+      }
+    ],
+    "recommended_fee_eur_per_month": 30,
+    "scenarios": {
+      "adoption 40 %": {
+        "break_even_adoption_at_20": null,
+        "break_even_adoption_at_30": 0.95,
+        "break_even_fee": 71,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": -13299250,
+            "deepest_eur": -13299250,
+            "npv_eur": -9807559,
+            "payback_year": null
+          },
+          "20": {
+            "cumulative_eur": -11787250,
+            "deepest_eur": -11787250,
+            "npv_eur": -8928014,
+            "payback_year": null
+          },
+          "25": {
+            "cumulative_eur": -10275250,
+            "deepest_eur": -10312750,
+            "npv_eur": -8048469,
+            "payback_year": null
+          },
+          "30": {
+            "cumulative_eur": -8763250,
+            "deepest_eur": -9185250,
+            "npv_eur": -7168924,
+            "payback_year": null
+          }
+        }
+      },
+      "base (Part 1 installed cost)": {
+        "break_even_adoption_at_20": null,
+        "break_even_adoption_at_30": 0.95,
+        "break_even_fee": 48,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": -11031250,
+            "deepest_eur": -11031250,
+            "npv_eur": -8488242,
+            "payback_year": null
+          },
+          "20": {
+            "cumulative_eur": -8763250,
+            "deepest_eur": -9185250,
+            "npv_eur": -7168924,
+            "payback_year": null
+          },
+          "25": {
+            "cumulative_eur": -6495250,
+            "deepest_eur": -7951150,
+            "npv_eur": -5849607,
+            "payback_year": null
+          },
+          "30": {
+            "cumulative_eur": -4227250,
+            "deepest_eur": -7092850,
+            "npv_eur": -4530290,
+            "payback_year": null
+          }
+        }
+      },
+      "cheap H7": {
+        "break_even_adoption_at_20": 0.55,
+        "break_even_adoption_at_30": 0.37,
+        "break_even_fee": 19,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": 632750,
+            "deepest_eur": -3429250,
+            "npv_eur": -833719,
+            "payback_year": 10
+          },
+          "20": {
+            "cumulative_eur": 2900750,
+            "deepest_eur": -3105250,
+            "npv_eur": 485598,
+            "payback_year": 9
+          },
+          "25": {
+            "cumulative_eur": 5168750,
+            "deepest_eur": -2926375,
+            "npv_eur": 1804916,
+            "payback_year": 8
+          },
+          "30": {
+            "cumulative_eur": 7436750,
+            "deepest_eur": -2775175,
+            "npv_eur": 3124233,
+            "payback_year": 7
+          }
+        }
+      },
+      "dear H7": {
+        "break_even_adoption_at_20": null,
+        "break_even_adoption_at_30": null,
+        "break_even_fee": 77,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": -22629250,
+            "deepest_eur": -22629250,
+            "npv_eur": -16103540,
+            "payback_year": null
+          },
+          "20": {
+            "cumulative_eur": -20361250,
+            "deepest_eur": -20361250,
+            "npv_eur": -14784223,
+            "payback_year": null
+          },
+          "25": {
+            "cumulative_eur": -18093250,
+            "deepest_eur": -18093250,
+            "npv_eur": -13464905,
+            "payback_year": null
+          },
+          "30": {
+            "cumulative_eur": -15825250,
+            "deepest_eur": -15825250,
+            "npv_eur": -12145588,
+            "payback_year": null
+          }
+        }
+      },
+      "no extra machine sales": {
+        "break_even_adoption_at_20": null,
+        "break_even_adoption_at_30": null,
+        "break_even_fee": 54,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": -13562500,
+            "deepest_eur": -13562500,
+            "npv_eur": -10027403,
+            "payback_year": null
+          },
+          "20": {
+            "cumulative_eur": -11294500,
+            "deepest_eur": -11294500,
+            "npv_eur": -8708086,
+            "payback_year": null
+          },
+          "25": {
+            "cumulative_eur": -9026500,
+            "deepest_eur": -9594300,
+            "npv_eur": -7388768,
+            "payback_year": null
+          },
+          "30": {
+            "cumulative_eur": -6758500,
+            "deepest_eur": -8368300,
+            "npv_eur": -6069451,
+            "payback_year": null
+          }
+        }
+      },
+      "no tender packages": {
+        "break_even_adoption_at_20": null,
+        "break_even_adoption_at_30": null,
+        "break_even_fee": 68,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": -20218750,
+            "deepest_eur": -20218750,
+            "npv_eur": -13832699,
+            "payback_year": null
+          },
+          "20": {
+            "cumulative_eur": -17950750,
+            "deepest_eur": -17950750,
+            "npv_eur": -12513382,
+            "payback_year": null
+          },
+          "25": {
+            "cumulative_eur": -15682750,
+            "deepest_eur": -15682750,
+            "npv_eur": -11194064,
+            "payback_year": null
+          },
+          "30": {
+            "cumulative_eur": -13414750,
+            "deepest_eur": -13414750,
+            "npv_eur": -9874747,
+            "payback_year": null
+          }
+        }
+      },
+      "team document (H7 EUR 825, upkeep EUR 50)": {
+        "break_even_adoption_at_20": 0.62,
+        "break_even_adoption_at_30": 0.42,
+        "break_even_fee": 21,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": -393250,
+            "deepest_eur": -3681250,
+            "npv_eur": -1466489,
+            "payback_year": null
+          },
+          "20": {
+            "cumulative_eur": 1874750,
+            "deepest_eur": -3357250,
+            "npv_eur": -147171,
+            "payback_year": 9
+          },
+          "25": {
+            "cumulative_eur": 4142750,
+            "deepest_eur": -3095575,
+            "npv_eur": 1172146,
+            "payback_year": 8
+          },
+          "30": {
+            "cumulative_eur": 6410750,
+            "deepest_eur": -2944375,
+            "npv_eur": 2491463,
+            "payback_year": 7
+          }
+        }
+      }
+    }
+  },
   "provenance": {
     "data": "competition",
     "kit_version": "1.0.1",
@@ -6811,6 +7443,7 @@
         18,
         113
       ],
+      "sigma_one_point_no_tickets_pct": 10.7,
       "sigma_one_point_pct": [
         2.6,
         4.4,
@@ -6829,14 +7462,14 @@
       "strip": [
         {
           "factory_fit_eur": [
-            10,
-            125
+            1034,
+            3008
           ],
-          "id": "T0",
-          "name": "Virtual weight from existing pressure + fill (v1)",
+          "id": "H7",
+          "name": "Hydraulic self-lift on the compactor's own power pack (idea: team)",
           "retrofit_eur": [
-            10,
-            215
+            1994,
+            6168
           ]
         },
         {
@@ -6849,18 +7482,6 @@
           "retrofit_eur": [
             1270,
             4923
-          ]
-        },
-        {
-          "factory_fit_eur": [
-            1034,
-            3008
-          ],
-          "id": "H7",
-          "name": "Hydraulic self-lift on the compactor's own power pack (idea: team)",
-          "retrofit_eur": [
-            1994,
-            6168
           ]
         },
         {

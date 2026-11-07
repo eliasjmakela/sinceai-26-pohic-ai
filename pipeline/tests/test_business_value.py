@@ -1,11 +1,11 @@
-"""Business model, value per device and virtual scale (PRODUCT.md §6, beat 6)."""
+"""Pricing, value per device, virtual scale and weighing (PRICING.md, PRODUCT.md §6)."""
 from __future__ import annotations
 
 from dataclasses import replace
 
 import pytest
 
-from fullload import business, value, virtual_scale, weighing
+from fullload import pricing, value, virtual_scale, weighing
 from fullload.config import data_root
 from fullload.kit import open_dataset
 
@@ -13,24 +13,6 @@ from fullload.kit import open_dataset
 @pytest.fixture(scope="module")
 def con():
     return open_dataset(data_root("quickstart"))
-
-
-def test_business_reproduces_team_headline():
-    p = business.load_params(tonnes_per_device_year=92.6)
-    s = business.simulate(p)
-    # business team's stated figures (7 Nov): EUR 1.5 M investment, 1.2 M revenue, 0.74 M opex, ~0.47 M extra sales
-    assert s["investment"] == pytest.approx(1_500_000)
-    assert s["service_revenue"] == pytest.approx(1_200_000)
-    assert s["opex"] == pytest.approx(740_000)
-    assert s["extra_sales_margin"] == pytest.approx(468_750)
-    assert s["customer_pays"] == 0
-
-
-def test_business_payback_grows_with_hardware_cost():
-    p = business.load_params(tonnes_per_device_year=92.6)
-    cheap, dear = business.simulate(p), business.simulate(replace(p, h1_cost_eur=2363))
-    assert dear["payback_years"] > cheap["payback_years"]
-    assert business.simulate(replace(p, fee_eur_per_device_month=0, sales_growth=0))["payback_years"] is None
 
 
 def test_value_rows_are_figures_or_explained(con):
@@ -57,3 +39,16 @@ def test_weighing_reads_part1_and_reproduces_the_worked_example():
     strip = {c["id"]: c["factory_fit_eur"] for c in w["installed_cost"]["strip"]}
     assert strip["H7"][0] < strip["H7"][1] and set(strip) == set(weighing.COST_STRIP)
     assert w["h7"]["figures"]["sigma_one_point_pct"]["tag"] == "estimated"
+
+
+def test_pricing_reproduces_team_model_and_break_evens(con):
+    pp = pricing.load_params()
+    team = replace(pp, h7_capex_eur=825, h7_upkeep_eur_per_unit_year=50)
+    # LIITE §6.3: NPV 2.49 M EUR, deepest -2.94 M EUR, cumulative +6.41 M EUR, payback year 7 (EUR 30, H7 EUR 825)
+    s = pricing.summarise(pricing.cash_flows(team, 30), pp.discount_rate)
+    assert (round(s["npv_eur"], -4), round(s["deepest_eur"], -4), s["payback_year"]) == (2_490_000, -2_940_000, 7)
+    fee = pricing.break_even_fee(pp)
+    assert pricing.npv(pp, fee) >= 0 > pricing.npv(pp, fee - 1)
+    cap = pricing.max_h7_capex(pp, 30)
+    assert pricing.npv(replace(pp, h7_capex_eur=cap), 30) >= 0 > pricing.npv(replace(pp, h7_capex_eur=cap + 10), 30)
+    assert pricing.customer_spend_median_eur(con) > 0

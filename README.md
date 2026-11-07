@@ -11,6 +11,7 @@ and billing stays on the operator's certified weighbridge. All data is synthetic
 |---|---|
 | [`PRODUCT.md`](PRODUCT.md) | The spec: thesis, decisions, demo storyline, scoring map, architecture, rules |
 | [`LIMITATIONS.md`](LIMITATIONS.md) | Assumptions and what remains untested |
+| [`PRICING.md`](PRICING.md) | Why operators pay €30 per device per month |
 | [`THIRD_PARTY.md`](THIRD_PARTY.md) | Every library, dataset, tool and service with its licence |
 | [`part1/WEIGHING_CONCEPT.md`](part1/WEIGHING_CONCEPT.md) | Part 1: the weighing concept, costed, with claims ledger and red team |
 | [`reviews/`](reviews/) | Independent reviews and the team briefing page |
@@ -56,7 +57,7 @@ pipeline/fullload/    Python package (internal name "fullload"): starter-kit dat
   market.py           market before/after simulation (mirrored in web/src/market/model.ts)
   customer.py         customer and operator views, contract check, AI-summarized report
   value.py            value per device, compared with the business team's figures
-  business.py         Europress business model (mirrored in web/src/business/model.ts)
+  pricing.py          the operator fee and Europress cash flow (mirrored in web/src/pricing/model.ts; PRICING.md)
   virtual_scale.py    virtual scale accuracy and calibration learning curve
   weighing.py         Part 1 numbers for the demo (installed cost, H7 statics), read from part1/
   validate.py         scores against dev labels (validation split only)
@@ -74,4 +75,4 @@ briefs/               briefs and reports of the supervised agents that built par
 - Dev labels are read only in `validate.py` (and could be in `pick_heroes.py`); a test enforces it. Test-period labels
   are never touched.
 - Builds are deterministic: the same inputs give a byte-identical bundle.
-- The browser copies of the market and business models are checked against Python (`npm run parity`).
+- The browser copies of the market and pricing models are checked against Python (`npm run parity`).

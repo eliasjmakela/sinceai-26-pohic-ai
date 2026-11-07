@@ -27,7 +27,7 @@ G = 9.81
 EXAMPLE = {"machine_t": 3.75, "door_end_share": 0.375, "waste_t": 2.5, "x_w_over_l": 0.6}
 
 # Concepts shown on the cost strip, in display order.
-COST_STRIP = ("T0", "H1", "H7", "PS")
+COST_STRIP = ("H7", "H1", "PS")
 
 
 @cache
@@ -74,6 +74,7 @@ def weighing_facts() -> dict:
             "stroke_margin_mm": h7["stroke_margin_mm"],
             "example": worked_example(h7["design_bore_mm"]),
             "sigma_one_point_pct": [b["low"], b["mid"], b["high"]],
+            "sigma_one_point_no_tickets_pct": h7["sigma_rel_pct"]["A"]["2.5t"]["mid"],
             "sigma_two_end_pct": [c["low"], c["mid"], c["high"]],
             "figures": {
                 "sigma_one_point_pct": fig(b["mid"], "%", "error budget case B (one-point lift + shared tickets), 2.5 t, "

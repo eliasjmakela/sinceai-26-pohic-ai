@@ -51,7 +51,7 @@ export function Ecosystem({ step }: { step: number }) {
   const m = bundle.market
   const inc = Math.round(100 * m.sigma_inc)
   const ent = Math.round(100 * m.sigma_ent)
-  const fee = bundle.business.params.fee_eur_per_device_month
+  const fee = bundle.pricing.recommended_fee_eur_per_month
   const open = step >= 2
   return (
     <svg viewBox="0 0 1000 385" className="h-auto w-full" role="img"

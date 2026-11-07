@@ -84,12 +84,28 @@ export interface Weighing {
     example: { machine_t: number; door_end_share: number; waste_t: number; x_w_over_l: number; bore_mm: number;
       tare_bar: number; loaded_bar: number; waste_from_reading_t: number; kg_waste_per_bar: number }
     sigma_one_point_pct: [number, number, number]
+    sigma_one_point_no_tickets_pct: number
     sigma_two_end_pct: [number, number, number]
     figures: Record<'sigma_one_point_pct' | 'installed_eur_low' | 'installed_eur_high', Figure>
   }
   installed_cost: { reference_eur: number; strip: CostConcept[] }
 }
 export interface VirtualScale { devices: number; lifts: number; reference_share: number; reading: string; headline: Record<string, Figure> }
+
+export interface PricingScenario { break_even_fee: number | null; break_even_adoption_at_20: number | null; break_even_adoption_at_30: number | null;
+  by_fee: Record<string, import('./pricing/model').PricingSummary> }
+export interface Pricing {
+  recommended_fee_eur_per_month: number
+  max_h7_capex_eur: Record<string, number | null>
+  params: import('./pricing/model').PricingParams & { fees_eur_per_month: number[] }
+  h7_cost: { capex_eur: [number, number]; capex_mid_eur: number; upkeep_eur_per_year: [number, number]; upkeep_mid_eur_per_year: number }
+  scenarios: Record<string, PricingScenario>
+  operator: { visits_per_device: number; fewer_visits_pct: [number, number]; hard_gain_eur: [number, number, number]; spend_median_eur: number;
+    profit_per_device_today_eur: [number, number]; team_value_eur: number;
+    by_fee: { fee_eur_per_month: number; fee_eur_per_year: number; share_of_hard_gain_mid_pct: number; share_of_team_value_pct: number;
+      share_of_profit_today_pct: [number, number]; net_hard_gain_eur: [number, number, number] }[] }
+  headline: Record<string, Figure>
+}
 
 export interface Bundle {
   schema_version: 1
@@ -100,9 +116,7 @@ export interface Bundle {
   market: Market
   hero: Hero
   value_per_device: { devices: number; rows: ValueRow[]; note: string }
-  business: { params: import('./business/model').BizParams; default: import('./business/model').BizResult;
-    installed_cost_ranges: { H1_factory_fit: [number, number]; T0_factory_fit: [number, number]; source: string; note: string };
-    headline: Record<string, Figure> }
+  pricing: Pricing
   validation: { trips_check?: TripsCheck } & Record<string, unknown>
   virtual_scale: VirtualScale
   weighing: Weighing
