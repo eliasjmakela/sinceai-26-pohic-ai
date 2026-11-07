@@ -11,7 +11,7 @@ teammates. Status: `[ ]` open, `[~]` running, `[x]` done.
 
 | # | What | Owner | By | Notes |
 |---|---|---|---|---|
-| H1 | **Ask Europress (Tommi / Discord):** (a) is ~€1,000 per unit realistic for the self-lift fitted at the factory (cylinder, valve section, pressure sensor)? (b) of the ~1,200 new compactors a year, how many are COMBI and how many DUO? | E | asap | Decides whether €30 pays back (`PRICING.md`). Ready-made questions: `part1/ENGINEER_QUESTIONS.md` 11–12, 15 |
+| H1 | ~~Ask Europress~~ **Decided 7 Nov: H7 planning cost €1,000; COMBI/DUO split unknown (model assumes all new units weighed).** Was: ask Europress (Tommi / Discord): (a) is ~€1,000 per unit realistic for the self-lift fitted at the factory (cylinder, valve section, pressure sensor)? (b) of the ~1,200 new compactors a year, how many are COMBI and how many DUO? | E | asap | Decides whether €30 pays back (`PRICING.md`). Ready-made questions: `part1/ENGINEER_QUESTIONS.md` 11–12, 15 |
 | H2 | Send `reviews/OPENWEIGHT_PDF_FIXES.md` to the PDF's author, and agree the submission language (recommended: English, Finnish PDF as an annex) | E | 20:30 | MASTER §F8 |
 | H3 | **Visual pass on the three pitch screens** (`#/beat-1` … `#/beat-3`): spacing, type sizes for a projector, colours, the H7 drawing, the ecosystem reveal | E | 22:00 | Claude can do a first pass with the design skill if you want; say so |
 | H4 | **Text quality pass** (make it sound human): the on-screen copy of the three screens, `README.md`, `PRICING.md`, the weighing one-pager (C5), the business case (C6), `LIMITATIONS.md` | E | Sun 08:30 | Claude drafts; you edit. Keep numbers unchanged (or ask Claude to re-check after edits) |
@@ -24,14 +24,14 @@ teammates. Status: `[ ]` open, `[~]` running, `[x]` done.
 
 | # | What | Owner | By | Status |
 |---|---|---|---|---|
-| C1 | Stale text cleanup across the repo (MASTER §G): PRODUCT, LIMITATIONS, README, Part 1 §0/§3/§17/§19.8, RED_TEAM R27, sigma_tiers, superseded notes | C (agent) | 21:00 | [~] |
+| C1 | Stale text cleanup across the repo (MASTER §G): PRODUCT, LIMITATIONS, README, Part 1 §0/§3/§17/§19.8, RED_TEAM R27, sigma_tiers, superseded notes | C (agent) | 21:00 | [x] |
 | C2 | Merge the two-end lift (H7-2, from the team's "duo mechanism" sheet) into Part 1: §20, RED_TEAM R31–R38, ENGINEER_QUESTIONS 16–19, cost lines in `installed_cost.json`, scripts in `part1/calc/h7_2_*.py`. The sheet is a COMBI variant, not the DUO product; DUO stays on H1 / H5 | C | 21:15 | [x] |
-| C3 | **Independent fact-check** of every number on the three pitch screens, the detail screens, `PRICING.md`, the fix list and the one-pagers against `bundle.json` and the sources; report mismatches | C (agent) | 21:45 | [ ] |
-| C4 | Demo freeze checks: `npm run build`, every screen opens with no console errors, arrow-key flow, offline (no network), phone-width sanity, receipts open on every figure | C | 22:00 | [ ] |
-| C5 | **Weighing concept one-pager (deliverable 1, illustrated)**, English, H7-first: principle with the side-view drawing, placement on COMBI, BOM and installed cost, installation, calibration by weighbridge tickets, error budget, safety/CE, the two new risks, validation plan, DUO answer | C (draft) → E (text pass) | 22:30 | [ ] |
+| C3 | **Independent fact-check** of every number on the three pitch screens, the detail screens, `PRICING.md`, the fix list and the one-pagers against `bundle.json` and the sources; report mismatches | C (agent) | 21:45 | [~] |
+| C4 | Demo freeze checks: `npm run build`, every screen opens with no console errors, arrow-key flow, offline (no network), phone-width sanity, receipts open on every figure | C | 22:00 | [x] |
+| C5 | **Weighing concept one-pager (deliverable 1, illustrated)**, English, H7-first: principle with the side-view drawing, placement on COMBI, BOM and installed cost, installation, calibration by weighbridge tickets, error budget, safety/CE, the two new risks, validation plan, DUO answer | C (draft) → E (text pass) | 22:30 | [x] |
 | C6 | **Business case and productisation (deliverable 3)** in English, from LIITE + `PRICING.md` with all fixes applied: who pays, €30 fee, cost gap and design-to-cost, adoption, pilot, sensitivity, roadmap (virtual scale for the older fleet) | C (draft) → E / T | 23:00 | [x] draft done, needs H4 text pass |
-| C7 | **SMART integration note (deliverable 2e)**: data in (fill, cycles, H7 readings), out (forecasts, lift orders, customer reports), the `openweight.proposal.v1` and lift-order payloads, human approval | C | 23:00 | [ ] |
-| C8 | Walkthrough script with timings and the exact clicks for H6 | C | 23:00 | [ ] |
+| C7 | **SMART integration note (deliverable 2e)**: data in (fill, cycles, H7 readings), out (forecasts, lift orders, customer reports), the `openweight.proposal.v1` and lift-order payloads, human approval | C | 23:00 | [x] |
+| C8 | Walkthrough script with timings and the exact clicks for H6 | C | 23:00 | [x] |
 | C9 | Tag `demo-frozen` at the frozen commit; build committed | C | Sun 00:00 | [ ] |
 | C10 | Final repo hygiene: tests, lint, parity, determinism, `THIRD_PARTY.md` complete, no secrets, no `resources/` in git, README run commands verified from a clean clone | C | Sun 08:00 | [ ] |
 | C11 | Submission checklist against the brief §07 (what file goes where), plus a last scan for stale numbers after the text pass (H4) | C | Sun 09:00 | [ ] |
