@@ -1,7 +1,7 @@
 # Review: "Plus-malli: kestävä versio – yhteenveto" (Mike, 7 Nov 2026)
 
 Independent review for team OpenWeight/FullLoad. Source: the 4-page PDF (Finnish, read with `pdftotext -layout`).
-Evidence base: `PRODUCT.md`, `LIMITATIONS.md`, `web/public/data/bundle.json`, Part 1 on branch `weighing-v2`
+Evidence base: `PRODUCT.md`, `docs/LIMITATIONS.md`, `web/public/data/bundle.json`, Part 1 on branch `weighing-v2`
 (`part1/WEIGHING_CONCEPT.md`, `part1/installed_cost.json`), transcripts `Röst 261106_182238.txt` and `Since.AI.2.txt`.
 All team numbers are synthetic data / hypothetical prices.
 
@@ -69,7 +69,7 @@ cut H1 error from 9.5 % to 3.4 % on synthetic data (`WEIGHING_CONCEPT.md` §4). 
 - **Europress:** if Plus is standard on new units, Europress pays for it. €550–1,100 is **10–20 % of the €5,625
   margin** per machine (25 % × €22,500, `business.params`). Tommi's point that a customer who saves €2,000 by skipping
   weighing makes the network worth less (`Since.AI.2.txt` l. 590) argues for standard-fit funded by Europress.
-- **Incumbent operator:** gains planning weights (fewer lifts, 6–18 %: `LIMITATIONS.md` §3). It loses its moat only
+- **Incumbent operator:** gains planning weights (fewer lifts, 6–18 %: `docs/LIMITATIONS.md` §3). It loses its moat only
   if the customer consents to share the data. Plus makes the weight more accurate but does not change that.
 - **Challenger:** benefits only through customer-consented history. Plus versus Basic changes its risk premium by a
   few percentage points of σ, not by the 10 % vs 37 % gap between own and peer history.
@@ -108,7 +108,7 @@ takes years to reach with Plus.
 
 - Maximum cost per device for payback within 6 years: **≈ €1,860**, including the extra-sales lever. On service
   margin alone (€1.2 M − €0.74 M = €0.46 M/yr) the maximum is **≈ €920**.
-- The extra-sales lever (+5 % sales, €0.47 M/yr) is the most uncertain input (`LIMITATIONS.md` §8). Without it,
+- The extra-sales lever (+5 % sales, €0.47 M/yr) is the most uncertain input (`docs/LIMITATIONS.md` §8). Without it,
   Plus only works at the low end.
 - To pay back Plus alone over 6 years, each Plus device needs an extra fee of **+€7.6 to +€15.3/month** if every
   Plus device pays. At 50 % paying coverage that doubles to **+€15 to +€31/month**, against today's €20.

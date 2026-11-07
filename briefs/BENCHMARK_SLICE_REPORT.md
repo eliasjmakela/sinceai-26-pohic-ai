@@ -34,12 +34,15 @@ What this says, plainly:
 | missed_visit_share → missed_visit_rate | 0.9990 | 0.9990 | 1.0 |
 | ticket_share → weighbridge_shared_7d_rate | 0.9998 | 0.9998 | 1.0 |
 | ticket_lag_days_median → median_share_lag_days | 0.9794 | 0.9794 | 1.0 |
-| discrepant_line_share → discrepant_line_rate | 0.3159 | 0.3159 | 0.5 |
-| **mean over the 5 metrics we produce (0–100)** | **85.88** | 85.88 | |
-| kit overall over all 9 metrics (missing ones score 0) | 47.71 | 47.71 | |
+| discrepant_line_share → discrepant_line_rate | 0.6738 | 0.3159 | 0.83 |
+| **mean over the 5 metrics we produce (0–100)** | **93.04** | 85.88 | |
+| kit overall over all 9 metrics (missing ones score 0) | 51.69 | 47.71 | |
+
+*Updated 7 Nov night: our invoice-line share now matches mistyped job references by contract and service date (the
+kit's SCHEMA.md rule), which lifts it from 0.32 (equal to B5) to 0.67.*
 
 `tonnes_per_lift` is also produced (for the market simulation) but has no Task B2 label. The four service metrics
-are essentially exact, as expected: they are the customer's own records. The invoice-line share is weak (0.32): the
+are essentially exact, as expected: they are the customer's own records. The invoice-line share is moderate (0.67, 0.32 before the job-reference matching): the
 truth counts missing lines and differences against the true contract amount, and our expected amounts come from the
 kit's B1 calculator, which inherits invoice tonnages. Use the service metrics in the simulation; treat the
 invoice-line share as indicative only.
@@ -73,7 +76,7 @@ per-family B4 row; the B4 run here reproduces its published macro-F1 over all fa
 **Scorecard** (`pipeline/fullload/scorecard.py`): SQL over `collection_events`, `weighbridge_tickets`, `sites`,
 `invoice_lines`, `invoices`, `contracts`; expected invoice amounts from the kit's B1 calculator (via `fullload.kit`),
 compared in integer cents. The definitions match the kit's Task B2 definitions (2 h on-time window, 7-day sharing
-window), so the figures land on the same values as kit B5 for these five metrics. That is the point: they are sound
+window), so the four service figures land on the same values as kit B5, and the invoice share beats it (0.67 vs 0.32). That is the point: they are sound
 enough to feed the simulation. Scored with `evaluate.score_b2(..., "validation")`.
 
 **Leakage guards** (`validate.py`): the split must exist in the package manifest (the kit's `_period_filter`

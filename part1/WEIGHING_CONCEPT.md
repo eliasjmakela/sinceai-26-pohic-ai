@@ -33,7 +33,7 @@ plate (H1) or weighing rails (H5) remain the options. Billing stays on the opera
 3. **Cost.** €1,034–3,008 factory-fit incl. 6 years' upkeep (team estimate, §19.7): capex €800–2,370 plus upkeep
    €39–106 a year. Retrofit is not recommended (€1,994–6,168). The business case plans with **€1,000 capex** per
    new unit (team decision) and €73 a year upkeep; at a €30 operator fee that just pays back (NPV +€0.18 M, year 9,
-   `PRICING.md`). Above about €1,020 it does not, so cost is the main risk and a supplier quote comes first.
+   `docs/PRICING.md`). Above about €1,020 it does not, so cost is the main risk and a supplier quote comes first.
 4. **Good enough for what OpenWeight needs.** For forecasts, weight-triggered pickups and per-site tonnage, a few
    percent is plenty. Summed over a month of lifts, the per-site error drops further.
 5. **What we are not sure about** (honest list): the centre of mass at partial fill, seal friction in winter, units

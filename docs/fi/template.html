@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<title>OpenWeight</title>
+<style>
+:root{
+  --ink:#14211c; --muted:#5b6b64; --line:#d9e2dd; --bg:#ffffff; --soft:#f2f6f4;
+  --brand:#0f7a55; --brand-2:#d8efe5; --accent:#e0702f; --accent-2:#fbe6d8; --neg:#c2463a; --blue:#2c6aa0; --blue-2:#dce9f5;
+}
+@page{size:A4;margin:0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter","Noto Sans","Segoe UI",system-ui,sans-serif;font-size:10.2pt;line-height:1.45}
+.page{width:210mm;height:297mm;padding:16mm 16mm 14mm;position:relative;page-break-after:always;overflow:hidden}
+.page:last-child{page-break-after:auto}
+.foot{position:absolute;left:16mm;right:16mm;bottom:8mm;display:flex;justify-content:space-between;color:var(--muted);font-size:8pt;border-top:1px solid var(--line);padding-top:3mm}
+h1{font-size:34pt;line-height:1.05;margin:0 0 4mm;letter-spacing:-.5px}
+h2{font-size:18pt;margin:0 0 1.5mm;letter-spacing:-.2px}
+h3{font-size:11.5pt;margin:0 0 1.5mm}
+.kicker{color:var(--brand);font-weight:700;font-size:8.5pt;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:2mm}
+.lead{font-size:11.5pt;color:#2b3a34;margin:0 0 5mm}
+p{margin:0 0 2.5mm}
+.muted{color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm}
+.card{border:1px solid var(--line);border-radius:6px;padding:4mm 4.5mm;background:#fff}
+.card.soft{background:var(--soft);border-color:transparent}
+.card.brand{background:var(--brand-2);border-color:transparent}
+.card.accent{background:var(--accent-2);border-color:transparent}
+.card.blue{background:var(--blue-2);border-color:transparent}
+.big{font-size:24pt;font-weight:800;line-height:1;margin:1mm 0 1.5mm;color:var(--brand)}
+.big.accent{color:var(--accent)} .big.blue{color:var(--blue)}
+table{width:100%;border-collapse:collapse;font-size:9pt;margin:1mm 0 3mm}
+th{text-align:left;font-weight:700;color:var(--muted);font-size:8pt;text-transform:uppercase;letter-spacing:.5px;border-bottom:1.5px solid var(--ink);padding:1.6mm 2mm}
+td{border-bottom:1px solid var(--line);padding:1.6mm 2mm;vertical-align:top}
+td.num,th.num{text-align:right;white-space:nowrap}
+tr.hl td{background:var(--brand-2);font-weight:700}
+ul{margin:0 0 2.5mm;padding-left:4.5mm} li{margin-bottom:1mm}
+.tag{display:inline-block;font-size:6.8pt;font-weight:700;letter-spacing:.4px;border-radius:3px;padding:.2mm 1.3mm;margin-left:1mm;vertical-align:1px}
+.H{background:#dfeee7;color:#0f6a4a} .A{background:#e3ecf6;color:#245b8a} .S{background:#efe6f6;color:#6a3b8f} .O{background:#fbeadd;color:#a2501d}
+.legend{font-size:8pt;color:var(--muted)}
+.quote{border-left:3px solid var(--brand);padding:1mm 0 1mm 3.5mm;font-style:italic;color:#2b3a34;margin:2mm 0 3mm}
+.cover{background:linear-gradient(160deg,#0d3b2c 0%,#0f7a55 62%,#1c9a6d 100%);color:#fff}
+.cover .kicker{color:#a8e6cc}
+.cover .lead{color:#e3f5ec;font-size:13pt}
+.cover .stat{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:4mm}
+.cover .stat .big{color:#fff}
+.cover .foot{color:#cfeee0;border-color:rgba(255,255,255,.25)}
+.pill{display:inline-block;border:1px solid rgba(255,255,255,.4);border-radius:20px;padding:1mm 3.5mm;margin:0 2mm 2mm 0;font-size:9pt}
+svg text{font-family:inherit}
+.chart{width:100%;height:auto}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .axis{stroke:var(--ink);stroke-width:1.2}
+.chart .tick{font-size:9px;fill:var(--muted)}
+.chart .pos{fill:var(--brand)} .chart .neg{fill:var(--neg);opacity:.85}
+.chart .line{fill:none;stroke:var(--accent);stroke-width:2.4}
+.chart .dot{fill:var(--accent)}
+.chart .lbl{font-size:10px;fill:var(--ink);font-weight:700}
+.diagram text{font-size:11px;fill:var(--ink)}
+.step{display:flex;gap:3mm;margin-bottom:2.5mm}
+.step .n{flex:0 0 7mm;height:7mm;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:10pt}
+</style>
+</head>
+<body>
+
+<!-- 1 COVER -->
+<section class="page cover">
+  <div style="margin-top:22mm" class="kicker">Europress × Since AI Hackathon 2026 · Tiimi PöhiC.AI</div>
+  <h1 style="font-size:46pt">OpenWeight</h1>
+  <p class="lead" style="max-width:150mm">Paino jokaisesta puristimesta. Kilpailuetu jäteyhtiöille, läpinäkyvyys asiakkaalle ja kasvu Europressille.</p>
+  <div style="margin:6mm 0 10mm">
+    <span class="pill">Punnitus jokaiseen uuteen puristimeen</span>
+    <span class="pill">Asiakkaalle ilmainen</span>
+    <span class="pill">Jäteyhtiö maksaa datasta</span>
+    <span class="pill">Tekoäly raportoi ja ennustaa</span>
+  </div>
+  <p style="max-width:160mm;font-size:11.5pt;color:#eaf7f1">Jätehuollon hinnan ratkaisee paino, mutta painon tietää vain jäteyhtiö, ja vasta jälkikäteen. OpenWeight tuo punnituksen jokaiseen Europressin puristimeen Europressin omalla kustannuksella ja tekee painotiedosta palvelun, josta asiakas, jäteyhtiö ja Europress hyötyvät, ja joka muuttaa kannustimet, jotka nyt pitävät alan paikallaan.</p>
+  <div class="grid3" style="margin-top:12mm">
+    <div class="stat"><div class="big">~1 900 €</div>asiakkaan hyöty / laite / vuosi, ilmaiseksi<span class="tag S">simuloitu</span></div>
+    <div class="stat"><div class="big">~1 400 €</div>jäteyhtiön hyöty / laite / vuosi; nyt se tienaa laitteesta 0–800 €<span class="tag S">simuloitu</span></div>
+    <div class="stat"><div class="big">+2,5 M€</div>Europressin NPV 10 v; täydessä vauhdissa +2,4 M€ kassavirtaa vuodessa<span class="tag O">oletus</span></div>
+  </div>
+  <div style="position:absolute;bottom:22mm;left:16mm;right:16mm;font-size:9pt;color:#cfeee0">
+    Merkinnät: <span class="tag H">havaittu</span> julkinen lähde tai haasteen vetäjä · <span class="tag S">simuloitu</span> haasteen synteettinen data · <span class="tag A">arvio</span> tiimin laskelma · <span class="tag O">oletus</span> tiimin valinta. Laskenta: <i>analysis/</i>.
+  </div>
+  <div class="foot"><span>OpenWeight · projektikuvaus</span><span>7.11.2026</span></div>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="page">
+  <div class="kicker">1 · Ongelma</div>
+  <h2>Ala ei liiku, koska kannustimet pitävät sen paikallaan</h2>
+  <p class="lead">Jokainen toimii järkevästi omista lähtökohdistaan. Siksi ongelmaa ei ratkaista vakuuttamalla, vaan muuttamalla kannustimet.</p>
+
+  <div class="grid3" style="margin-bottom:5mm">
+    <div class="card soft">
+      <h3>Jäteyhtiö hyötyy vajaista tyhjennyksistä</h3>
+      <div class="big accent">33 %</div>
+      <p>tyhjennyksistä tehdään alle 60 %:n täytöllä<span class="tag S">simuloitu</span>. Täysillä kuormilla tyhjennyksiä tarvittaisiin 18 % vähemmän. Tyhjennyksestä maksetaan kiinteä hinta.</p>
+      <p class="quote" style="font-size:8.6pt">"Kuljetusyritys ei suoraan säästä, jopa menettää." – HSY:n logistiikkapäällikkö</p>
+    </div>
+    <div class="card soft">
+      <h3>Painotieto suojaa vakiintunutta yhtiötä</h3>
+      <div class="big accent">21 % vs 9 %</div>
+      <p>uuden tarjoajan arvio kiloista per tyhjennys menee sokkona 21 % pieleen, kohteen painohistorialla 9 %<span class="tag S">simuloitu</span>. Kilpaileva jäteyhtiö ei uskalla tarjota kilohintaa, ja vakiintunut voittaa joka kolmas vuosi<span class="tag H">vetäjä</span>.</p>
+    </div>
+    <div class="card soft">
+      <h3>Asiakas ei näe eikä ehdi</h3>
+      <div class="big accent">~3 %</div>
+      <p>kiinteistöpäällikön työajasta menee jätehuoltoon<span class="tag H">vetäjä</span>. Hän epäilee, että häntä laskutetaan liikaa, mutta ei pysty todistamaan sitä: paino on jäteyhtiöllä.</p>
+    </div>
+  </div>
+
+  <h3>Miksi Europressin nykyiset palvelut eivät riitä</h3>
+  <table>
+    <tr><th>Nykyinen ratkaisu</th><th>Mitä se tekee</th><th>Miksi se ei riitä</th></tr>
+    <tr><td><b>SMART</b> (täyttöaste, automaattiset tyhjennyskutsut)</td><td>−37 % tyhjennyksiä<span class="tag H">epsmart.fi</span></td><td>Toimii jäteyhtiöiden kannustimia vastaan, joten vakiintuneet yhtiöt puhuvat sitä vastaan</td></tr>
+    <tr><td><b>SMART Insights</b></td><td>Raportit ja optimointi asiakkaalle</td><td>Hintaherkälle asiakkaalle myytynä vain ~15 %:lla<span class="tag H">vetäjä</span>; näyttää dataa, ei kerro mitä tehdä</td></tr>
+    <tr><td><b>Ei painoa</b></td><td>–</td><td>Säästöä ei voi todentaa eikä laskua tarkistaa; Europress ei pääse "viemään tapausta loppuun"<span class="tag H">vetäjä</span></td></tr>
+    <tr><td><b>Ei roolia kilpailutuksessa</b></td><td>–</td><td>Hinta lyödään lukkoon kolmeksi vuodeksi ilman Europressia</td></tr>
+    <tr><td><b>Scaletipper X1</b></td><td>Punnitsee astioiden kippaukset</td><td>Jätettä heitetään ohi ja virheet kertautuvat; sopii vuokralaisten kulujen jakoon, ei kontin kokonaispainoon<span class="tag H">vetäjä</span></td></tr>
+    <tr><td><b>Tasovaaka</b></td><td>Punnitsee koko laitteen</td><td>"Yhtä kallis kuin koko puristin"<span class="tag H">vetäjä</span>; asiakas ei maksa</td></tr>
+  </table>
+  <div class="card brand"><b>Johtopäätös:</b> painotieto on alan tärkein tieto, ja sen omistaa nyt se, joka laskuttaa. Kun paino on riippumaton ja kenen tahansa ostettavissa asiakkaan luvalla, vakiintuneen yhtiön tietoetu katoaa ja kilohinnoittelu muuttuu turvalliseksi.</div>
+  <div class="foot"><span>OpenWeight</span><span>2</span></div>
+</section>
+
+<!-- 3 SOLUTION -->
+<section class="page">
+  <div class="kicker">2 · Ratkaisu</div>
+  <h2>Kolme osapuolta, yksi kierre</h2>
+  <p class="lead">Europress maksaa punnituksen, koska jokainen punnitsematon laite heikentää kilpailuetua, jota se myy jäteyhtiöille.</p>
+
+  <svg viewBox="0 0 640 300" class="diagram" style="width:100%;height:auto;margin-bottom:3mm">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0f7a55"/></marker></defs>
+    <rect x="235" y="8" width="170" height="64" rx="10" fill="#dce9f5"/>
+    <text x="320" y="32" text-anchor="middle" font-weight="700" font-size="13">Loppuasiakas</text>
+    <text x="320" y="50" text-anchor="middle">ilmainen tekoälyapuri</text>
+    <text x="320" y="64" text-anchor="middle">ja sopimuksen seuranta</text>
+    <rect x="0" y="210" width="180" height="72" rx="10" fill="#fbe6d8"/>
+    <text x="90" y="234" text-anchor="middle" font-weight="700" font-size="13">Kilpaileva jäteyhtiö</text>
+    <text x="90" y="252" text-anchor="middle">ostaa painot, ennusteet</text>
+    <text x="90" y="266" text-anchor="middle">ja tarjouspaketit</text>
+    <rect x="460" y="210" width="180" height="72" rx="10" fill="#d8efe5"/>
+    <text x="550" y="234" text-anchor="middle" font-weight="700" font-size="13">Europress</text>
+    <text x="550" y="252" text-anchor="middle">punnitsee jokaisen laitteen,</text>
+    <text x="550" y="266" text-anchor="middle">saa palvelutulon ja lisämyynnin</text>
+    <path d="M456,236 L186,236" stroke="#0f7a55" stroke-width="2" marker-end="url(#ar)"/>
+    <text x="322" y="228" text-anchor="middle">painoprofiilit ja ennusteet</text>
+    <path d="M186,262 L456,262" stroke="#0f7a55" stroke-width="2" marker-end="url(#ar)"/>
+    <text x="322" y="278" text-anchor="middle">30 €/kk/laite + 500 €/tarjous, laitesuositukset</text>
+    <path d="M110,206 L245,78" stroke="#0f7a55" stroke-width="2" marker-end="url(#ar)"/>
+    <text x="128" y="128" text-anchor="end">parempi tarjous:</text>
+    <text x="128" y="142" text-anchor="end">kilohinta ilman riskiä</text>
+    <path d="M395,78 L530,206" stroke="#0f7a55" stroke-width="2" marker-end="url(#ar)"/>
+    <text x="512" y="128" text-anchor="start">lupa jakaa data,</text>
+    <text x="512" y="142" text-anchor="start">vaatii kilpailutusta</text>
+    <text x="320" y="150" text-anchor="middle" font-weight="700" fill="#0f7a55" font-size="12">Kannustimet kääntyvät</text>
+    <text x="320" y="166" text-anchor="middle" fill="#5b6b64">täysi kuorma = jäteyhtiön etu</text>
+  </svg>
+
+  <div class="step"><div class="n">1</div><div><b>Europress punnitsee jokaisen uuden puristimen.</b> Asiakas ei maksa mitään eikä voi jättää punnitusta pois.</div></div>
+  <div class="step"><div class="n">2</div><div><b>Asiakas saa ilmaisen näkyvyyden.</b> Tekoäly kertoo, mitä hän maksaa, mikä ei käy järkeen ja kannattaako kilpailuttaa. Asiakkaan vaatimus saa jäteyhtiön mukaan, kuten Insightsin kanssa<span class="tag H">vetäjä</span>.</div></div>
+  <div class="step"><div class="n">3</div><div><b>Kilpaileva jäteyhtiö ostaa painodatan</b> ja tarjoaa kilohinnan ilman riskiä. Se voittaa kilpailutuksia.</div></div>
+  <div class="step"><div class="n">4</div><div><b>Vakiintuneen on pakko seurata.</b> Kilohinnoittelussa täydet kuormat ovat jäteyhtiön etu.</div></div>
+  <div class="step"><div class="n">5</div><div><b>Jäteyhtiöt alkavat suositella Europressin laitteita.</b> Europressin vastustajista tulee myyntikanava.</div></div>
+
+  <div class="card accent" style="margin-top:3mm"><b>Miksi asiakas ei maksa:</b> laskelmassa jo 10–25 % punnituksen pois jättäneitä asiakkaita syö maksullisuuden hyödyn, koska jäteyhtiö ei uskalla siirtyä kilohinnoitteluun, jos osa kohteista on punnitsematta<span class="tag A">arvio</span>.</div>
+  <div class="foot"><span>OpenWeight</span><span>3</span></div>
+</section>
+
+<!-- 4 WHAT WE BUILD -->
+<section class="page">
+  <div class="kicker">3 · Mitä rakennetaan</div>
+  <h2>Kolme näkymää ja yhteinen taustajärjestelmä</h2>
+  <p class="lead">Demo käyttää haasteen omaa dataa ja tehtäviä A–E. Yksi kauppaketjun kohde kulkee kaikkien näkymien läpi.</p>
+
+  <div class="grid3" style="margin-bottom:4mm">
+    <div class="card blue">
+      <h3>Kiinteistöpäällikkö · ilmainen</h3>
+      <ul>
+        <li><b>Tekoälyraportti:</b> kolme tärkeintä havaintoa euroina, Hyväksy / Ei nyt</li>
+        <li><b>Kustannus per tonni</b> rivi riviltä sopimusta vasten <span class="muted">(A)</span></li>
+        <li><b>Asiat, jotka eivät käy järkeen:</b> vajaat tyhjennykset, laskuvirheet, painoerot, kosteus, väärä jäte <span class="muted">(B)</span></li>
+        <li><b>Palvelutaso:</b> täsmällisyys, väliin jääneet käynnit, ylilaskutus <span class="muted">(B2)</span></li>
+        <li><b>Kilpailutusapuri:</b> kiistä / pyydä punnitusdata / neuvottele / kilpailuta <span class="muted">(C2)</span></li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>Jäteyhtiö · maksullinen</h3>
+      <ul>
+        <li><b>Tarjouspaketti:</b> kg/tyhjennys P10/P50/P90, täyttymisnopeus, kausivaihtelu, 12 kk ennuste</li>
+        <li><b>Sokko vs. profiili:</b> 21 % vs 9 % arviovirhe</li>
+        <li><b>Hintalaskuri:</b> yhtiön omat kulut → kannattava €/t ja kate eri varmuustasoilla</li>
+        <li><b>Live-paino</b> ja ennuste omille asiakkaille</li>
+        <li><b>Varmennettu paino</b> jokaisesta tyhjennyksestä</li>
+      </ul>
+    </div>
+    <div class="card brand">
+      <h3>Europress · sisäinen</h3>
+      <ul>
+        <li><b>Verkosto:</b> punnitut laitteet, kalibrointi, painon ja jäteaseman vaa'an ero (±3,3 %)</li>
+        <li><b>Business case:</b> säätimet punnituksen hinnalle, jäteyhtiön maksulle ja omaksumiselle → NPV</li>
+        <li><b>Liidit:</b> jäteyhtiöiden laitesuositukset</li>
+        <li><b>Markkinahintaindeksi:</b> anonymisoitu €/t alueittain</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Taustajärjestelmä</h3>
+  <svg viewBox="0 0 640 92" class="diagram" style="width:100%;height:auto;margin-bottom:3mm">
+    <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6b64"/></marker></defs>
+    <g font-size="10">
+    <rect x="0" y="10" width="112" height="70" rx="8" fill="#f2f6f4"/><text x="56" y="34" text-anchor="middle" font-weight="700">Tiedonkeruu</text><text x="56" y="50" text-anchor="middle">punnitus, SMART,</text><text x="56" y="63" text-anchor="middle">tilaukset, laskut</text>
+    <rect x="132" y="10" width="112" height="70" rx="8" fill="#f2f6f4"/><text x="188" y="34" text-anchor="middle" font-weight="700">Tyhjennykset</text><text x="188" y="50" text-anchor="middle">paino ennen ja jälkeen,</text><text x="188" y="63" text-anchor="middle">liitos laskuriviin</text>
+    <rect x="264" y="10" width="112" height="70" rx="8" fill="#f2f6f4"/><text x="320" y="34" text-anchor="middle" font-weight="700">Profiilit</text><text x="320" y="50" text-anchor="middle">ennusteet vaihtelu-</text><text x="320" y="63" text-anchor="middle">väleineen</text>
+    <rect x="396" y="10" width="112" height="70" rx="8" fill="#f2f6f4"/><text x="452" y="34" text-anchor="middle" font-weight="700">Analyysi</text><text x="452" y="50" text-anchor="middle">€/t, poikkeamat,</text><text x="452" y="63" text-anchor="middle">palvelutaso, hinnoittelu</text>
+    <rect x="528" y="10" width="112" height="70" rx="8" fill="#d8efe5"/><text x="584" y="34" text-anchor="middle" font-weight="700">Suosittelija</text><text x="584" y="50" text-anchor="middle">kielimalli selittää,</text><text x="584" y="63" text-anchor="middle">ihminen hyväksyy</text>
+    <path d="M112,45 L130,45" stroke="#5b6b64" stroke-width="1.6" marker-end="url(#a2)"/><path d="M244,45 L262,45" stroke="#5b6b64" stroke-width="1.6" marker-end="url(#a2)"/><path d="M376,45 L394,45" stroke="#5b6b64" stroke-width="1.6" marker-end="url(#a2)"/><path d="M508,45 L526,45" stroke="#5b6b64" stroke-width="1.6" marker-end="url(#a2)"/>
+    </g>
+  </svg>
+
+  <div class="grid2">
+    <div class="card soft">
+      <h3>Tekoäly tekee oikeaa työtä</h3>
+      <ul>
+        <li><b>Ennusteet vaihteluväleineen:</b> hinnoitteluriski on epävarmuutta, ja sen pienentäminen on se, mistä jäteyhtiö maksaa</li>
+        <li><b>Poikkeamien tunnistus:</b> palvelutaso, laskuvirheet, kosteus, väärä jäte</li>
+        <li><b>Kielimalli:</b> raportit, laskujen lukeminen, kilpailutuksen selitykset. Luvut tulevat aina laskennasta, eivät kielimallilta</li>
+      </ul>
+    </div>
+    <div class="card soft">
+      <h3>Säännöt</h3>
+      <ul>
+        <li>Ihminen hyväksyy jokaisen suosituksen, perustelu ja peruutuspolku näkyvät</li>
+        <li>Jäljitettävyys rivitasolle: tilaus → punnituskuitti → sopimusversio → laskurivi</li>
+        <li>Neutraali: erotellaan jäteyhtiön, laitteen ja datan aiheuttamat erot</li>
+        <li>Data kuuluu asiakkaalle; jakolupa kilpailutuskohtainen</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>OpenWeight</span><span>4</span></div>
+</section>
+
+<!-- 5 WEIGHING -->
+<section class="page">
+  <div class="kicker">4 · Punnituskonsepti</div>
+  <h2>Yksi nostosylinteri jokaiseen puristimeen</h2>
+  <p class="lead" style="margin-bottom:3mm">Kaikki Europressin puristimet seisovat ohjauskiskoilla. Yksi sylinteri nostaa kontin takapäätä 10 mm, etupää toimii nivelenä kiskoilla, ja sylinterin paine kertoo painon. Puristimen oma hydrauliikka, ei maatöitä, ei jatkuvaa kuormaa anturille.</p>
+
+  <svg viewBox="0 0 640 200" class="diagram" style="width:84%;height:auto;margin:0 8% 2mm">
+    <rect x="0" y="168" width="640" height="10" fill="#c9d3ce"/>
+    <text x="8" y="194" fill="#5b6b64">asfaltti / betoni</text>
+    <rect x="70" y="160" width="500" height="8" fill="#7d8a84"/>
+    <text x="320" y="194" text-anchor="middle" fill="#5b6b64">ohjauskiskot (kaikissa laitteissa)</text>
+    <g transform="rotate(-1.4 90 158)">
+      <rect x="80" y="60" width="480" height="96" rx="6" fill="#d8efe5" stroke="#0f7a55" stroke-width="2"/>
+      <rect x="80" y="60" width="120" height="96" rx="6" fill="#0f7a55"/>
+      <text x="140" y="112" text-anchor="middle" fill="#fff" font-weight="700">puristin</text>
+      <text x="390" y="104" text-anchor="middle" font-weight="700">kontti + jäte</text>
+      <text x="390" y="120" text-anchor="middle" fill="#5b6b64">painopiste x opitaan täyttöasteesta</text>
+    </g>
+    <circle cx="90" cy="160" r="6" fill="#14211c"/><text x="90" y="52" text-anchor="middle" font-weight="700">nivel</text>
+    <line x1="90" y1="56" x2="90" y2="150" stroke="#14211c" stroke-dasharray="3 3"/>
+    <rect x="510" y="138" width="24" height="24" fill="#e0702f"/><text x="522" y="52" text-anchor="middle" font-weight="700" fill="#a2501d">sylinteri, nosto 10 mm</text>
+    <line x1="522" y1="56" x2="522" y2="136" stroke="#e0702f" stroke-dasharray="3 3"/>
+    <text x="320" y="16" text-anchor="middle" font-weight="700" font-size="13">W<tspan font-size="9" dy="3">jäte</tspan><tspan dy="-3"> = (R − R</tspan><tspan font-size="9" dy="3">0</tspan><tspan dy="-3">) · L / x</tspan></text>
+    <text x="320" y="31" text-anchor="middle" fill="#5b6b64">R = nostovoima, R0 = sama tyhjällä kontilla, L = nivel–sylinteri, x = jätteen painopiste nivelestä</text>
+  </svg>
+
+  <div class="grid2">
+    <div>
+      <h3>Mittaus</h3>
+      <div class="step"><div class="n">1</div><div>Mittaus koneen ollessa levossa: tara, noutopaino, yötrendi.</div></div>
+      <div class="step"><div class="n">2</div><div>Hidas nosto ja lasku, ~15 s kumpikin. Keskiarvo kumoaa tiivisteiden kitkan.</div></div>
+      <div class="step"><div class="n">3</div><div>Painopiste x jätteen kertymästä (täyttöaste, puristuskerrat); tarkentuu jokaisesta noudosta.</div></div>
+      <div class="step"><div class="n">4</div><div>Tulos pilveen epävarmuuden kanssa: 3,1 t ± 0,1 t.</div></div>
+      <h3 style="margin-top:3mm">Kaikki puristimet</h3>
+      <ul>
+        <li><b>COMBI-perhe:</b> sylinteri koneessa, tehtaalla.</li>
+        <li><b>DUO:</b> sylinteri kiskossa kontin takapäässä, puristimen hydrauliikka.</li>
+        <li><b>Nykyinen kanta:</b> jälkiasennus huollon yhteydessä.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Mitoitus vetäjän kysymyksiin <span class="tag A">arvio</span></h3>
+      <table>
+        <tr><td>Nostovoima</td><td class="num">≈ 4–6 t (≈ 60 kN)</td></tr>
+        <tr><td>Sylinteri</td><td class="num">Ø 80 mm → ≈ 120 bar &lt; 200 bar</td></tr>
+        <tr><td>Anturi</td><td class="num">0–250 bar, ±0,25 % FS → ±30 kg</td></tr>
+        <tr><td>Tarkkuus</td><td class="num">±3 % täynnä, ±8–10 % puolitäynnä</td></tr>
+        <tr><td>Maahan</td><td class="num">jalka kiskolla; levy 400 mm ≈ 0,4 MPa</td></tr>
+        <tr><td>Hinta</td><td class="num">≈ 550–1 100 €</td></tr>
+      </table>
+      <p class="legend">Tarkkuus on suurin juuri noudon hetkellä, kun kontti on täynnä. Tarjouspaketti käyttää juuri sitä: kiloa per tyhjennys. Hinnoitteluun riittää ±10–15 %.</p>
+      <h3>Turvallisuus ja kestävyys</h3>
+      <ul>
+        <li>10 mm nosto, kuristin, varoventtiili, mekaaninen pysäytin</li>
+        <li>Nouto estetty SMARTissa, kunnes sylinteri on sisällä</li>
+                        <li>Biojäte punnitaan normaalisti, toisin kuin painesensorilla</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Vaihtoehdot</h3>
+  <table>
+    <tr><th>Ratkaisu</th><th>Hinta</th><th>Kokonaispaino</th><th>Huomio</th></tr>
+    <tr class="hl"><td>Yksi nostosylinteri</td><td>~550–1 100 €</td><td>kyllä, ±3 % täynnä</td><td>vakaa, puristimen hydrauliikka, Europressin oma IP</td></tr>
+    <tr><td>Kaksi sylinteriä (päät vuorotellen)</td><td>~700–1 200 €</td><td>kyllä</td><td>ei vakaa: koko yksikkö keikkuu</td></tr>
+    <tr><td>Kennot kiskojen alla / tasovaaka / Scaletipper</td><td>530 € – laitteen hinta</td><td>osin</td><td>vaatii rakenteen, liian kallis tai ohi heitetty jäte</td></tr>
+      </table>
+  <div class="foot"><span>OpenWeight</span><span>5</span></div>
+</section>
+
+<!-- 6 ECONOMICS -->
+<section class="page">
+  <div class="kicker">5 · Talous</div>
+  <h2>Kaikki kolme osapuolta voittavat</h2>
+  <p class="lead">Arvot per laite haasteen datasta, kannattavuus julkisista tilinpäätöksistä, laitekanta vetäjältä.</p>
+
+  <div class="grid2" style="margin-bottom:3mm">
+    <div>
+      <h3>Arvo per laite vuodessa</h3>
+      <table>
+        <tr><th>Kenelle</th><th class="num">€/v</th><th>Mistä</th></tr>
+        <tr><td>Asiakas</td><td class="num"><b>~1 900</b></td><td>täydet kuormat, kilpailutus, kiistettävät lisämaksut, laskuvirheet<span class="tag S">simuloitu</span></td></tr>
+        <tr><td>Jäteyhtiö</td><td class="num"><b>~1 400</b></td><td>täydet kuormat 634, turhat käynnit 130, hinnoitteluriski 643<span class="tag S">simuloitu</span></td></tr>
+        <tr><td>Punnituksen kustannus</td><td class="num">~190</td><td>825 € / 8 v + kalibrointi<span class="tag A">arvio</span></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Jäteyhtiön nykyinen liikevoitto per laite</h3>
+      <table>
+        <tr><th>Yhtiö</th><th class="num">Liikevoitto</th><th class="num">€/laite/v</th></tr>
+        <tr><td>L&amp;T 2025</td><td class="num">8,0 %</td><td class="num">~816</td></tr>
+        <tr><td>Stena Recycling 2025</td><td class="num">~2,7 %</td><td class="num">~275</td></tr>
+        <tr><td>L&amp;T Q1/2026</td><td class="num">−0,9 %</td><td class="num">tappio</td></tr>
+        <tr><td>Remeo 2025</td><td class="num">−3,7 %</td><td class="num">tappio</td></tr>
+      </table>
+      <p class="legend">Lähteet: L&amp;T osavuosikatsaus Q1/2026, Asiakastieto, Finder <span class="tag H">havaittu</span>. Per laite: datan asiakaskulu 10 200 €/v.</p>
+    </div>
+  </div>
+  <div class="card accent" style="margin-bottom:4mm"><b>Jäteyhtiö tienaa nyt laitteesta 0–800 € vuodessa. Palvelu tuo ~1 400 €, ja se maksaa siitä 360 € (30 €/kk) + 500 € per tarjous.</b> Maksu on hypoteesi: Insightsin jälleenmyynnissä jäteyhtiö lisäsi Europressin hintaan vain ~10 %<span class="tag H">vetäjä</span>. Testataan pilotissa.</div>
+
+  <h3>Europress, 10 vuotta <span class="tag O">oletus</span></h3>
+  <p class="legend">Punnitus jokaiseen uuteen puristimeen 825 €, 1 200 uutta/v (laitekanta ~20 000)<span class="tag H">vetäjä</span>, jäteyhtiö 30 €/kk, omaksuminen 60 % neljässä vuodessa, tarjouspaketit 500 € × 2,5 tarjoajaa, lisämyynti +5 % (kate 25 %), kiinteät kulut 400 k€/v, korko 8 %. Pylväät: vuoden kassavirta (M€). Viiva: kertymä.</p>
+  {{CHART}}
+  <div class="grid3" style="margin-top:3mm">
+    <div class="card brand"><div class="big">+2,5 M€</div>NPV 10 v · kassavirta plussalla vuodesta 4 · takaisinmaksu vuonna 7</div>
+    <div class="card soft"><div class="big accent">−2,9 M€</div>syvin kertymä ≈ 0,7 × Europressin tulos ennen veroja 2025 (4,0 M€)<span class="tag H">tilinpäätös</span></div>
+    <div class="card soft"><div class="big blue">+2,4 M€/v</div>kassavirta täydessä vauhdissa ≈ +60 % nykyiseen tulokseen</div>
+  </div>
+  <div class="foot"><span>OpenWeight</span><span>6</span></div>
+</section>
+
+<!-- 7 SENSITIVITY / RISKS -->
+<section class="page">
+  <div class="kicker">6 · Herkkyys ja riskit</div>
+  <h2>Mikä ratkaisee, kannattaako tämä</h2>
+
+  <div class="grid2">
+    <div>
+      <h3>Herkkyys (NPV 10 v)</h3>
+      <table>
+        <tr><th>Skenaario</th><th class="num">NPV</th><th class="num">Plussalla</th></tr>
+        <tr class="hl"><td>Perus</td><td class="num">+2,5 M€</td><td class="num">v7</td></tr>
+        <tr><td>Punnitus 550 €</td><td class="num">+4,7 M€</td><td class="num">v6</td></tr>
+        <tr><td>Maksu 40 €/kk tai omaksuminen 80 %</td><td class="num">+5,1 M€</td><td class="num">v6</td></tr>
+        <tr><td>Hidas omaksuminen (6 v)</td><td class="num">+1,2 M€</td><td class="num">v8</td></tr>
+        <tr><td>Ei lisämyyntiä</td><td class="num">+1,0 M€</td><td class="num">v8</td></tr>
+        <tr><td>Punnitus 1 100 €</td><td class="num">+0,3 M€</td><td class="num">v9</td></tr>
+        <tr><td>Maksu 20 €/kk tai omaksuminen 40 %</td><td class="num">−0,2 M€</td><td class="num">v9</td></tr>
+        <tr><td>Punnitus 1 400 €</td><td class="num">−2,1 M€</td><td class="num">ei</td></tr>
+      </table>
+      <p class="legend">Kannattavuusraja: jäteyhtiön maksu 21 €/kk (punnitus 825 €). Jokainen +100 € punnituksessa ≈ −0,8 M€.</p>
+    </div>
+    <div>
+      <h3>Kaksi asiaa ratkaisee</h3>
+      <div class="card accent" style="margin-bottom:3mm"><b>1. Punnituksen hinta.</b> Tavoite alle 800 € tehtaalla asennettuna. Varmistetaan OEM-tarjouksilla (sylinteri, venttiili, anturi, jalka).</div>
+      <div class="card accent" style="margin-bottom:3mm"><b>2. Jäteyhtiöiden omaksuminen.</b> Ei selviä kysymällä. Siksi <b>pilotti ensin</b>: ~1 000 laitetta ja yksi kilpaileva jäteyhtiö kahdeksi vuodeksi. Jos yhtiöt eivät lähde mukaan, Europress lopettaa ~1 M€:n tappiolla eikä 5–11 M€:n.</div>
+      <h3>Muut riskit</h3>
+      <ul>
+        <li>Asiakkaan lupa jakaa painoprofiili (oletus: kyllä, asiakas hyötyy)</li>
+        <li>Vakiintuneen jäteyhtiön vastareaktio → palvelu sama kaikille</li>
+        <li>Lumi, jää ja kosteus painossa → tunnistetaan painon noususta ilman puristuksia</li>
+        <li>Sylinterien tila ja venttiililohkon vapaa paikka varmistettava piirustuksista</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Mitä emme tee</h3>
+  <div class="grid2">
+    <ul>
+      <li><b>Reittioptimointia:</b> Europress ei halua kuljetusbisnekseen; suora integraatio jäteyhtiöön epäonnistui<span class="tag H">vetäjä</span></li>
+      <li><b>Laskutusta laitteen painolla:</b> jäteaseman vaaka pysyy laskutusperusteena</li>
+    </ul>
+    <ul>
+      <li><b>Kunnallista jätehuoltoa:</b> asiakas ei voi valita jäteyhtiötä</li>
+      <li><b>Virtuaalivaakaa:</b> paino mitataan, ei päätellä puristuspaineesta</li>
+    </ul>
+  </div>
+
+  <h3>Hackathon-demo: yksi tarina</h3>
+  <div class="grid3">
+    <div class="card soft"><b>1.</b> Kauppaketjun kohde, sama jäteyhtiö 9 vuotta. Raportti: "Sopimus päättyy 7 kk päästä, arvioitu säästö kilpailutuksella 2 100–3 400 €/v."</div>
+    <div class="card soft"><b>2.</b> Asiakas antaa luvan. Kilpaileva jäteyhtiö avaa tarjouspaketin: sokkona 21 % pielessä, profiililla 9 %. Se tarjoaa kannattavan kilohinnan.</div>
+    <div class="card soft"><b>3.</b> Asiakas valitsee. Europress näkee palvelutulon, liidin ja kertymän kohti takaisinmaksua.</div>
+  </div>
+  <div class="foot"><span>OpenWeight</span><span>7</span></div>
+</section>
+
+<!-- 8 DATA & SOURCES -->
+<section class="page">
+  <div class="kicker">7 · Data, tehtävät ja lähteet</div>
+  <h2>Rakennettu haasteen datan ja tehtävien päälle</h2>
+
+  <table>
+    <tr><th>Haasteen tehtävä</th><th>Missä se näkyy</th><th>Perustaso</th><th>Miten parannamme</th></tr>
+    <tr><td><b>A</b> kustannus per tonni</td><td>asiakkaan €/t rivi riviltä</td><td>96 % sentilleen</td><td>jäljitettävyys rivitasolle</td></tr>
+    <tr><td><b>B</b> poikkeamat</td><td>"asiat, jotka eivät käy järkeen"</td><td>macro-F1 0,73</td><td>painoon perustuva sääntö löytää ennenaikaiset tyhjennykset, joita täyttöanturi ei näe (recall 0,59)</td></tr>
+    <tr><td><b>B2</b> palvelutaso</td><td>jäteyhtiön vertailukortti</td><td>68 / 100</td><td>painoero erotellaan auton tarasta ja laitteesta</td></tr>
+    <tr><td><b>C2</b> sopimustoimet</td><td>kilpailutusapuri</td><td>regret 240 €</td><td>kilpailutuksessa huomioidaan jäteyhtiön laskutuksen laatu</td></tr>
+    <tr><td><b>D</b> liiketoimintamalli</td><td>Europressin näkymä</td><td>–</td><td>hinnat johdettu arvosta, herkkyysanalyysi</td></tr>
+    <tr><td><b>E</b> selitettävyys</td><td>tekoälyraportti</td><td>–</td><td>jokainen luku avautuu lähderiveihin, merkitty havaittu / simuloitu / arvio / oletus</td></tr>
+  </table>
+
+  <div class="grid2">
+    <div>
+      <h3>Haasteen datapaketti</h3>
+      <ul>
+        <li><b>reference/</b> laitteet, sopimukset ja sopimusversiot, jäteyhtiöt, alueet</li>
+        <li><b>operations/</b> tyhjennykset, punnituskuitit, laatu</li>
+        <li><b>telemetry/</b> täyttöaste ja integroitu paino tunneittain</li>
+        <li><b>finance/</b> laskut ja laskurivit</li>
+        <li><b>labels_dev/</b> ja <b>benchmark/</b> evaluointi validointijaksolla</li>
+        <li><b>ECONOMIC_MODEL.md:</b> laskentasäännöt ja ±3,3 %:n toleranssi</li>
+      </ul>
+      <p class="legend">Data on synteettistä ja kuvaa tulevaisuutta, jossa useimmissa laitteissa on integroitu punnitus, eli samaa maailmaa kuin konseptimme.</p>
+    </div>
+    <div>
+      <h3>Haasteen vetäjältä</h3>
+      <ul>
+        <li>Laitekanta ~20 000, ~1 200 puristinta/v, ~70 % liisattuja Pohjoismaissa</li>
+        <li>Sopimukset ~3 v ja SLA, kilpailutus pääosin hinnalla</li>
+        <li>Kuljetus kiinteä per tyhjennys, käsittely ~3× kuljetus</li>
+        <li>Asiakas ei maksa punnituksesta; Europress hyväksyy, jos elinkaari on plussalla</li>
+        <li>Kiskot kaikissa laitteissa; hydraulinen nosto "ei poissuljettu"</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Lähteet</h3>
+  <p class="legend">
+    Haasteen synteettinen data ja dokumentaatio (Since AI / Europress) · haasteen vetäjän kommentit 6.–7.11.2026 ·
+    SMART: epsmart.fi · Scaletipper X1: europressgroup.com/fi/scaletipper-x1 ·
+    Lassila &amp; Tikanoja, osavuosikatsaus Q1/2026 · Stena Recycling Oy: asiakastieto.fi · Remeo: finder.fi ·
+    Europress-konsernin tilinpäätös 2025: PRH ·
+    HSY:n logistiikkapäällikön sähköposti 26.6.2026 (sensorikokeilut) ·
+    Kirjastot: pandas (BSD-3), pyarrow (Apache 2.0), numpy (BSD-3).
+  </p>
+  <div class="card brand" style="margin-top:4mm"><b>Yhdellä lauseella:</b> Europress laittaa vaa'an jokaiseen puristimeen omalla kustannuksellaan, koska painotieto, jonka kuka tahansa voi ostaa, kääntää alan kannustimet, ja kun kannustimet kääntyvät, jäteyhtiöistä tulee Europressin myyjiä.</div>
+  <div class="foot"><span>OpenWeight</span><span>8</span></div>
+</section>
+
+</body>
+</html>

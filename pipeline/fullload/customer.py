@@ -110,6 +110,7 @@ def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFram
     def fig(value, unit, formula, tag="observed"):
         return Figure(value, unit, tag, formula, SOURCES).to_dict()
 
+    lifts_after = round(n_lifts * row["lifts_after"] / row["lifts_before"])
     facts = {
         "customer_name": cust[0], "sector": cust[1], "region": region, "devices": len(dev_ids),
         "lifts": n_lifts, "low_fill_lifts": low, "low_fill_share_pct": _pct(low / n_lifts),
@@ -118,8 +119,9 @@ def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFram
         "price_per_kg_regime_eur": round(eur_from_cents(round(price_kg))),
         "cost_per_t_after_eur": round(price_kg / 100 / t, 1),
         "saving_pct": _pct(1 - price_kg / cost_today), "saving_eur": round(eur_from_cents(round(cost_today - price_kg))),
-        "lifts_after": row["lifts_after"], "lift_reduction_pct": _pct(1 - row["lifts_after"] / n_lifts),
-        "lifts_removed_upper": n_lifts - row["lifts_after"],
+        # the trips model counts only lifts with a usable mass (lifts_before); its reduction is applied to all lifts
+        "lifts_after": lifts_after, "lift_reduction_pct": _pct(1 - row["lifts_after"] / row["lifts_before"]),
+        "lifts_removed_upper": n_lifts - lifts_after,
         "incumbent": row["incumbent"], "winner": row["winner_after"],
     }
     svc = service_check(con, root, dev_ids) if root is not None else None

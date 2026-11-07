@@ -7,12 +7,10 @@ venv/
 __pycache__/
 *.egg-info/
 pipeline/.cache/
-# Kickoff audio and whisper outputs (keep the .txt transcript)
+# Recordings
+talks/
 *.m4a
-Röst*.json
-Röst*.srt
-Röst*.tsv
-Röst*.vtt
+
 # Node
 node_modules/
 web/dist/
@@ -24,12 +22,3 @@ web/dist/
 # Agent worktrees
 .claude/worktrees/
 web/.shots/
-Since.AI.2.json
-Since.AI.2.srt
-Since.AI.2.tsv
-Since.AI.2.vtt
-whisper_*.log
-
-# Transcripts of the Europress talks: local only, never committed
-Röst*.txt
-Since.AI.*.txt

@@ -1,8 +1,8 @@
-"""The operator fee: EUR 30 per weighed device per month, customers free (PRICING.md).
+"""The operator fee: EUR 30 per weighed device per month, customers free (docs/PRICING.md).
 
 Architecture (decided 7 Nov evening): **every new compactor gets the H7 hydraulic self-lift**; billing stays on
 the operator's certified weighbridge, the device weight is for planning and cross-checks. The cash-flow structure is
-the team document's (`analysis/final_v2.py`, LIITE §6.3), reproduced here so the fee decision is traceable, with
+the team document's (`docs/fi/analysis/final_v2.py` run with LIITE §6.3's inputs, not its defaults), reproduced here so the fee decision is traceable, with
 the H7 cost replaced by Part 1's installed cost (`part1/installed_cost.json`, capex without the 6-year upkeep,
 which is counted per year instead).
 
@@ -29,7 +29,7 @@ from .weighing import COST_PATH
 
 
 BASE = "base (H7 EUR 1,000, team decision)"
-RECOMMENDED_FEE = 30   # PRICING.md: EUR 20 never pays back with every new unit weighed
+RECOMMENDED_FEE = 30   # docs/PRICING.md: EUR 20 never pays back with every new unit weighed
 
 
 @dataclass(frozen=True)
@@ -138,7 +138,7 @@ def scenarios(pp: PricingParams) -> dict[str, PricingParams]:
 
 
 def parity_cases(pp: PricingParams) -> list[dict]:
-    """Inputs and outputs for the browser mirror (web/src/pricing/model.ts, `npm run parity`)."""
+    """Fixed input/output cases of the cash-flow model (kept in the bundle for any re-implementation to check against)."""
     variants = [{}, {"h7_capex_eur": 825, "h7_upkeep_eur_per_unit_year": 50}, {"adoption": 0.4, "package_eur": 0},
                 {"sales_growth": 0, "h7_capex_eur": 1000}]
     out = []

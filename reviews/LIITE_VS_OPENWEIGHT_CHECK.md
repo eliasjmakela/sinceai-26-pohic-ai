@@ -1,11 +1,11 @@
-# Check: OpenWeight.pdf vs LIITE_perustelut.md vs the repo
+# Check: docs/fi/OpenWeight.pdf vs docs/fi/LIITE_perustelut.md vs the repo
 
-> **Superseded on 7 Nov evening — see MASTER.md and PRICING.md.** The €20 fee, the 1.6-year payback and the virtual
+> **Superseded on 7 Nov evening — see MASTER.md and docs/PRICING.md.** The €20 fee, the 1.6-year payback and the virtual
 > scale marked "agreed" below are no longer current: the fee is €30 per weighed device per month, every new COMBI
 > gets the H7 self-lift, and the virtual scale is roadmap only. `reviews/OPENWEIGHT_PDF_FIXES.md` has the current fix list.
 
-Checked 7 Nov 2026. Sources: `OpenWeight.pdf` (8 pp., Finnish), `LIITE_perustelut.md` (its appendix), and in this repo
-PRODUCT.md (Figure decisions, §1, §4), LIMITATIONS.md, `web/public/data/bundle.json`, `part1/WEIGHING_CONCEPT.md` §19,
+Checked 7 Nov 2026. Sources: `docs/fi/OpenWeight.pdf` (8 pp., Finnish), `docs/fi/LIITE_perustelut.md` (its appendix), and in this repo
+PRODUCT.md (Figure decisions, §1, §4), docs/LIMITATIONS.md, `web/public/data/bundle.json`, `part1/WEIGHING_CONCEPT.md` §19,
 `reviews/SELF_WEIGHING_PAPER_REVIEW.md`, `pipeline/fullload/params.yaml` and the kit's `docs/BENCHMARK.md` and `docs/ECONOMIC_MODEL.md` (read only).
 
 ## Verdict
@@ -73,7 +73,7 @@ justification given, **wrong** = incorrect arithmetic or wording.
 | 31 | Baselines: A 96 %, B F1 0.73 / recall 0.59, B2 68, C2 regret €240 | p8 | Kit BENCHMARK ✓ (0.964, 0.7309, 0.5941, 67.75, 240.07) | Our rule: recall 71 %, F1 0.81 | minor | C2 is the **dev** split, not validation. The "(recall 0.59)" in the improvement column reads as our result |
 | 32 | Installed base ~20,000; 1,200 new per year; ~70 % leased | p6, p8 | Tommi (L6) | `params.business.devices_total` 10,000 | mismatch | Agree on one installed-base figure |
 | 33 | No billing on the device weight; the weighbridge stays the basis | p7 | Kit ECONOMIC_MODEL §2b | LIMITATIONS §2: Directive 2014/31/EU; planning data plus cross-check | OK, incomplete | Name the directive. Change "Varmennettu paino" (p4) to "weighbridge-checked weight", and "Kalibrointi" to "calibration against weighbridge tickets" |
-| 34 | Calculations in `analysis/` | p1, p8 | LIITE paths | Not in this repo (LIMITATIONS §8) | unsupported | Add the scripts or point to the repo pipeline |
+| 34 | Calculations in `docs/fi/analysis/` | p1, p8 | LIITE paths | Not in this repo (LIMITATIONS §8) | unsupported | Add the scripts or point to the repo pipeline |
 
 ## Most important fixes, in priority order
 

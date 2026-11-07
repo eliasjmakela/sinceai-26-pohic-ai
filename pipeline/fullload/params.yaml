@@ -39,13 +39,13 @@ market:   # PLACEHOLDER values until the business-case teammate signs them off (
   europress_fee_eur_per_t:
     value: 3.9
     unit: EUR per tonne (operator's cost of the service)
-    rationale: decided fee of EUR 30 per device per month (PRICING.md) = EUR 360 per year / 92.6 t per device-year
+    rationale: decided fee of EUR 30 per device per month (docs/PRICING.md) = EUR 360 per year / 92.6 t per device-year
   sigma_sensor:
     value: 0.02
     unit: relative 1-sigma
-    rationale: placeholder until Part 1 v2 lands; systematic sensor error added to the forecast error after OpenWeight
+    rationale: assumed systematic (calibration) error of the yearly device tonnage, added to the forecast error after OpenWeight. H7's per-reading error is 4.4 % 1-sigma after 10 shared tickets (Part 1), but over a year's ~40 lifts the random part averages to under 1 %; what remains is the calibration bias, assumed 2 % (untested)
 
-pricing:   # the operator fee decision (PRICING.md, pipeline/fullload/pricing.py). HYPOTHETICAL unless stated.
+pricing:   # the operator fee decision (docs/PRICING.md, pipeline/fullload/pricing.py). HYPOTHETICAL unless stated.
   years:
     value: 10
     unit: years

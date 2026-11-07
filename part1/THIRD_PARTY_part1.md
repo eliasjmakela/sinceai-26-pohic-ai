@@ -1,4 +1,4 @@
-# Third-party components used by Part 1 (rows to merge into THIRD_PARTY.md)
+# Third-party components used by Part 1 (rows to merge into docs/THIRD_PARTY.md)
 
 Licences come from each installed package's metadata in `part1/.venv` (Python 3.14.4), read on 6 Nov 2026. Exact
 versions are in `requirements-lock.txt`.
@@ -7,7 +7,7 @@ versions are in `requirements-lock.txt`.
 
 | Component | Version | Licence | Used for | Commercial-use note |
 |---|---|---|---|---|
-| europress-smart-material-value-engine (starter kit, `europress_data`) | 1.0.1 | **No licence file** (provided by Since AI / Europress for the hackathon) | `sdk.open_dataset` data access. `scripts/accuracy_value.py` adapts `examples/weighing_accuracy_value.py` | Use is governed by the Since AI Hackathon 2026 rules. Ask before any reuse outside the event (TOMMI_QUESTIONS.md Q16). Not redistributed: `resources/` is not in git |
+| europress-smart-material-value-engine (starter kit, `europress_data`) | 1.0.1 | **No licence file** (provided by Since AI / Europress for the hackathon) | `sdk.open_dataset` data access. `scripts/accuracy_value.py` adapts `examples/weighing_accuracy_value.py` | Use is governed by the Since AI Hackathon 2026 rules. Ask before any reuse outside the event (docs/TOMMI_QUESTIONS.md Q16). Not redistributed: `resources/` is not in git |
 | matplotlib | 3.11.2 | Matplotlib License (PSF-based, BSD-compatible) | Charts | Permissive, commercial use allowed |
 | numpy | 2.5.4 | BSD-3-Clause (bundled parts 0BSD, MIT, Zlib, CC0-1.0) | Simulation, statistics | Permissive |
 | pandas | 3.1.1 | BSD-3-Clause | Drift-watch tables | Permissive |
@@ -103,4 +103,4 @@ local tool, output not redistributed) read the team PDF.
 | [45][47] | Google Patents US 2016/0202111 A1, US 5,117,373 (search listings) | Prior art | Patent documents, facts cited |
 | [46] | Malabar FAQ, aircraft jack load gauges (search listing) | Prior art, seal friction | Facts cited |
 | [48] | EUR-Lex, Regulation (EU) 2023/1230 | Safety / CE | EU law, free reuse |
-| – | `web/public/data/bundle.json → virtual_scale` (team pipeline, synthetic data) | Virtual-scale figures | Own work on the starter kit's synthetic data |
+| – | `pipeline/out/bundle.json → virtual_scale` (team pipeline, synthetic data) | Virtual-scale figures | Own work on the starter kit's synthetic data |

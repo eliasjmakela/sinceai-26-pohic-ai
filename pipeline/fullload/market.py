@@ -25,7 +25,7 @@ Tendered charges = trip-driven + tonne-driven invoice lines (fleet.TRIP_LINES, f
 and other lines are outside the tender and identical in both regimes.
 
 Every number from this module is *simulated* except the observed inputs. The browser runs the same `simulate` maths
-for the sliders (web/src/market/model.ts); `parity_cases` lets a test check both give identical results.
+for sliders in a browser; `parity_cases` gives fixed cases any re-implementation can be checked against.
 """
 from __future__ import annotations
 

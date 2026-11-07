@@ -1,0 +1,11 @@
+numpy
+pandas
+pyarrow
+duckdb
+pyyaml
+pytz
+tabulate
+scikit-learn
+fastapi
+uvicorn
+google-genai

@@ -24,7 +24,7 @@ the waste's centre of mass. Only the sensor carries load, and only for the ~30 s
 **Worked example** (3.75 t machine, 2.5 t of waste, 80 mm bore): tare 27 bar, full 57 bar. One bar is about 85 kg
 of waste, so (57 − 27) × 85 kg ≈ 2.5 t. The heaviest case needs 113 bar, well under the ~200 bar on board.
 
-## Placement, BOM and cost
+## Placement, installation, BOM and cost
 
 - **Placement:** new COMBI units, cylinder between the runners in the rear frame, clear of door impacts.
   Hydraulics: steel pipe inside the frame to the power pack. Electronics: sensor input and valve driver on the

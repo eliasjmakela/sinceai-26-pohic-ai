@@ -131,7 +131,7 @@ C46, C22, C61, C32, C55, C39, C44.
 | C81 | H7 1σ at 2.5 t: A 5.3 / 10.7 / 21.9 %, B 2.6 / 4.4 / 9.7 %, C 1.7 / 3.2 / 8.4 %; at 5 t: B 2.2 / 3.5 / 6.8 %, C 0.9 / 1.9 / 4.8 % | – | RSS of C73–C80, `generated/h7_budget.md` | estimate (model output) | stage B |
 | C82 | H7 absolute floor | 40 / 80 / 200 kg | sensor + friction + tare change, `calc/h7_hydraulic.py` | estimate | – |
 | C83 | Accuracy target | 1σ ≤ 5 % (one end) or ≤ 3 % (both ends) after 10 tickets, loads ≥ 2.5 t | team target, untested | – | stage B pass criterion |
-| C84 | Virtual scale (pipeline) | median error 8.3 % uncalibrated, 7.6 % after 5 tickets, 5.5 % monthly; reference shares above ~5 % add little | `web/public/data/bundle.json → virtual_scale` (synthetic, optimistic) | high for the simulation, unknown for real | rerun the pipeline |
+| C84 | Virtual scale (pipeline) | median error 8.3 % uncalibrated, 7.6 % after 5 tickets, 5.5 % monthly; reference shares above ~5 % add little | `pipeline/out/bundle.json → virtual_scale` (synthetic, optimistic) | high for the simulation, unknown for real | rerun the pipeline |
 | C85 | Median-abs → 1σ factor; H7 fused with the virtual scale | 1 / 0.6745 (7.6 % → 11.3 %); 2.5 / 4.1 / 7.4 % | normal distribution; inverse variance, assumes independence (optimistic) | medium | – |
 | C86 | Lifts per year per unit | ≈445 (365 nightly + 2 × ~40 pick-ups) | review row 4 (`bundle.json`: 18,042 lifts / 447 devices) | medium | SMART logs |
 | C87 | H7 installed cost: factory-fit €1,034–3,008, retrofit €1,994–6,168; hardware €550–1,300 | – | `calc/installed_cost.py`, every line a team estimate; parts anchored on [39] €550–1,100 (retail −50 %) | low | OEM quotes for cylinder, valve and sensor (Q12) |

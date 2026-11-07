@@ -34,14 +34,14 @@ operator can now price per kg with the same precision as the incumbent, so custo
 and efficient operators, including new entrants, can win.
 
 ### Who pays, who uses (decided)
-- **Operators pay**: a **service fee of €30 per weighed device per month** (changed 7 Nov evening, `PRICING.md`;
+- **Operators pay**: a **service fee of €30 per weighed device per month** (changed 7 Nov evening, `docs/PRICING.md`;
   ≈ €3.9 per tonne at the fleet's 92.6 t per device-year, the equivalent the market model uses), as a SMART add-on. They get site forecasts, weight-triggered
   lift orders and a device weight to check every bill against. It is what lets them offer per-kg prices without risk.
 - **The weighing hardware is free for customers**, funded by Europress and paid back from the operators' fees.
   Every new COMBI gets the H7 hydraulic self-lift, factory-fit (a two-end version, H7-2, is an option for higher
   accuracy). DUO containers have no hydraulics; for DUO the hopper plate (H1) or weighing rails (H5) remain the
   options. The team's planning cost for H7 is **€1,000 capex per new unit** (upkeep €73/yr); at that cost €30 is the
-  break-even fee: NPV +€0.18 M over 10 years, payback year 9 (`PRICING.md`). The margin is thin: above ~€1,020 capex
+  break-even fee: NPV +€0.18 M over 10 years, payback year 9 (`docs/PRICING.md`). The margin is thin: above ~€1,020 capex
   €30 no longer pays back (Part 1 estimate €800–2,370, mid €1,585 → −€4.53 M), so a supplier quote comes first.
   The COMBI/DUO split of new units is unknown; the model assumes all ~1,200 new units a year are weighed.
 - **Customers use it for free**: they see how full their containers are when emptied, what per-kg billing would
@@ -68,6 +68,10 @@ Pitch line: *"Today the weight — and the knowledge of every site — belongs t
 compactor, so every operator can compete per kilo."*
 
 ### Decisions and facts, 7 Nov afternoon
+- **OpenWeight never relays offers (decided 7 Nov night, from a teammate; matches Tommi: Europress does not want to
+  sit inside the tender or the contract).** The waste company plans its per-tonne price in its portal and sends the
+  offer the usual way; the customer uploads the offers it received and compares them per tonne with the service
+  record beside the price. No "send offer" button, and the waste company never learns whom the customer chose.
 - **Name: OpenWeight** (for now). The Python package stays `fullload` internally; user-facing text says OpenWeight.
 - **The customer owns the data** and decides who may see it; sharing the weight profile with bidders is a consent step
   in the customer view.
@@ -81,7 +85,7 @@ compactor, so every operator can compete per kilo."*
   DUO containers have no hydraulics; for DUO the hopper plate (H1) or weighing rails (H5) remain the options. A
   virtual scale (`virtual_scale`, simulated ~8 % per lift) is not part of the product claim; at most a roadmap item
   that could later estimate weights on older units.
-- **New facts** (team document `TIIMILLE.md`): Europress already sells a weighing product, **Scaletipper X1**, which is
+- **New facts** (team document `docs/fi/TIIMILLE.md`): Europress already sells a weighing product, **Scaletipper X1**, which is
   expensive, fits only bin-fed sites, and whose data stays in tenant reports (prior art for Part 1). HSY's logistics
   manager: *"Kuljetusyritys ei suoraan säästä, jopa menettää"* (the transport company does not directly save, it may
   even lose). SMART promises 37 % fewer emptyings (do not confuse with our forecast-error figures in the pitch).
@@ -95,9 +99,9 @@ Use only these figures in the demo, the pitch and the documents. Other team docu
 | Customer saving | **−12 % cost per tonne** in the simulated region (€113.1 → €99.6, with the €30 fee = €3.9/t); visits −19 % is the same region, fleet-wide 6–18 % | Market model. The showcase customer's −30.8 % only as "best case". |
 | Customer value per device | **avoidable visits €0.7–1.5k/yr**, tonnes priced above peers **~€1.3k/yr** | Agree with the team's independent estimates. |
 | Operator value | **"removes the risk premium on per-kg bids"**, no single € figure | Our €2.7k and the team document's operator figure are both parameter-driven. |
-| Europress | **€30 per weighed device per month** (changed 7 Nov evening, `PRICING.md`), customer pays €0. Every new compactor gets the H7 self-lift. Base (H7 €1,000 capex, team decision): **NPV +€0.18 M, payback year 9, deepest −€3.83 M**; €30 is the break-even fee. Sensitivity: Part 1 range €800–2,370 (mid €1,585 → −€4.53 M); above ~€1,020 capex €30 does not pay back | `pipeline/fullload/pricing.py` reproduces the team model exactly (H7 €825 → +€2.49 M, y7); €20 never pays back at the base (−€2.46 M) |
+| Europress | **€30 per weighed device per month** (changed 7 Nov evening, `docs/PRICING.md`), customer pays €0. Every new compactor gets the H7 self-lift. Base (H7 €1,000 capex, team decision): **NPV +€0.18 M, payback year 9, deepest −€3.83 M**; €30 is the break-even fee. Sensitivity: Part 1 range €800–2,370 (mid €1,585 → −€4.53 M); above ~€1,020 capex €30 does not pay back | `pipeline/fullload/pricing.py` reproduces the team model exactly (H7 €825 → +€2.49 M, y7); €20 never pays back at the base (−€2.46 M) |
 | Weighing | **H7 hydraulic self-lift on every new COMBI**: ±4.4 % 1σ after 10 shared tickets (est., untested; ~±10 % without), €1,034–3,008 installed factory-fit (capex €800–2,370, upkeep €39–106/yr). H7-2 (both ends) is an option for higher accuracy. DUO: hopper plate (H1) or weighing rails (H5). The weighbridge stays the bill | H7 shows original thinking; prior art exists for truck-side hydraulic weighing (Hiab US 2020/0096383), not found for a compactor lifting itself |
-| Live AI Q&A for customers | **Out.** Frozen, number-checked AI reports only | Stage risk; the brief rewards traceability. |
+| Live AI Q&A for customers | **Out.** No chat. Pitch demo: frozen, number-checked AI report. Product demo (`app/`): Gemini rewords fixed texts at runtime; a guard rejects any reply with a number not in the facts, replies are cached, and a template is the fallback | Stage risk; the brief rewards traceability. |
 
 ### Where we put our effort
 - **The business model and the market before/after is our differentiator** and gets most of the effort. It came from
@@ -110,7 +114,7 @@ Use only these figures in the demo, the pitch and the documents. Other team docu
 
 ## 2. What Europress told us at kickoff (Tommi Häkkinen, 6 Nov) — design constraints
 
-Source: kickoff recording transcript (`Röst 261106_182238.txt` in the project root, Whisper, imperfect).
+Source: kickoff recording transcript (`talks/Röst 261106_182238.txt`, local only, Whisper, imperfect).
 
 | What was said | What it means for us |
 |---|---|
@@ -173,23 +177,38 @@ inputs are precomputed.
 
 ## 4. Demo storyline (decided 7 Nov 15:30: three screens, target 4:30, hard max 5:00)
 
+> **8 Nov: the three pitch screens and detail screens (`web/`) were deleted. The demo is `app/` (below).** The
+> story outline in this table still holds for the pitch and the video.
+
 Three pitch screens; the presenter steps with the arrow keys and never types. Deep links `/#/beat-1` … `/#/beat-3`.
-The ecosystem diagram (`web/src/components/Ecosystem.tsx`) carries screen 3: it starts in its *today* state and
+The ecosystem diagram carried screen 3: it starts in its *today* state and
 adds one arrow per step. Screen 1 shows only the per-visit vs per-tonne evidence.
 
 | # | Time | Screen | On screen | Line |
 |---|---|---|---|---|
 | 1 | 0:00–1:15 | **The market today** | Per visit vs per tonne, observed: a visit costs about the same (€143–160) whether the compactor is under 60 % or over 90 % full, so per-visit charges are €167/t vs €49/t (3.4×). Receipts: 56.5 % of charges are per visit; 0 of 19 customers a challenger can safely win. No diagram (it starts on screen 3) | "Customers pay for trips. Only the incumbent knows the tonnes." |
 | 2 | 1:15–2:45 | **How we get the weight** | H7 hydraulic self-lift, animated side view: tare 27 bar → reading 57 bar → 2.5 t; accuracy ±4.4 % (1σ, est.), installed cost vs the ~€2k reference and the platform scale; known limits. Every new unit weighs itself; the certified weighbridge stays the bill and its tickets calibrate the device | "The compactor weighs itself, with the hydraulics it already has." |
-| 3 | 2:45–4:30 | **The value** | Ecosystem diagram revealed one arrow per click / → (3 boxes, ≤ 3 arrows, fades only): ① the compactor weighs every lift → Europress, ② the same data to every operator, ③ per-kg bids back to the customer; then the market KPIs (€/t −12 %, visits −19 % in the simulated region, 19 / 19 contestable); what each party gets: customer free, operators €30 / device / month, Europress: NPV +€0.18 M over 10 years, payback year 9 with the self-lift at €1,000; €30 is the break-even fee | "Same waste, fewer trucks, open competition. Europress never drives a truck." |
+| 3 | 2:45–4:30 | **The value** | Ecosystem diagram revealed one arrow per click / → (3 boxes, ≤ 3 arrows, fades only): ① the compactor weighs every lift → Europress, ② the same data to every operator, ③ per-kg bids straight to the customer (Europress is not in the tender); then the market KPIs (€/t −12 %, visits −19 % in the simulated region, 19 / 19 contestable); what each party gets: customer free, operators €30 / device / month, Europress: NPV +€0.18 M over 10 years, payback year 9 with the self-lift at €1,000; €30 is the break-even fee | "Same waste, fewer trucks, open competition. Europress never drives a truck." |
 
 **Detail screens** (not in the pitch; for questions, the walkthrough video and judges exploring): Fleet, Customer
 (AI-summarized report, contract check, proposal + approve), Operator (forecast table, bids), Market (all sliders),
-Business (value per device, business cockpit, SMART integration, lift-order payload).
+(The Business screen was removed on 8 Nov: the business model lives in `docs/PRICING.md`, `docs/BUSINESS_CASE.md` and `pipeline/fullload/pricing.py`.)
 
-**Cut on 7 Nov (roadmap lines only):** multi-round market simulation; invoice upload and matching; operator
-"due soon" list; ESG panel; daily lift replay; Europress sales-lead view; a customer consent step in the UI (the
-consent arrow in the diagram and the pitch carry it).
+**Cut from the pitch demo on 7 Nov (roadmap lines only):** multi-round market simulation; ESG panel; daily lift
+replay; invoice upload. Invoice matching, the operator "due soon" list, the Europress sales lead and the customer
+consent step now live in the product demo below.
+
+**Product demo (`app/`, built by the team on 7 Nov evening, merged into this repo on 7 Nov night). Decided 7 Nov
+night: this is the demo of record** for the video and the judges; the three pitch screens above are an earlier
+prototype. Same numbers (it reads `bundle.json`; the hero is ORG-0036).
+- **Customer portal (free):** *Today* (live weight and € per tonne before the truck leaves, a three-item report with
+  Approve / Not now / Undo), *Contract* (is the contract kept: response, schedule, tickets; every pickup traces order
+  → ticket → contract version → invoice lines; invoice query the customer reads before it goes), *Tender* (offer
+  comparison: uploaded offers per tonne, service record beside price; share or withdraw the weights).
+- **Waste company portal (paid):** *Tenders* (offer planning for a tender request it uploaded: bid pack, forecast,
+  price with and without the weights on its own costs), *Full loads* (compactors full within 3 days; units that do
+  not weigh yet can be passed to Europress as a sales lead), *Weight check* (trucks whose tickets disagree with the
+  compactors: tare errors).
 
 ## 5. Where the points come from
 
@@ -198,13 +217,13 @@ consent arrow in the diagram and the pitch carry it).
 | Weighing concept (25 %) | H7 hydraulic self-lift on every new COMBI (H1 / H5 for DUO; T0 virtual weight as roadmap); placement COMBI/DUO; BOM ranges; installation; calibration (factory, reference weights, cross-check with shared weighbridge tickets, auto-zero after each lift); error sources (temperature, humidity, off-centre load, press cycle, biowaste); validation plan; slider linking σ to value | 1, 4, 5 | D1 illustrated concept (agent-drafted, teammate-reviewed) |
 | Customer/business value (25 %) | Customer per-kg cost vs per-trip; fewer trips; competition; operators' risk removed | 2–4 | D3 |
 | Data-driven value & traceable calcs (20 %) | Measured forecast asymmetry (10 % vs 38 %); market simulation with stated parameters; re-pricing with the starter kit's economics; receipts on every €; **rules vs ML comparison** (brief §04): e.g. our premature-lift rule vs kit baseline B4, and simple history forecast vs a slightly richer model | 2–5 | D2 + methods page |
-| Software workflow & SMART pathway (15 %) | Flow: weight → forecast → customer proposal → approval → tender brief → operator bid → per-kg bill checked against device weight; integration diagram (SMART telemetry in, forecasts and lift orders out to operators) extending `examples/recommendation_api_mock.py` | 2–6 | D2 + setup notes |
+| Software workflow & SMART pathway (15 %) | Flow: weight → forecast → customer proposal → approval → tender brief → operator plans its per-kg bid with the bid pack (product demo) → customer compares the uploaded offers → per-kg bill checked against device weight; integration diagram (SMART telemetry in, forecasts and lift orders out to operators) extending `examples/recommendation_api_mock.py` | 2–6 | D2 + setup notes |
 | Commercial productisation (10 %) | Operator-paid fee per device per month, free customer side, adoption path (efficiency-driven operators first), sensitivity, roadmap | 6 | D3 |
 | Clarity / uncertainty / limits (5 %) | ± on every figure, evidence tags, synthetic banner, "what this does not prove", simulation assumptions on screen | all | all + licence list |
 
 Required submission items (brief §07): (1) illustrated weighing concept; (2) working demo **and** a recorded
 walkthrough, code/setup notes, traceable economics, SMART integration; (3) customer value and business case.
-Plus `THIRD_PARTY.md` (every library, model, dataset, service + licence) and `LIMITATIONS.md` (assumptions, untested).
+Plus `docs/THIRD_PARTY.md` (every library, model, dataset, service + licence) and `docs/LIMITATIONS.md` (assumptions, untested).
 
 Starter-kit tasks covered: **A** re-pricing; **B** premature lifts (without flagging justified ones); **B2** operator
 efficiency figures inside the simulation; **C** context only (thresholds/schedules are SMART's domain; we sell the
@@ -214,7 +233,7 @@ price and adoption reasoning (`baselines/business_case.py --params`); **E** rece
 ## 6. Scope (1 coder × ~1.5 days)
 
 ### Must-have, in build order
-1. **Pipeline skeleton** → one deterministic `web/public/data/bundle.json`.
+1. **Pipeline skeleton** → one deterministic `pipeline/out/bundle.json`.
 2. **Forecast backtest**: per device, monthly tonnage; own-history forecast vs peer forecast; error distribution. Simple
    (trailing mean, maybe + seasonal factor from peers); no ML needed for the must-have.
 3. **Trips model**: per device, typical full payload from its own full on-call lifts; trips needed under weight
@@ -235,31 +254,31 @@ price and adoption reasoning (`baselines/business_case.py --params`); **E** rece
 5. Daily replay of weight-triggered lifts (instead of the payload approximation), with overflow-risk days.
 
 ### Explicitly OUT
-Route optimisation and truck load planning (roadmap line in the pitch only), auth, databases, a runtime backend,
-live operator/SMART integration, an LLM chatbot, ML leaderboard chasing, a generic Tasks A–E dashboard, a better
+Route optimisation and truck load planning (roadmap line in the pitch only), auth, live operator/SMART integration,
+an LLM chatbot, relaying offers between operators and customers, (pitch demo only:) databases and a runtime backend, ML leaderboard chasing, a generic Tasks A–E dashboard, a better
 threshold algorithm sold *as such*, contamination detection, agent-based learning simulations, mobile layout, i18n,
 Docker, anything in `private_evaluation/`.
 
 ### Time plan
 | When | Coder (+ agents) | Teammates |
 |---|---|---|
-| Fri 22:00–01:30 | Fresh `.venv` (the existing `venv/` is the whisper env — leave it), starter kit editable, scaffold, pipeline skeleton, forecast backtest, trips model; background agent drafts D1 | Review `TOMMI_QUESTIONS.md`; review D1 draft |
+| Fri 22:00–01:30 | Fresh `.venv` (the existing `venv/` is the whisper env — leave it), starter kit editable, scaffold, pipeline skeleton, forecast backtest, trips model; background agent drafts D1 | Review `docs/TOMMI_QUESTIONS.md`; review D1 draft |
 | Sat 08:00–13:00 | Market simulation + beat 4 screen (**wow first**), hero selection | Ask Tommi + Since AI; set hypothetical cost parameters with rationale; hand-check one site's numbers |
 | Sat 13:00–18:00 | Beats 2, 3, 0, 6; proposal/approve; receipts | D3 business case with our numbers; pitch skeleton; D1 final |
 | Sat 18:00–22:00 | Three pitch screens (decided 15:30), design pass on them, ecosystem diagram polish; deploy static build | Rehearse on the live build, report bugs |
 | **Sat 22:00 FEATURE FREEZE** | Fixes and copy only | Dry run #1, timed |
 | Sat 22:00–24:00 | Dry-run fixes; record walkthrough | Dry runs #2–3; slides final |
 | **Sun 00:00 DEMO FROZEN** | git tag `demo-frozen`; bundle and build committed | |
-| Sun 07:00–09:30 | Typos, setup notes, `THIRD_PARTY.md`, `LIMITATIONS.md`; **submit by 09:30** | Final rehearsal; upload |
+| Sun 07:00–09:30 | Typos, setup notes, `docs/THIRD_PARTY.md`, `docs/LIMITATIONS.md`; **submit by 09:30** | Final rehearsal; upload |
 
 ## 7. Architecture
 
 ### 7.1 Stack
-**Python precompute → static JSON → React single-page app. No server and no network at demo time.**
+**Python precompute → `pipeline/out/bundle.json` → the app.** `app/`: `build_data.py` (reads `bundle.json` and the kit through `fullload.kit`) → JSON →
+FastAPI + SQLite demo state → React portals; optional Gemini wording (§7.6).
 - `pipeline/` — Python (3.14 is what this machine has; the kit needs ≥ 3.11), pandas + DuckDB + pyarrow, on top of the
   starter kit (§7.2). Our euros are *the dataset's own euros*.
-- `web/` — Vite + React + TypeScript + Tailwind + Recharts. Reads `web/public/data/*.json`; runs from
-  `npm run preview` with Wi-Fi off and from a static host.
+- `app/` — FastAPI backend + Vite/React/TypeScript frontend (the pitch screens in `web/` were deleted on 8 Nov).
 - Rejected: Streamlit (generic look, poor control over a staged story), notebooks (not a product).
 
 ### 7.2 How our code fits the starter kit
@@ -284,13 +303,18 @@ Rules:
   `resources/`. Worktrees and agents set them to absolute paths of the main checkout.
 - **Not in git**: `resources/` (size, and the kit has no licence file), `venv/`, `.venv/`, the audio file, pipeline
   caches. Setup notes say: put the kit at `resources/Europress_SMART_Material_Value_Engine_v1.0.1/`, then
-  `pip install -e` it. The committed `web/public/data/bundle.json` means the demo itself never needs the kit.
+  `pip install -e` it. The committed `pipeline/out/bundle.json` means the demo itself never needs the kit.
 - **Labels**: `labels_dev` is read only by `pipeline/fullload/validate.py` (scores via `europress_data.evaluate`,
   validation split) and `pick_heroes.py`. Nothing else may import it.
 
 ```
 sinceai26-haaste/
-  PRODUCT.md  TOMMI_QUESTIONS.md  README.md  THIRD_PARTY.md  LIMITATIONS.md
+  README.md  CLAUDE.md  PRODUCT.md  MASTER.md  SUBMISSION.md  TODO.md   entry points and decisions
+  docs/                            submission docs (business case, pricing, limitations, SMART integration,
+                                   third-party list, walkthrough script, questions for Europress)
+  docs/fi/                         the team's Finnish material: OpenWeight.pdf (from template.html via build_pdf.py),
+                                   LIITE, video script, team papers; analysis/ = their cash-flow scripts
+  talks/                           recordings and transcripts of the Europress talks (local only, not in git)
   briefs/                          agent briefs (Part 1 …)
   resources/                       starter kit + data — read-only, not in git
   pipeline/
@@ -310,7 +334,8 @@ sinceai26-haaste/
       params.yaml                  every hypothetical parameter with its rationale
     tests/                         run against quickstart
   part1/                           Part 1 agent's branch output (sigma_tiers.json is read by export.py)
-  web/                             Vite app; public/data/bundle.json is committed
+  pipeline/out/bundle.json         every figure, committed; the app reads it
+  app/                             product demo: backend/ (FastAPI, build_data.py, llm.py), frontend/ (React portals)
 ```
 
 ### 7.3 Figures and receipts
@@ -351,12 +376,16 @@ below are history. The coder does not build hardware models; the Part 1 agent's 
   ("how full your lifts were, what per-kg would mean for you, what we propose"), generated by Claude **at build time**
   from a structured fact sheet, number-checked by a script, reviewed by a human, frozen, labelled "Drafted by AI from
   the evidence below". Template fallback always exists.
+- **Product demo (`app/`)**: Gemini (`gemini-3.6-flash`, `GEMINI_MODEL`) rewords the report paragraphs, the invoice
+  query and the one-line offer summary at runtime. It never produces a figure: `llm.guarded` rejects any reply
+  containing a number not in the facts, and the template text is shown instead. Replies are cached by hash, so a
+  demo run costs nothing after the first.
 - Pitch slide: how we built with AI agents.
 
 ## 8. Engineering rules for agents
 
 **Demo safety**
-- Static build + committed JSON; no runtime network. The demo machine never needs Python.
+- The demo (`app/`) needs Python and a local server, but not the starter kit (its data is committed); without network or a Gemini key it falls back to template texts.
 - Every screen renders with the committed bundle; missing data shows "not available", never a crash or a blank chart.
 - Determinism: fixed seeds, sorted outputs, committed hero IDs; running the pipeline twice yields byte-identical JSON.
 - After **Sat 22:00**: fixes and copy only. After **Sun 00:00**: no dependency changes, no refactors, no regeneration.
@@ -390,7 +419,7 @@ model; (5) determinism; (6) the bundle parses against its TypeScript type and ev
 No UI unit tests; a manual click-through checklist per beat.
 
 **Licences**
-Adding a dependency = adding a row to `THIRD_PARTY.md` (name, version, licence, commercial-use note) in the same
+Adding a dependency = adding a row to `docs/THIRD_PARTY.md` (name, version, licence, commercial-use note) in the same
 commit. Include the starter kit and dataset (terms to confirm), fonts/icons, hosting, Claude API if used, Claude Code as a dev tool.
 
 ## 9. Risks and open questions
@@ -400,7 +429,7 @@ commit. Include the starter kit and dataset (terms to confirm), fonts/icons, hos
 | Market simulation looks invented | Data-derived inputs (σ backtest, tonnage, payloads, current prices); hypothetical parameters in one file with rationale and sensitivity sliders; result holds across slider ranges or we say where it doesn't |
 | Per-kg pricing looks worse for some customers | Show the distribution, not only the hero; say who loses (e.g. dense, already-full sites) |
 | 12 months of data cannot show "time of year" knowledge | State it; the asymmetry is measured on 3-month horizons; seasonality is a named limitation |
-| Free sensors don't pay back | At the €1,000 H7 base, €30 just pays back (NPV +€0.18 M, year 9; needs ≥ 59 % paying adoption). The risk is the H7 cost: above ~€1,020 capex it loses money, and Part 1's mid estimate (€1,585) gives −€4.53 M. Mitigation: supplier quote for the self-lift first, then a pilot. Business screen shows the base and the Part 1 range |
+| Free sensors don't pay back | At the €1,000 H7 base, €30 just pays back (NPV +€0.18 M, year 9; needs ≥ 59 % paying adoption). The risk is the H7 cost: above ~€1,020 capex it loses money, and Part 1's mid estimate (€1,585) gives −€4.53 M. Mitigation: supplier quote for the self-lift first, then a pilot. `docs/PRICING.md` shows the base and the Part 1 range |
 | Device weight presented as a legal-for-trade billing weight | Wording rule (§1): billing stays on the certified weighbridge as today; device weight is planning and service data |
 | Europress hears the model as going into transport | Always: operators pay a service fee per device; Europress never contracts transport |
 | Part 1 looks weak because no one on the team is a mechanical engineer | Claims ledger, shown working, prior-art check and red-team pass (`briefs/WEIGHING_V2.md`); questions for a Europress engineer; Tommi's hopper hint credited |
@@ -408,7 +437,7 @@ commit. Include the starter kit and dataset (terms to confirm), fonts/icons, hos
 | Projector / Wi-Fi / laptop failure | Offline build on two laptops + recorded video + screenshots in slides |
 
 **Open questions**
-- For Tommi and Since AI: `TOMMI_QUESTIONS.md` (ask Sat morning, write answers there, update this file).
-- Internal: hypothetical operator cost parameters, who signs them off, and the €30 fee (decided 7 Nov evening; `PRICING.md`) [business-case teammate, by Sat 13:00].
+- For Tommi and Since AI: `docs/TOMMI_QUESTIONS.md` (ask Sat morning, write answers there, update this file).
+- Internal: hypothetical operator cost parameters, who signs them off, and the €30 fee (decided 7 Nov evening; `docs/PRICING.md`) [business-case teammate, by Sat 13:00].
 - For Europress: a supplier quote confirming H7 at ~€1,000 capex (break-even ~€1,020 at €30). The COMBI/DUO split of
   the ~1,200 new units a year is unknown; the model assumes all new units are weighed.

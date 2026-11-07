@@ -60,12 +60,38 @@ SOURCES = ("collection_events.status", "collection_events.scheduled_at", "collec
 
 
 @functools.cache
+def _b1(root: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+    return baseline("b1_economic_calculator").compute(root)
+
+
+@functools.cache
 def _expected_lines(root: Path) -> pd.DataFrame:
     """Contract-expected charges per job and line type from the kit's B1 calculator (integer cents)."""
-    _, lines = baseline("b1_economic_calculator").compute(root)
+    _, lines = _b1(root)
     exp = lines.groupby(["operator_job_ref", "line_type"], as_index=False).amount_eur.sum()
     exp["exp_cents"] = (exp.amount_eur * 100).round().astype("int64")
     return exp[["operator_job_ref", "line_type", "exp_cents"]]
+
+
+def _fix_mistyped_refs(il: pd.DataFrame, root: Path) -> pd.DataFrame:
+    """Map an invoice line whose job reference matches no job to the job on the same contract and service date.
+
+    The kit's SCHEMA.md: about 1.2 % of job references on invoices have typos; fall back to contract + service_date.
+    Only a single unbilled job on that contract and day is used, so the match is unambiguous. Column `ref_fixed`.
+    """
+    econ, lines = _b1(root)
+    known = set(lines.operator_job_ref)
+    jobs = econ[econ.operator_job_ref.isin(known)][["contract_id", "service_date", "operator_job_ref"]].copy()
+    jobs["service_date"] = pd.to_datetime(jobs.service_date).dt.date.astype(str)
+    jobs = jobs[~jobs.operator_job_ref.isin(set(il.operator_job_ref))]          # jobs no invoice line refers to
+    jobs = jobs.groupby(["contract_id", "service_date"]).filter(lambda g: len(g) == 1)
+    lost = il[~il.operator_job_ref.isin(known)][["contract_id", "service_date", "operator_job_ref"]].drop_duplicates()
+    lost = lost.groupby(["contract_id", "service_date"]).filter(lambda g: len(g) == 1)
+    fix = lost.merge(jobs, on=["contract_id", "service_date"], suffixes=("", "_job"))
+    remap = dict(zip(fix.operator_job_ref, fix.operator_job_ref_job, strict=True))
+    il["ref_fixed"] = il.operator_job_ref.isin(remap.keys())
+    il["operator_job_ref"] = il.operator_job_ref.replace(remap)
+    return il
 
 
 def _service(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
@@ -96,17 +122,21 @@ def _service(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
 def invoice_lines_vs_contract(con: duckdb.DuckDBPyConnection, root: Path) -> pd.DataFrame:
     """Every invoice line (not RENTAL) with its contract-expected amount (kit B1 calculator), in integer cents.
 
-    A repeated (job, line type) is expected at 0, so a duplicated line counts as a difference. Columns: device_id,
-    operator_id, region_code, month, operator_job_ref, line_type, cents, exp_cents. Sorted by invoice and line.
+    A mistyped job reference is first matched by contract and service date (`_fix_mistyped_refs`), so its lines are
+    compared with the job's contract terms instead of counting in full as above the contract. A repeated (job, line
+    type) is expected at 0, so a duplicated line counts as a difference. Columns: device_id, operator_id, region_code,
+    month, operator_job_ref, line_type, cents, exp_cents, ref_fixed. Sorted by invoice and line.
     """
     il = con.execute("""
-        SELECT l.invoice_id, l.line_no, k.device_id, l.operator_job_ref, l.line_type,
+        SELECT l.invoice_id, l.line_no, k.device_id, i.contract_id, CAST(l.service_date AS VARCHAR) AS service_date,
+               l.operator_job_ref, l.line_type,
                CAST(round(l.amount_eur * 100) AS BIGINT) AS cents,
                i.operator_id, s.region_code, i.billing_period AS month
         FROM invoice_lines l JOIN invoices i USING (invoice_id)
         JOIN contracts k ON k.contract_id = i.contract_id JOIN sites s ON s.site_id = k.site_id
         WHERE l.line_type <> 'RENTAL'
         ORDER BY l.invoice_id, l.line_no""").df()
+    il = _fix_mistyped_refs(il, root)
     il = il.merge(_expected_lines(root), on=["operator_job_ref", "line_type"], how="left")
     il["exp_cents"] = il.exp_cents.fillna(0).astype("int64")
     il.loc[il.duplicated(["operator_job_ref", "line_type"], keep="first"), "exp_cents"] = 0

@@ -1,6 +1,6 @@
-# OpenWeight.pdf: what to fix
+# docs/fi/OpenWeight.pdf: what to fix
 
-For the author of `OpenWeight.pdf`. Checked on 7 Nov against `LIITE_perustelut.md`, the demo's numbers and two
+For the author of `docs/fi/OpenWeight.pdf`. Checked on 7 Nov against `docs/fi/LIITE_perustelut.md`, the demo's numbers and two
 independent reviews. The arithmetic in the PDF and LIITE is correct: every calculation was recomputed, and the
 10-year cash-flow table was rebuilt exactly. The problems below are about *which* numbers and claims we use.
 
@@ -17,7 +17,7 @@ scale. Every weight claim in the PDF should follow this rule.
 ## Must fix (the PDF disagrees with the demo)
 
 1. **Business model: keep €30, use the €1,000 H7 base.** The €30 fee and "every new unit weighs itself" are now
-   agreed (see `PRICING.md`). Our model reproduces the PDF's cash flow exactly (NPV 2.49 M€, year 7), but that rests
+   agreed (see `docs/PRICING.md`). Our model reproduces the PDF's cash flow exactly (NPV 2.49 M€, year 7), but that rests
    on H7 at €825, a parts-only midpoint. The team now plans with **H7 €1,000 capex per new unit plus €73 a year
    upkeep**. Replace the PDF's headline with: **"NPV +0.18 M€ over 10 years at 8 %, payback year 9, deepest cash
    −3.83 M€; €30 is the break-even fee and needs ≥ 59 % of weighed units paying (at €20: −2.46 M€)."** Add one line:
@@ -76,7 +76,7 @@ scale. Every weight claim in the PDF should follow this rule.
     lift at 1 m from the pivot).
 19. Baselines (p8): the €240 C2 regret is from the kit's dev split, not validation. The "(recall 0.59)" in the
     improvement column reads as our result; it is the kit's.
-20. "Calculations in `analysis/`" (p1, p8): those scripts are not in the repo. Add them or point to the repo pipeline.
+20. "Calculations in `docs/fi/analysis/`" (p1, p8): those scripts are not in the repo. Add them or point to the repo pipeline.
 21. Keep SMART's "37 % fewer lifts" claim visually apart from the "±37 %" forecast error; they are unrelated numbers.
 
 ## Fine as is

@@ -13,7 +13,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PIPELINE_ROOT = REPO_ROOT / "pipeline"
 PARAMS_PATH = Path(__file__).resolve().parent / "params.yaml"
-BUNDLE_PATH = REPO_ROOT / "web" / "public" / "data" / "bundle.json"
+BUNDLE_PATH = REPO_ROOT / "pipeline" / "out" / "bundle.json"
 
 _DEFAULT_KIT = REPO_ROOT / "resources" / "Europress_SMART_Material_Value_Engine_v1.0.1"
 PROFILES = ("competition", "quickstart")

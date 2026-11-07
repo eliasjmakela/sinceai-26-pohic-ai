@@ -1,0 +1,6 @@
+.env
+backend/state.db
+backend/__pycache__/
+frontend/node_modules/
+frontend/dist/
+backend/llm_cache.json

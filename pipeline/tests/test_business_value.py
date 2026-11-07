@@ -1,4 +1,4 @@
-"""Pricing, value per device, virtual scale and weighing (PRICING.md, PRODUCT.md §6)."""
+"""Pricing, value per device, virtual scale and weighing (docs/PRICING.md, PRODUCT.md §6)."""
 from __future__ import annotations
 
 from dataclasses import replace

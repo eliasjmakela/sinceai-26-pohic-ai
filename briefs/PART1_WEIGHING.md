@@ -25,7 +25,7 @@ Decisions already made (do not reopen):
 
 ## 2. Working rules
 - Work on git branch **`part1-weighing`** (in its own worktree). Write **only** inside `part1/`. Do not modify
-  `PRODUCT.md`, `TOMMI_QUESTIONS.md`, `briefs/`, `pipeline/`, `web/` or anything in `resources/`.
+  `PRODUCT.md`, `docs/TOMMI_QUESTIONS.md`, `briefs/`, `pipeline/`, `web/` or anything in `resources/`.
 - `resources/` (starter kit + data, ~135 MB) and the transcript are **not tracked in git**, so they are missing from the
   worktree. Read them from the main checkout by absolute path: `/home/eliasjmakela/Documents/sinceai26-haaste/resources/…`
   and `/home/eliasjmakela/Documents/sinceai26-haaste/Röst 261106_182238.txt`. Scripts take the data root as an argument.
@@ -34,7 +34,7 @@ Decisions already made (do not reopen):
 - Use web search for component prices and sensor specs; cite every source.
 - Timebox: about 4 hours of agent work. If a gate cannot be met, stop and report instead of working around it.
 - Where an answer depends on Tommi (Europress) — accuracy target, BOM limit, pressure data, subsidy — write a
-  `TOMMI:` marker with your assumption and continue. Questions 8–10b in `TOMMI_QUESTIONS.md`.
+  `TOMMI:` marker with your assumption and continue. Questions 8–10b in `docs/TOMMI_QUESTIONS.md`.
 
 ## 3. Deliverables (all under `part1/`)
 | # | Path | Content |
@@ -43,7 +43,7 @@ Decisions already made (do not reopen):
 | D2 | `part1/figures/*.svg` (+ sources) | 2–4 illustrations: placement sketch per machine type, error-budget chart, accuracy→value chart, drift-detection chart. Self-made only (SVG / matplotlib / mermaid) |
 | D3 | `part1/sigma_tiers.json` | Interface for the app (§4) |
 | D4 | `part1/scripts/` + `part1/README.md` | Scripts that produce every data-derived number and figure; one command reproduces all of them |
-| D5 | `part1/THIRD_PARTY_part1.md` | Rows to merge into `THIRD_PARTY.md`: every library, dataset, web source, tool used, with licence and commercial-use note |
+| D5 | `part1/THIRD_PARTY_part1.md` | Rows to merge into `docs/THIRD_PARTY.md`: every library, dataset, web source, tool used, with licence and commercial-use note |
 | D6 | `part1/GATES_REPORT.md` | Self-check: one row per gate in §5 with PASS/FAIL and evidence (`file:line` or command output) |
 
 ## 4. Interface contract: `part1/sigma_tiers.json`
