@@ -5,14 +5,14 @@ Labour at €55–90/h [24]. Reference: ~€2,000 weighing option on a €20,000
 
 ## Summary
 
-| id | candidate | hardware (factory) | installed, retrofit | installed, factory-fit | factory-fit within ~€2,000? |
-|---|---|---|---|---|---|
-| T0 | Virtual weight from existing pressure + fill (v1) | €0–50 | €10–215 | €10–125 | yes |
-| T1 | Strain gauges on frame / container rails (v1 choice) | €95–480 | €419–1,674 | €226–1,179 | yes |
-| H1 | Hopper-stage weighing plate (idea: Europress / Tommi) | €270–1,430 | €1,270–4,923 | €548–2,363 | partly |
-| H5 | Weighing guide rails (idea: team) | €1,310–3,100 | €3,412–10,136 | €2,382–7,056 | no |
-| T2 | Load cells under the unit's own frame (v1) | €1,160–2,600 | €1,960–5,438 | €1,635–4,338 | partly |
-| PS | Platform scale under the whole unit (Europress's existing option) | €4,800–12,000 | €8,580–23,880 | €7,860–22,160 | no |
+| id | candidate | hardware (factory) | installed, retrofit | installed, factory-fit | factory-fit within ~€2,000? [36] | basis |
+|---|---|---|---|---|---|---|
+| T0 | Virtual weight from existing pressure + fill (v1) | €0–50 | €10–215 | €10–125 | yes | team estimate |
+| T1 | Strain gauges on frame / container rails (v1 choice) | €95–480 | €419–1,674 | €226–1,179 | yes | [4][5][6][7][24] + team estimate |
+| H1 | Hopper-stage weighing plate (idea: Europress / Tommi) | €270–1,430 | €1,270–4,923 | €548–2,363 | partly | [6][9][10][22][24][25] + team estimate |
+| H5 | Weighing guide rails (idea: team) | €1,310–3,100 | €3,412–10,136 | €2,382–7,056 | no | [8][9][10][11][23][24][26] + team estimate |
+| T2 | Load cells under the unit's own frame (v1) | €1,160–2,600 | €1,960–5,438 | €1,635–4,338 | partly | [8][9][10][11][24][26] + team estimate |
+| PS | Platform scale under the whole unit (Europress's existing option) | €4,800–12,000 | €8,580–23,880 | €7,860–22,160 | no | [24][27] + team estimate |
 
 
 ## T0: Virtual weight from existing pressure + fill (v1)
@@ -21,8 +21,8 @@ Labour at €55–90/h [24]. Reference: ~€2,000 weighing option on a €20,000
 |---|---|---|---|---|
 | sensors | none (existing pressure, ram position, fill) | €0–0 | €0–0 | [3] existing sensors |
 | electronics | none, or a faster pressure log | €0–50 | €0–50 | team estimate |
-| mechanical | none | €0–0 | €0–0 | – |
-| site work | none | €0–0 | €0–0 | – |
+| mechanical | none | €0–0 | €0–0 | team estimate (none needed) |
+| site work | none | €0–0 | €0–0 | team estimate (none needed) |
 | labour | remote firmware update; 0–1 h on site | €0–90 | €0–0 | team estimate × rate [24] |
 | calibration | learned from shared weighbridge tickets (H2) | €0–0 | €0–0 | scripts/self_calibration.py |
 | maintenance (6 y) | none beyond software | €0–0 | €0–0 | team estimate |
@@ -37,7 +37,7 @@ Labour at €55–90/h [24]. Reference: ~€2,000 weighing option on a €20,000
 | sensors | 16 foil gauges for 4 full bridges | €25–280 | €25–280 | [4][5] |
 | electronics | 24-bit bridge board, temperature sensor, connector | €10–60 | €10–60 | [6][7] + team estimate |
 | mechanical | gauge covers, coating, cable, glands, enclosure | €60–140 | €60–140 | team estimate (v1 §4) |
-| site work | none | €0–0 | €0–0 | – |
+| site work | none | €0–0 | €0–0 | team estimate (none needed) |
 | labour | retrofit 4–8 h; factory 1–3 h | €220–720 | €55–270 | v1 §5 hours × rate [24] |
 | calibration | water IBC (~1 t) at two positions, 1–1.5 h | €55–135 | €28–90 | v1 §6 × rate [24] |
 | maintenance (6 y) | 30–60 % chance of re-gauging one point (2–4 h + parts) | €39–264 | €39–264 | team estimate |
@@ -82,7 +82,7 @@ Labour at €55–90/h [24]. Reference: ~€2,000 weighing option on a €20,000
 | sensors | 4 × 5 t shear-beam C3 cells | €900–1,740 | €900–1,740 | [26][8] |
 | electronics | summing box + transmitter | €110–460 | €110–460 | [9][10][11] |
 | mechanical | cell mounts in the frame, frame adaptation, stops | €200–600 | €150–400 | team estimate (v1 §4) |
-| site work | none (cells travel with a COMBI) | €0–0 | €0–0 | – |
+| site work | none (cells travel with a COMBI) | €0–0 | €0–0 | team estimate (none needed) |
 | labour | retrofit 8–16 h; factory 3–6 h | €440–1,440 | €165–540 | v1 §5 hours × rate [24] |
 | calibration | known load, commissioning | €150–500 | €150–500 | team estimate |
 | maintenance (6 y) | cells travel with a COMBI: 40–80 % chance of one cell, cable | €140–548 | €140–548 | team estimate |
@@ -94,8 +94,8 @@ Labour at €55–90/h [24]. Reference: ~€2,000 weighing option on a €20,000
 
 | H6 line | what | retrofit | factory-fit | source |
 |---|---|---|---|---|
-| sensors | 4–6 heavy cells (included in the platform price) | €0–0 | €0–0 | in the line below |
-| electronics | indicator / transmitter (included) | €0–0 | €0–0 | in the line below |
+| sensors | 4–6 heavy cells (included in the platform price) | €0–0 | €0–0 | [27] (in the platform price) |
+| electronics | indicator / transmitter (included) | €0–0 | €0–0 | [27] (in the platform price) |
 | mechanical | steel weighing platform or beams with ramps, ~15 t | €4,800–12,000 | €4,800–12,000 | [27] container scale €4,800–5,620 (beams + ramps, 15 t); full deck high end team estimate |
 | site work | foundation or pit, ramps, anchoring, drainage | €2,000–6,000 | €1,500–5,000 | team estimate |
 | labour | 16–32 h retrofit; 12–24 h new site | €880–2,880 | €660–2,160 | team estimate × rate [24] |

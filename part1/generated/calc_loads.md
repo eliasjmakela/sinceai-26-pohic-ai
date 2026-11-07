@@ -60,4 +60,4 @@ At the higher set-down speed on a stiff rail the peak reaches the 10 t safe limi
 Rolling rollers μ ≈ 0.05 → 0.5 t; sliding steel skids μ = 0.4–0.8 [21] → **3.8–7.6 t horizontal** on a 9.5 t unit. Shear-beam cells must not carry this: longitudinal and lateral check rods (stay rods) anchored to the base take it, as in tank weighing modules with lift-off and side restraint [23].
 
 
-Signal-to-range: on a COMBI the cells carry the machine too, so a 1 t load is 25%–18% of the reading; the machine tare is removed by re-taring when the emptied unit returns.
+Signal-to-range: on a COMBI the cells carry the machine too, so a 1 t load is 18%–25% of the reading; the machine tare is removed by re-taring when the emptied unit returns.

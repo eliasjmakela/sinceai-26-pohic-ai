@@ -148,7 +148,7 @@
         "BIOWASTE_LIQUIDS",
         "NEW_DEVICE_BEFORE_TICKETS"
       ],
-      "evidence_tag": "simulation_target",
+      "evidence_tag": "estimate",
       "sources": [
         "[22]",
         "[25]",

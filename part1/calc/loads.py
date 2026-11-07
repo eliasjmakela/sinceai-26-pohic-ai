@@ -146,7 +146,7 @@ def main():
                "base take it, as in tank weighing modules with lift-off and side restraint [23].\n")
     # ---- H5 signal
     out.append(f"\nSignal-to-range: on a COMBI the cells carry the machine too, so a 1 t load is "
-               f"{1 / (COMBI_MACHINE_T[0] + 1):.0%}–{1 / (COMBI_MACHINE_T[1] + 1):.0%} of the reading; the machine "
+               f"{1 / (COMBI_MACHINE_T[1] + 1):.0%}–{1 / (COMBI_MACHINE_T[0] + 1):.0%} of the reading; the machine "
                "tare is removed by re-taring when the emptied unit returns.\n")
 
     text = "\n".join(out)

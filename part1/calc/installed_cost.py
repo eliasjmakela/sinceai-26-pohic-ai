@@ -82,8 +82,8 @@ CANDIDATES = {
         "lines": [
             ("sensors", "none (existing pressure, ram position, fill)", (0, 0), (0, 0), "[3] existing sensors"),
             ("electronics", "none, or a faster pressure log", (0, 50), (0, 50), "team estimate"),
-            ("mechanical", "none", (0, 0), (0, 0), "–"),
-            ("site work", "none", (0, 0), (0, 0), "–"),
+            ("mechanical", "none", (0, 0), (0, 0), "team estimate (none needed)"),
+            ("site work", "none", (0, 0), (0, 0), "team estimate (none needed)"),
             ("labour", "remote firmware update; 0–1 h on site", lab(0, 1), lab(0, 0), "team estimate × rate [24]"),
             ("calibration", "learned from shared weighbridge tickets (H2)", (0, 0), (0, 0), "scripts/self_calibration.py"),
             ("maintenance (6 y)", "none beyond software", (0, 0), (0, 0), "team estimate"),
@@ -96,7 +96,7 @@ CANDIDATES = {
             ("sensors", "16 foil gauges for 4 full bridges", (25, 280), (25, 280), "[4][5]"),
             ("electronics", "24-bit bridge board, temperature sensor, connector", (10, 60), (10, 60), "[6][7] + team estimate"),
             ("mechanical", "gauge covers, coating, cable, glands, enclosure", (60, 140), (60, 140), "team estimate (v1 §4)"),
-            ("site work", "none", (0, 0), (0, 0), "–"),
+            ("site work", "none", (0, 0), (0, 0), "team estimate (none needed)"),
             ("labour", "retrofit 4–8 h; factory 1–3 h", lab(4, 8), lab(1, 3), "v1 §5 hours × rate [24]"),
             ("calibration", "water IBC (~1 t) at two positions, 1–1.5 h", lab(1, 1.5), lab(0.5, 1), "v1 §6 × rate [24]"),
             ("maintenance (6 y)", "30–60 % chance of re-gauging one point (2–4 h + parts)",
@@ -111,7 +111,7 @@ CANDIDATES = {
             ("sensors", "4 × 5 t shear-beam C3 cells", (900, 1740), (900, 1740), "[26][8]"),
             ("electronics", "summing box + transmitter", (110, 460), (110, 460), "[9][10][11]"),
             ("mechanical", "cell mounts in the frame, frame adaptation, stops", (200, 600), (150, 400), "team estimate (v1 §4)"),
-            ("site work", "none (cells travel with a COMBI)", (0, 0), (0, 0), "–"),
+            ("site work", "none (cells travel with a COMBI)", (0, 0), (0, 0), "team estimate (none needed)"),
             ("labour", "retrofit 8–16 h; factory 3–6 h", lab(8, 16), lab(3, 6), "v1 §5 hours × rate [24]"),
             ("calibration", "known load, commissioning", (150, 500), (150, 500), "team estimate"),
             ("maintenance (6 y)", "cells travel with a COMBI: 40–80 % chance of one cell, cable", (0.4 * 225 + 50, 0.8 * 435 + 200),
@@ -122,8 +122,8 @@ CANDIDATES = {
     "PS": {
         "name": "Platform scale under the whole unit (Europress's existing option)",
         "lines": [
-            ("sensors", "4–6 heavy cells (included in the platform price)", (0, 0), (0, 0), "in the line below"),
-            ("electronics", "indicator / transmitter (included)", (0, 0), (0, 0), "in the line below"),
+            ("sensors", "4–6 heavy cells (included in the platform price)", (0, 0), (0, 0), "[27] (in the platform price)"),
+            ("electronics", "indicator / transmitter (included)", (0, 0), (0, 0), "[27] (in the platform price)"),
             ("mechanical", "steel weighing platform or beams with ramps, ~15 t", (4800, 12000), (4800, 12000),
              "[27] container scale €4,800–5,620 (beams + ramps, 15 t); full deck high end team estimate"),
             ("site work", "foundation or pit, ramps, anchoring, drainage", (2000, 6000), (1500, 5000), "team estimate"),
@@ -135,6 +135,9 @@ CANDIDATES = {
     },
 }
 ORDER = ["T0", "T1", "H1", "H5", "T2", "PS"]
+BASIS = {"T0": "team estimate", "T1": "[4][5][6][7][24] + team estimate", "H1": "[6][9][10][22][24][25] + team estimate",
+         "H5": "[8][9][10][11][23][24][26] + team estimate", "T2": "[8][9][10][11][24][26] + team estimate",
+         "PS": "[24][27] + team estimate"}
 HARDWARE = ("sensors", "electronics", "mechanical")
 
 
@@ -165,13 +168,13 @@ def main():
         out.append(md_table(["H6 line", "what", "retrofit", "factory-fit", "source"], rows))
         h = hw(c)
         summary.append([cid, c["name"], f"€{h[0]:,}–{h[1]:,}", f"€{r[0]:,}–{r[1]:,}", f"€{f[0]:,}–{f[1]:,}",
-                        "yes" if f[1] <= REFERENCE_EUR else ("partly" if f[0] <= REFERENCE_EUR else "no")])
+                        "yes" if f[1] <= REFERENCE_EUR else ("partly" if f[0] <= REFERENCE_EUR else "no"), BASIS[cid]])
         js["candidates"][cid] = {"name": c["name"], "hardware_eur": {"low": h[0], "high": h[1]},
                                  "retrofit_eur": {"low": r[0], "high": r[1]}, "factory_fit_eur": {"low": f[0], "high": f[1]},
                                  "lines": [{"line": l[0], "item": l[1], "retrofit": [round(l[2][0]), round(l[2][1])],
                                             "factory_fit": [round(l[3][0]), round(l[3][1])], "source": l[4]} for l in c["lines"]]}
     summ = md_table(["id", "candidate", "hardware (factory)", "installed, retrofit", "installed, factory-fit",
-                     f"factory-fit within ~€{REFERENCE_EUR:,}?"], summary)
+                     f"factory-fit within ~€{REFERENCE_EUR:,}? [36]", "basis"], summary)
     write("installed_cost_summary", summ)
     out.insert(2, "\n## Summary\n\n" + summ)
     text = "\n".join(out)

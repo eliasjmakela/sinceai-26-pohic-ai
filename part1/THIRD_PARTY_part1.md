@@ -59,3 +59,31 @@ matplotlib from our scripts. No third-party images, drawings or Europress materi
 | [13] | Recycling Product News, on-board weighing systems | Accuracy claim | Facts cited |
 | [14] | Micro-Measurements TN-504 (third-party mirror) and index; HBK LS31 product page | Temperature effects, gauge temperature range | Facts cited |
 | [15] | EUR-Lex, Directive 2014/31/EU | Legal-for-trade limitation | EU law, free reuse |
+
+## Weighing v2 additions (7 Nov 2026)
+
+No new Python packages: v2 uses the same `part1/.venv` and `requirements-lock.txt`. New self-made figures:
+`placement_v2.svg` (hand-written SVG), `learning_curve.svg`, `charge_sum.svg`, `installed_cost.svg` (matplotlib).
+New local inputs: the 7 Nov talk transcript `Since.AI.2.txt` (team's own recording, internal use) and, read-only,
+the kit's `configs/assumptions.yaml` (charge masses, weighbridge noise).
+
+| Ref | Source | Use | Licence / note |
+|---|---|---|---|
+| [17] | machinetools.com, Europress COMBI model page (search listing) | Infeed, force, cycle | Facts cited |
+| [18] | finn.no and werktuigen.com used-machine listings (search listings) | Empty unit mass | Facts cited |
+| [19] | Applied Measurement SBR page; Lahti Precision BC5 datasheet (search listings) | Load-cell deflection | Facts cited |
+| [20] | Flintec SSB5 datasheet (PDF) | Overload limits, temperature coefficients | Facts cited |
+| [21] | Engineering ToolBox, friction coefficients | Friction | Facts cited |
+| [22] | KERN & SOHN shop, CT 500-3Q1 | Price, spec | Facts cited |
+| [23] | Central Carolina Scale weigh-module catalog (search listing) | Price | Facts cited |
+| [24] | City of Turku contract-rate document 2024 (search listing) | Labour rate | Public document, facts cited |
+| [25] | IndiaMART listing, ADI ASP-631 (search listing) | Price | Facts cited |
+| [26] | San Diego Scale, Zemic BM8H | Price | Facts cited |
+| [27] | werktuigen.com, WEDI container scale listing | Price, spec, prior art | Facts cited |
+| [28]–[32], [34] | Google Patents / ipiq.io / USPTO pages: US 6,427,585, US 2023/0219317, US 11,148,383, US 12,379,240, US 4,729,304, EP2544968B1 | Prior art | Patent documents, facts cited; no FTO opinion |
+| [33] | Transport Engineer, "Weigh for pay" (search listing) | Prior art | Facts cited |
+| [35] | Avermann MPC 10 brochure (search listing) | Prior art | Facts cited |
+| [36] | `Since.AI.2.txt`, 7 Nov talk with Tommi Häkkinen | Requirements, hopper idea (credited to Europress) | Internal use |
+| [37] | OptiCare Expert price list (search listing) | Labour rate upper bound | Facts cited |
+| [38] | Pfreundt roll-off dumper scale catalogue (search listing) | Prior art | Facts cited |
+| – | Claude web search / fetch tools | Finding the sources above | Tool use |

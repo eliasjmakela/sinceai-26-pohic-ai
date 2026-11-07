@@ -113,7 +113,7 @@ TIERS = [
         "install_hours": {"low": 10, "high": 20},
         "suits": ["COMBI", "DUO"],
         "weak_for": ["RETROFIT_UNITS", "BIOWASTE_LIQUIDS", "NEW_DEVICE_BEFORE_TICKETS"],
-        "evidence_tag": "simulation_target",
+        "evidence_tag": "estimate",
         "sources": ["[22]", "[25]", "[28]", "[29]", "[36]"],
     },
     {

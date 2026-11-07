@@ -1,222 +1,339 @@
-# FullLoad Part 1: weighing concept
+# FullLoad Part 1: weighing concept (v2)
 
-**Getting an affordable, good-enough weight at the compactor.** Team FullLoad, Since AI Hackathon 2026, Europress
-challenge, Part 1 ("Get the weight"). Draft, 7 Nov 2026. Everything in this document is **untested**. No hardware was
-built or measured. The synthetic dataset cannot show that any weighing design works [1][2]. Every accuracy figure
-carries a tag: *estimate* (team reasoning), *simulation target* (the starter kit's assumption) or *literature*
-(a published vendor or reference value).
+**How the compactor gets its own weight, cheaply enough to give away.** Team FullLoad, Since AI Hackathon 2026,
+Europress challenge, Part 1 ("Get the weight"). Version 2, 7 Nov 2026, after the follow-up talk with Tommi Häkkinen
+[36]. Everything in this document is **untested**. No hardware was built or measured, and the team has no
+mechanical-engineering expertise: every mechanical number is an order-of-magnitude calculation in `part1/calc/`
+for an engineer to check. The synthetic dataset cannot show that any weighing design works [1][2]. Every accuracy
+figure carries a tag: *estimate* (team reasoning or a simulation with team-estimate inputs), *simulation target*
+(the starter kit's assumption) or *literature* (a published vendor or reference value). Every number is traced in
+`CLAIMS_LEDGER.md`; the failure modes we tried are in `RED_TEAM.md`; open questions for Europress are in
+`ENGINEER_QUESTIONS.md`.
 
-## 0. Summary
+## 0. One page for Tommi
 
-- **Chosen concept: T1, cheap strain gauges.** Four strain-gauge full bridges go on the load-carrying steel: the base
-  frame on a COMBI, the stationary container rails on a DUO. A low-cost 24-bit bridge amplifier connects them to the
-  existing SMART modem. Indicative hardware cost is **€100–480 per device** ([4][5][6][7] + team estimate), retrofit
-  time **4–8 h**, and the expected 1σ error is **1.1–3.5 % of the load, mid 1.9 %** (*estimate*).
-- **Alternatives.** **T0 virtual weight** uses the existing hydraulic pressure, ram position and fill level. It needs
-  no new hardware (team estimate) and is a later software upgrade, but its error is about 5–20 % (*estimate*) and it
-  is weak for biowaste. **T2 shear-beam load cells** give the best accuracy, about 0.3–1 % (*literature*), but cost
-  about **€1,380–2,860 per device** ([8][9][10][11] + team estimate).
-- **Business fit (PRODUCT.md §1).** The hardware is **free to the customer**. Europress funds it and earns it back
-  from the operators' fee per verified tonne. Europress stays a technology company and never transports.
-- **How the gauges stay honest.** They auto-zero after each lift. In service, each one is cross-checked against the
-  weighbridge tickets that operators share: a rolling device-to-ticket ratio shows drift and proposes a
-  recalibration, which a person approves (§6 step 3, Figure 4).
-- **What the accuracy is worth.** We re-measured 5,787 synthetic reference loads with T1's mid error model. 91 % of
-  2.5–3.5 t loads land within ±100 kg, and the median cost-per-tonne error is 1.7 % (§8). The ±100 kg on a 3 t load is **the
-  dataset's simulation target, not a Europress specification** [2].
+**The problem you named.** Without the weight "we always stop halfway" [36]. Platform scales under the unit exist
+but are "almost as expensive" [36]; the weight has to come cheap, it "doesn't need to be very accurate", and an
+option around €2,000 on a €20–25k COMBI is what customers would weigh it against [36].
 
-> **TOMMI (Q9):** The accuracy target is assumed. For forecasts and weight-triggered orders, we assume "ballpark but
-> really close" [3] means a 1σ error of about 5 % or better. For a weight both sides could settle on, we use the
-> ±100 kg on 3 t (1σ ≈ 1.7 %), the dataset's simulation target, not a Europress specification, as the working goal. If Tommi names a different figure, change the T1 design
-> point and §9's acceptance threshold.
+**Our recommendation: H1 hopper-stage weighing + H2 fleet self-calibration.**
 
-## 1. Requirement and accuracy reasoning
+1. **Weigh the charge, not the container** (your idea, credited to Europress [36]). A small steel plate in the
+   floor of the charging chamber sits on four 500 kg load cells. Each time the door closes, the plate is read
+   before and after the ram stroke; the difference is the mass that went into the container. The device adds up the
+   charges. The sensor never carries the 3–4.5 t machine [18][36], the up to 5 t of waste [36] or the hook-lift
+   forces, so the cells are small and cheap, and the **same part fits COMBI and DUO**.
+2. **The fleet calibrates itself** (our software edge). A hopper plate misses the part of each charge that hangs on
+   the walls, so the raw sum reads a few percent low (8–10 % RMS error before calibration, *estimate*). That bias is
+   stable per device, so every weighbridge ticket an operator shares is a free calibration point, and a new device
+   starts from what its sister machines have already learned. On the synthetic lift history the container-total
+   error falls from **9.5 % to 4.6 % before the device's first ticket** and to **3.4 % (2.3–5.4 %) after 10
+   tickets** (*estimate*, §4, Figure 2).
+3. **What it costs, fully installed** (sensors, electronics, mechanics, site work, labour, calibration, 6 years of
+   maintenance and development amortised): **€548–2,363 factory-fit** and €1,270–4,923 as a retrofit (team
+   estimate on cited part prices, §7). The factory-fit range sits around the ~€2,000 reference [36]; the platform
+   scale lands at €7,860–22,160 (team estimate on [27]).
+4. **Good enough for what FullLoad needs.** Billing stays on the operator's weighbridge (PRODUCT.md §1). For
+   forecasts, weight-triggered pickups and per-site tonnage, a few percent is plenty; summed over a month of lifts the
+   per-site tonnage error drops further because the per-container errors are independent.
+5. **What we are not sure about** (honest list): whether a plate can live in the charging chamber (impacts up to
+   ~12 t from misuse and 7–14 t of floor pressure on every stroke go into overload stops with a gap under 0.5 mm,
+   §5.3), how much of a cardboard charge hangs on the walls, and liquids from biowaste. These decide a bench test (§14).
+6. **Alternatives we costed.** Weighing guide rails (H5, the team's idea) are 3–5× more accurate (≈1 %, *estimate*)
+   but cost €2,382–7,056 even on a new site because of the site work (team estimate, §7). The v1 strain gauges (T1)
+   are cheaper, but on a COMBI they measure frame bending, which changes every time the unit is set down (§10).
 
-Today the weight that decides charges and credits is known only at the operator's weighbridge [1]. Europress wants a
-weight **at the source** that is "cheap as possible" and "ballpark but really close", and customers "are not willing
-to pay almost anything" for extra hardware [3]. So the design targets the lowest cost that still serves our use cases:
+**Ask:** can a Europress engineer check the charging-chamber questions in `ENGINEER_QUESTIONS.md`, and would
+Europress host a bench test of the plate (§14)?
 
-| Use of the device weight | Accuracy it needs (1σ, *estimate* from §8) | T0 | T1 | T2 |
-|---|---|---|---|---|
-| Fill → weight forecast, weight-triggered order | ≈ 5–10 % | yes (cardboard, plastics) | yes | yes |
-| Cost-per-tonne transparency per site and month | ≈ 2–3 % | no | yes | yes |
-| Checking a tonnage difference on **one** load (+10 % flagged) | ≈ 1–2 % | no | mostly (85 % flagged) | yes |
-| Settlement basis for per-kg billing | ≈ 1–1.7 % **and** legal-for-trade approval [15] | no | not alone (§10) | closer |
+## 1. What changed in v2, and the requirement
 
-Averaging helps a lot. Random error falls with the square root of the number of loads, so a 3 % systematic tonnage
-difference shows up after about 2 loads at T1 mid and about 45 loads at T0 mid (*estimate*, `generated/accuracy_value.md`).
-A systematic gain error does **not** average out. It is caught by the ticket cross-check in §6 step 3.
+| v1 (6 Nov) | v2 (7 Nov, after Tommi [36]) |
+|---|---|
+| Chosen concept T1 strain gauges on the frame | **H1 hopper-stage plate + H2 self-calibration**; T1 kept as an alternative with a revised (worse) error budget |
+| BOM only | **Full installed cost per device** (H6), retrofit and factory-fit, for every candidate |
+| T0/T1/T2 | T0, T1, T2 plus **H1, H5 weighing rails, PS platform scale** |
+| Accuracy goal: ±100 kg on 3 t | Planning grade: "doesn't need to be very accurate, but it must be cheap" [36]; billing stays on the weighbridge |
 
-## 2. Measurement principle (T1)
+Use of the device weight and the accuracy it needs (1σ, *estimate* from §8):
 
-The waste's weight bends the steel that carries it, and the bending stretches the steel surface by about 100–400 µm/m
-(microstrain, µε). That is the strain level we assume at working stress in a frame member (*estimate*: 20–80 MPa
-divided by E = 210 GPa). A foil strain gauge turns strain into a resistance change. Four gauges wired as a
-**Wheatstone full bridge** at each point cancel most of the bending from other directions and most of the uniform
-temperature change. With 5 V excitation, a full bridge at 200 µε gives about 1.3 mV (*estimate*: gauge factor 2,
-Poisson arrangement). A 24-bit bridge ADC such as the ADS1232 has 17 nV RMS noise at 10 samples/s and gain 128 [7],
-so **electrical noise is not the limit. Temperature and mechanics are** (§7).
+| Use | Accuracy needed | H1 + H2 |
+|---|---|---|
+| Fill → weight forecast, weight-triggered order | ≈ 5–10 % | yes |
+| Per-site tonnage per month for per-kg tender pricing | ≈ 2–5 % | yes (the per-container part of the error averages out over a month of lifts) |
+| Flag a +10 % difference on one load against the weighbridge | ≈ 1–3 % | mostly (77 % flagged at mid, §8) |
+| Settlement | weighbridge only (Directive 2014/31/EU [15]) | not claimed |
 
-- **Four measurement points** (G1–G4, Figure 1) sit near the four places where the load leaves the structure. The
-  sum of the four bridges is proportional to the carried weight. The ratios between them show where the load sits
-  (off-centre warning).
-- **When to read:** only at rest. That means the ram is retracted, no press cycle for at least 60 s, and the reading
-  is a 10–30 s average. SMART already knows the press state (operational_state, compaction cycles), so the firmware
-  can gate the reading on it.
-- **Net weight:** gross minus the **zero** taken after the last lift (auto-zero, §6 step 4). The device reports the net
-  waste mass and its own 1σ, as the dataset's `mass_kg` and `mass_uncertainty_kg` fields already assume [2].
-- **Gauge type:** weld-on (spot-welded carrier) or bonded foil gauges under a sealed cover. Weld-on carriers need no
-  adhesive cure and are easier to fit in the field. HBK, for example, offers weldable foil gauges for −50 to +250 °C
-  [14]. The cost range in §4 runs from hobby-grade foil gauges [5] to industrial ones [4]. **Which grade survives
-  outdoor service is a human-review item.**
+> **TOMMI (Q9):** We assume planning grade means a 1σ of about 5 % or better on a container. If Europress needs
+> the device to flag single-load differences reliably, H5 or a platform scale is the better fit (§10).
 
-**Why T1 over T0 and T2.** T1 is the cheapest option that reaches about the dataset's simulation target at its mid
-estimate. T0 costs nothing in hardware but misses the cost-per-tonne and verification uses by a factor of about 5. T2 meets
-every use but costs 3–30× more hardware (and 2× the install time), which conflicts with "customers are not willing to
-pay almost anything" [3] and with a free-to-customer rollout.
+## 2. Mechanism first: the compactor's feed cycle
 
-## 3. Placement
+From public sources (marked) and our assumptions (marked *assumed*):
 
-![Figure 1: T1 placement on COMBI and DUO](figures/placement.svg)
+1. The user opens the infeed door and drops waste through the hopper. A Europress COMBI has an infeed aperture of
+   1,500 × 900 mm at a loading height of 1,480 mm, a 25 t compaction force and a 42 s press cycle (listing [17]).
+2. The waste lands in the **charging chamber** in front of the retracted ram, on the chamber floor or partly on the
+   ram (Tommi [36]). *Assumed:* the chamber floor is about 0.4–0.6 m above ground, so a charge falls 0.9–1.1 m.
+3. The door closes and the cycle starts; the ram pushes the charge into the container and retracts (*assumed*
+   from the 42 s cycle [17]; Europress's exact stroke sequence and spill-back protection are ENGINEER_QUESTIONS Q2).
+4. Each cycle adds one charge. The kit assumes a median charge of 8–30 kg depending on material [2]; in the
+   synthetic data a container collects a median of 78 charges (compaction cycles) between lifts, 10–33 kg each
+   (p10–p90), `generated/charge_sum.json`.
+5. **COMBI:** the whole unit (machine 3 t per Tommi [36], 4.0–4.4 t in third-party listings of 20 m³ units [18])
+   is pulled onto a hook-lift truck and emptied at the treatment site. **DUO:** the compactor stays; only the
+   container is detached and exchanged. SMART already logs compaction cycles, fill and a press-load signal [2][3].
 
-*Figure 1. T1 strain-gauge placement. Self-made sketch, not to scale. The mechanical assumptions are listed in §14.*
+## 3. Recommended concept: H1 hopper-stage weighing + H2 self-calibration
 
-### 3.1 COMBI (compactor and container permanently joined, the whole unit is lifted and transported)
+![Figure 1: placement of H1 and H5 on COMBI and DUO](figures/placement_v2.svg)
 
-- **What is weighed:** the whole unit stands on its base frame, so the gauges carry compactor + container + waste.
-  The fixed part (unit tare) drops out with the auto-zero taken when the **emptied unit is set back down** on site.
-- **Where:** two points on each longitudinal base-frame (skid) rail, directly above the **rear rollers** and above
-  the **front skid shoes**. These are the four zones through which the parked unit rests on its pad. The gauges go
-  on the inner web of the rail, which the frame flanges protect from the hook-lift rails and from ground contact.
-- **The sensor travels with the unit.** It must survive the hook-lift pull-up (the frame bends much more during
-  lifting than when parked, so the gauge's strain range and fatigue life must cover that), road vibration, wash-down
-  at the facility and Finnish frost. Cables run inside the frame to the unit's own electrics cabinet next to the
-  SMART modem. There are no connectors to the truck.
-- **Weigh only when parked:** readings taken during the lift or transport are discarded. The modem sees the
-  transport as a power or communication gap, or as an abrupt load change, and resumes after it.
-- **COMBI-specific risk:** if the skids rest on the pad along their whole length instead of on four zones, the load
-  path depends on the pad's flatness. Then the unit needs **defined support pads** under the four zones (a small
-  site-side steel part). This is human-review item 1.
+*Figure 1. H1 plate and H5 rails on COMBI and DUO, and the H1 reading sequence. Self-made sketch, not to scale.*
 
-### 3.2 DUO (compactor stays on site, only the detachable container is emptied)
+### 3.1 Measurement principle
 
-- **What is weighed:** **only the container.** The gauges sit on the **stationary container rails** on which the
-  container rests while it is docked. The compactor stands on its own feet, off the rails, so its weight and most of
-  its vibration do not reach the gauges.
-- **Where:** two points on each rail, near the rail's anchor or support points, where the rail carries the
-  container's rollers and skid ends as a short beam. The gauges sit on the side or underside of the rail, away from
-  the rolling path of the container rollers.
-- **Container exchange:** the operator swaps a full container for an empty one, possibly a **different container
-  with a different tare**. The system re-zeros when an empty container docks, detected from the weight step together
-  with fill near zero and the SMART exchange or door signal. Each lift therefore reports *full weight before
-  undocking minus empty weight after docking*, so a container's own tare never enters the result.
-- **Press coupling:** while the ram pushes waste into the container, it also pushes the container against its stops.
-  That force is not weight. Readings are therefore taken only with the ram retracted and settled (§2). Locking clamps
-  that preload the container onto the rails would bias the reading, and are human-review item 3.
-- The sensors never move, so DUO is mechanically the easier case. Lifting loads are irrelevant, and cables stay on
-  the site installation.
+- **Weighing plate.** A wear-steel plate of about 1.4 × 0.8 m forms part of the charging-chamber floor where the
+  charge lands. It rests on four 500 kg C3 load cells (2 t range, 0.017 % combined error [22]) whose signals are
+  summed on a 24-bit weighing board connected to the SMART modem [6][10]. Overload stops under the plate limit the
+  travel to about 0.24–0.48 mm (`calc/loads.py`), so impacts and compaction pressure go into the chamber floor.
+- **Differential reading per stroke.** After the door closes, the firmware waits 2–3 s and takes reading B (before);
+  after the ram has retracted and settled it takes reading A (after). The charge that entered the container is
+  **B − A**. Material that sticks to the plate or springs back is simply counted when it finally leaves: the sum of
+  all differences telescopes to the mass that crossed the plate. Several drops before one stroke are one charge.
+- **Why the small range works.** A 9–30 kg charge is 0.4–1.5 % of the plate's range, which the cells resolve to
+  about 0.3 kg (`calc/loads.py`). Temperature drift is negligible because B and A are about a minute apart (0.02–
+  0.04 kg per charge, `calc/temperature.py`).
+- **What it cannot see.** Waste that hangs on the hopper walls or rests on the ram when B is read is not on the plate
+  but still goes into the container. This **bridging share** (team estimate: 1 % of a biowaste charge to 6 % of a
+  cardboard charge, `calc/h1_params.py`) is the main error and is why H2 exists.
+- **Container total.** The device reports the running sum since the last lift and its own 1σ, i.e. the dataset's
+  `mass_kg` and `mass_uncertainty_kg` [2]. The sum resets when the emptied COMBI returns or an empty DUO container docks.
 
-## 4. Indicative bill of materials and cost per device
+### 3.2 Firmware rules
 
-Currency conversions are a team assumption: 1 GBP = 1.15–1.20 EUR, 1 USD = 0.85–0.95 EUR, 1 SEK = 0.085–0.095 EUR.
-Prices exclude VAT, are list prices for single units, and were accessed 6 Nov 2026. Volume prices will be lower.
+1. Read only with the door closed, the ram retracted and the hydraulic pump idle, as a 2–3 s average.
+2. Delay the automatic press start by 2–3 s so that reading B exists (TOMMI Q8: door-to-start timing).
+3. Count every compaction cycle (SMART already does [2]). Ten strokes in a row with no weight change while the
+   cycle counter runs = plate jammed or bridged: raise a fault. In the synthetic data that fires within 12–78 h
+   depending on the material (`generated/fusion.md`).
+4. Reject a difference above the plate's range or below −2 kg (team estimate) as an invalid pair.
 
-**T1 strain gauges (chosen):**
+## 4. Our edge: the fleet calibrates itself (H2)
 
-| Item | Qty | Cost range (EUR) | Source |
+**The idea.** Random errors of single charges average out over a container (√N), but the bridging share does not.
+It is roughly constant for one device and one material, so it acts as a **gain error**. Every weighbridge ticket an
+operator shares (single load, weighed tare) gives the ratio *device sum / ticket* for one container: a free
+measurement of that gain. A Kalman filter per device tracks the gain (with a random walk for drift), and its
+starting value is the average learned so far from **other devices of the same material and machine type**, so a
+new device or a device whose operator shares nothing still starts from the fleet's knowledge (empirical Bayes).
+
+**The measurement** (`scripts/self_calibration.py`, synthetic data, fixed seed). We replayed all 5,627 reference
+lifts of 368 devices in time order. Each container was split into as many charges as the device ran compaction
+cycles, each charge was weighed with the H1 error model (`calc/h1_params.py`, team estimates), and each device's
+corrected weight was scored against the ticket **before** that ticket was used (one step ahead, out of sample):
+
+| H1 container-total RMS error (low / mid / high) | no calibration | device's own tickets only | fleet self-calibration (H2) |
 |---|---|---|---|
-| Foil strain gauges, 350 Ω, for 4 full bridges | 16 | €25–280 | [5] hobby grade, 10 for $18.40; [4] industrial grade, £60.29–72.87 per 5 |
-| Bridge amplifier / 24-bit ADC board (HX711 class up to a production 4-channel ADS1232 class board with protection) | 1 | €5–40 | [6] HX711 board 45 SEK; [7] ADS1232 specs; production board team estimate |
-| Gauge protection: coating, steel covers, surface-prep kit | 4 points | €30–80 | team estimate |
-| Shielded cable 10–15 m, glands, small IP67 enclosure | 1 set | €30–60 | team estimate |
-| Board temperature sensor, connector to the SMART modem | 1 | €5–20 | team estimate |
-| **Total hardware T1** | | **≈ €100–480** | sum of the lines above ([4][5][6][7] + team estimate) |
+| before the device's first ticket (n = 0) | 6.8 / 9.5 / 13.8 % | 6.8 / 9.5 / 13.8 % | 3.0 / 4.6 / 6.6 % |
+| after 1–3 tickets | 6.9 / 9.4 / 14.0 % | 2.9 / 4.4 / 6.7 % | 2.6 / 4.0 / 6.1 % |
+| after 10 or more tickets | 6.9 / 9.6 / 14.3 % | 2.3 / 3.4 / 5.4 % | 2.3 / 3.4 / 5.4 % |
 
-**T2 shear-beam load cells (alternative):**
+![Figure 2: learning curve](figures/learning_curve.svg)
 
-| Item | Qty | Cost range (EUR) | Source |
+*Figure 2. RMS error of the container total vs the number of weighbridge tickets the device has seen (mid
+parameters; band = H2 with low and high parameters).*
+
+**What this shows, and what it does not.** With the stated assumptions, H2 halves the error of a brand-new device
+(9.5 % → 4.6 % at mid) and reaches the floor of about 3.4 % after a few tickets; a device's own tickets alone need
+1–3 tickets to catch up. In the synthetic data 78 devices belong to an operator that never shares tickets [2]: with
+H2 they get the n = 0 figure instead of the raw 9.5 %. The analysis assumes that the bridging share is similar
+within a material and machine type, that tickets arrive before the next lift, and that the synthetic ticket mass is
+the truth. It measures the **method**, not the hardware.
+
+**Who gets credit.** Weighing at the hopper is Europress's idea (Tommi, 7 Nov [36]). The differential
+before/after reading, the fleet self-calibration and its analysis are the team's contribution. We make no novelty
+claim beyond §11.
+
+## 5. Placement and mechanics
+
+### 5.1 COMBI (compactor and container joined; the whole unit is lifted and transported)
+
+- **H1:** the plate sits in the floor of the unit's charging chamber. It **travels with the unit**, but it carries
+  only its own mass and the charge: lifting and road loads on the plate are its own inertia (≈100–150 kg plate ×
+  a few g, team estimate), well inside the stops. The cells see none of the 8–9.5 t unit load (`calc/loads.py`).
+- **When the unit is tipped for emptying** at the treatment site, waste and liquid can run back into the chamber
+  and over the plate (RED_TEAM R6). The seal and stops must survive that; the sum resets anyway when the unit
+  returns, and the first stable reading becomes the plate's new zero.
+- **Cabling** stays inside the unit to the existing electrics cabinet and SMART modem; no connector to the truck.
+
+### 5.2 DUO (compactor stays on site; only the container is emptied)
+
+- **H1:** the identical plate sits in the stationary compactor's charging chamber. Container exchange does not
+  disturb it: the sum restarts at zero when the empty container docks (SMART exchange signal [2]); a different
+  container's tare never enters the result, because the container is never weighed.
+- The plate does not travel, so DUO is the easier case for H1. Sensors, part number and firmware are the same as on
+  the COMBI (TOMMI: is the charging chamber the same design on both? ENGINEER_QUESTIONS Q2).
+
+### 5.3 Loads the H1 plate must survive (`calc/loads.py`, order of magnitude)
+
+#### H1: impact of a thrown charge on the weighing plate
+
+Energy E = m(g·h + v0²/2), h = 0.9–1.1 m, v0 = 1.5 m/s; peak force of a linear spring F = 2E/d + mg. Plate range 4 × 500 kg = 2 t, safe limit 150% = 3 t.
+
+| charge | kg | stop distance mm | peak force kN | × static weight | seen as t |
+|---|---|---|---|---|---|
+| plastic film bag, 9 kg (kit median charge) | 9 | 80 | 2.3–2.8 | 26–31× | 0.24–0.28 |
+| cardboard charge, 18 kg (kit median) | 18 | 50 | 7.3–8.8 | 42–50× | 0.75–0.89 |
+| biowaste bag, 30 kg (kit median) | 30 | 30 | 20.2–24.1 | 69–82× | 2.06–2.46 |
+| dense item thrown hard, 25 kg (misuse) | 25 | 5 | 99.8–119.4 | 407–487× | 10.17–12.17 |
+
+
+Worst case ≈ 12.2 t against a 3 t safe limit: **overload stops are required**; a cardboard charge (0.89 t) stays inside the cell range and a biowaste bag (2.5 t) inside the safe limit.
+
+
+#### H1: vertical load on the plate during the compaction stroke
+
+Ram pressure p = 25 t / 1.20 m² = 204 kPa; vertical floor pressure K·p with K = 0.3–0.6; plate 1.12 m² → **7–14 t** on the plate on every stroke, 3–7× the cell range. The stops carry this; the cells see only what the stop gap lets through. Readings are valid only with the ram retracted.
+
+
+Stop gap: set at ~120 % of rated deflection, i.e. **0.24–0.48 mm** (cells deflect 0.2–0.4 mm at rated load [19]). A gap this small jams with grit or ice unless sealed (RED_TEAM R3). An elastomer layer would allow a few mm of travel but adds creep and hysteresis (team estimate).
+
+
+Signal-to-range: a 9–30 kg charge is 0.4%–1.5% of the 2 t range. C3 cells have 0.017 % combined error [8][22] (≈0.3 kg on 2 t), so a charge reads to about ±1–3 % electrically; mechanics (bridging, friction) dominate (calc/error_accumulation.py).
+
+## 6. Co-lead: H5 weighing guide rails (team idea)
+
+**Principle.** Europress sells guide rails as an accessory (brief, unverified). Put two shear-beam load cells under
+each rail so that the unit (COMBI) or the container (DUO) rests **only** on the rails. The weight is the sum of four
+cells. The system zeros when the rails are empty, tares when the emptied unit or an empty container returns, and
+reads before pick-up. The cells stay on the ground: no transport, no tipping.
+
+- **COMBI:** the rails carry machine + waste, 8.0–9.5 t; a 1 t load is 18–25 % of the reading, and the machine tare
+  is removed by re-taring (`calc/loads.py`).
+- **DUO:** the rails carry the container only (2–3 t + up to ~8 t), *if* the coupling to the compactor does not
+  carry part of its weight (load bypass, RED_TEAM R10).
+- **Accuracy.** C3 cells are far better than needed [8][20]; temperature adds 0.3–0.7 % between tare and reading
+  (`calc/temperature.py`); the installed error is set by mechanics: side restraint, friction, levelling, ice and
+  debris. We estimate 0.6–2 % (mid 1 %, *estimate*), in line with vendor claims of ≤ 1 % for container weighing on
+  hook-lift trucks [12][13].
+
+#### H5: loads on the four rail cells
+
+| case | total t | per cell, even t | heavier pair, per cell t | × dynamic 1.5 | cell rated / safe limit |
+|---|---|---|---|---|---|
+| COMBI full (machine + waste) | 8.0–9.5 | 2.0–2.4 | 2.2–3.3 | 3.3–5.0 | 5 t / 10 t |
+| DUO full (container + waste) | 10.0–11.0 | 2.5–2.8 | 2.8–3.8 | 4.1–5.8 | 5 t / 10 t |
+
+
+Pick-up of a full COMBI: when the hook lifts the front, the rear pair carries up to ~80% of 9.5 t → **5.7 t per rear cell** with the dynamic factor: inside a 5 t cell's 200 % safe limit [20] but with little margin. Overload stops under the rear pair give that margin; 10 t cells would too but double the zero drift (calc/temperature.py), so the design keeps 5 t cells + stops (team estimate).
+
+
+#### H5: set-down impact of an empty COMBI (front half on the front pair of cells)
+
+Peak force F = √(2E·k_eff) + mg, cell stiffness 1.6e+08 N/m each (0.3 mm at 5 t [19]).
+
+
+| set-down speed m/s | rail stiffness N/m | energy J | peak per front cell t |
 |---|---|---|---|
-| Shear-beam load cell 5 t, C3, IP68 (combined error 0.017 %) | 4 | €1,000–1,740 | [8] €435 net each; low end is a team estimate for volume pricing |
-| 4-channel summing / junction box, IP68 | 1 | €100–130 | [9] €130 net; low end team estimate |
-| Weighing transmitter, RS485 / 4–20 mA | 1 | €50–330 | [10] €51.95 budget unit; [11] $350 branded 4-channel |
-| Load-cell mounts, brackets, frame adaptation | 1 set | €200–600 | team estimate |
-| Cable, enclosure | 1 set | €30–60 | team estimate |
-| **Total hardware T2** | | **≈ €1,380–2,860** | sum of the lines above ([8][9][10][11] + team estimate) |
+| 0.05 | 2.5e+07 | 3 | 1.7 |
+| 0.05 | 5.0e+07 | 3 | 1.9 |
+| 0.05 | rigid rail | 3 | 3.3 |
+| 0.20 | 2.5e+07 | 45 | 3.5 |
+| 0.20 | 5.0e+07 | 45 | 4.3 |
+| 0.20 | rigid rail | 45 | 9.9 |
 
-**T0 virtual weight:** €0 of new hardware (team estimate). It needs firmware and back-end work, plus pressure data at
-a suitable sample rate (TOMMI, Q8).
 
-**Labour:** at a technician rate of €60–90 per hour (team estimate), T1 installation costs about €240–720 and T2 about
-€480–1,440 (team estimate, using the hours in §5). Fitting T1 in the factory on new units should take a fraction of
-the retrofit time.
+At the higher set-down speed on a stiff rail the peak reaches the 10 t safe limit of a 5 t cell (no margin for a faster or uneven drop): **overload stops (or 10 t cells plus a compliant pad) are required**; slow set-down on a flexible rail stays inside it.
 
-> **TOMMI (Q10):** We assume a hardware ceiling of **€500 per device** (team estimate until Tommi answers) and **one working day** of retrofit time. T1
-> fits within both at its high end. T2 does not.
->
-> **TOMMI (Q10b):** We assume **Europress funds the hardware** (free to the customer) and earns it back from the
-> operators' per-tonne fees. It could also be bundled into a multi-year lease. The payback calculation belongs to the
-> business case (PRODUCT.md §1), which takes these per-device costs as inputs.
 
-## 5. Installation and retrofit
+#### H5: horizontal force when the hook-lift pulls the unit on or off
 
-T1 has good retrofit potential. It needs no new structural parts in the base case, and the same kit serves new builds
-(gauges fitted and calibrated at the end of the production line) and installed units. It does require a SMART modem
-on the unit. Units without SMART need one, which is a sales opportunity because SMART is in only about 15 % of the
-installed base [3].
+Rolling rollers μ ≈ 0.05 → 0.5 t; sliding steel skids μ = 0.4–0.8 [21] → **3.8–7.6 t horizontal** on a 9.5 t unit. Shear-beam cells must not carry this: longitudinal and lateral check rods (stay rods) anchored to the base take it, as in tank weighing modules with lift-off and side restraint [23].
 
-**T1 retrofit steps (two technicians, 4–8 h, team estimate):**
 
-1. **Check the unit (0.5 h).** Unit type, frame or rail drawing, gauge positions marked from an installation template
-   per machine family.
-2. **Prepare the surface (1–1.5 h).** Grind the paint off 4 small spots, then clean and degrease them.
-3. **Fit the gauges (1–2 h).** Spot-weld the weldable gauge carriers, or bond the foil gauges with a fast-curing
-   adhesive, then wire each full bridge.
-4. **Protect (0.5–1 h).** Apply the sealant and coating, then bolt or clamp the steel cover plates on.
-5. **Route the cables (0.5–1 h)** to the electrics cabinet. Mount the amplifier board and connect it to the SMART
-   modem's serial or I²C port.
-6. **Commission (0.5–1.5 h).** Take the zero, run the reference-weight calibration (§6 step 2), check the off-centre
-   response by moving the reference weight, and send a test message to the back end.
+Signal-to-range: on a COMBI the cells carry the machine too, so a 1 t load is 18%–25% of the reading; the machine tare is removed by re-taring when the emptied unit returns.
 
-**T2** additionally needs the unit lifted or the rails removed, load-cell mounts installed, and possibly frame
-modification or welding. That takes 8–16 h (team estimate) and may need a structural review per machine family.
-**T0** needs only a firmware or back-end update plus a calibration period, 0–1 h on site (team estimate).
+**Why H5 is cheaper than a platform scale, and why not by much.** A platform needs a deck or beams with ramps sized
+for the whole unit plus a foundation (a 15 t container scale with beams and ramps lists at €4,800–5,620 before
+installation [27]). H5 reuses the rails as the "deck" and adds only cells, stops and restraint, but it still needs a
+level, anchored base and two technicians for a day or more. In our cost model H5 is about a third of the platform
+scale and **above the ~€2,000 reference** even when the site is new (§7, team estimate).
 
-## 6. Calibration
+## 7. Full installed cost per device (H6)
 
-Cheap sensors are acceptable only because they are calibrated repeatedly. Calibration happens in four layers:
+All lines per device, 6-year lease, ex VAT, labour at €55–90/h ([24] + team estimate), part prices cited, everything
+else a team estimate (`calc/installed_cost.py`; line-by-line tables for every candidate in Appendix A):
 
-1. **Factory (new builds).** Each machine family gets a calibration of gain per bridge point on a test rig, with
-   known weights at 4 positions. That gives the family's nominal gain and its sensitivity to off-centre loads. Each
-   unit then gets a short end-of-line check.
-2. **On-site reference weights (retrofit and after any repair).** Take a zero with the container empty. Then add one
-   or two known loads, for example a 1,000 L IBC filled with water (about 1 t). Water is cheap and available on
-   site, and the IBC can be moved to the front and rear zones to measure off-centre sensitivity. This step gives the
-   unit's gain to about 0.5–1.5 % (*estimate*).
-3. **In service: cross-check against shared weighbridge tickets.** Whenever an operator shares a **single-load,
-   weighed-tare** ticket for a lift, the ratio device weight / ticket net is a free calibration point. Combined loads
-   and stored-tare tickets are excluded because their nets are less reliable [2]. A rolling median of the last 7
-   ratios is compared with the unit's baseline (the median of its first 10). If it stays outside ±5 % for two pairs
-   in a row, the system **proposes** a recalibration. That proposal can be a gain correction factor (baseline /
-   rolling median) or a service visit, and a person approves it. Figure 4 shows this on the synthetic data. Healthy
-   device CMP-00178 (DUO, cardboard) stays inside the band all year. Drifting device CMP-00315 (COMBI, biowaste)
-   moves from 0.975 to 1.317 and is flagged on 2026-02-16, after 16 ticket pairs. Of the 17 devices with at least
-   30 usable pairs, 7 are flagged at least once (`generated/drift_watch.json`). The device weights in the dataset
-   are simulated, so this demonstrates the method, not real sensor drift. Where an operator shares no tickets (in
-   the synthetic data, one fictional operator shares none [2]), the fallback is an annual reference-weight check.
-4. **Auto-zero after each lift.** The first stable reading after the unit returns empty (COMBI) or after an empty
-   container docks (DUO) becomes the new zero. This removes slow offset drift, residue left in the container, and a
-   different container's tare. A zero that differs from the last one by more than about 150 kg (*estimate*) is not
-   accepted silently. It is flagged as possible residue, or as the wrong container type.
+| id | candidate | hardware (factory) | installed, retrofit | installed, factory-fit | factory-fit within ~€2,000? [36] | basis |
+|---|---|---|---|---|---|---|
+| T0 | Virtual weight from existing pressure + fill (v1) | €0–50 | €10–215 | €10–125 | yes | team estimate |
+| T1 | Strain gauges on frame / container rails (v1 choice) | €95–480 | €419–1,674 | €226–1,179 | yes | [4][5][6][7][24] + team estimate |
+| H1 | Hopper-stage weighing plate (idea: Europress / Tommi) | €270–1,430 | €1,270–4,923 | €548–2,363 | partly | [6][9][10][22][24][25] + team estimate |
+| H5 | Weighing guide rails (idea: team) | €1,310–3,100 | €3,412–10,136 | €2,382–7,056 | no | [8][9][10][11][23][24][26] + team estimate |
+| T2 | Load cells under the unit's own frame (v1) | €1,160–2,600 | €1,960–5,438 | €1,635–4,338 | partly | [8][9][10][11][24][26] + team estimate |
+| PS | Platform scale under the whole unit (Europress's existing option) | €4,800–12,000 | €8,580–23,880 | €7,860–22,160 | no | [24][27] + team estimate |
 
-![Figure 4: drift watch](figures/drift_watch.svg)
+![Figure 3: installed cost and accuracy](figures/installed_cost.svg)
 
-*Figure 4. In-service cross-check of device weight against shared, single-load, weighed-tare weighbridge tickets
-(synthetic data, `scripts/drift_watch.py`).*
+*Figure 3. Left: full installed cost per device (dark = factory-fit, light = retrofit) against the ~€2,000 reference
+[36]. Right: factory-fit cost against the 1σ error after calibration (`scripts/cost_figure.py`).*
 
-## 7. Error sources and error budget (T1)
+Reading the table:
 
-The errors are combined by root-sum-square, which assumes the sources are independent. This is a team estimate based
-on the physics in §2, and it is **untested**.
+- **H1 factory-fit (€548–2,363, team estimate)** is the only physical weighing option whose whole range is near the
+  ~€2,000 reference [36]. Its largest lines are the cells (€100–880 for four, [22][25]) and development amortised
+  over 2,000–5,000 units (€30–200 per unit, team estimate). With volume-priced cells the hardware is a few hundred euros.
+- **H1 retrofit (€1,270–4,923, team estimate)** is expensive: the chamber floor must be cut and a sub-frame welded in.
+  For the installed base, T0 (software, €10–215, team estimate) is the realistic first step.
+- **The platform scale (€7,860–22,160 factory-fit, team estimate on [27])** matches Tommi's "almost as expensive"
+  [36] if he meant the machine price: the scale itself is the smaller part; foundation, labour and calibration
+  double it.
+- Payback belongs to the business case (PRODUCT.md §1). `part1/installed_cost.json` carries every line for it.
+
+> **TOMMI (Q10):** We assume Europress funds the hardware (free to the customer) and that a factory-fit option cost
+> near €2,000 per unit [36] is acceptable when the per-tonne fees pay it back (team estimate). Tommi's own point: a customer who saves
+> the €2,000 by choosing a unit without weighing makes the network less valuable [36].
+
+## 8. Accuracy
+
+### 8.1 Error accumulation over a container fill (H1)
+
+Closed form (`calc/error_accumulation.py`) and Monte Carlo on the real synthetic lift sequence
+(`scripts/charge_sum.py`, mid parameters):
+
+| material | reference lifts | RMS error before calibration (sim / closed form) | floor after calibration (sim / closed form) |
+|---|---|---|---|
+| biowaste | 1206 | 6.8 % / 5.4 % | 3.3 % / 3.9 % |
+| cardboard | 1864 | 8.9 % / 8.9 % | 2.8 % / 3.3 % |
+| mixed_plastic | 172 | 8.9 % / 8.1 % | 3.0 % / 3.6 % |
+| mixed_waste | 1470 | 5.8 % / 6.3 % | 2.4 % / 3.4 % |
+| paper | 144 | 10.1 % / 6.5 % | 3.2 % / 3.7 % |
+| plastic_film | 771 | 11.1 % / 8.0 % | 3.1 % / 3.5 % |
+| **all (low / mid / high)** | 5627 | 6.3 / 8.2 / 13.3 % | 2.1 / 2.9 / 4.9 % |
+
+![Figure 4: charge summing](figures/charge_sum.svg)
+
+*Figure 4. H1 container-total error per material, before calibration and after an ideal per-device correction.*
+
+The random part shrinks with the number of charges and is about 1–4.5 % of the container. The bridging bias stays;
+it is removed by calibration (§4). The floor after calibration, about 3 %, comes from how much the bridging share
+changes from one container to the next (team estimate 2–5 %), and it is the number to measure in the pilot.
+
+### 8.2 H1 error budget (per charge, 1σ, team estimate; `calc/h1_params.py`)
+
+| Source | low / mid / high | Effect on the container total | Mitigation |
+|---|---|---|---|
+| Reading noise per reading | 0.3 / 0.5 / 1.0 kg | √N, ~5–15 kg per container | 2–3 s average at rest |
+| Bridging share, mean per material | 1–6 % (by material), our guess off by 30–100 % | bias | H2 calibration |
+| Bridging share, device to device | 2 / 3 / 5 % | bias per device | H2 calibration |
+| Bridging share, charge to charge | 5 / 10 / 20 % of the charge | √N | averages out |
+| Bridging share, container to container | 2 / 3 / 5 % | **floor after calibration** | none (measure in pilot) |
+| Gain after test-weight commissioning | 0.5 / 1 / 2 % | bias | H2 calibration |
+| Strokes without a valid reading pair | 0.5 / 1 / 3 % | bias + small random | firmware delay, H2 |
+| Gain drift (debris, wear) | 0.3 / 0.5 / 1 % per month | slow bias | Kalman random walk, jam alarm |
+| Temperature (B and A 1 min apart) | 0.02–0.04 kg per charge | negligible | differential reading |
+
+The v1 T1 strain-gauge budget, now with the support-position line added by the red team (RED_TEAM R9):
 
 | Error source (1σ, % of a ~3 t load) | low | mid | high | Mitigation |
 |---|---|---|---|---|
@@ -226,205 +343,376 @@ on the physics in §2, and it is **untested**.
 | Off-centre load / load path | 0.5 | 1.0 | 2.0 | 4 points, sum of bridges |
 | Friction / hysteresis at supports | 0.5 | 0.8 | 1.5 | read after settling, ram retracted |
 | Residue + press-cycle disturbance | 0.3 | 0.5 | 1.0 | auto-zero after each lift; read only at rest |
-| **Combined (root-sum-square)** | **1.1** | **1.9** | **3.5** | estimate |
+| Support position after each set-down (mainly COMBI; v2) | 0.5 | 2.0 | 4.0 | frame strain measures bending, not reactions: ticket cross-check |
+| **Combined (root-sum-square)** | **1.2** | **2.8** | **5.3** | estimate |
 
-On top of the relative error there is an absolute floor of 20–50 kg (*estimate*), which dominates loads under about
-0.5 t. The reasoning behind each line:
+### 8.3 What the accuracy is worth (data-backed, v1 method)
 
-- **Temperature.** Thermal output is called potentially the most serious error source in static strain measurement
-  [14]. Self-compensated gauges on steel, wired as full bridges, cancel uniform temperature changes. They do **not**
-  cancel gradients, for example sun on one side of the frame or a cold morning after a warm day. With about
-  200 µε of signal, a few µε of residual per 10 °C of gradient is about 0.5–1.5 %. Auto-zero helps only if the
-  temperature at the zero is close to the temperature at the reading. A board temperature sensor plus a per-unit
-  temperature coefficient, learned from the ticket pairs, reduces it further.
-- **Off-centre load.** Waste is pushed in from one end and packs unevenly, and the four points do not see exactly the
-  same gain. Summing four bridges and calibrating with the IBC at the front and the rear (§6 step 2) keeps this to about
-  0.5–2 %.
-- **Friction and hysteresis.** DUO containers sit on rollers and skids. COMBI skid shoes rest on a pad. Some load
-  goes through friction and stays locked in. Reading after the ram has retracted and the structure has settled
-  limits this.
-- **Press cycle.** During compaction the ram force is far larger than the waste weight, so any reading taken then is
-  invalid. It is gated out in firmware (§2).
-- **Humidity is not a sensor error.** Wet cardboard **really is** heavier [3]. The device measures it correctly, but
-  the weight that matters for pricing may differ from it (§10).
-
-![Figure 2: T1 error budget](figures/error_budget.svg)
-
-*Figure 2. T1 error budget (`scripts/tiers.py`). The dashed line is σ ≈ 1.7 %, i.e. ±100 kg on 3 t for 95 % of
-readings: the dataset's simulation target, not a Europress specification [2].*
-
-## 8. What the accuracy is worth (data-backed)
-
-`scripts/accuracy_value.py` adapts the starter kit's `examples/weighing_accuracy_value.py` [16]. It takes 5,787 shared
-single-load, weighed-tare weighbridge tickets from the synthetic competition dataset as reference masses (641 of them
-in the 2.5–3.5 t band) and re-measures each one with every tier's error model, using a fixed seed:
+`scripts/accuracy_value.py` re-measures 5,787 shared single-load, weighed-tare tickets with each tier's mid error
+model [16]:
 
 | Tier (mid σ) | 2.5–3.5 t loads within ±100 kg | median cost-per-tonne error | +10 % over-billing flagged on one load | false alarms | loads to see a 3 % difference |
 |---|---|---|---|---|---|
 | T0 (10 %, 150 kg) | 25% | 8.6 % | 13% | 2.2 % | 45 |
-| **T1 (1.9 %, 30 kg)** | **91%** | **1.7 %** | **85%** | **1.8 %** | **2** |
+| T1 (2.8 %, 30 kg) | 77% | 2.1 % | 81% | 1.9 % | 4 |
 | T2 (0.6 %, 15 kg) | 100% | 0.7 % | 94% | 0.8 % | 1 |
+| **H1 (3.4 %, 10 kg)** | **70%** | **2.3 %** | **77%** | **1.8 %** | **6** |
+| H5 (1 %, 20 kg) | 100% | 1.0 % | 92% | 1.3 % | 1 |
+| PS (0.5 %, 20 kg) | 100% | 0.8 % | 92% | 1.2 % | 1 |
 
-The low and high variants of each tier are in `generated/accuracy_value.md`. T1 ranges from 99.5 % (low) to 68.8 %
-(high) of loads within ±100 kg. For comparison, the dataset's own simulated device weights differ from the tickets by
-a median of 2.1 % (p95 11.5 %), because faults, residue and stored tares add to the noise.
+The ±100 kg on a 3 t load is **the dataset's simulation target, not a Europress specification** [2]. H1 at mid
+lands 70 % of 2.5–3.5 t loads within it, which is not settlement grade and is not meant to be.
 
-**Reading.** The T1 mid estimate is just short of the 95 % level of the dataset's simulation target, not a Europress specification. It is clearly good enough
-for cost-per-tonne transparency, forecasts and weight-triggered orders, and for flagging larger tonnage differences on single
-loads. These numbers re-use synthetic masses with an assumed error model. They show what an accuracy would be
-**worth**, not that T1 reaches it.
+## 9. Fusion with what the compactor already measures (H3)
 
-![Figure 3: accuracy to value](figures/accuracy_value.svg)
+`scripts/fusion.py` on the synthetic data:
 
-*Figure 3. Accuracy → value (`scripts/accuracy_value.py`). The detection rate stays below 100 % even at small σ
-because, on light loads, the absolute floor is larger than 10 % of the load.*
+| Signal | What it gives (synthetic data) |
+|---|---|
+| T0: fill × volume × learned density (fill only) | median abs error 5.8 %, robust σ 8.6 %, p90 20.0 %, but RMS 89.5 % (heavy outliers) over 3741 lifts |
+| T0 + press load index | median abs error 7.7 % vs 5.7 % fill-only on the same 1835 lifts (second half of the year) |
+| H1 + H2 fused with T0 (inverse variance) | RMS 3.38 % → 3.25 % (weight on H1 0.881, T0 used on 94% of lifts after an agreement gate) |
+| Compaction-cycle counter → plate-jam alarm (10 strokes with no weight change) | biowaste 25.3 h, cardboard 12.0 h, mixed plastic 29.3 h, mixed waste 22.1 h, paper 78.4 h, plastic film 29.5 h |
 
-## 9. Validation experiment (plan, untested)
+- **T0 alone** (fill × volume × learned density) is surprisingly good on the median in the synthetic world (5.8 %)
+  but has heavy outliers (fill faults, residue, biowaste), so it is a fallback, not a primary weight. The kit's
+  press-load index made it worse, not better; real pressure curves were not available (TOMMI Q8).
+- **Fused with H1 + H2**, T0 adds little (3.38 % → 3.25 % RMS) because H1 is already much better. Its value is
+  **redundancy**: when the plate is faulted, T0 keeps the weight flowing at T0 accuracy, and a large H1–T0
+  disagreement is itself a fault signal.
+- **The cycle counter is the most useful existing signal**: it tells H1 how many charges it should have weighed, so
+  a jammed or bridged plate is found within about a day (12–78 h by material).
 
-| Stage | What | Pass criterion (proposal) | Time / cost |
-|---|---|---|---|
-| A. Bench | One frame section or rail from each machine family, gauges fitted, loaded with known weights at 5 positions, in a climate chamber at −30, 0, +20 and +35 °C | Linearity and repeatability ≤ 0.5 %. Temperature effect after compensation ≤ 1 % over the range. Off-centre spread ≤ 1.5 % | 2–3 weeks, test-rig time (team estimate) |
-| B. Field pilot | 10 COMBI + 10 DUO units across cardboard, mixed waste, biowaste and plastics, at sites whose operator shares weighbridge tickets. Every lift paired with a **single-load, weighed-tare** ticket | Over at least 30 pairs per unit, the 95th percentile of the absolute error ≤ 100 kg on 2.5–3.5 t loads (the dataset's simulation target, not a Europress specification; TOMMI Q9). Median bias ≤ 1 % after the on-site calibration | 3 months (team estimate) |
-| C. 90-day drift watch | Run the §6 step 3 rolling ratio on every pilot unit. Log each proposed recalibration and its cause (gauge, residue, ticket error) | No unit more than 5 % off its baseline without being flagged. False recalibration proposals ≤ 1 per unit per quarter | runs during stage B |
-| D. Durability | COMBI: count the hook-lift cycles and road kilometres. Check every gauge cover and seal at each service visit | No gauge failure in 3 months. Every failure gets a root cause | runs during stage B |
+## 10. Comparison of the candidates (H4)
 
-If stage B misses the threshold, the options are: better gauges or covers (higher BOM), T2 load cells for the
-segments that need a settlement-grade weight, or T1 as a forecasting and transparency sensor only.
-
-## 10. Limitations
-
-- **Untested.** No hardware was built or measured. Every σ is an *estimate*, a *simulation target* or *literature*,
-  and the dataset's device weights are simulated [1][2].
-- **Biowaste (T0).** Biowaste gives almost no back-pressure, so the pressure fingerprint says little about its mass
-  [3]. T0 is weak for biowaste. T1 and T2 do not depend on back-pressure.
-- **Humidity and moisture change the real weight.** Wet cardboard is heavier, and its weight "can even change
-  throughout the week" [3]. Every tier measures that water. A price on dry material needs a separate moisture
-  correction or an agreement, and the T0 density model breaks when moisture changes.
-- **Temperature drift.** Strain gauges are temperature-sensitive (§7). Outdoor units in Finland see −30 to +35 °C and
-  sun on one side. Gradients are the largest single risk for T1.
-- **Off-centre loads.** Uneven packing changes how the load spreads across the four points. Calibration reduces this
-  but does not remove it.
-- **The press cycle disturbs readings.** Ram forces are far larger than the waste weight, so readings are valid only
-  at rest with the ram retracted. Frequent cycling at busy sites leaves fewer valid readings.
-- **COMBI durability.** The gauges travel with the unit through lifting, road transport and wash-down. Their survival
-  is a real risk and has not been examined.
-- **Reference data depends on operators.** The in-service cross-check needs shared tickets. Some operators never
-  share them [2].
-- **Not legal for trade.** Using the device weight as a billing basis in the EU would need an approved
-  non-automatic weighing instrument under Directive 2014/31/EU [15]. T1 is designed for transparency, forecasting and
-  verification. Settlement on device weight needs agreement between the parties or certification work.
-- **Small loads.** Below about 0.5 t the absolute floor of 20–50 kg dominates (*estimate*).
-
-## 11. Comparison of the tiers
-
-This table is generated by `scripts/tiers.py`. `sigma_tiers.json` carries the same values, and the app reads that
-file.
+Interface values (`sigma_tiers.json`, generated by `scripts/tiers.py`; σ after calibration, BOM = factory-fit
+hardware lines of §7):
 
 | Tier | Name | σ rel % (low / mid / high) | σ abs kg floor (low / mid / high) | BOM EUR per device | Install h | Weak for | Evidence | Sources |
 |---|---|---|---|---|---|---|---|---|
-| T0 | Virtual weight (existing hydraulic pressure + fill) | 5.0 / 10.0 / 20.0 | 100 / 150 / 300 | €0 (no new hardware) team estimate (software only) | 0–1 | BIOWASTE, WET_CARDBOARD, MIXED_WASTE | estimate | [1] [3] [13] |
-| T1 | Cheap strain gauges on frame / container rails | 1.1 / 1.9 / 3.5 | 20 / 30 / 50 | €100–480 [4][5][6][7] + team estimate | 4–8 | LOADS_UNDER_0.5T | estimate | [4] [5] [6] [7] [14] |
-| T2 | Shear-beam load cells under the frame | 0.3 / 0.6 / 1.0 | 10 / 15 / 25 | €1,380–2,860 [8][9][10][11] + team estimate | 8–16 | – | literature | [8] [9] [10] [11] [12] [13] |
+| T0 | Virtual weight (existing hydraulic pressure + fill) | 5.0 / 10.0 / 20.0 | 100 / 150 / 300 | €0–50 team estimate (software only) | 0–1 | BIOWASTE, WET_CARDBOARD, MIXED_WASTE | estimate | [1] [3] [13] |
+| T1 | Cheap strain gauges on frame / container rails | 1.2 / 2.8 / 5.3 | 20 / 30 / 50 | €100–480 [4][5][6][7] + team estimate | 4–8 | LOADS_UNDER_0.5T, COMBI_SUPPORT_CHANGES | estimate | [4] [5] [6] [7] [14] |
+| T2 | Shear-beam load cells under the frame | 0.3 / 0.6 / 1.0 | 10 / 15 / 25 | €1,160–2,600 [8][9][10][11][26] + team estimate | 8–16 | – | literature | [8] [9] [10] [11] [12] [13] [26] |
+| H1 | Hopper-stage weighing plate + fleet self-calibration (hopper idea: Europress) | 2.3 / 3.4 / 5.4 | 5 / 10 / 20 | €270–1,430 [6][9][10][22][25] + team estimate | 10–20 | RETROFIT_UNITS, BIOWASTE_LIQUIDS, NEW_DEVICE_BEFORE_TICKETS | estimate | [22] [25] [28] [29] [36] |
+| H5 | Weighing guide rails (team idea) | 0.6 / 1.0 / 2.0 | 10 / 20 / 40 | €1,310–3,100 [8][9][10][11][23][26] + team estimate | 12–24 | SITES_WITHOUT_RAILS, ICE_AND_DEBRIS | estimate | [8] [12] [13] [20] [26] [27] |
+| PS | Platform scale under the whole unit (Europress's existing option) | 0.2 / 0.5 / 1.0 | 10 / 20 / 40 | €4,800–12,000 [27] + team estimate | 16–32 | COST | estimate | [27] [36] |
 
-Notes on the table:
+| | T0 virtual | T1 strain gauges | **H1 hopper plate + H2** | H5 weighing rails | T2 cells in frame | PS platform scale |
+|---|---|---|---|---|---|---|
+| Installed, factory-fit (§7, team estimate) | €10–125 | €226–1,179 | **€548–2,363** | €2,382–7,056 | €1,635–4,338 | €7,860–22,160 |
+| 1σ after calibration (*estimate*) | 5–20 % | 1.2–5.3 % | **2.3–5.4 %** | 0.6–2 % | 0.3–1 % | 0.2–1 % |
+| COMBI | yes | gauges travel, frame bending changes per set-down | **yes, isolated from unit load** | yes, ground side, 8–9.5 t range | cells travel with the unit | yes |
+| DUO | yes | yes (stationary rails) | **yes, same part** | yes, coupling bypass risk | per container, impractical | yes |
+| Retrofit | remote | 4–8 h on site | hard (floor cut) | site work | hard | site work |
+| Durability risk | none | gauges in the main load path | stops, seal, liquids | ice, debris, set-down | transport shocks | low |
+| Main weakness | outliers, biowaste | support changes on COMBI | bridging bias (needs H2) | cost, site work | cost, transport | cost |
 
-- **T0's σ** is a team estimate. Fill is known to about 5 % [3]. On top of that come the density variation of the
-  material and moisture. The vehicle-side weighing in [13], which uses a hydraulic sensor on lift cylinders, shows
-  that hydraulic signals can carry weight information. The compactor's back-pressure is a different and weaker
-  signal.
-- **T2's σ** draws on vendor claims of ≤ 1 % for chassis-mounted container-weighing systems [12][13] and on the C3
-  cell class [8].
-- **T1's σ** is the error budget in §7.
+**Why H1 and not the others.**
+- Against **PS** (the prior attempt [36]) and **H5**: both weigh the whole unit or container, so they need heavy
+  cells, restraint and site work, and they cost more than the ~€2,000 reference [36] in our model (team estimate, §7); they are far more
+  accurate than planning needs. H5 is the right choice where a site needs near-settlement accuracy (§14 fallbacks).
+- Against **T1**: T1 is cheaper, but on a COMBI frame strain measures bending, which depends on where the unit
+  stands after each set-down, and the gauges carry the full lifting loads [36]; H1 answers Tommi's "where would the
+  sensor be?" by taking the sensor out of that load path. If the bench test (§14) fails, T1 on DUO rails is the
+  fallback.
+- Against **T0**: T0 needs no hardware and should ship first as software for the installed base, but it is weak for
+  biowaste [3] and has heavy outliers (§9).
 
-> **TOMMI (Q8):** T0 needs the pressure time series, meaning ram position and pressure over each cycle. We assume
-> SMART can log them at ≥ 1 Hz, or at least the peak pressure per cycle. We have not seen any examples. T0 stays a
-> future software upgrade until those examples are shared.
+## 11. Prior art (WG5) and what is new
 
-## 12. Brief coverage (QG1)
+Search on 7 Nov 2026 (Google Patents, vendor sites; not a freedom-to-operate search):
 
-| Item in the challenge brief [1] (sections 02, 04, 07) | Section |
+| # | Prior art | What it does | How ours differs |
+|---|---|---|---|
+| [28] | US 6,427,585 B1 / US 6,138,557 (Marathon Equipment, priority 1999, expired) | Transfer-station compactor on load cells; records the weight increase after each addition of waste before compaction and keeps a running total | Same per-charge running-total idea, but the whole apparatus is weighed. H1 weighs only a plate in the charging zone, so the cells are 10–20× smaller |
+| [29] | US 2023/0219317 A1 (vertical refuse baler) | Floating bed on a load cell under the compaction chamber floor, mechanical stop to protect the cell | Very close to the H1 plate hardware (floating floor + stop). Ours is in a horizontal container compactor and reads before/after each stroke. **FTO check needed** |
+| [30] | US 11,148,383 B2 (BACE, active) | Retrofit shear-beam load cells under a baler frame, weighs material independently of the press force, tags each bale | Weighs the whole machine; H1 weighs the charge |
+| [31] | US 12,379,240 B1 (Canalytics, active, granted 2025) | Hydraulic piston scales on the ground under the casters of a detachable compactor container; rails only guide | Close to **H5 on a DUO**. H5 puts cells under the rails; **FTO check needed before H5** |
+| [32] | US 4,729,304 (refuse compactor and transfer chamber) | Weight sensors under the chamber stop charging at a set weight | Whole-chamber weighing, transfer stations |
+| [27] | WEDI container scale (product) | 15 t weighing beams with ramps on 4 × 5 t cells for roll-off containers | Same physics as H5; H5 integrates it into Europress's guide rails |
+| [35] | Avermann MPC press containers (product) | "Weighing system for exact cost calculation" offered as an option | Construction not published; shows the market exists |
+| [12][13][38] | Hyva hook-loader weighing, Vulcan roll-off scale, Pfreundt roll-off scale (products) | Weigh the container on the truck, ≤ 1 % claimed | Truck-side, owned by the operator; FullLoad needs the weight at the source |
+| [33][34] | Enviroweigh bin-lift weighing; EP2544968B1 bin with load cells per deposit | Weigh each bin or deposit (pay-as-you-throw) | Per-deposit weighing exists for bins; H1 does it inside a compactor |
+
+**Novelty (WG6).** Weighing each charge and keeping a running total is **not new** [28]; a floating floor on load
+cells with a stop is **not new** [29]. The hopper-stage direction for Europress's compactors is Europress's own
+idea [36]. What we did not find in this limited search is the combination of a charging-zone plate read before and
+after each stroke **with** fleet-level self-calibration from shared weighbridge tickets; we did not search the
+calibration side in depth, so we claim **no novelty**, only a product combination worth an FTO search.
+
+## 12. Installation and retrofit
+
+**H1 factory-fit (2–4 h on the line, team estimate):** fit the plate sub-frame when the chamber floor is welded,
+mount cells, stops, side stays and seal, wire the weighing board to the SMART modem, end-of-line check with four
+25 kg test weights at two positions (0.5–1 h).
+
+**H1 retrofit (10–20 h, team estimate):** COMBI to a workshop (hook-lift round trip, operator's truck), DUO on site;
+cut the floor opening, weld the sub-frame, fit plate and cells, wire, commission with test weights. Needs a
+structural check of the chamber floor per machine family (ENGINEER_QUESTIONS Q1).
+
+**H5 (retrofit 12–24 h, team estimate):** level and anchor two rail bases, fit cells, stops and check rods, run the
+cable to the unit, calibrate with a known load. On a new site the base is built anyway (6–12 h extra).
+
+**T0:** firmware and back-end update; calibration comes from tickets (H2).
+
+## 13. Calibration
+
+1. **Factory / end of line (H1):** test weights on the plate set the cell gain (residual 0.5–2 %, team estimate).
+2. **Every stroke (H1):** the differential reading is its own zero; drift between strokes is negligible.
+3. **Every lift:** the sum resets when the emptied COMBI returns or an empty DUO container docks; H5 re-tares.
+4. **Every shared ticket (H2):** updates the device's gain; a new device starts from its sister machines (§4).
+5. **Drift watch (v1 method):** a rolling device/ticket ratio outside ±5 % proposes a recalibration for a person to
+   approve (`scripts/drift_watch.py`, `figures/drift_watch.svg`); the cycle-count jam alarm catches hard faults (§3.2).
+6. **No tickets:** devices whose operator never shares get the fleet prior plus an annual test-weight check.
+
+## 14. Validation experiment (plan, untested)
+
+| Stage | What | Pass criterion (proposal) | Time |
+|---|---|---|---|
+| A. Bench, plate | One charging chamber with the plate, on a rig. Drop tests (9–30 kg bags, 25 kg dense item, 1.1 m), 10,000 ram cycles, grit, ice and leachate in the gap | No cell damage; zero shift < 0.5 kg after 10,000 cycles; differential error < 0.5 kg per charge | 3–4 weeks (team estimate) |
+| B. Bench, bridging | Real cardboard, film, mixed and bio charges, weighed separately, then through the chamber | Bridging share per material measured (replaces our 1–6 % guess) | 1–2 weeks |
+| C. Field pilot | 10 COMBI + 10 DUO, operators that share tickets, every lift paired with a single-load weighed-tare ticket | After 10 tickets, 1σ of the container total ≤ 5 % per device (planning grade, TOMMI Q9); H2 n = 0 error ≤ 6 % on held-out devices | 3 months |
+| D. Durability | Count strokes, COMBI tipping cycles and jam alarms | No plate seizure that the cycle-count alarm does not catch within 24 h | during C |
+
+If stage A fails, fall back to T1 on DUO rails and T0 on COMBI; if C misses only on cardboard, accept a higher σ
+there or use H5 at cardboard-heavy sites.
+
+## 15. Limitations
+
+- **Untested.** No hardware was built or measured; every σ and euro is an *estimate*, a *simulation target* or
+  *literature*; the dataset's masses are synthetic [1][2]; the team has no mechanical-engineering expertise.
+- **Bridging and partial charges (H1).** The share of a charge carried by the walls or the ram is our guess (1–6 %).
+  Its container-to-container variation sets the floor after calibration.
+- **Biowaste.** For H1: liquids in the plate gap, corrosion and sticking (RED_TEAM R4); for T0: little
+  back-pressure, so the pressure fingerprint says little [3].
+- **Humidity and moisture change the real weight.** Wet cardboard is heavier and its weight changes during the week
+  [3]; every weighing option measures that water, and the weighbridge does too.
+- **Temperature drift.** Negligible for H1 (differential), 0.3–0.7 % for H5, large for T1 strain gauges (§8.2);
+  below −10 °C the cells' datasheet gives no figure [20].
+- **Off-centre loads.** H1: a charge landing half on the ram is partly unweighed (bridging share). H5/PS: summing
+  four cells handles it. T1: off-centre load and support position change the reading.
+- **The press cycle disturbs readings.** Ram and floor forces are hundreds of times the charge; readings are valid
+  only with the ram retracted and settled, and the press start must wait 2–3 s.
+- **Overloads.** Misuse impacts up to ~12 t and 7–14 t on every stroke depend on overload stops with a sub-millimetre
+  gap that grit or ice can block (RED_TEAM R3).
+- **Tickets.** H2 needs shared tickets; some operators share none [2]. Ticket errors and lags are not modelled.
+- **Retrofit.** H1 is a factory-fit design; retrofit costs €1,270–4,923 (team estimate).
+- **Not legal for trade** [15]. Billing stays on the operator's weighbridge (PRODUCT.md §1).
+- **Freedom to operate** is not checked ([29][31]).
+
+## 16. Brief coverage (QG1)
+
+| Item in the challenge brief [1] and the v2 brief | Section |
 |---|---|
-| Sensor / measurement principle | §2 (T1), §11 (T0, T2) |
-| Placement | §3.1 COMBI, §3.2 DUO, Figure 1 |
-| Indicative bill of materials and cost | §4 |
-| Installation | §5 |
-| Retrofit potential | §5 (first paragraph), §11 install hours |
-| Calibration | §6 |
-| Error sources | §7 |
-| Accuracy reasoning / accuracy target | §1, §7, §8, Figures 2–3 |
-| Limitations | §10 |
-| Validation plan / experiment | §9 |
-| Comparison of sensing options (load cells, strain, hydraulic) | §11 |
+| Sensor / measurement principle | §3.1 (H1), §6 (H5), §10 (others) |
+| Placement | §5.1 COMBI, §5.2 DUO, §6, Figure 1 |
+| Indicative bill of materials and cost | §7, Appendix A |
+| Installation | §12 |
+| Retrofit potential | §7, §12 |
+| Calibration | §13, §4 |
+| Error sources | §8.2, §15 |
+| Accuracy reasoning / accuracy target | §1, §8, Figures 2–4 |
+| Limitations | §15 |
+| Validation plan / experiment | §14 |
+| Comparison of sensing options | §10, Figure 3 |
+| v2: our edge (H1 + H2), prior art, pitch summary | §4, §11, §0 |
 | Third-party sources and licences | `THIRD_PARTY_part1.md` |
 
-## 13. How this feeds FullLoad
+## 17. How this feeds FullLoad
 
-The app reads `sigma_tiers.json`. The accuracy slider moves σ between the tiers' low, mid and high values, and that
-σ feeds the forecast uncertainty and the settlement uncertainty shown to the customer and the operator (PRODUCT.md
-§7.5). The hardware cost range is an input to the payback in the business case. FullLoad is the product name.
-Europress measures and verifies, and never transports.
+The app reads `sigma_tiers.json` (same shape as v1; six tiers; `chosen_tier` = H1). The accuracy slider moves σ
+between a tier's low, mid and high values. `installed_cost.json` gives the business case the full installed cost per
+device, retrofit and factory-fit. Beat 1 shows Figure 1, the cost row of §7 and the learning curve (Figure 2).
+Europress measures and verifies, and never transports; FullLoad is the product name.
 
 ## References
 
-All web sources were accessed 6 Nov 2026. Prices exclude VAT unless stated otherwise. Some shops block automated
-fetches, and for those the price comes from the shop's search listing, as marked below.
+Web sources accessed 6–7 Nov 2026; prices ex VAT unless stated. Some pages block automated fetches; for those the
+figure comes from the search listing, as marked.
 
-- [1] Europress Group Oy / Since AI: *SMART Material Value Engine — Weigh at Source, Create Value*, challenge brief,
-  Since AI Hackathon 2026 (local file `resources/Europress_SinceAI_2026_Challenge_Brief_BUILDER_FINAL (1).pdf`).
-- [2] Europress × Since AI starter kit v1.0.1: `docs/ASSUMPTIONS_AND_LIMITATIONS.md`, `configs/assumptions.yaml`
-  (telemetry section), `docs/EUROPRESS_REVIEW.md` point 1.7, `docs/DATA_DICTIONARY.md` (local files, synthetic data).
-- [3] Europress kickoff, Tommi Häkkinen, 6 Nov 2026. Whisper transcript `Röst 261106_182238.txt` (local file, imperfect
-  transcription).
-- [4] DigiKey UK, Micro-Measurements CEA-06-250UWA-350 linear strain gauge, 350 Ω, pack of 5, £60.29–72.87 per pack.
+- [1] Europress Group Oy / Since AI: *SMART Material Value Engine — Weigh at Source, Create Value*, challenge brief
+  (local file `resources/Europress_SinceAI_2026_Challenge_Brief_BUILDER_FINAL (1).pdf`).
+- [2] Europress × Since AI starter kit v1.0.1: `docs/ASSUMPTIONS_AND_LIMITATIONS.md`, `configs/assumptions.yaml`,
+  `docs/EUROPRESS_REVIEW.md` point 1.7, `docs/DATA_DICTIONARY.md` (local files, synthetic data).
+- [3] Europress kickoff, Tommi Häkkinen, 6 Nov 2026. Whisper transcript `Röst 261106_182238.txt` (local, imperfect).
+- [4] DigiKey UK, Micro-Measurements CEA-06-250UWA-350 strain gauge, £60.29–72.87 per 5.
   https://www.digikey.co.uk/en/products/detail/micro-measurements-division-of-vishay-precision-group/CEA-06-250UWA-350/10414998
-- [5] Newegg, 10 pcs BF350-3AA 350 Ω foil strain gauges, $18.40 (from the search listing; the page blocks automated
-  fetch). https://www.newegg.com/p/1W7-00WA-035U7
-- [6] Electrokit, HX711 24-bit ADC load-cell amplifier board, 45 SEK incl. 25 % VAT.
+- [5] Newegg, 10 pcs BF350-3AA foil strain gauges, $18.40 (search listing). https://www.newegg.com/p/1W7-00WA-035U7
+- [6] Electrokit, HX711 load-cell amplifier board, 45 SEK incl. VAT.
   https://www.electrokit.com/en/hx711-lastcellsforstarkare-monterad-pa-kort
-- [7] Texas Instruments, ADS1232 24-bit ADC for bridge sensors, product page: 17 nV RMS at 10 SPS and gain 128,
-  −40 to +105 °C. https://www.ti.com/product/ADS1232
-- [8] KERN & SOHN shop, load cell CT 5000-3Q1: shear beam, 5 t, OIML C3 (combined error 0.017 %), IP68/IP69K, €435 net.
+- [7] Texas Instruments ADS1232 24-bit bridge ADC. https://www.ti.com/product/ADS1232
+- [8] KERN & SOHN, load cell CT 5000-3Q1, 5 t shear beam, C3 (0.017 %), IP68, €435 net.
   https://kern-sohn.com/shop/en/products/measuring-technology-components/measuring-cells/CT-5000-3Q1
-- [9] KERN & SOHN shop, junction box CJ X468: 4 channels, IP68, €130 net.
+- [9] KERN & SOHN, junction box CJ X468, 4 channels, IP68, €130 net.
   https://kern-sohn.com/shop/en/products/measuring-technology-components/junction-boxes/CJ-X468
-- [10] Fruugo IE, DIN-rail weighing transmitter with 4–20 mA and RS485, €51.95 (from the search listing; the page blocks
-  automated fetch). https://www.fruugo.ie/din-rail-force-gauge-4-20ma-output-rs485-controller-high-precision-weighing-display-module-basic-style/p-460908759
-- [11] WeighTech USA, Laumas TLB4 RS485 4-channel digital weight transmitter, $350 (from the search listing; the page
-  blocks automated fetch). https://weightechusa.com/laumas-digital-weight-transmitter-tlb4-multi-channel
-- [12] Hyva, "Vertical stabilizer and weighing system add to the power of Titan hookloaders": 4 load cells on the
-  chassis, accuracy ≤ 1 % of measured weight (vendor claim).
+- [10] Fruugo IE, DIN-rail weighing transmitter 4–20 mA / RS485, €51.95 (search listing).
+  https://www.fruugo.ie/din-rail-force-gauge-4-20ma-output-rs485-controller-high-precision-weighing-display-module-basic-style/p-460908759
+- [11] WeighTech USA, Laumas TLB4 4-channel transmitter, $350 (search listing).
+  https://weightechusa.com/laumas-digital-weight-transmitter-tlb4-multi-channel
+- [12] Hyva, Titan hookloader weighing system, ≤ 1 % (vendor claim).
   https://hyva.com/en/news/vertical-stabilizer-and-weighing-system-add-to-the-power-of-titan-hookloaders
-- [13] Recycling Product News, "On-board weighing systems": the Vulcan roll-off scale uses shear-pin load cells and a
-  hydraulic sensor on the lift cylinders, typically within 1 % of gross vehicle weight (vendor claim).
+- [13] Recycling Product News, "On-board weighing systems" (Vulcan roll-off scale, ~1 %, vendor claim).
   https://www.recyclingproductnews.com/article/7414/on-board-weighing-systems
-- [14] Micro-Measurements (VPG), Tech Note TN-504-1, *Strain Gage Thermal Output and Gage Factor Variation with
-  Temperature* (third-party mirror https://docs.ampnuts.ru/eevblog.docs/VPG/tn504.pdf; index
-  https://micro-measurements.com/knowledge-base/technical-notes). Weldable gauges: HBK LS31HT, −50 to +250 °C,
-  https://www.hbkworld.com/en/products/transducers/strain/experimental-testing/special-applications/ls31
+- [14] Micro-Measurements Tech Note TN-504-1 (mirror https://docs.ampnuts.ru/eevblog.docs/VPG/tn504.pdf); HBK LS31HT
+  weldable gauges https://www.hbkworld.com/en/products/transducers/strain/experimental-testing/special-applications/ls31
 - [15] Directive 2014/31/EU on non-automatic weighing instruments. https://eur-lex.europa.eu/eli/dir/2014/31/oj
-- [16] Starter kit v1.0.1, `examples/weighing_accuracy_value.py` (local file; adapted with attribution in
-  `scripts/accuracy_value.py`).
+- [16] Starter kit v1.0.1 `examples/weighing_accuracy_value.py` (adapted with attribution in `scripts/accuracy_value.py`).
+- [17] machinetools.com, Europress COMBI model page: infeed 1,500 × 900 mm, infeed height 1,480 mm, compaction force
+  25 t, press cycle 42 s (search listing).
+  https://www.machinetools.com/en/models/europress-combi
+- [18] Third-party listings of used 20 m³ Europress units: "Combio 20", 4,010 kg (https://www.finn.no/434718104);
+  CMAX 20 m³, 4,435 kg empty (https://www.werktuigen.com/europress-cmax/wt-181-00081) (search listings).
+- [19] Shear-beam deflection at rated load: Applied Measurement SBR 0.2–0.4 mm (https://appliedmeasurement.com.au/product/sbr/);
+  Lahti Precision BC5 < 0.4 mm (https://lahtiprecision.fi-p.seravo.com/wp-content/uploads/2019/08/Lahti_Precision_Load-Cell_BC5_EN.pdf)
+  (search listings).
+- [20] Flintec SSB5 datasheet: safe load 200 %, ultimate 300 %, TC0 0.04 %/10 °C, TC span 0.02 %/10 °C, compensated
+  −10…+40 °C, IP68. https://res.cloudinary.com/flintec/image/upload/v1778856507/strapiDev/ssb5_datasheet_en_44120d30ad.pdf
+- [21] Engineering ToolBox, friction coefficients (steel on steel dry 0.5–0.8 static, 0.42 kinetic).
+  https://www.engineeringtoolbox.com/friction-coefficients-d_778.html
+- [22] KERN & SOHN, load cell CT 500-3Q1, 500 kg, C3, IP68/IP69K, €220 net.
+  https://kern-sohn.com/shop/en/products/measuring-technology-components/measuring-cells/CT-500-3Q1
+- [23] Central Carolina Scale, weigh module catalog: 5,000 kg module with lift-off / tip-over protection, $1,225
+  (search listing). https://www.centralcarolinascale.com/Weigh-Module-Catalog.pdf
+- [24] City of Turku, contract rates for additional work 2024: fitter €55/h ex VAT (search listing).
+  https://ah.turku.fi/kh/2024/1028025p/Images/2337276.pdf
+- [25] IndiaMART, ADI Controls ASP-631 single-point load cell, IP67, ₹1,200 (search listing).
+  https://m.indiamart.com/proddetail/adi-controls-asp-631-single-point-platform-load-cell-2854775790591.html
+- [26] San Diego Scale, Zemic BM8H 10 klb stainless shear-beam load cell, IP68, $262.50.
+  https://sandiegoscale.com/products/zemic-bm8h-10klb-stainless-steel-shear-beam-load-cell-oiml-approved
+- [27] Werktuigen.com, WEDI container scale for roll-off containers: 15 t, 4 × 5 t cells, weighing beams and ramps,
+  €4,800 (description: €5,620) + VAT, new. https://www.werktuigen.com/firma+wedi+gmbh-containerwaage/wt-591-0742
+- [28] US 6,427,585 B1, Marathon Equipment, *Method and apparatus for measuring the length of a waste log and/or weight
+  of waste log…* (continuation of US 6,138,557). https://patents.google.com/patent/US6427585B1/en
+- [29] US 2023/0219317 A1, vertical refuse baler with floating bed on a load cell and mechanical stop.
+  https://ipiq.io/patents/386072
+- [30] US 11,148,383 B2, BACE LLC, *Weight-measurement retrofitting for recyclable-waste balers*.
+  https://patents.google.com/patent/US11148383B2/en
+- [31] US 12,379,240 B1, Canalytics Technologies, *Method and apparatus for measuring the weight of a container using
+  load cells*. https://patents.google.com/patent/US12379240B1/en
+- [32] US 4,729,304, *Refuse compactor and transfer chamber* (search listing).
+  https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/4729304
+- [33] Transport Engineer, "Weigh for pay" (Enviroweigh bin-lift weighing, search listing).
+  https://www.transportengineer.org.uk/content/features/weigh-for-pay
+- [34] EP2544968B1, *Bin for collecting solid waste* (load cells per deposit, search listing).
+  https://patents.google.com/patent/EP2544968B1/it
+- [35] Avermann MPC 10 P/E press container brochure, weighing system option (search listing).
+  https://machines.interzero.at/files/products/avermann/MPC%2010%20P_E.pdf
+- [36] Europress follow-up talk, Tommi Häkkinen, 7 Nov 2026. Whisper transcript `Since.AI.2.txt` (local, Finnish,
+  noisy): hopper-stage idea, ~3 t machine and ~5 t waste, platform scales "almost as expensive", basic COMBI
+  €20–25k, ~€2,000 option reference.
+- [37] OptiCare Expert service price list: maintenance on site €152/h ex VAT (search listing; upper bound only).
+  https://www.optiscangroup.com/wp-content/uploads/2024/03/OptiCare-Expert-Palveluhinnasto.pdf
+- [38] Pfreundt roll-off dumper scale catalogue (search listing).
+  https://pdf.directindustry.com/pdf/pfreundt-gmbh/roll-off-dumper-scale/91271-656882.html
 
-## 14. Human-review list (QG11)
+## Appendix A. Installed cost, line by line (`generated/calc_installed_cost.md`)
 
-A person with machine knowledge must confirm these before the concept is shown as feasible:
+### T0: Virtual weight from existing pressure + fill (v1)
 
-1. A parked COMBI rests on **four defined support zones** (rear rollers + front skid shoes) on its pad. If the skids
-   bear along their full length, the unit needs site support pads.
-2. Gauge positions on the COMBI base-frame rail webs can be reached **without frame modification**, and stay clear of
-   the hook-lift rollers and the truck's guide rails.
-3. DUO containers rest on **separate stationary rails** that carry the whole container weight, and the docking
-   clamps or locks do not preload the rails.
-4. The DUO compactor stands on its own feet and does **not** load the container rails.
-5. Strain at the gauge points is at least about **100 µε** under a full load (working stress ≥ about 20 MPa), so the
-   signal is usable.
-6. The peak strain at the COMBI gauge points during a **hook-lift pull-up and road transport** is within the gauge's
-   strain range and fatigue life.
-7. Weld-on gauge carriers (spot welding) are **allowed on the frame steel and coating** without harming the warranty
-   or corrosion protection. If not, bonding is required.
-8. The SMART modem has a free **serial or I²C port and power** for the amplifier board, and the firmware can gate
-   readings on the ram state.
-9. The **empty-container docking event** (DUO) and the **unit returned** event (COMBI) can be detected from existing
-   SMART signals for the auto-zero.
-10. Hobby-grade versus industrial gauges and covers: which grade survives **wash-down, frost and road salt** for the
-    lease period.
+| H6 line | what | retrofit | factory-fit | source |
+|---|---|---|---|---|
+| sensors | none (existing pressure, ram position, fill) | €0–0 | €0–0 | [3] existing sensors |
+| electronics | none, or a faster pressure log | €0–50 | €0–50 | team estimate |
+| mechanical | none | €0–0 | €0–0 | team estimate (none needed) |
+| site work | none | €0–0 | €0–0 | team estimate (none needed) |
+| labour | remote firmware update; 0–1 h on site | €0–90 | €0–0 | team estimate × rate [24] |
+| calibration | learned from shared weighbridge tickets (H2) | €0–0 | €0–0 | scripts/self_calibration.py |
+| maintenance (6 y) | none beyond software | €0–0 | €0–0 | team estimate |
+| development (NRE) | model, firmware, back end: €50–150k | €10–75 | €10–75 | team estimate |
+| **total** |  | **€10–215** | **€10–125** | sum of lines |
+
+
+### T1: Strain gauges on frame / container rails (v1 choice)
+
+| H6 line | what | retrofit | factory-fit | source |
+|---|---|---|---|---|
+| sensors | 16 foil gauges for 4 full bridges | €25–280 | €25–280 | [4][5] |
+| electronics | 24-bit bridge board, temperature sensor, connector | €10–60 | €10–60 | [6][7] + team estimate |
+| mechanical | gauge covers, coating, cable, glands, enclosure | €60–140 | €60–140 | team estimate (v1 §4) |
+| site work | none | €0–0 | €0–0 | team estimate (none needed) |
+| labour | retrofit 4–8 h; factory 1–3 h | €220–720 | €55–270 | v1 §5 hours × rate [24] |
+| calibration | water IBC (~1 t) at two positions, 1–1.5 h | €55–135 | €28–90 | v1 §6 × rate [24] |
+| maintenance (6 y) | 30–60 % chance of re-gauging one point (2–4 h + parts) | €39–264 | €39–264 | team estimate |
+| development (NRE) | gauge layout per family, test rig, firmware: €50–150k | €10–75 | €10–75 | team estimate |
+| **total** |  | **€419–1,674** | **€226–1,179** | sum of lines |
+
+
+### H1: Hopper-stage weighing plate (idea: Europress / Tommi)
+
+| H6 line | what | retrofit | factory-fit | source |
+|---|---|---|---|---|
+| sensors | 4 × 500 kg C3 IP68 cells under the plate | €100–880 | €100–880 | [22] €220 each list; low end [25] ≈€12 per cell + team estimate for volume C3 |
+| electronics | 4-channel 24-bit ADC / weighing board on the SMART modem, junction | €25–180 | €20–150 | [6] HX711 board, [10] €51.95 transmitter, [9] €130 junction box; team estimate |
+| mechanical | plate 1.4 × 0.8 m wear steel, cell mounts, overload stops, side stays, perimeter seal | €400–1,000 | €150–400 | team estimate (retrofit: cut the chamber floor and weld a sub-frame) |
+| site work | none on site; COMBI retrofit: hook-lift round trip to a workshop | €0–400 | €0–0 | team estimate |
+| labour | retrofit 10–20 h (cut, weld, fit, wire); factory 2–4 h on the line | €550–1,800 | €110–360 | hours team estimate × rate [24] |
+| calibration | test weights (4 × 25 kg) on the plate, firmware set-up | €55–180 | €28–90 | team estimate × rate [24] |
+| maintenance (6 y) | clean the seal gap at each service (0.25 h/yr), new seal, 30–40 % chance of one cell | €110–283 | €110–283 | team estimate |
+| development (NRE) | plate design per machine family, firmware gating, field test: €150–400k | €30–200 | €30–200 | team estimate |
+| **total** |  | **€1,270–4,923** | **€548–2,363** | sum of lines |
+
+
+### H5: Weighing guide rails (idea: team)
+
+| H6 line | what | retrofit | factory-fit | source |
+|---|---|---|---|---|
+| sensors | 4 × 5 t shear-beam C3 IP68 cells | €900–1,740 | €900–1,740 | [26] Zemic BM8H $262.50 ≈ €225–250; [8] KERN CT 5000 €435 |
+| electronics | IP68 summing box + weighing transmitter to the SMART modem | €110–460 | €110–460 | [9] €130 box (low: board-level summing, team estimate), [10] €51.95–[11] $350 transmitter |
+| mechanical | rail modification and cell seats, overload stops, lift-off and side restraint (check rods) | €500–1,400 | €300–900 | team estimate; [23] a 5 t weigh module with lift-off/tip protection lists $1,225 |
+| site work | level and anchor two rail bases (concrete pads), cable conduit to the unit | €800–2,500 | €300–1,000 | team estimate (factory-fit = new site where the base is being built anyway) |
+| labour | retrofit 12–24 h (2 technicians); new installation 6–12 h extra | €660–2,160 | €330–1,080 | hours team estimate × rate [24] |
+| calibration | known load on the rails (water IBCs or hired test weights), commissioning | €150–800 | €150–800 | team estimate |
+| maintenance (6 y) | clean under the rails, ice and debris checks 0.5–1 h/yr; 30–60 % chance of one cell; cable repair | €282–1,001 | €282–1,001 | team estimate |
+| development (NRE) | rail design, restraint, firmware: €50–150k | €10–75 | €10–75 | team estimate |
+| **total** |  | **€3,412–10,136** | **€2,382–7,056** | sum of lines |
+
+
+### T2: Load cells under the unit's own frame (v1)
+
+| H6 line | what | retrofit | factory-fit | source |
+|---|---|---|---|---|
+| sensors | 4 × 5 t shear-beam C3 cells | €900–1,740 | €900–1,740 | [26][8] |
+| electronics | summing box + transmitter | €110–460 | €110–460 | [9][10][11] |
+| mechanical | cell mounts in the frame, frame adaptation, stops | €200–600 | €150–400 | team estimate (v1 §4) |
+| site work | none (cells travel with a COMBI) | €0–0 | €0–0 | team estimate (none needed) |
+| labour | retrofit 8–16 h; factory 3–6 h | €440–1,440 | €165–540 | v1 §5 hours × rate [24] |
+| calibration | known load, commissioning | €150–500 | €150–500 | team estimate |
+| maintenance (6 y) | cells travel with a COMBI: 40–80 % chance of one cell, cable | €140–548 | €140–548 | team estimate |
+| development (NRE) | frame redesign per family, structural review: €100–300k | €20–150 | €20–150 | team estimate |
+| **total** |  | **€1,960–5,438** | **€1,635–4,338** | sum of lines |
+
+
+### PS: Platform scale under the whole unit (Europress's existing option)
+
+| H6 line | what | retrofit | factory-fit | source |
+|---|---|---|---|---|
+| sensors | 4–6 heavy cells (included in the platform price) | €0–0 | €0–0 | [27] (in the platform price) |
+| electronics | indicator / transmitter (included) | €0–0 | €0–0 | [27] (in the platform price) |
+| mechanical | steel weighing platform or beams with ramps, ~15 t | €4,800–12,000 | €4,800–12,000 | [27] container scale €4,800–5,620 (beams + ramps, 15 t); full deck high end team estimate |
+| site work | foundation or pit, ramps, anchoring, drainage | €2,000–6,000 | €1,500–5,000 | team estimate |
+| labour | 16–32 h retrofit; 12–24 h new site | €880–2,880 | €660–2,160 | team estimate × rate [24] |
+| calibration | test weights by a scale service | €400–1,500 | €400–1,500 | team estimate |
+| maintenance (6 y) | annual check, cleaning, one cell | €500–1,500 | €500–1,500 | team estimate |
+| development (NRE) | exists today | €0–0 | €0–0 | [36] |
+| **total** |  | **€8,580–23,880** | **€7,860–22,160** | sum of lines |
+
+## 18. Human-review list (QG11)
+
+A person with machine knowledge must confirm these before the concept is shown as feasible (the same questions,
+phrased for Discord, are in `ENGINEER_QUESTIONS.md`):
+
+1. A 1.4 × 0.8 m section of the **charging-chamber floor** can be a separate plate on load cells without weakening
+   the chamber, on COMBI and DUO alike.
+2. The **ram rides on side guides or wear strips**, not on the floor area where the plate would sit.
+3. Overload stops with a **0.24–0.48 mm gap** can carry 7–14 t of floor pressure every stroke and misuse impacts up
+   to ~12 t, and a seal can keep grit, ice and leachate out of the gap.
+4. The automatic press start can wait **2–3 s** after the door closes so the plate can be read.
+5. Our guess of the **bridging share** (1 % biowaste to 6 % cardboard of a charge hanging on walls or ram) is
+   plausible for Europress hoppers.
+6. Liquids that run back into the chamber when a COMBI is **tipped for emptying** do not flood the plate's cells.
+7. The SMART modem has a free port and power for a 4-channel weighing board, and logs **door and cycle events**.
+8. For H5: guide rails can carry the **whole** weight of a COMBI (8–9.5 t) or a DUO container, and a DUO coupling
+   does not carry part of the container's weight.
+9. For H5: the hook-lift **set-down speed** and the horizontal pull force (our 3.8–7.6 t on dry skids) are in the
+   right range.
+10. Why the existing **platform scales** are expensive, so that our cost model for PS and H5 can be checked.
