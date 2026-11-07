@@ -94,7 +94,7 @@ export function Business() {
           </div>
           <p className="text-sm text-slate-600">
             Customer pays <b>€0</b>. Cash flow per year above; the model is the team document's (LIITE §6.3), with the H7 cost from Part 1.
-            Break-even fee with Part 1's mid cost: €{pr.scenarios['base (Part 1 installed cost)'].break_even_fee}/month; at €{pr.recommended_fee_eur_per_month} the H7 must cost
+            Break-even fee: €{pr.scenarios['base (H7 EUR 1,000, team decision)'].break_even_fee}/month (€{pr.scenarios['Part 1 mid H7'].break_even_fee} at Part 1's mid cost); at €{pr.recommended_fee_eur_per_month} the H7 must cost
             at most €{pr.max_h7_capex_eur[String(pr.recommended_fee_eur_per_month)]?.toLocaleString('en')}.
           </p>
         </div>

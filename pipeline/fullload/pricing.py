@@ -28,6 +28,7 @@ from .figures import Figure
 from .weighing import COST_PATH
 
 
+BASE = "base (H7 EUR 1,000, team decision)"
 RECOMMENDED_FEE = 30   # PRICING.md: EUR 20 never pays back with every new unit weighed
 
 
@@ -73,7 +74,8 @@ def load_params() -> PricingParams:
     for k in ("fees_eur_per_month", "operator_cost_per_visit_eur", "operator_margin_pct"):
         v[k] = tuple(v[k])
     h7 = h7_cost_split()
-    return PricingParams(**v, h7_capex_eur=h7["capex_mid_eur"], h7_upkeep_eur_per_unit_year=h7["upkeep_mid_eur_per_year"])
+    # capex: the team's planning figure (params.yaml, decided 7 Nov evening); upkeep: Part 1 midpoint
+    return PricingParams(**v, h7_upkeep_eur_per_unit_year=h7["upkeep_mid_eur_per_year"])
 
 
 def cash_flows(pp: PricingParams, fee: float) -> list[float]:
@@ -125,7 +127,8 @@ def scenarios(pp: PricingParams) -> dict[str, PricingParams]:
     lo, hi = h7["capex_eur"]
     return {
         "team document (H7 EUR 825, upkeep EUR 50)": replace(pp, h7_capex_eur=825, h7_upkeep_eur_per_unit_year=50),
-        "base (Part 1 installed cost)": pp,
+        "base (H7 EUR 1,000, team decision)": pp,
+        "Part 1 mid H7": replace(pp, h7_capex_eur=h7["capex_mid_eur"]),
         "cheap H7": replace(pp, h7_capex_eur=lo, h7_upkeep_eur_per_unit_year=h7["upkeep_eur_per_year"][0]),
         "dear H7": replace(pp, h7_capex_eur=hi, h7_upkeep_eur_per_unit_year=h7["upkeep_eur_per_year"][1]),
         "adoption 40 %": replace(pp, adoption=0.4),
@@ -183,7 +186,7 @@ def pricing_facts(con: duckdb.DuckDBPyConnection, visits_per_device: float, fewe
                    "break_even_adoption_at_30": break_even_adoption(sp, 30),
                    "by_fee": {str(f): summarise(cash_flows(sp, f), sp.discount_rate) for f in pp.fees_eur_per_month}}
             for name, sp in scenarios(pp).items()}
-    base = grid["base (Part 1 installed cost)"]
+    base = grid[BASE]
     src = ("params.yaml: pricing", "part1/installed_cost.json", "pipeline/fullload/pricing.py")
 
     def fig(v, unit, formula):
@@ -201,6 +204,9 @@ def pricing_facts(con: duckdb.DuckDBPyConnection, visits_per_device: float, fewe
         "headline": {
             "npv_20_eur": fig(base["by_fee"]["20"]["npv_eur"], "EUR", "10-year NPV at 8 %, EUR 20 per device per month"),
             "npv_30_eur": fig(base["by_fee"]["30"]["npv_eur"], "EUR", "10-year NPV at 8 %, EUR 30 per device per month"),
+            "payback_30_year": fig(base["by_fee"]["30"]["payback_year"], "year",
+                                   "first year the cumulative cash flow is >= 0, EUR 30, H7 EUR 1,000"),
+            "deepest_30_eur": fig(base["by_fee"]["30"]["deepest_eur"], "EUR", "lowest cumulative cash position, EUR 30"),
             "break_even_fee": fig(base["break_even_fee"], "EUR per month", "smallest monthly fee with NPV >= 0"),
             "max_h7_capex_eur": fig(max_h7_capex(pp, RECOMMENDED_FEE), "EUR",
                                     f"highest H7 capex with NPV >= 0 at EUR {RECOMMENDED_FEE} per month (design-to-cost target)"),

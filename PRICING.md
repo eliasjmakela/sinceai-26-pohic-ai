@@ -7,10 +7,16 @@ copy of the model (Business detail screen) is checked against Python by `npm run
 
 ## Recommendation
 
-**Operators pay €30 per weighed device per month.** Customers pay nothing. At €20 the plan never pays back once
-every new compactor carries the hydraulic self-lift. At €30 it pays back in year 7 with the team document's H7 cost
-(€825). With our own installed-cost estimate it does so only if the self-lift is built for **at most about
-€1,020** per unit. That design-to-cost target is now the single biggest business risk.
+**Operators pay €30 per weighed device per month.** Customers pay nothing. The team's planning figure for the
+self-lift is **€1,000 per new unit** (decided 7 Nov evening; Part 1 estimates €800–2,370). On that basis:
+
+- **€30 is the break-even fee.** NPV over 10 years is **+€0.18 M**, the plan pays back in **year 9**, and the
+  deepest cash position is **−€3.83 M**. It needs at least **59 %** of weighed units with a paying operator.
+- **€20 does not pay back** (NPV −€2.46 M). At €20 the self-lift would have to cost €690 or less.
+
+So €30 is not a comfortable price; it is the lowest price that works. Every euro the self-lift costs above
+~€1,020 makes it lose money, and every euro below makes it better: at €800 (Part 1's cheapest estimate) €30 gives
+NPV +€3.1 M and payback in year 7.
 
 ## The model
 
@@ -24,32 +30,32 @@ Per year, with every new unit weighed (1,200 a year):
 - **Costs:** €400k fixed, plus €26 platform and the H7 upkeep per weighed unit.
 - **Investment:** H7 capex for each new unit.
 
-The only change from the team model is the H7 cost. We use Part 1's factory-fit estimate
-(`part1/installed_cost.json`), split into capex (€800–2,370, mid **€1,585**) and upkeep (€39–106 a year, mid
-€73). The team's €825 is the midpoint of a parts-only range. The H7 review said not to cite it as the device cost.
+The only change from the team model is the H7 cost: capex **€1,000** (the team's planning figure) and upkeep
+**€73** a year (Part 1 midpoint, €39–106). Part 1's full factory-fit estimate (`part1/installed_cost.json`) is
+capex €800–2,370, mid €1,585; those are shown as scenarios. The team document's €825 is the midpoint of a
+parts-only range and is shown only for comparison.
 
 ## Europress: NPV over 10 years (€ M) and payback year
 
-| Scenario | €20 | €25 | €30 | Break-even fee |
+| Scenario | €20 | €30 | Break-even fee | Paying share needed at €30 |
 |---|---|---|---|---|
-| Team document (H7 €825, upkeep €50) | −0.15 (y9) | +1.17 (y8) | **+2.49 (y7)** | €21 |
-| Part 1 cheap H7 (€800, upkeep €39) | +0.49 (y9) | +1.80 (y8) | +3.12 (y7) | €19 |
-| **Part 1 mid H7 (€1,585, upkeep €73)** | −7.17 (never) | −5.85 (never) | **−4.53 (never)** | **€48** |
-| Part 1 dear H7 (€2,370, upkeep €106) | −14.78 | −13.46 | −12.15 | €77 |
-| Mid H7, adoption 40 % | −8.93 | −8.05 | −7.17 | €71 |
-| Mid H7, no tender packages | −12.51 | −11.19 | −9.87 | €68 |
-| Mid H7, no extra machine sales | −8.71 | −7.39 | −6.07 | €54 |
+| **Base: H7 €1,000, upkeep €73** | −2.46 (never) | **+0.18 (y9)** | **€30** | **59 %** |
+| Team document (H7 €825, upkeep €50) | −0.15 (y9) | +2.49 (y7) | €21 | 42 % |
+| Part 1 cheap H7 (€800, upkeep €39) | +0.49 (y9) | +3.12 (y7) | €19 | 37 % |
+| Part 1 mid H7 (€1,585, upkeep €73) | −7.17 (never) | −4.53 (never) | €48 | 95 % |
+| Part 1 dear H7 (€2,370, upkeep €106) | −14.78 | −12.15 | €77 | not reached |
+| Base, adoption 40 % | −4.22 | −2.46 | €44 | – |
+| Base, no tender packages | −7.80 | −5.16 | €50 | 100 % |
+| Base, no extra machine sales | −4.00 | −1.36 (y10) | €36 | 71 % |
 
 **The most H7 can cost per unit (capex) for NPV ≥ 0:** €690 at €20, €850 at €25, **€1,020 at €30**.
 
 The table shows four things:
 
-- At **€20** the plan works only if the self-lift costs about €700 or less. That is below even our cheapest
-  estimate once upkeep is counted. Payback is no earlier than year 9.
-- At **€30** there is room for a self-lift of about €1,000. That is reachable at the cheap end of Part 1, where
-  the parts alone are €550–1,100.
-- The tender packages and extra machine sales carry a large share of the result. Without packages, no fee up to
-  €60 pays back with the mid H7 cost.
+- At **€20** the plan works only if the self-lift costs about €700 or less. Payback is no earlier than year 9.
+- At **€30** a self-lift of €1,000 just pays back (year 9). It is reachable at the cheap end of Part 1, where the
+  parts alone are €550–1,100.
+- The tender packages and extra machine sales carry a large share of the result. Without packages the base case needs €50.
 - Revenue is fee × adoption, so €30 at 40 % adoption earns the same as €20 at 60 %. A higher fee only helps if it
   does not cut adoption by more than a third.
 
@@ -83,19 +89,19 @@ What this means for the operator:
 
 ## Why €30
 
-1. Under the agreed architecture, where every new unit weighs itself, Europress carries the hardware. €20 does not
-   cover it at any cost estimate we can defend.
+1. Under the agreed architecture, where every new unit weighs itself, Europress carries the hardware. At the
+   €1,000 planning figure, €30 is exactly the break-even fee and €20 loses €2.5 M.
 2. €30 is the team document's number, at 25 % of the operator's gain, so the pitch, the PDF and the demo agree.
 3. The operator case at €30 holds only on the full gain (pricing risk plus visits). It is a business case to
    prove in a pilot, not a given. Say so.
 
 ## What would change the answer
 
-- **H7 at €1,000 or less in production.** This is the condition for €30 to work. A supplier quote is the first
-  thing to get, and ENGINEER_QUESTIONS 11 and 12 cover it.
+- **H7 above ~€1,020 in production** and €30 no longer pays back. A supplier quote is the first thing to get
+  (ENGINEER_QUESTIONS 11 and 12).
 - **Charging part of the H7 in the machine price.** This would allow a lower operator fee. Tommi said today's
   weighing adds ~20 % to the price and customers are price-sensitive, so it is not modelled.
-- **Adoption below 40 %.** No fee in the range pays back with the mid H7 cost.
+- **Adoption below 59 %** at €30 and the base case loses money.
 - **Fee per tonne instead of per device.** The model is per device. A per-tonne fee shifts risk to Europress on
   low-volume sites and is not modelled.
 

@@ -92,8 +92,8 @@ export function Value() {
         ]} />
         <Party who="Europress" pays="becomes a service company" tag="hypothetical" lines={[
           `every new compactor weighs itself (${pr.params.new_units_per_year.toLocaleString('en')} a year)`,
-          `team model: NPV ${eur(h.team_npv_eur.value ?? 0)} over 10 years, pays back in year ${h.team_payback_year.value}`,
-          `needs the self-lift built for at most €${(h.max_h7_capex_eur.value ?? 0).toLocaleString('en')} (our estimate €${pr.h7_cost.capex_eur[0].toLocaleString('en')}–${pr.h7_cost.capex_eur[1].toLocaleString('en')})`,
+          `NPV ${eur(h.npv_30_eur.value ?? 0)} over 10 years, pays back in year ${h.payback_30_year.value} (self-lift at €${pr.params.h7_capex_eur.toLocaleString('en')})`,
+          `€${fee} is the break-even fee: below it the plan does not pay back`,
           'operators recommend the weighing compactor: more machine sales',
         ]} />
       </div>

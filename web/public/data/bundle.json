@@ -3490,7 +3490,21 @@
         ],
         "tag": "hypothetical",
         "unit": "EUR per month",
-        "value": 48
+        "value": 30
+      },
+      "deepest_30_eur": {
+        "assumptions": [],
+        "formula": "lowest cumulative cash position, EUR 30",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: pricing",
+          "part1/installed_cost.json",
+          "pipeline/fullload/pricing.py"
+        ],
+        "tag": "hypothetical",
+        "unit": "EUR",
+        "value": -3825250
       },
       "max_h7_capex_eur": {
         "assumptions": [],
@@ -3518,7 +3532,7 @@
         ],
         "tag": "hypothetical",
         "unit": "EUR",
-        "value": -7168924
+        "value": -2458447
       },
       "npv_30_eur": {
         "assumptions": [],
@@ -3532,7 +3546,21 @@
         ],
         "tag": "hypothetical",
         "unit": "EUR",
-        "value": -4530290
+        "value": 180188
+      },
+      "payback_30_year": {
+        "assumptions": [],
+        "formula": "first year the cumulative cash flow is >= 0, EUR 30, H7 EUR 1,000",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "params.yaml: pricing",
+          "part1/installed_cost.json",
+          "pipeline/fullload/pricing.py"
+        ],
+        "tag": "hypothetical",
+        "unit": "year",
+        "value": 9
       },
       "team_npv_eur": {
         "assumptions": [],
@@ -3662,7 +3690,7 @@
         30
       ],
       "fixed_cost_eur_per_year": 400000,
-      "h7_capex_eur": 1585,
+      "h7_capex_eur": 1000,
       "h7_upkeep_eur_per_unit_year": 73,
       "new_units_per_year": 1200,
       "operator_cost_per_visit_eur": [
@@ -3685,16 +3713,16 @@
     "parity": [
       {
         "cash_flows": [
-          -2333850.0,
-          -2107425.0,
-          -1707100.0,
-          -1132875.0,
-          -819500.0,
-          -590500.0,
-          -361500.0,
-          -132500.0,
-          96500.0,
-          325500.0
+          -1631850.0,
+          -1405425.0,
+          -1005100.0,
+          -430875.0,
+          -117500.0,
+          111500.0,
+          340500.0,
+          569500.0,
+          798500.0,
+          1027500.0
         ],
         "fee": 20,
         "params": {
@@ -3710,7 +3738,7 @@
             30
           ],
           "fixed_cost_eur_per_year": 400000,
-          "h7_capex_eur": 1585,
+          "h7_capex_eur": 1000,
           "h7_upkeep_eur_per_unit_year": 73,
           "new_units_per_year": 1200,
           "operator_cost_per_visit_eur": [
@@ -3731,24 +3759,24 @@
           "years": 10
         },
         "summary": {
-          "cumulative_eur": -8763250,
-          "deepest_eur": -9185250,
-          "npv_eur": -7168924,
+          "cumulative_eur": -1743250,
+          "deepest_eur": -4590750,
+          "npv_eur": -2458447,
           "payback_year": null
         }
       },
       {
         "cash_flows": [
-          -2312250.0,
-          -2021025.0,
-          -1512700.0,
-          -787275.0,
-          -387500.0,
-          -72100.0,
-          243300.0,
-          558700.0,
-          874100.0,
-          1189500.0
+          -1610250.0,
+          -1319025.0,
+          -810700.0,
+          -85275.0,
+          314500.0,
+          629900.0,
+          945300.0,
+          1260700.0,
+          1576100.0,
+          1891500.0
         ],
         "fee": 30,
         "params": {
@@ -3764,7 +3792,7 @@
             30
           ],
           "fixed_cost_eur_per_year": 400000,
-          "h7_capex_eur": 1585,
+          "h7_capex_eur": 1000,
           "h7_upkeep_eur_per_unit_year": 73,
           "new_units_per_year": 1200,
           "operator_cost_per_visit_eur": [
@@ -3785,10 +3813,10 @@
           "years": 10
         },
         "summary": {
-          "cumulative_eur": -4227250,
-          "deepest_eur": -7092850,
-          "npv_eur": -4530290,
-          "payback_year": null
+          "cumulative_eur": 2792750,
+          "deepest_eur": -3825250,
+          "npv_eur": 180188,
+          "payback_year": 9
         }
       },
       {
@@ -3901,16 +3929,16 @@
       },
       {
         "cash_flows": [
-          -2392000.0,
-          -2340025.0,
-          -2230450.0,
-          -2063275.0,
-          -1982500.0,
-          -1986100.0,
-          -1989700.0,
-          -1993300.0,
-          -1996900.0,
-          -2000500.0
+          -1690000.0,
+          -1638025.0,
+          -1528450.0,
+          -1361275.0,
+          -1280500.0,
+          -1284100.0,
+          -1287700.0,
+          -1291300.0,
+          -1294900.0,
+          -1298500.0
         ],
         "fee": 20,
         "params": {
@@ -3926,7 +3954,7 @@
             30
           ],
           "fixed_cost_eur_per_year": 400000,
-          "h7_capex_eur": 1585,
+          "h7_capex_eur": 1000,
           "h7_upkeep_eur_per_unit_year": 73,
           "new_units_per_year": 1200,
           "operator_cost_per_visit_eur": [
@@ -3947,24 +3975,24 @@
           "years": 10
         },
         "summary": {
-          "cumulative_eur": -20974750,
-          "deepest_eur": -20974750,
-          "npv_eur": -14272472,
+          "cumulative_eur": -13954750,
+          "deepest_eur": -13954750,
+          "npv_eur": -9561994,
           "payback_year": null
         }
       },
       {
         "cash_flows": [
-          -2377600.0,
-          -2282425.0,
-          -2100850.0,
-          -1832875.0,
-          -1694500.0,
-          -1640500.0,
-          -1586500.0,
-          -1532500.0,
-          -1478500.0,
-          -1424500.0
+          -1675600.0,
+          -1580425.0,
+          -1398850.0,
+          -1130875.0,
+          -992500.0,
+          -938500.0,
+          -884500.0,
+          -830500.0,
+          -776500.0,
+          -722500.0
         ],
         "fee": 30,
         "params": {
@@ -3980,7 +4008,7 @@
             30
           ],
           "fixed_cost_eur_per_year": 400000,
-          "h7_capex_eur": 1585,
+          "h7_capex_eur": 1000,
           "h7_upkeep_eur_per_unit_year": 73,
           "new_units_per_year": 1200,
           "operator_cost_per_visit_eur": [
@@ -4001,9 +4029,9 @@
           "years": 10
         },
         "summary": {
-          "cumulative_eur": -17950750,
-          "deepest_eur": -17950750,
-          "npv_eur": -12513382,
+          "cumulative_eur": -10930750,
+          "deepest_eur": -10930750,
+          "npv_eur": -7802905,
           "payback_year": null
         }
       },
@@ -4118,38 +4146,7 @@
     ],
     "recommended_fee_eur_per_month": 30,
     "scenarios": {
-      "adoption 40 %": {
-        "break_even_adoption_at_20": null,
-        "break_even_adoption_at_30": 0.95,
-        "break_even_fee": 71,
-        "by_fee": {
-          "15": {
-            "cumulative_eur": -13299250,
-            "deepest_eur": -13299250,
-            "npv_eur": -9807559,
-            "payback_year": null
-          },
-          "20": {
-            "cumulative_eur": -11787250,
-            "deepest_eur": -11787250,
-            "npv_eur": -8928014,
-            "payback_year": null
-          },
-          "25": {
-            "cumulative_eur": -10275250,
-            "deepest_eur": -10312750,
-            "npv_eur": -8048469,
-            "payback_year": null
-          },
-          "30": {
-            "cumulative_eur": -8763250,
-            "deepest_eur": -9185250,
-            "npv_eur": -7168924,
-            "payback_year": null
-          }
-        }
-      },
-      "base (Part 1 installed cost)": {
+      "Part 1 mid H7": {
         "break_even_adoption_at_20": null,
         "break_even_adoption_at_30": 0.95,
         "break_even_fee": 48,
@@ -4177,6 +4174,68 @@
             "deepest_eur": -7092850,
             "npv_eur": -4530290,
             "payback_year": null
+          }
+        }
+      },
+      "adoption 40 %": {
+        "break_even_adoption_at_20": 0.88,
+        "break_even_adoption_at_30": 0.59,
+        "break_even_fee": 44,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": -6279250,
+            "deepest_eur": -6463650,
+            "npv_eur": -5097082,
+            "payback_year": null
+          },
+          "20": {
+            "cumulative_eur": -4767250,
+            "deepest_eur": -5607550,
+            "npv_eur": -4217537,
+            "payback_year": null
+          },
+          "25": {
+            "cumulative_eur": -3255250,
+            "deepest_eur": -5012050,
+            "npv_eur": -3337992,
+            "payback_year": null
+          },
+          "30": {
+            "cumulative_eur": -1743250,
+            "deepest_eur": -4590750,
+            "npv_eur": -2458447,
+            "payback_year": null
+          }
+        }
+      },
+      "base (H7 EUR 1,000, team decision)": {
+        "break_even_adoption_at_20": 0.88,
+        "break_even_adoption_at_30": 0.59,
+        "break_even_fee": 30,
+        "by_fee": {
+          "15": {
+            "cumulative_eur": -4011250,
+            "deepest_eur": -5278450,
+            "npv_eur": -3777765,
+            "payback_year": null
+          },
+          "20": {
+            "cumulative_eur": -1743250,
+            "deepest_eur": -4590750,
+            "npv_eur": -2458447,
+            "payback_year": null
+          },
+          "25": {
+            "cumulative_eur": 524750,
+            "deepest_eur": -4149250,
+            "npv_eur": -1139130,
+            "payback_year": 10
+          },
+          "30": {
+            "cumulative_eur": 2792750,
+            "deepest_eur": -3825250,
+            "npv_eur": 180188,
+            "payback_year": 9
           }
         }
       },
@@ -4244,62 +4303,62 @@
       },
       "no extra machine sales": {
         "break_even_adoption_at_20": null,
-        "break_even_adoption_at_30": null,
-        "break_even_fee": 54,
+        "break_even_adoption_at_30": 0.71,
+        "break_even_fee": 36,
         "by_fee": {
           "15": {
-            "cumulative_eur": -13562500,
-            "deepest_eur": -13562500,
-            "npv_eur": -10027403,
+            "cumulative_eur": -6542500,
+            "deepest_eur": -6872700,
+            "npv_eur": -5316926,
             "payback_year": null
           },
           "20": {
-            "cumulative_eur": -11294500,
-            "deepest_eur": -11294500,
-            "npv_eur": -8708086,
+            "cumulative_eur": -4274500,
+            "deepest_eur": -5660500,
+            "npv_eur": -3997609,
             "payback_year": null
           },
           "25": {
-            "cumulative_eur": -9026500,
-            "deepest_eur": -9594300,
-            "npv_eur": -7388768,
+            "cumulative_eur": -2006500,
+            "deepest_eur": -4894500,
+            "npv_eur": -2678291,
             "payback_year": null
           },
           "30": {
-            "cumulative_eur": -6758500,
-            "deepest_eur": -8368300,
-            "npv_eur": -6069451,
-            "payback_year": null
+            "cumulative_eur": 261500,
+            "deepest_eur": -4354500,
+            "npv_eur": -1358974,
+            "payback_year": 10
           }
         }
       },
       "no tender packages": {
         "break_even_adoption_at_20": null,
-        "break_even_adoption_at_30": null,
-        "break_even_fee": 68,
+        "break_even_adoption_at_30": 1.0,
+        "break_even_fee": 50,
         "by_fee": {
           "15": {
-            "cumulative_eur": -20218750,
-            "deepest_eur": -20218750,
-            "npv_eur": -13832699,
+            "cumulative_eur": -13198750,
+            "deepest_eur": -13198750,
+            "npv_eur": -9122222,
             "payback_year": null
           },
           "20": {
-            "cumulative_eur": -17950750,
-            "deepest_eur": -17950750,
-            "npv_eur": -12513382,
+            "cumulative_eur": -10930750,
+            "deepest_eur": -10930750,
+            "npv_eur": -7802905,
             "payback_year": null
           },
           "25": {
-            "cumulative_eur": -15682750,
-            "deepest_eur": -15682750,
-            "npv_eur": -11194064,
+            "cumulative_eur": -8662750,
+            "deepest_eur": -8662750,
+            "npv_eur": -6483587,
             "payback_year": null
           },
           "30": {
-            "cumulative_eur": -13414750,
-            "deepest_eur": -13414750,
-            "npv_eur": -9874747,
+            "cumulative_eur": -6394750,
+            "deepest_eur": -6537350,
+            "npv_eur": -5164270,
             "payback_year": null
           }
         }
