@@ -7,31 +7,31 @@ independent reviews. The arithmetic in the PDF and LIITE is correct: every calcu
 The full table with working: `reviews/LIITE_VS_OPENWEIGHT_CHECK.md`. The H7 review:
 `reviews/SELF_WEIGHING_PAPER_REVIEW.md`.
 
-## The one rule for weight
+## The rules for weight (agreed)
 
-**We bill by the real scales. The hydraulic scale gives estimates.** The certified weighbridge stays the basis of
+**Every new compactor weighs itself (hydraulic self-lift). We bill by the real scales; the hydraulic scale gives estimates.** The certified weighbridge stays the basis of
 every bill, as today (EU Directive 2014/31/EU on non-automatic weighing instruments). The hydraulic scale in the
 compactor gives planning weights and checks itself against the weighbridge tickets. It is not a legal-for-trade
 scale. Every weight claim in the PDF should follow this rule.
 
 ## Must fix (the PDF disagrees with the demo)
 
-1. **Business model.** The PDF uses €30 per device per month plus €500 per tender, and pays back in year 7. The demo
-   uses **€20 per device per month and pays back in about 1.6 years** (business team assumptions). By the PDF's own
-   sensitivity table, €20 gives NPV −0.15 M€, so judges would see two contradicting business cases. Agree one model
-   with Elias before changing either document.
+1. **Business model: keep €30, fix the H7 cost.** The €30 fee and "every new unit weighs itself" are now agreed
+   (see `PRICING.md`). Our model reproduces the PDF's cash flow exactly (NPV 2.49 M€, year 7). But it rests on
+   H7 at €825, a parts-only midpoint. With Part 1's installed cost (capex €800–2,370, mid €1,585, plus €39–106 a
+   year upkeep) NPV is −4.5 M€ at €30. Add one line: **"pays back if the self-lift is built for at most ~€1,000
+   per unit; this is the design-to-cost target and the first thing a pilot must confirm."** Also replace "break-even
+   €21/month" with the €48 that follows from the installed cost, or state both.
 2. **The hydraulic scale's numbers.** Do not use these, the review found them unsupported:
    - "±3 % when full" (and "3.1 t ± 0.1 t"). Use: **target 1σ ≤ 5 % after 10 weighbridge tickets, 4.4 % in our
      error budget, untested.** Without tickets the error is about 10 %.
-   - "€550–1,100" and the €825 derived from it as the device cost. That is parts only. Use: **€1,034–3,008
-     installed, new units (factory fit).** Recompute the €190 a year weighing cost from this range.
+   - "€550–1,100" and the €825 derived from it as the device cost. That is parts only. Use: **€800–2,370 capex
+     per new unit (factory fit) plus €39–106 a year upkeep** (Part 1). Recompute the €190 a year weighing cost.
    - "Fits every compactor". Use: **COMBI, new units only.** DUO is not costed; retrofit costs €1,994–6,168.
    - "Europress's own IP". Use: "We found no compactor that lifts itself to weigh; similar weighing exists on trucks
      (Hiab patent US 2020/0096383)."
-3. **The "what we won't do" list (p7)** lists the virtual scale. The demo uses it: it estimates lifts from fill,
-   compaction cycles and days since the last lift, trained on the units that weigh (about 8 % median error per lift,
-   5.5 % per month). Remove it from the list, or agree with Elias that every unit gets a hydraulic scale. Your own
-   line on p5, "±10–15 % is enough for pricing", supports keeping it.
+3. **The virtual scale (p7).** Fine to leave it out: every new unit weighs itself. If it stays in "what we won't
+   do", add "for now; it could later estimate weights on the older fleet" so judges don't read it as a gap.
 4. **Market figures.** Use the demo's numbers:
 
    | PDF | Use instead |
@@ -40,7 +40,6 @@ scale. Every weight claim in the PDF should follow this rule.
    | 18 % fewer visits | **6–18 % fewer visits** (6 % is the dataset's own label, 18 % our model) |
    | (missing) | **customer cost per tonne €113 → €98, −13 %** (range −12 to −15 %) |
    | demo saving €2,100–3,400 a year | remove: LIITE itself calls it an invented placeholder |
-   | installed base ~20,000 | agree one figure; the demo's business model uses 10,000 |
 
 ## Must fix (errors LIITE §9 already lists)
 
@@ -58,8 +57,8 @@ scale. Every weight claim in the PDF should follow this rule.
 11. "10–25 % opt-outs wipe out the gain" comes from an older model. Say "even 10 % opt-outs remove most of the gain".
 12. "The incumbent wins every third year" has no figure behind it. Say "contracts are retendered about every 3 years,
     mostly on price".
-13. "Operators earn €0–800 per device": €10,200 is the customer's average cost (the median is €6,578), not the
-    operator's revenue. Say so.
+13. "Operators earn €0–800 per device": €10,200 is right (it is the median yearly invoice per device), but it is
+    the customer's spend, not the operator's revenue after pass-through costs. Say so in one clause.
 14. L&T Q1 margin: −0.84 %, so write −0.8 %, not −0.9 %.
 
 ## Sources and wording
