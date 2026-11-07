@@ -720,7 +720,7 @@
       },
       "flagged_lifts": {
         "assumptions": [],
-        "formula": "lifts flagged by the FullLoad premature-lift rule",
+        "formula": "lifts flagged by the OpenWeight premature-lift rule",
         "row_ids": [],
         "sigma": null,
         "sources": [
@@ -2182,7 +2182,7 @@
       "rationale": "81 of 163 lifts emptied a container under 60 % full.",
       "region": "FI-01",
       "reversal": "No commitment: the customer can keep today's contract; a tender only invites bids.",
-      "schema": "fullload.proposal.v1 (extends smve.recommendation.v0, illustrative)",
+      "schema": "openweight.proposal.v1 (extends smve.recommendation.v0, illustrative)",
       "synthetic": true
     },
     "region": "FI-01",
@@ -2827,7 +2827,7 @@
           "Forecast errors from the pipeline's backtest on synthetic data",
           "Simulation, not a prediction of real prices or savings"
         ],
-        "formula": "accounts where a challenger's per-kg bid (FullLoad forecast) beats today's price",
+        "formula": "accounts where a challenger's per-kg bid (OpenWeight forecast) beats today's price",
         "row_ids": [],
         "sigma": null,
         "sources": [
@@ -5963,7 +5963,7 @@
       "tendered_invoiced_eur": 464321.6
     },
     "family": "PREMATURE_UNJUSTIFIED",
-    "method": "Kit scorer europress_data.evaluate (score_b, score_b2), validation split. FullLoad rule on the as-of view at the validation end; kit B2 rules and B4 gradient boosting as run by the kit (B4 trained on train-period labels).",
+    "method": "Kit scorer europress_data.evaluate (score_b, score_b2), validation split. OpenWeight rule on the as-of view at the validation end; kit B2 rules and B4 gradient boosting as run by the kit (B4 trained on train-period labels).",
     "period": [
       "2026-06-01",
       "2026-08-01"

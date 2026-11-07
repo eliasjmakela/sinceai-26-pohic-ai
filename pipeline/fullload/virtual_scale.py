@@ -77,8 +77,12 @@ def experiment(df: pd.DataFrame, share: float, cols: tuple[str, ...], seed: int)
     out = {}
     for k in CALIBRATION_K:
         e = ev[ev.n > k + 2]
-        f = (e[e["rank"] < k].groupby("device_id").ratio.median() if k else pd.Series(1.0, index=e.device_id.unique()))
-        h = e[e["rank"] >= k].assign(est=lambda z: z.pred * z.device_id.map(f))
+        if e.empty:
+            out[k] = {"lift_error_median_pct": None, "month_error_median_pct": None}
+            continue
+        f = e[e["rank"] < k].groupby("device_id").ratio.median().astype(float) if k else None
+        h = e[e["rank"] >= k]
+        h = h.assign(est=h.pred.to_numpy(dtype=float) * (h.device_id.map(f).to_numpy(dtype=float) if k else 1.0))
         lift_err = (h.est - h.ref_kg).abs() / h.ref_kg
         m = h.groupby(["device_id", "month"])[["est", "ref_kg"]].sum()
         out[k] = {"lift_error_median_pct": round(100 * float(lift_err.median()), 1),
@@ -90,8 +94,11 @@ def _mean_over_seeds(df, share, cols):
     runs = [experiment(df, share, cols, s) for s in SEEDS]
     res = {}
     for k in CALIBRATION_K:
-        lift = [r["by_k"][k]["lift_error_median_pct"] for r in runs]
-        mon = [r["by_k"][k]["month_error_median_pct"] for r in runs]
+        lift = [r["by_k"][k]["lift_error_median_pct"] for r in runs if r["by_k"][k]["lift_error_median_pct"] is not None]
+        mon = [r["by_k"][k]["month_error_median_pct"] for r in runs if r["by_k"][k]["month_error_median_pct"] is not None]
+        if not lift:
+            res[str(k)] = {"lift_error_median_pct": None, "lift_error_range_pct": None, "month_error_median_pct": None}
+            continue
         res[str(k)] = {"lift_error_median_pct": round(float(np.mean(lift)), 1),
                        "lift_error_range_pct": [min(lift), max(lift)],
                        "month_error_median_pct": round(float(np.mean(mon)), 1)}
