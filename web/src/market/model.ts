@@ -39,6 +39,8 @@ export interface Row {
   operator_margin_before: number
   operator_margin_after: number
   europress_fee: number
+  bids_before: Record<string, number>
+  bids_after: Record<string, number>
 }
 
 export interface Summary {
@@ -136,6 +138,8 @@ export function simulate(accs: Account[], operators: string[], sigmaInc: number,
       operator_margin_before: today - costBefore,
       operator_margin_after: keepsToday ? today - costBefore : priceAfter - costAfter * rel[winner],
       europress_fee: keepsToday ? 0 : p.europress_fee_cents_per_t * t,
+      bids_before: Object.fromEntries(challengers.map((o, i) => [o, bidsBefore[i]])),
+      bids_after: Object.fromEntries(bidsAfter),
     }
   })
   return { rows, summary: summarise(rows, [...operators, ...entrants]), sigmaAfter }

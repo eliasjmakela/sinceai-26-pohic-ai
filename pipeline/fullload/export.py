@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from . import fleet, forecast, market, premature, scorecard, trips, validate
+from . import customer, fleet, forecast, market, pick_heroes, premature, scorecard, trips, validate
 from .config import BUNDLE_PATH, data_root, profile_name
 from .kit import KIT_VERSION, open_dataset
 
@@ -15,6 +15,10 @@ def build_bundle(data: str | None = None) -> dict:
     root = data_root(data)
     con = open_dataset(root)
     try:
+        market_section = market.market_facts(con)
+        devices = market.account_devices(con, market_section["region"])
+        policies = dict(con.execute("SELECT device_id, collection_policy FROM devices").fetchall())
+        hero = pick_heroes.hero_customer(market_section["default"]["rows"], devices, policies)
         return {
             "schema_version": SCHEMA_VERSION,
             "provenance": {"kit_version": KIT_VERSION, "data": profile_name(root), "synthetic": True},
@@ -24,8 +28,10 @@ def build_bundle(data: str | None = None) -> dict:
             "premature": premature.premature_facts(con),
             "scorecard": scorecard.scorecard_facts(con, root),
             "validation": validate.validation_facts(root),
-            "market": market.market_facts(con),
-            # Next sections, in build order (PRODUCT.md §6): heroes, reconcile, business.
+            "market": market_section,
+            "heroes": {"customer_id": hero},
+            "hero": customer.hero_view(con, market_section, devices, hero),
+            # Next sections, in build order (PRODUCT.md §6): reconcile, business.
         }
     finally:
         con.close()

@@ -335,10 +335,1654 @@
       "value": 95.0
     }
   },
+  "hero": {
+    "customer_id": "ORG-0036",
+    "customer_name": "Fictional Retail Customer 0036",
+    "devices": [
+      {
+        "container_m3": 10.0,
+        "device_id": "CMP-00280",
+        "equipment": "DUO",
+        "lifts": 50,
+        "material": "cardboard",
+        "median_fill_at_lift_pct": 41.7,
+        "policy": "FIXED_SCHEDULE",
+        "schedule_per_week": 1.0,
+        "site": "Helsinki site 2 (ORG-0036)",
+        "tonnes": 48.2,
+        "weight_triggered_lifts": 26
+      },
+      {
+        "container_m3": 10.0,
+        "device_id": "CMP-00281",
+        "equipment": "COMBI",
+        "lifts": 15,
+        "material": "plastic_film",
+        "median_fill_at_lift_pct": 71.1,
+        "policy": "ON_CALL",
+        "schedule_per_week": null,
+        "site": "Helsinki site 2 (ORG-0036)",
+        "tonnes": 11.5,
+        "weight_triggered_lifts": 12
+      },
+      {
+        "container_m3": 12.0,
+        "device_id": "CMP-00286",
+        "equipment": "DUO",
+        "lifts": 77,
+        "material": "cardboard",
+        "median_fill_at_lift_pct": 72.0,
+        "policy": "HYBRID",
+        "schedule_per_week": 3.0,
+        "site": "Lohja site 4 (ORG-0036)",
+        "tonnes": 115.8,
+        "weight_triggered_lifts": 62
+      },
+      {
+        "container_m3": 8.0,
+        "device_id": "CMP-00287",
+        "equipment": "DUO",
+        "lifts": 18,
+        "material": "mixed_waste",
+        "median_fill_at_lift_pct": 50.1,
+        "policy": "ON_CALL",
+        "schedule_per_week": null,
+        "site": "Lohja site 4 (ORG-0036)",
+        "tonnes": 29.5,
+        "weight_triggered_lifts": 16
+      }
+    ],
+    "facts": {
+      "cost_per_t_after_eur": 94.3,
+      "cost_per_t_today_eur": 137.6,
+      "cost_today_eur": 28218,
+      "customer_name": "Fictional Retail Customer 0036",
+      "devices": 4,
+      "flagged_lifts": 31,
+      "incumbent": "OP-A",
+      "lift_reduction_pct": 27.5,
+      "lifts": 163,
+      "lifts_after": 116,
+      "low_fill_lifts": 81,
+      "low_fill_share_pct": 49.7,
+      "price_per_kg_regime_eur": 19332,
+      "region": "FI-01",
+      "saving_eur": 8885,
+      "saving_pct": 31.5,
+      "sector": "nonfood_retail",
+      "tonnes": 205.1,
+      "winner": "OP-E"
+    },
+    "figures": {
+      "cost_per_t_after": {
+        "assumptions": [],
+        "formula": "market model price / tonnes",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "collection_events.*",
+          "devices.*",
+          "sites.site_name",
+          "customers.customer_name",
+          "invoice_lines (via market model)",
+          "forecast backtest",
+          "market simulation"
+        ],
+        "tag": "simulated",
+        "unit": "EUR/t",
+        "value": 94.3
+      },
+      "cost_per_t_today": {
+        "assumptions": [],
+        "formula": "cost today / tonnes",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "collection_events.*",
+          "devices.*",
+          "sites.site_name",
+          "customers.customer_name",
+          "invoice_lines (via market model)",
+          "forecast backtest",
+          "market simulation"
+        ],
+        "tag": "observed",
+        "unit": "EUR/t",
+        "value": 137.6
+      },
+      "cost_today_eur": {
+        "assumptions": [],
+        "formula": "trip- and tonne-driven invoice lines, 12 months",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "collection_events.*",
+          "devices.*",
+          "sites.site_name",
+          "customers.customer_name",
+          "invoice_lines (via market model)",
+          "forecast backtest",
+          "market simulation"
+        ],
+        "tag": "observed",
+        "unit": "EUR",
+        "value": 28218
+      },
+      "flagged_lifts": {
+        "assumptions": [],
+        "formula": "lifts flagged by the FullLoad premature-lift rule",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "collection_events.*",
+          "devices.*",
+          "sites.site_name",
+          "customers.customer_name",
+          "invoice_lines (via market model)",
+          "forecast backtest",
+          "market simulation"
+        ],
+        "tag": "estimated",
+        "unit": "count",
+        "value": 31
+      },
+      "lifts": {
+        "assumptions": [],
+        "formula": "completed lifts of the customer's devices in the region",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "collection_events.*",
+          "devices.*",
+          "sites.site_name",
+          "customers.customer_name",
+          "invoice_lines (via market model)",
+          "forecast backtest",
+          "market simulation"
+        ],
+        "tag": "observed",
+        "unit": "count",
+        "value": 163
+      },
+      "low_fill_share_pct": {
+        "assumptions": [],
+        "formula": "lifts with fill before lift < 60 % / lifts",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "collection_events.*",
+          "devices.*",
+          "sites.site_name",
+          "customers.customer_name",
+          "invoice_lines (via market model)",
+          "forecast backtest",
+          "market simulation"
+        ],
+        "tag": "observed",
+        "unit": "%",
+        "value": 49.7
+      },
+      "saving_pct": {
+        "assumptions": [],
+        "formula": "1 - per-kg price / cost today",
+        "row_ids": [],
+        "sigma": null,
+        "sources": [
+          "collection_events.*",
+          "devices.*",
+          "sites.site_name",
+          "customers.customer_name",
+          "invoice_lines (via market model)",
+          "forecast backtest",
+          "market simulation"
+        ],
+        "tag": "simulated",
+        "unit": "%",
+        "value": 31.5
+      }
+    },
+    "lifts": [
+      {
+        "date": "2025-10-06",
+        "device_id": "CMP-00280",
+        "fill_pct": 21.0,
+        "flagged": true,
+        "kg": 540,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-06",
+        "device_id": "CMP-00286",
+        "fill_pct": 98.1,
+        "flagged": false,
+        "kg": 2125,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-10",
+        "device_id": "CMP-00286",
+        "fill_pct": 61.5,
+        "flagged": false,
+        "kg": 1205,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-13",
+        "device_id": "CMP-00286",
+        "fill_pct": 79.6,
+        "flagged": false,
+        "kg": 1600,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-14",
+        "device_id": "CMP-00280",
+        "fill_pct": 65.1,
+        "flagged": false,
+        "kg": 1340,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-17",
+        "device_id": "CMP-00286",
+        "fill_pct": 66.5,
+        "flagged": false,
+        "kg": 1410,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-20",
+        "device_id": "CMP-00280",
+        "fill_pct": 28.3,
+        "flagged": true,
+        "kg": 790,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-21",
+        "device_id": "CMP-00287",
+        "fill_pct": 35.9,
+        "flagged": false,
+        "kg": 1490,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2025-10-22",
+        "device_id": "CMP-00286",
+        "fill_pct": 82.6,
+        "flagged": false,
+        "kg": 1840,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-27",
+        "device_id": "CMP-00280",
+        "fill_pct": 55.2,
+        "flagged": false,
+        "kg": 1100,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-10-27",
+        "device_id": "CMP-00281",
+        "fill_pct": 71.1,
+        "flagged": false,
+        "kg": 800,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2025-10-29",
+        "device_id": "CMP-00286",
+        "fill_pct": 91.2,
+        "flagged": false,
+        "kg": 1890,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-03",
+        "device_id": "CMP-00280",
+        "fill_pct": 49.9,
+        "flagged": false,
+        "kg": 1010,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-03",
+        "device_id": "CMP-00286",
+        "fill_pct": 54.9,
+        "flagged": false,
+        "kg": 1245,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-07",
+        "device_id": "CMP-00286",
+        "fill_pct": 61.8,
+        "flagged": false,
+        "kg": 1285,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-10",
+        "device_id": "CMP-00280",
+        "fill_pct": 60.3,
+        "flagged": false,
+        "kg": 1245,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-12",
+        "device_id": "CMP-00286",
+        "fill_pct": 84.0,
+        "flagged": false,
+        "kg": 1750,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-12",
+        "device_id": "CMP-00287",
+        "fill_pct": 53.0,
+        "flagged": false,
+        "kg": 1955,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2025-11-17",
+        "device_id": "CMP-00280",
+        "fill_pct": 41.4,
+        "flagged": false,
+        "kg": 995,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-17",
+        "device_id": "CMP-00281",
+        "fill_pct": 80.2,
+        "flagged": false,
+        "kg": 860,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2025-11-17",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2305,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-22",
+        "device_id": "CMP-00286",
+        "fill_pct": 78.4,
+        "flagged": false,
+        "kg": 1635,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-26",
+        "device_id": "CMP-00280",
+        "fill_pct": 58.3,
+        "flagged": false,
+        "kg": 1450,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-11-26",
+        "device_id": "CMP-00286",
+        "fill_pct": 83.0,
+        "flagged": false,
+        "kg": 1615,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-01",
+        "device_id": "CMP-00280",
+        "fill_pct": 46.4,
+        "flagged": false,
+        "kg": 1020,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-01",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2400,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-02",
+        "device_id": "CMP-00287",
+        "fill_pct": 63.8,
+        "flagged": false,
+        "kg": 1995,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2025-12-03",
+        "device_id": "CMP-00281",
+        "fill_pct": 69.7,
+        "flagged": false,
+        "kg": 750,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2025-12-05",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2175,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-08",
+        "device_id": "CMP-00280",
+        "fill_pct": 51.0,
+        "flagged": false,
+        "kg": 1150,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-08",
+        "device_id": "CMP-00286",
+        "fill_pct": 83.4,
+        "flagged": false,
+        "kg": 1625,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-10",
+        "device_id": "CMP-00286",
+        "fill_pct": 75.1,
+        "flagged": false,
+        "kg": 1585,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-12",
+        "device_id": "CMP-00286",
+        "fill_pct": 67.6,
+        "flagged": false,
+        "kg": 1415,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-15",
+        "device_id": "CMP-00280",
+        "fill_pct": 61.3,
+        "flagged": false,
+        "kg": 1310,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-17",
+        "device_id": "CMP-00286",
+        "fill_pct": 90.3,
+        "flagged": false,
+        "kg": 2010,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-22",
+        "device_id": "CMP-00280",
+        "fill_pct": 90.4,
+        "flagged": false,
+        "kg": 2105,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-22",
+        "device_id": "CMP-00281",
+        "fill_pct": 75.8,
+        "flagged": false,
+        "kg": 825,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2025-12-22",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2315,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-22",
+        "device_id": "CMP-00287",
+        "fill_pct": 88.7,
+        "flagged": false,
+        "kg": 3025,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2025-12-27",
+        "device_id": "CMP-00286",
+        "fill_pct": 79.7,
+        "flagged": false,
+        "kg": 1520,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-29",
+        "device_id": "CMP-00286",
+        "fill_pct": 72.7,
+        "flagged": false,
+        "kg": 1475,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2025-12-30",
+        "device_id": "CMP-00280",
+        "fill_pct": 70.0,
+        "flagged": false,
+        "kg": 1335,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-01",
+        "device_id": "CMP-00286",
+        "fill_pct": 79.9,
+        "flagged": false,
+        "kg": 1715,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-02",
+        "device_id": "CMP-00286",
+        "fill_pct": 1.8,
+        "flagged": true,
+        "kg": 110,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-05",
+        "device_id": "CMP-00281",
+        "fill_pct": 46.0,
+        "flagged": false,
+        "kg": 445,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-01-06",
+        "device_id": "CMP-00280",
+        "fill_pct": 58.1,
+        "flagged": false,
+        "kg": 1160,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-07",
+        "device_id": "CMP-00286",
+        "fill_pct": 57.0,
+        "flagged": false,
+        "kg": 910,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-12",
+        "device_id": "CMP-00280",
+        "fill_pct": 29.9,
+        "flagged": true,
+        "kg": 515,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-12",
+        "device_id": "CMP-00286",
+        "fill_pct": 66.6,
+        "flagged": false,
+        "kg": 1165,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-12",
+        "device_id": "CMP-00287",
+        "fill_pct": 56.3,
+        "flagged": false,
+        "kg": 1925,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-01-16",
+        "device_id": "CMP-00286",
+        "fill_pct": 54.2,
+        "flagged": false,
+        "kg": 1085,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-20",
+        "device_id": "CMP-00280",
+        "fill_pct": 49.0,
+        "flagged": false,
+        "kg": 1025,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-23",
+        "device_id": "CMP-00286",
+        "fill_pct": 78.1,
+        "flagged": false,
+        "kg": 1580,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-26",
+        "device_id": "CMP-00280",
+        "fill_pct": 25.3,
+        "flagged": true,
+        "kg": 640,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-01-28",
+        "device_id": "CMP-00286",
+        "fill_pct": 62.4,
+        "flagged": false,
+        "kg": 1200,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-02-02",
+        "device_id": "CMP-00280",
+        "fill_pct": 42.0,
+        "flagged": false,
+        "kg": 925,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-02-02",
+        "device_id": "CMP-00281",
+        "fill_pct": 75.7,
+        "flagged": false,
+        "kg": 800,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-02-02",
+        "device_id": "CMP-00287",
+        "fill_pct": 40.8,
+        "flagged": false,
+        "kg": 1460,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-02-07",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2410,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-02-12",
+        "device_id": "CMP-00280",
+        "fill_pct": 36.1,
+        "flagged": true,
+        "kg": 800,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-02-13",
+        "device_id": "CMP-00286",
+        "fill_pct": 61.0,
+        "flagged": false,
+        "kg": 1380,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-02-16",
+        "device_id": "CMP-00280",
+        "fill_pct": 19.6,
+        "flagged": true,
+        "kg": 370,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-02-20",
+        "device_id": "CMP-00286",
+        "fill_pct": 94.8,
+        "flagged": false,
+        "kg": 1850,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-02-23",
+        "device_id": "CMP-00280",
+        "fill_pct": 24.5,
+        "flagged": true,
+        "kg": 585,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-02-23",
+        "device_id": "CMP-00287",
+        "fill_pct": 37.3,
+        "flagged": false,
+        "kg": 1520,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-03-02",
+        "device_id": "CMP-00280",
+        "fill_pct": 34.7,
+        "flagged": true,
+        "kg": 715,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-02",
+        "device_id": "CMP-00281",
+        "fill_pct": 61.1,
+        "flagged": false,
+        "kg": 730,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-03-02",
+        "device_id": "CMP-00286",
+        "fill_pct": 57.8,
+        "flagged": false,
+        "kg": 1020,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-09",
+        "device_id": "CMP-00280",
+        "fill_pct": 27.0,
+        "flagged": true,
+        "kg": 665,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-09",
+        "device_id": "CMP-00286",
+        "fill_pct": 86.0,
+        "flagged": false,
+        "kg": 1900,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-13",
+        "device_id": "CMP-00286",
+        "fill_pct": null,
+        "flagged": false,
+        "kg": null,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-16",
+        "device_id": "CMP-00280",
+        "fill_pct": 26.3,
+        "flagged": true,
+        "kg": 620,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-16",
+        "device_id": "CMP-00286",
+        "fill_pct": 50.1,
+        "flagged": false,
+        "kg": 1000,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-16",
+        "device_id": "CMP-00287",
+        "fill_pct": 56.0,
+        "flagged": false,
+        "kg": 2060,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-03-20",
+        "device_id": "CMP-00286",
+        "fill_pct": 72.6,
+        "flagged": false,
+        "kg": 1480,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-23",
+        "device_id": "CMP-00280",
+        "fill_pct": 44.4,
+        "flagged": false,
+        "kg": 980,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-23",
+        "device_id": "CMP-00286",
+        "fill_pct": 52.8,
+        "flagged": false,
+        "kg": 1180,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-25",
+        "device_id": "CMP-00287",
+        "fill_pct": 95.7,
+        "flagged": true,
+        "kg": 645,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-03-27",
+        "device_id": "CMP-00287",
+        "fill_pct": 3.9,
+        "flagged": true,
+        "kg": 135,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-03-28",
+        "device_id": "CMP-00281",
+        "fill_pct": 79.0,
+        "flagged": false,
+        "kg": 855,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-03-30",
+        "device_id": "CMP-00280",
+        "fill_pct": 35.9,
+        "flagged": true,
+        "kg": 775,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-03-31",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2585,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-01",
+        "device_id": "CMP-00286",
+        "fill_pct": 15.2,
+        "flagged": true,
+        "kg": 340,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-07",
+        "device_id": "CMP-00280",
+        "fill_pct": 35.8,
+        "flagged": true,
+        "kg": 730,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-07",
+        "device_id": "CMP-00286",
+        "fill_pct": 65.0,
+        "flagged": false,
+        "kg": 1270,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-08",
+        "device_id": "CMP-00286",
+        "fill_pct": 18.9,
+        "flagged": true,
+        "kg": 370,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-13",
+        "device_id": "CMP-00280",
+        "fill_pct": 27.1,
+        "flagged": true,
+        "kg": 610,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-13",
+        "device_id": "CMP-00286",
+        "fill_pct": 96.5,
+        "flagged": false,
+        "kg": 1800,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-16",
+        "device_id": "CMP-00287",
+        "fill_pct": 37.6,
+        "flagged": false,
+        "kg": 1110,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-04-17",
+        "device_id": "CMP-00286",
+        "fill_pct": 72.0,
+        "flagged": false,
+        "kg": 1440,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-21",
+        "device_id": "CMP-00280",
+        "fill_pct": 47.3,
+        "flagged": false,
+        "kg": 1110,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-22",
+        "device_id": "CMP-00286",
+        "fill_pct": 54.9,
+        "flagged": false,
+        "kg": 1080,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-24",
+        "device_id": "CMP-00281",
+        "fill_pct": 63.9,
+        "flagged": false,
+        "kg": 690,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-04-27",
+        "device_id": "CMP-00280",
+        "fill_pct": 40.6,
+        "flagged": true,
+        "kg": 700,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-04-27",
+        "device_id": "CMP-00286",
+        "fill_pct": 94.2,
+        "flagged": false,
+        "kg": 2235,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-02",
+        "device_id": "CMP-00286",
+        "fill_pct": 47.8,
+        "flagged": true,
+        "kg": 725,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-04",
+        "device_id": "CMP-00280",
+        "fill_pct": 30.2,
+        "flagged": false,
+        "kg": 905,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-04",
+        "device_id": "CMP-00286",
+        "fill_pct": null,
+        "flagged": false,
+        "kg": null,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-07",
+        "device_id": "CMP-00287",
+        "fill_pct": 59.5,
+        "flagged": false,
+        "kg": 1785,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-05-11",
+        "device_id": "CMP-00280",
+        "fill_pct": 37.3,
+        "flagged": false,
+        "kg": 935,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-11",
+        "device_id": "CMP-00286",
+        "fill_pct": 99.7,
+        "flagged": false,
+        "kg": 2060,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-15",
+        "device_id": "CMP-00286",
+        "fill_pct": 36.0,
+        "flagged": true,
+        "kg": 570,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-18",
+        "device_id": "CMP-00280",
+        "fill_pct": 40.1,
+        "flagged": true,
+        "kg": 800,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-20",
+        "device_id": "CMP-00286",
+        "fill_pct": 71.3,
+        "flagged": false,
+        "kg": 1395,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-21",
+        "device_id": "CMP-00281",
+        "fill_pct": 72.9,
+        "flagged": false,
+        "kg": 835,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-05-25",
+        "device_id": "CMP-00280",
+        "fill_pct": 39.2,
+        "flagged": true,
+        "kg": 845,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-25",
+        "device_id": "CMP-00286",
+        "fill_pct": 70.4,
+        "flagged": false,
+        "kg": 1425,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-29",
+        "device_id": "CMP-00286",
+        "fill_pct": 66.8,
+        "flagged": false,
+        "kg": 1430,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-05-29",
+        "device_id": "CMP-00287",
+        "fill_pct": 71.1,
+        "flagged": false,
+        "kg": 2450,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-06-01",
+        "device_id": "CMP-00280",
+        "fill_pct": 52.0,
+        "flagged": false,
+        "kg": 1050,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-03",
+        "device_id": "CMP-00286",
+        "fill_pct": 77.1,
+        "flagged": false,
+        "kg": 1565,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-08",
+        "device_id": "CMP-00280",
+        "fill_pct": 35.4,
+        "flagged": true,
+        "kg": 820,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-08",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2565,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-12",
+        "device_id": "CMP-00286",
+        "fill_pct": 66.5,
+        "flagged": false,
+        "kg": 1365,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-15",
+        "device_id": "CMP-00280",
+        "fill_pct": 35.7,
+        "flagged": true,
+        "kg": 830,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-17",
+        "device_id": "CMP-00281",
+        "fill_pct": 57.1,
+        "flagged": false,
+        "kg": 660,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-06-17",
+        "device_id": "CMP-00286",
+        "fill_pct": 61.2,
+        "flagged": false,
+        "kg": 1375,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-20",
+        "device_id": "CMP-00287",
+        "fill_pct": 49.4,
+        "flagged": false,
+        "kg": 1735,
+        "trigger": "CUSTOMER_REQUEST"
+      },
+      {
+        "date": "2026-06-22",
+        "device_id": "CMP-00280",
+        "fill_pct": 19.3,
+        "flagged": true,
+        "kg": 540,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-22",
+        "device_id": "CMP-00286",
+        "fill_pct": 71.7,
+        "flagged": false,
+        "kg": 1355,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-26",
+        "device_id": "CMP-00286",
+        "fill_pct": 57.7,
+        "flagged": false,
+        "kg": 1095,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-06-29",
+        "device_id": "CMP-00280",
+        "fill_pct": 57.0,
+        "flagged": false,
+        "kg": 1230,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-01",
+        "device_id": "CMP-00286",
+        "fill_pct": 65.6,
+        "flagged": false,
+        "kg": 1555,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-06",
+        "device_id": "CMP-00280",
+        "fill_pct": 49.9,
+        "flagged": false,
+        "kg": 1070,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-06",
+        "device_id": "CMP-00286",
+        "fill_pct": 50.1,
+        "flagged": false,
+        "kg": 1055,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-10",
+        "device_id": "CMP-00286",
+        "fill_pct": 49.4,
+        "flagged": false,
+        "kg": 1050,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-13",
+        "device_id": "CMP-00280",
+        "fill_pct": 49.9,
+        "flagged": false,
+        "kg": 925,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-13",
+        "device_id": "CMP-00287",
+        "fill_pct": 50.9,
+        "flagged": false,
+        "kg": 1890,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-07-14",
+        "device_id": "CMP-00281",
+        "fill_pct": 63.3,
+        "flagged": false,
+        "kg": 710,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-07-15",
+        "device_id": "CMP-00286",
+        "fill_pct": 63.7,
+        "flagged": false,
+        "kg": 1255,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-20",
+        "device_id": "CMP-00280",
+        "fill_pct": 32.3,
+        "flagged": true,
+        "kg": 710,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-20",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2495,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-22",
+        "device_id": "CMP-00286",
+        "fill_pct": 44.7,
+        "flagged": false,
+        "kg": 910,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-27",
+        "device_id": "CMP-00280",
+        "fill_pct": 53.6,
+        "flagged": false,
+        "kg": 1105,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-07-27",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2350,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-03",
+        "device_id": "CMP-00280",
+        "fill_pct": null,
+        "flagged": false,
+        "kg": null,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-03",
+        "device_id": "CMP-00286",
+        "fill_pct": 91.6,
+        "flagged": false,
+        "kg": 1785,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-03",
+        "device_id": "CMP-00287",
+        "fill_pct": 49.4,
+        "flagged": false,
+        "kg": 1655,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-08-06",
+        "device_id": "CMP-00281",
+        "fill_pct": 73.8,
+        "flagged": false,
+        "kg": 805,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-08-07",
+        "device_id": "CMP-00286",
+        "fill_pct": 55.0,
+        "flagged": false,
+        "kg": 1045,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-10",
+        "device_id": "CMP-00280",
+        "fill_pct": 51.7,
+        "flagged": false,
+        "kg": 1125,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-12",
+        "device_id": "CMP-00286",
+        "fill_pct": 82.5,
+        "flagged": false,
+        "kg": 1570,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-17",
+        "device_id": "CMP-00280",
+        "fill_pct": 30.6,
+        "flagged": true,
+        "kg": 770,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-17",
+        "device_id": "CMP-00286",
+        "fill_pct": 81.4,
+        "flagged": false,
+        "kg": 1740,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-24",
+        "device_id": "CMP-00280",
+        "fill_pct": 49.3,
+        "flagged": false,
+        "kg": 985,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-24",
+        "device_id": "CMP-00286",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2455,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-24",
+        "device_id": "CMP-00286",
+        "fill_pct": 17.6,
+        "flagged": true,
+        "kg": 205,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-08-24",
+        "device_id": "CMP-00287",
+        "fill_pct": 33.3,
+        "flagged": false,
+        "kg": 1225,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-08-31",
+        "device_id": "CMP-00281",
+        "fill_pct": 77.6,
+        "flagged": false,
+        "kg": 950,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-08-31",
+        "device_id": "CMP-00286",
+        "fill_pct": 90.3,
+        "flagged": false,
+        "kg": 2080,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-04",
+        "device_id": "CMP-00286",
+        "fill_pct": 80.5,
+        "flagged": false,
+        "kg": 1685,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-07",
+        "device_id": "CMP-00280",
+        "fill_pct": 100.0,
+        "flagged": false,
+        "kg": 2225,
+        "trigger": "AD_HOC_CUSTOMER"
+      },
+      {
+        "date": "2026-09-11",
+        "device_id": "CMP-00286",
+        "fill_pct": 70.5,
+        "flagged": false,
+        "kg": 1540,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-14",
+        "device_id": "CMP-00280",
+        "fill_pct": 50.0,
+        "flagged": false,
+        "kg": 1145,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-14",
+        "device_id": "CMP-00286",
+        "fill_pct": 46.4,
+        "flagged": false,
+        "kg": 865,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-14",
+        "device_id": "CMP-00287",
+        "fill_pct": 39.6,
+        "flagged": false,
+        "kg": 1440,
+        "trigger": "MAX_INTERVAL_RULE"
+      },
+      {
+        "date": "2026-09-18",
+        "device_id": "CMP-00286",
+        "fill_pct": 57.1,
+        "flagged": false,
+        "kg": 1220,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-21",
+        "device_id": "CMP-00280",
+        "fill_pct": 50.0,
+        "flagged": false,
+        "kg": 1140,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-23",
+        "device_id": "CMP-00286",
+        "fill_pct": 84.4,
+        "flagged": false,
+        "kg": 1870,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-24",
+        "device_id": "CMP-00281",
+        "fill_pct": 63.3,
+        "flagged": false,
+        "kg": 820,
+        "trigger": "ON_CALL_ORDER"
+      },
+      {
+        "date": "2026-09-28",
+        "device_id": "CMP-00280",
+        "fill_pct": 29.5,
+        "flagged": true,
+        "kg": 765,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-29",
+        "device_id": "CMP-00286",
+        "fill_pct": 94.5,
+        "flagged": false,
+        "kg": 2085,
+        "trigger": "SCHEDULED"
+      },
+      {
+        "date": "2026-09-30",
+        "device_id": "CMP-00286",
+        "fill_pct": 30.4,
+        "flagged": true,
+        "kg": 520,
+        "trigger": "SCHEDULED"
+      }
+    ],
+    "operator_view": {
+      "bids_after_eur": {
+        "NEW-1": 19969,
+        "OP-A": 21115,
+        "OP-B": 19332,
+        "OP-E": 18597
+      },
+      "bids_before_eur": {
+        "NEW-1": 31648,
+        "OP-B": 30638,
+        "OP-E": 29473
+      },
+      "devices": [
+        {
+          "actual_t_per_month": 3.99,
+          "device_id": "CMP-00280",
+          "own_error_pct": 1.0,
+          "own_forecast_t_per_month": 4.03,
+          "peer_error_pct": 9.2,
+          "peer_forecast_t_per_month": 4.35
+        },
+        {
+          "actual_t_per_month": 1.09,
+          "device_id": "CMP-00281",
+          "own_error_pct": 16.3,
+          "own_forecast_t_per_month": 0.92,
+          "peer_error_pct": 88.2,
+          "peer_forecast_t_per_month": 2.06
+        },
+        {
+          "actual_t_per_month": 10.45,
+          "device_id": "CMP-00286",
+          "own_error_pct": 10.2,
+          "own_forecast_t_per_month": 9.38,
+          "peer_error_pct": 41.1,
+          "peer_forecast_t_per_month": 6.16
+        },
+        {
+          "actual_t_per_month": 2.07,
+          "device_id": "CMP-00287",
+          "own_error_pct": 25.0,
+          "own_forecast_t_per_month": 2.59,
+          "peer_error_pct": 163.7,
+          "peer_forecast_t_per_month": 5.46
+        }
+      ],
+      "incumbent": "OP-A",
+      "own_error_median_pct": 13.2,
+      "peer_error_median_pct": 64.6,
+      "price_after_eur": 19332,
+      "price_today_eur": 28218,
+      "sigma_ent": 0.3726,
+      "sigma_inc": 0.1004,
+      "winner_after": "OP-E"
+    },
+    "proposal": {
+      "customer_id": "ORG-0036",
+      "evidence": {
+        "hypothetical": {
+          "assumptions": "PRODUCT.md §3; pipeline/fullload/params.yaml"
+        },
+        "observed": {
+          "cost_today_eur": 28218,
+          "lifts_last_12m": 163,
+          "share_lifts_under_60pct_fill": 49.7,
+          "tonnes": 205.1
+        },
+        "simulated": {
+          "lifts_weight_triggered": 116,
+          "price_per_kg_regime_eur": 19332
+        }
+      },
+      "not_proven": [
+        "Savings are simulated on synthetic data, not demonstrated"
+      ],
+      "proposal": {
+        "action": "TENDER_PER_KG",
+        "auto_execute": false,
+        "contract_term_years": 3,
+        "requires_human_approval": true,
+        "terms": "per-kg price, weight-triggered lifts, billing on the operator's certified weighbridge"
+      },
+      "rationale": "81 of 163 lifts emptied a container under 60 % full.",
+      "region": "FI-01",
+      "reversal": "No commitment: the customer can keep today's contract; a tender only invites bids.",
+      "schema": "fullload.proposal.v1 (extends smve.recommendation.v0, illustrative)",
+      "synthetic": true
+    },
+    "region": "FI-01",
+    "report": {
+      "facts": {
+        "cost_per_t_after_eur": 94.3,
+        "cost_per_t_today_eur": 137.6,
+        "cost_today_eur": 28218,
+        "customer_name": "Fictional Retail Customer 0036",
+        "devices": 4,
+        "flagged_lifts": 31,
+        "incumbent": "OP-A",
+        "lift_reduction_pct": 27.5,
+        "lifts": 163,
+        "lifts_after": 116,
+        "low_fill_lifts": 81,
+        "low_fill_share_pct": 49.7,
+        "price_per_kg_regime_eur": 19332,
+        "region": "FI-01",
+        "saving_eur": 8885,
+        "saving_pct": 31.5,
+        "sector": "nonfood_retail",
+        "tonnes": 205.1,
+        "winner": "OP-E"
+      },
+      "label": "AI-summarized (Claude) from the figures on this page; every number checked against the data",
+      "status": "checked",
+      "text": "**What happened this year.** Your 4 compactors in this region were emptied 163 times and produced about 205.1 tonnes of waste. In 81 of those visits (49.7 %) the container was less than 60 % full. 31 visits look early enough that a person should review the schedule behind them.\n\n**What it cost.** Today you pay per visit: about €28,218 over the last 12 months, or €137.6 per tonne.\n\n**What could change.** If your containers were emptied when they are actually full, the same waste would need about 116 visits instead of 163 (27.5 % fewer trucks). In a per-kg tender where every operator can see the same weight data, our simulation puts the price at about €19,332, or €94.3 per tonne: €8,885 (31.5 %) less than today.\n\n**What we suggest you decide.** Invite operators to bid on per-kg terms when your contract comes up, with lifts triggered by weight. Your current operator can bid too. Billing stays on the operator's certified weighbridge, exactly as today.\n\n**What this is not.** These figures are a simulation on synthetic data with assumptions you can see on this page. They are not a guaranteed saving. Nothing is sent to any operator unless you approve it.",
+      "unmatched_numbers": []
+    },
+    "sector": "nonfood_retail"
+  },
+  "heroes": {
+    "customer_id": "ORG-0036"
+  },
   "market": {
     "default": {
       "rows": [
         {
+          "bids_after": {
+            "NEW-1": 4702933.285352011,
+            "OP-A": 5259429.341756518,
+            "OP-B": 5150462.777758327,
+            "OP-E": 4614068.762497738
+          },
+          "bids_before": {
+            "NEW-1": 6253613.151237468,
+            "OP-A": 6993600.483777851,
+            "OP-E": 6135447.675547899
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0001",
@@ -355,6 +1999,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 9264776.308053367,
+            "OP-A": 10340212.72817977,
+            "OP-B": 10126033.34342383,
+            "OP-E": 9036577.481668845
+          },
+          "bids_before": {
+            "NEW-1": 13689213.231729694,
+            "OP-A": 15278229.305380756,
+            "OP-B": 14961767.561429512
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0007",
@@ -371,6 +2026,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 341849.9149406603,
+            "OP-A": 385199.9855103067,
+            "OP-B": 374470.77742417064,
+            "OP-E": 338022.5424853056
+          },
+          "bids_before": {
+            "NEW-1": 502708.21642345976,
+            "OP-A": 566456.7671922405,
+            "OP-B": 550678.9043790996
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0009",
@@ -387,6 +2053,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 3652042.140688551,
+            "OP-A": 4076447.7976796133,
+            "OP-B": 4006653.084418992,
+            "OP-E": 3576008.738041985
+          },
+          "bids_before": {
+            "NEW-1": 4632306.898281226,
+            "OP-B": 5082100.91969929,
+            "OP-E": 4535864.95100592
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0013",
@@ -403,6 +2080,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 2376077.7334960294,
+            "OP-A": 2649368.2766885594,
+            "OP-B": 2596882.588268016,
+            "OP-E": 2315269.7178416196
+          },
+          "bids_before": {
+            "NEW-1": 3053235.6620303807,
+            "OP-A": 3404411.223674725,
+            "OP-B": 3336967.649176833
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0016",
@@ -419,6 +2107,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 2792443.506077776,
+            "OP-A": 3130457.2063051364,
+            "OP-B": 2850753.0667785807,
+            "OP-E": 2918299.504984078
+          },
+          "bids_before": {
+            "NEW-1": 3405379.024491688,
+            "OP-B": 3476487.412004511,
+            "OP-E": 3558860.152345893
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0022",
@@ -435,6 +2134,17 @@
           "winner_after": "NEW-1"
         },
         {
+          "bids_after": {
+            "NEW-1": 21226271.517867878,
+            "OP-A": 23773291.01694947,
+            "OP-B": 21669571.23707353,
+            "OP-E": 22162033.907485772
+          },
+          "bids_before": {
+            "NEW-1": 27880444.03824868,
+            "OP-A": 31225922.519888572,
+            "OP-E": 29109556.3161576
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0023",
@@ -451,6 +2161,17 @@
           "winner_after": "NEW-1"
         },
         {
+          "bids_after": {
+            "NEW-1": 23789029.16403719,
+            "OP-A": 25269391.54290323,
+            "OP-B": 23117221.97863227,
+            "OP-E": 22173073.709717464
+          },
+          "bids_before": {
+            "NEW-1": 30952683.453305684,
+            "OP-A": 32878831.334047817,
+            "OP-B": 30078573.16456257
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0033",
@@ -467,6 +2188,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 3662070.8490697667,
+            "OP-A": 3879268.318472366,
+            "OP-B": 3551981.554531318,
+            "OP-E": 3416884.2686445597
+          },
+          "bids_before": {
+            "NEW-1": 4745636.219284206,
+            "OP-A": 5027099.9648028575,
+            "OP-B": 4602972.746880381
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0034",
@@ -483,6 +2215,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 1996917.4431860547,
+            "OP-A": 2111477.9134006626,
+            "OP-B": 1933203.2177838534,
+            "OP-E": 1859688.0388773356
+          },
+          "bids_before": {
+            "NEW-1": 3164826.0042954064,
+            "OP-B": 3063848.1506117284,
+            "OP-E": 2947337.199842244
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0036",
@@ -499,6 +2242,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 2314181.296788633,
+            "OP-A": 2449188.056246437,
+            "OP-B": 2240280.7132612285,
+            "OP-E": 2157193.6910555805
+          },
+          "bids_before": {
+            "NEW-1": 3192656.069818549,
+            "OP-A": 3378912.0691422094,
+            "OP-B": 3090702.455860424
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0037",
@@ -515,6 +2269,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 3412499.049677984,
+            "OP-A": 3627932.200970316,
+            "OP-B": 3323214.385772027,
+            "OP-E": 3159610.8245801153
+          },
+          "bids_before": {
+            "NEW-1": 4359669.546273091,
+            "OP-A": 4634898.150083384,
+            "OP-B": 4245603.1027332
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0038",
@@ -531,6 +2296,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 2550002.695897242,
+            "OP-A": 2563757.8784284354,
+            "OP-B": 2642764.79471929,
+            "OP-E": 2517953.952456889
+          },
+          "bids_before": {
+            "NEW-1": 3189738.1880517993,
+            "OP-B": 3305772.1081306217,
+            "OP-E": 3149649.171285172
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0042",
@@ -547,6 +2323,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 3865022.659784244,
+            "OP-A": 3882220.873093525,
+            "OP-B": 4005606.0157820485,
+            "OP-E": 3812938.454763476
+          },
+          "bids_before": {
+            "NEW-1": 5536408.069576104,
+            "OP-A": 5561043.456048355,
+            "OP-B": 5737785.110568092
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0043",
@@ -563,6 +2350,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 11518130.380411984,
+            "OP-A": 11590359.685479118,
+            "OP-B": 11959247.093574373,
+            "OP-E": 11425786.90061175
+          },
+          "bids_before": {
+            "NEW-1": 15183837.203841988,
+            "OP-A": 15279053.872977031,
+            "OP-B": 15765341.678903505
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0045",
@@ -579,6 +2377,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 2368917.4002082995,
+            "OP-A": 2381529.179552039,
+            "OP-B": 2455130.347882512,
+            "OP-E": 2347765.1258447156
+          },
+          "bids_before": {
+            "NEW-1": 2916068.7226589164,
+            "OP-B": 3022194.364768217,
+            "OP-E": 2890030.885426042
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0046",
@@ -595,6 +2404,17 @@
           "winner_after": "OP-E"
         },
         {
+          "bids_after": {
+            "NEW-1": 2483368.3562083915,
+            "OP-A": 2487374.614808375,
+            "OP-B": 2390404.0902524875,
+            "OP-E": 2443133.606375895
+          },
+          "bids_before": {
+            "NEW-1": 3898273.805274099,
+            "OP-A": 3904562.6399201653,
+            "OP-B": 3752342.911898399
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0050",
@@ -611,6 +2431,17 @@
           "winner_after": "OP-B"
         },
         {
+          "bids_after": {
+            "NEW-1": 518161.06928755646,
+            "OP-A": 520425.10980678676,
+            "OP-B": 501605.8474216863,
+            "OP-E": 513058.17188697745
+          },
+          "bids_before": {
+            "NEW-1": 853011.386265844,
+            "OP-A": 856738.513710069,
+            "OP-B": 825757.7124744856
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0057",
@@ -627,6 +2458,17 @@
           "winner_after": "OP-B"
         },
         {
+          "bids_after": {
+            "NEW-1": 2669880.203447198,
+            "OP-A": 2656649.342995501,
+            "OP-B": 2570492.017934256,
+            "OP-E": 2609769.2893293328
+          },
+          "bids_before": {
+            "NEW-1": 3974940.2330610356,
+            "OP-A": 3955242.0160925123,
+            "OP-E": 3885446.5956069366
+          },
           "contestable_after": true,
           "contestable_today": false,
           "customer_id": "ORG-0059",

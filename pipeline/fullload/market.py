@@ -80,7 +80,8 @@ def pick_region(con: duckdb.DuckDBPyConnection) -> str:
         GROUP BY 1 ORDER BY count(DISTINCT d.operator_id) DESC, count(*) DESC, 1 LIMIT 1""").fetchone()[0]
 
 
-def accounts(con: duckdb.DuckDBPyConnection, region: str) -> pd.DataFrame:
+def account_devices(con: duckdb.DuckDBPyConnection, region: str) -> pd.DataFrame:
+    """Device-level rows behind `accounts` (devices the trips model covers, with tendered charges)."""
     trips = device_trips(con)
     trips = trips[trips.weight_trips.notna()][["device_id", "actual_lifts", "weight_trips", "annual_kg"]]
     charges = con.execute(f"""
@@ -92,6 +93,11 @@ def accounts(con: duckdb.DuckDBPyConnection, region: str) -> pd.DataFrame:
         WHERE s.region_code = ? GROUP BY ALL""", [region]).df()
     df = charges.merge(trips, on="device_id")
     df[["trip_cents", "tonne_cents"]] = df[["trip_cents", "tonne_cents"]].fillna(0).astype("int64")
+    return df.sort_values("device_id").reset_index(drop=True)
+
+
+def accounts(con: duckdb.DuckDBPyConnection, region: str) -> pd.DataFrame:
+    df = account_devices(con, region)
     # The account's incumbent = the operator carrying most of its tonnage.
     inc = (df.groupby(["customer_id", "operator_id"]).annual_kg.sum().reset_index()
            .sort_values(["customer_id", "annual_kg", "operator_id"], ascending=[True, False, True])
@@ -169,6 +175,7 @@ def simulate(accs: list[dict], operators: list[str], sigma_inc: float, sigma_ent
             "operator_margin_before": today - cost_before,
             "operator_margin_after": (today - cost_before) if keeps_today else price_after - cost_after * rel[winner],
             "europress_fee": 0.0 if keeps_today else p.europress_fee_cents_per_t * t,
+            "bids_before": bids_before, "bids_after": bids_after,
         })
     return {"rows": rows, "summary": summarise(rows, operators + entrants), "sigma_after": sigma_after}
 

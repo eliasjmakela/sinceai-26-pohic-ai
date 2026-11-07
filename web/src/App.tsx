@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Beat0 } from './beats/Beat0'
+import { Beat2 } from './beats/Beat2'
+import { Beat3 } from './beats/Beat3'
 import { Beat4 } from './beats/Beat4'
 
 // One screen per beat, deep-linkable as /#/beat-N (PRODUCT.md §4). Beats are added as they are built.
-const BEATS: Record<number, () => React.JSX.Element> = { 0: Beat0, 4: Beat4 }
+const BEATS: Record<number, () => React.JSX.Element> = { 0: Beat0, 2: Beat2, 3: Beat3, 4: Beat4 }
 
 function beatFromHash(): number {
   const m = window.location.hash.match(/beat-(\d+)/)
