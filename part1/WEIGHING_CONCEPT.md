@@ -716,3 +716,21 @@ phrased for Discord, are in `ENGINEER_QUESTIONS.md`):
 9. For H5: the hook-lift **set-down speed** and the horizontal pull force (our 3.8–7.6 t on dry skids) are in the
    right range.
 10. Why the existing **platform scales** are expensive, so that our cost model for PS and H5 can be checked.
+
+### Review of this list (lead developer with Claude, 7 Nov; no mechanical-engineering expertise on the team)
+
+| # | Verdict | Reasoning |
+|---|---|---|
+| 1 | Plausible, needs Europress | A floor insert is a common way to weigh in a hopper, but stiffness of the chamber around a cut-out is a structural question only Europress can answer. |
+| 2 | **Doubtful** | In many compactors the ram slides on the chamber floor or on wear strips set into it. If so, the plate sits in the ram's path and must survive the ram scraping over it every stroke. This is the biggest open risk for H1. |
+| 3 | **Doubtful** | A sub-millimetre stop gap in a waste chamber (grit, ice, leachate) is fragile. A wider gap needs stiffer cells and loses resolution. Second biggest risk. |
+| 4 | Likely | A short delay before the press start is a firmware change. |
+| 5 | Unknown, order of magnitude plausible | Only a bench test (§14 B) settles it. |
+| 6 | Needs Europress | COMBI tipping drains the chamber; the cells need drainage and IP68 sealing. |
+| 7 | Needs Europress | Engineer question 10. |
+| 8 | Unknown | Decides whether H5 is cheap; engineer question 8. |
+| 9 | Plausible order of magnitude | From the load calculations in `calc/loads.py`. |
+| 10 | Partly answered | Tommi: existing scale platforms are "almost as expensive"; the team document names Scaletipper X1 as expensive and limited to bin-fed sites. |
+
+Consequence: H1 has two doubtful mechanical points (2, 3). It stays the factory-fit reference credited to Europress,
+and the hydraulic self-lift (H7) is added as the team's new idea to explore (§19).

@@ -1,0 +1,265 @@
+<title>OpenWeight Briefing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one column briefing; a tab strip switches topic; every card states a fact, its evidence strength and why it matters. */
+:root {
+  --bg: #f5f6f4; --surface: #ffffff; --fg: #17201d; --muted: #4f5b56; --line: #d9dfdc;
+  --accent: #0d6b5e; --accent-soft: #dcefe9;
+  --strong: #17663c; --strong-soft: #e1f2e7; --medium: #6f4c00; --medium-soft: #fbefd3; --weak: #962e24; --weak-soft: #f8e1de;
+  --font-display: "Public Sans", system-ui, sans-serif; --font-body: "Public Sans", system-ui, sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #101614; --surface: #17201d; --fg: #e7ece9; --muted: #9aa8a2; --line: #2b3733;
+  --accent: #4fc2ad; --accent-soft: #163a33;
+  --strong: #6ccf96; --strong-soft: #173526; --medium: #e5b54a; --medium-soft: #3a2f12; --weak: #f08a7c; --weak-soft: #3d1f1b;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #101614; --surface: #17201d; --fg: #e7ece9; --muted: #9aa8a2; --line: #2b3733;
+  --accent: #4fc2ad; --accent-soft: #163a33;
+  --strong: #6ccf96; --strong-soft: #173526; --medium: #e5b54a; --medium-soft: #3a2f12; --weak: #f08a7c; --weak-soft: #3d1f1b;
+  color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 22px; }
+header { display: grid; gap: 8px; }
+.eyebrow { font-family: var(--font-data); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 5vw, 40px); line-height: 1.1; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 68ch; margin: 0; }
+.clock { display: flex; flex-wrap: wrap; gap: 10px; }
+.clock div { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+.clock b { font-family: var(--font-data); }
+nav { display: flex; flex-wrap: wrap; gap: 6px; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--bg); padding-block: 8px; z-index: 5; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+nav button { font: 600 13px var(--font-body); border: 1px solid var(--line); background: var(--surface); color: var(--fg); padding: 7px 12px; border-radius: 999px; cursor: pointer; }
+nav button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+nav button:focus-visible, .card summary:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+section { display: grid; gap: 12px; }
+h2 { font-size: 20px; margin: 0; }
+.intro { color: var(--muted); margin: 0; max-width: 70ch; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.card summary { cursor: pointer; list-style: none; display: flex; gap: 10px; align-items: baseline; justify-content: space-between; }
+.card summary::-webkit-details-marker { display: none; }
+.card summary .t { font-weight: 700; }
+.card .why { margin: 10px 0 0; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; }
+.card .why b { color: var(--fg); }
+.pill { font: 600 11px var(--font-data); text-transform: uppercase; letter-spacing: .05em; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.strong { background: var(--strong-soft); color: var(--strong); }
+.medium { background: var(--medium-soft); color: var(--medium); }
+.weak { background: var(--weak-soft); color: var(--weak); }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+.bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); }
+.decision { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; }
+.decision input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); }
+.decision label { font-weight: 700; }
+.decision p { margin: 2px 0 0; color: var(--muted); }
+.decision.done label { text-decoration: line-through; color: var(--muted); }
+.filter { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }
+.filter button { font: 600 12px var(--font-data); border: 1px solid var(--line); background: var(--surface); color: var(--fg); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.filter button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+ul.tight { margin: 6px 0 0; padding-left: 18px; }
+footer { color: var(--muted); font-size: 13px; }
+@media (prefers-reduced-motion: no-preference) { .card { transition: border-color .15s } .card:hover { border-color: var(--accent) } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Since AI 2026 · Europress · Sat 7 Nov, 14:00</div>
+    <h1>OpenWeight: what to keep in your head</h1>
+    <p class="lede">A briefing before the scope-narrowing phase. Each card is one fact or decision; open it to see why it matters. Numbers come from this repo's pipeline (synthetic data, hypothetical prices) unless a card says otherwise.</p>
+    <div class="clock">
+      <div>Feature freeze <b>Sat 22:00</b> · about <b>8 h</b> left</div>
+      <div>Demo frozen <b>Sun 00:00</b></div>
+      <div>Submit by <b>Sun 09:30</b></div>
+    </div>
+  </header>
+
+  <nav role="tablist" aria-label="Topics">
+    <button role="tab" data-tab="thesis" aria-selected="true">Thesis</button>
+    <button role="tab" data-tab="evidence" aria-selected="false">Evidence</button>
+    <button role="tab" data-tab="money" aria-selected="false">Business</button>
+    <button role="tab" data-tab="weighing" aria-selected="false">Weighing</button>
+    <button role="tab" data-tab="score" aria-selected="false">Scoring</button>
+    <button role="tab" data-tab="decide" aria-selected="false">Decisions</button>
+    <button role="tab" data-tab="risks" aria-selected="false">Risks</button>
+  </nav>
+
+  <section data-panel="thesis">
+    <h2>The idea in one breath</h2>
+    <p class="intro">Customers pay per trip, and only the incumbent operator knows each site's volumes. That history is a local monopoly: challengers can't price per kilo without it. OpenWeight puts the weight in the compactor and lets every operator see it on equal terms.</p>
+    <details class="card" open><summary><span class="t">Operators pay, customers get it free</span><span class="pill strong">decided</span></summary>
+      <p class="why"><b>Why it matters:</b> Tommi confirmed serving operators is Europress strategy, and SMART Insights reaches only ~15 % of customers. A free customer side avoids the hardest sale. Fee is ~€20 per device per month (business team) or ~€3 per verified tonne; the unit is still open.</p></details>
+    <details class="card"><summary><span class="t">Europress never drives a truck</span><span class="pill strong">decided</span></summary>
+      <p class="why"><b>Why it matters:</b> Tommi said it plainly at kickoff. Anything that sounds like transport procurement or route optimisation works against us with the Europress judge.</p></details>
+    <details class="card"><summary><span class="t">Billing stays on the certified weighbridge</span><span class="pill strong">decided</span></summary>
+      <p class="why"><b>Why it matters:</b> EU Directive 2014/31/EU needs an approved instrument for billing. Our weight is planning data and a cross-check, so cheap sensors are enough. The cross-check still gives the customer peace of mind and the operator a reason to report honestly.</p></details>
+    <details class="card"><summary><span class="t">The customer owns the data and consents</span><span class="pill strong">decided</span></summary>
+      <p class="why"><b>Why it matters:</b> it answers "who owns the weight?" before a judge asks, and the consent step is a natural demo moment.</p></details>
+    <details class="card"><summary><span class="t">Customers also get visibility, not just a better price</span><span class="pill strong">decided</span></summary>
+      <p class="why"><b>Why it matters:</b> tenders happen every ~3 years; contract monitoring (on-time visits, missed visits, ticket sharing, invoice vs contract) gives value every month, which Tommi asked for.</p></details>
+  </section>
+
+  <section data-panel="evidence" hidden>
+    <h2>How solid each number is</h2>
+    <div class="filter" role="group" aria-label="Filter by strength">Show:
+      <button data-f="all" aria-pressed="true">all</button><button data-f="strong" aria-pressed="false">strong</button><button data-f="medium" aria-pressed="false">medium</button><button data-f="weak" aria-pressed="false">weak</button>
+    </div>
+    <div class="tablewrap"><table id="ev">
+      <thead><tr><th>Claim</th><th class="num">Number</th><th>How we know</th><th>Strength</th></tr></thead>
+      <tbody>
+        <tr data-s="strong"><td>Charges driven by trips</td><td class="num">56.5 %</td><td>Observed in invoices</td><td><span class="pill strong">strong</span></td></tr>
+        <tr data-s="strong"><td>Lifts under 60 % full</td><td class="num">33.4 %</td><td>Observed in lifts</td><td><span class="pill strong">strong</span></td></tr>
+        <tr data-s="strong"><td>Today's price matches the contract</td><td class="num">97.6 % exact</td><td>Checked against labels (+0.34 % total)</td><td><span class="pill strong">strong</span></td></tr>
+        <tr data-s="strong"><td>Premature-lift rule</td><td class="num">F1 0.81, 0 traps</td><td>Kit scorer; ML gets 0.93 but flags 13 justified lifts</td><td><span class="pill strong">strong</span></td></tr>
+        <tr data-s="medium"><td>Forecast error, own history vs peers</td><td class="num">10 % vs 37 %</td><td>Backtest; size depends on the generator; team got 9 % vs 21 %</td><td><span class="pill medium">medium</span></td></tr>
+        <tr data-s="medium"><td>Fewer trips with a weight trigger</td><td class="num">6–18 %</td><td>Labels give the lower bound, model the upper; r = 0.85 per device</td><td><span class="pill medium">medium</span></td></tr>
+        <tr data-s="medium"><td>Region cost per tonne, per-kg tender</td><td class="num">€113 → €99</td><td>Market model; −12 to −15 % across sensitivity</td><td><span class="pill medium">medium</span></td></tr>
+        <tr data-s="medium"><td>Customers a challenger can win</td><td class="num">0 → 19 of 19</td><td>Market model; who actually wins is sensitive</td><td><span class="pill medium">medium</span></td></tr>
+        <tr data-s="medium"><td>Virtual scale error per lift</td><td class="num">~8 %</td><td>Simulated; ~5.5 % monthly after 5 tickets; likely optimistic</td><td><span class="pill medium">medium</span></td></tr>
+        <tr data-s="weak"><td>Showcase customer saving</td><td class="num">−31.5 %</td><td>Best case by selection rule; say so</td><td><span class="pill weak">weak</span></td></tr>
+        <tr data-s="weak"><td>Operator pricing-risk value per device</td><td class="num">€2,712 / yr</td><td>Parameter-driven; team says €1,930 or €1,400</td><td><span class="pill weak">weak</span></td></tr>
+        <tr data-s="weak"><td>Concentration falls</td><td class="num">HHI rises</td><td>With defaults it goes up (~5,350 → ~6,170); don't claim it</td><td><span class="pill weak">weak</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="intro">Rule of thumb for the pitch: say strong numbers plainly, medium ones as ranges, weak ones only with their caveat or not at all.</p>
+  </section>
+
+  <section data-panel="money" hidden>
+    <h2>Where the money is, and the one number that decides it</h2>
+    <div class="grid2">
+      <div class="card"><div class="t"><b>Value per device per year</b></div>
+        <div class="tablewrap" style="margin-top:8px;border:0"><table>
+          <thead><tr><th>Lever</th><th class="num">Ours</th><th class="num">Team</th></tr></thead>
+          <tbody>
+            <tr><td>Avoidable half-empty visits</td><td class="num">€686–1,469</td><td class="num">€1,570</td></tr>
+            <tr><td>Tonnes priced above peers</td><td class="num">€1,278</td><td class="num">€1,245</td></tr>
+            <tr><td>Operator pricing risk</td><td class="num">€2,712</td><td class="num">€1,930</td></tr>
+            <tr><td>Invoice above contract</td><td class="num">€301</td><td class="num">€100</td></tr>
+          </tbody></table></div>
+        <p class="why">Two levers agree independently, which is good traceability evidence. Levers overlap, so never add them up.</p></div>
+      <div class="card"><div class="t"><b>Europress, 10,000 devices</b> <span class="pill medium">hypothetical</span></div>
+        <ul class="tight">
+          <li>Investment <span class="num">€1.5 M</span> (hopper €500 on 30 %)</li>
+          <li>Service revenue <span class="num">€1.2 M/yr</span>, extra machine sales <span class="num">€0.47 M/yr</span></li>
+          <li>Operating cost <span class="num">€0.74 M/yr</span> → net <span class="num">€0.93 M/yr</span>, payback <span class="num">1.6 yr</span></li>
+        </ul>
+        <p class="why"><b>The deciding number is installed hardware cost.</b> Payback stays inside the 6-year lease only below about <span class="num">€1,860</span> per weighed device, or <span class="num">€920</span> without the extra-sales lever. At the hopper plate's high installed cost, payback is about 9 years.</p></div>
+    </div>
+    <div class="card"><div class="t"><b>Payback by hardware cost per weighed device</b> (business-team assumptions, 3,000 weighed devices)</div>
+      <div style="display:grid;gap:8px;margin-top:10px" id="payback"></div>
+      <p class="why">Bars are scaled to the 6-year lease; a full bar means the investment is not paid back within it.</p></div>
+  </section>
+
+  <section data-panel="weighing" hidden>
+    <h2>Weighing: solid, not our moat</h2>
+    <p class="intro">25 % of the score. A team with mechanical engineers will likely beat us on the hardware itself, so aim for a credible, costed concept and put the edge in software: every device gets a virtual scale, calibrated by the fleet.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Option</th><th class="num">Installed, new unit</th><th class="num">Error (1σ)</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Virtual scale (existing signals)</td><td class="num">€10–125</td><td class="num">~8 % sim.</td><td>On every device; calibrated by tickets</td></tr>
+        <tr><td>Hopper plate (Tommi's idea)</td><td class="num">€548–2,363</td><td class="num">2.3–5.4 %</td><td>Prior art exists; fits COMBI and DUO</td></tr>
+        <tr><td>Hydraulic self-lift ("Plus")</td><td class="num">~€830–2,030</td><td class="num">untested</td><td>Uses the machine's own hydraulics; new mobile units</td></tr>
+        <tr><td>Weighing guide rails</td><td class="num">€2,382–7,056</td><td class="num">0.6–2 %</td><td>Site work and labour dominate</td></tr>
+        <tr><td>Platform scale (exists today)</td><td class="num">€7,860–22,160</td><td class="num">0.2–1 %</td><td>The thing to beat</td></tr>
+      </tbody></table></div>
+    <details class="card" open><summary><span class="t">Can the hydraulic self-lift work?</span><span class="pill medium">worth exploring</span></summary>
+      <div class="why">
+        <p style="margin:0"><b>Yes, as a feasible idea to explore.</b> The physics is standard: at rest, cylinder pressure × piston area = supported force. Hydraulic weighing is already established on hook-lift trucks and forklifts, so the principle is proven elsewhere. Its strongest argument is Europress-specific: the compactor already has a hydraulic power pack, so the added hardware is one cylinder, a valve and a pressure sensor.</p>
+        <p>What has to be solved, with the usual fixes:</p>
+        <ul class="tight">
+          <li><b>Seal friction and hysteresis</b> (a few % of force): read during a slow, steady lift and lower, and average the two.</li>
+          <li><b>Lifting one end only</b>: the reading depends on where the waste sits. Use the ram's compaction profile, or lift both ends; per-device calibration absorbs a steady bias.</li>
+          <li><b>Oil temperature, ground, safety</b>: 10 mm stroke on rails or soft ground, a new point load on the frame, CE work for a self-lifting machine.</li>
+        </ul>
+        <p>Pitch it as an untested target with a validation plan, combined with the virtual scale and ticket calibration, so it does not need ±3 % on its own. Check prior art for compactor-side hydraulic weighing before calling it new.</p>
+      </div></details>
+  </section>
+
+  <section data-panel="score" hidden>
+    <h2>Scoring weights against where we are</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Criterion</th><th class="num">Weight</th><th>Status</th><th style="width:30%">Readiness</th></tr></thead>
+      <tbody>
+        <tr><td>Weighing concept</td><td class="num">25 %</td><td>Complete, costed, on a branch; not innovative</td><td><div class="bar"><span style="width:65%"></span></div></td></tr>
+        <tr><td>Customer / business value</td><td class="num">25 %</td><td>Beats 2, 3, 4, 6 built; one saving figure still to pick</td><td><div class="bar"><span style="width:70%"></span></div></td></tr>
+        <tr><td>Data-driven value, traceable</td><td class="num">20 %</td><td>Strongest area: receipts, label validation, determinism</td><td><div class="bar"><span style="width:85%"></span></div></td></tr>
+        <tr><td>Software workflow, SMART path</td><td class="num">15 %</td><td>Flow and integration diagram; beats 1 and 5 missing</td><td><div class="bar"><span style="width:60%"></span></div></td></tr>
+        <tr><td>Commercial productisation</td><td class="num">10 %</td><td>Model built from team assumptions; fee unit open</td><td><div class="bar"><span style="width:55%"></span></div></td></tr>
+        <tr><td>Clarity, uncertainty, limits</td><td class="num">5 %</td><td>LIMITATIONS.md, evidence tags, ranges</td><td><div class="bar"><span style="width:85%"></span></div></td></tr>
+      </tbody></table></div>
+    <p class="intro">Readiness bars are a judgement call, not a measurement. Deliverables still to finish: the weighing write-up (merge the branch), the business-case document, the demo video before Sun 00:00.</p>
+  </section>
+
+  <section data-panel="decide" hidden>
+    <h2>Open decisions</h2>
+    <p class="intro">Tick them off as you decide; ticks stay in this browser only.</p>
+    <div class="card decision"><input type="checkbox" id="d1"><div><label for="d1">One forecast-error figure for the pitch</label><p>10 % vs 37 % (ours, monthly tonnage) or 9 % vs 21 % (team, per visit). Never show both, and keep SMART's "37 % fewer emptyings" apart.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d2"><div><label for="d2">One customer-saving figure</label><p>Region −12 to −15 % per tonne is the defensible one; the showcase −31.5 % only as a best case.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d3"><div><label for="d3">Fee unit</label><p>€20 per device per month (team) or ~€3 per verified tonne (fits "pay for tonnes").</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d4"><div><label for="d4">Lead weighing story</label><p>Virtual scale everywhere plus a reference subset: hopper plate, hydraulic self-lift, rails, or a new idea from the team.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d5"><div><label for="d5">Demo structure</label><p>Teammate's three views (customer, operator, Europress) vs the current seven beats. Current beats map onto the views.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d6"><div><label for="d6">Live AI Q&amp;A for customers: in or out</label><p>Today only a frozen, number-checked report exists. Live Q&amp;A adds risk on stage.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d7"><div><label for="d7">Business assumptions signed off</label><p>The placeholder values in params.yaml (market and business) need an owner.</p></div></div>
+    <div class="card decision"><input type="checkbox" id="d8"><div><label for="d8">Merge the weighing branch</label><p>After someone checks the 10-item human-review list.</p></div></div>
+  </section>
+
+  <section data-panel="risks" hidden>
+    <h2>What could hurt us</h2>
+    <div class="grid2">
+      <details class="card" open><summary><span class="t">Numbers that disagree across team documents</span><span class="pill weak">high</span></summary><p class="why">Three saving figures and three operator-value figures are in circulation. Judges notice. Fix by picking one source: this repo's pipeline.</p></details>
+      <details class="card" open><summary><span class="t">Scope creep in the last 8 hours</span><span class="pill weak">high</span></summary><p class="why">Every new view or feature competes with the video and the rehearsal. Narrow before adding.</p></details>
+      <details class="card"><summary><span class="t">Synthetic optimism</span><span class="pill medium">medium</span></summary><p class="why">The virtual scale and forecast gap are measured on data the simulator generated from similar variables. Always say "synthetic".</p></details>
+      <details class="card"><summary><span class="t">Hardware cost kills the model</span><span class="pill medium">medium</span></summary><p class="why">Above about €1,860 installed per weighed device the payback leaves the lease. Lead with the virtual scale and a small reference fleet.</p></details>
+      <details class="card"><summary><span class="t">Tone towards operators</span><span class="pill medium">medium</span></summary><p class="why">Operators are Europress's partners and future customers. "Efficient operators win", never "operators cheat".</p></details>
+      <details class="card"><summary><span class="t">Judging format unknown</span><span class="pill medium">medium</span></summary><p class="why">Live or recorded, and how many minutes, still needs an answer from Since AI. It changes the demo length.</p></details>
+    </div>
+  </section>
+
+  <footer>Sources: PRODUCT.md, LIMITATIONS.md, web/public/data/bundle.json, part1/ on branch weighing-v2, reviews/PLUS_MALLI_REVIEW.md, the two Tommi transcripts. All data synthetic; prices hypothetical.</footer>
+</div>
+
+<script>
+(function () {
+  const tabs = document.querySelectorAll('nav [data-tab]');
+  const panels = document.querySelectorAll('[data-panel]');
+  function show(name) {
+    let found = false;
+    panels.forEach(p => { const on = p.dataset.panel === name; p.hidden = !on; if (on) found = true; });
+    if (!found) return show('thesis');
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === name)));
+  }
+  tabs.forEach(t => t.addEventListener('click', () => { show(t.dataset.tab); try { history.replaceState(null, '', '#' + t.dataset.tab); } catch (e) {} }));
+  window.addEventListener('hashchange', () => show(location.hash.slice(1) || 'thesis'));
+  show(location.hash.slice(1) || 'thesis');
+
+  document.querySelectorAll('.filter button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.filter button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    document.querySelectorAll('#ev tbody tr').forEach(r => { r.hidden = b.dataset.f !== 'all' && r.dataset.s !== b.dataset.f; });
+  }));
+
+  // Payback = investment / net per year; business-team assumptions: 3,000 weighed devices, net EUR 928,750 per year.
+  const net = 928750, weighed = 3000, lease = 6, el = document.getElementById('payback');
+  [500, 920, 1100, 1500, 1860, 2363].forEach(c => {
+    const y = c * weighed / net, w = Math.min(100, 100 * y / lease);
+    const row = document.createElement('div');
+    row.style.cssText = 'display:grid;grid-template-columns:90px 1fr 80px;gap:10px;align-items:center;font-size:14px';
+    row.innerHTML = '<span class="num">€' + c.toLocaleString('en') + '</span><div class="bar"><span style="width:' + w + '%;background:var(' + (y > lease ? '--weak' : y > 4 ? '--medium' : '--strong') + ')"></span></div><span class="num">' + y.toFixed(1) + ' yr</span>';
+    el.appendChild(row);
+  });
+
+  document.querySelectorAll('.decision input').forEach(cb => {
+    const key = 'ow-' + cb.id, box = cb.closest('.decision');
+    try { cb.checked = localStorage.getItem(key) === '1'; } catch (e) {}
+    box.classList.toggle('done', cb.checked);
+    cb.addEventListener('change', () => { box.classList.toggle('done', cb.checked); try { localStorage.setItem(key, cb.checked ? '1' : '0'); } catch (e) {} });
+  });
+})();
+</script>
