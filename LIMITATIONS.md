@@ -31,6 +31,13 @@ pipeline: when a number changes, change it here.
 - **Not legal for trade.** Billing stays on the operator's certified weighbridge (EU Directive 2014/31/EU). The device
   weight is planning data and a cross-check.
 
+## 2b. Virtual scale (`pipeline/fullload/virtual_scale.py`)
+- Simulated on synthetic data: a log-linear model (fill × volume, material, machine type, compaction cycles, days since
+  the last lift) trained on 10 % reference devices estimates other devices' lift weights with ~8 % median error,
+  ~7–8 % after 5 shared weighbridge tickets per device, ~5–6 % on monthly totals; fill alone ~16 %.
+- **Likely optimistic**: the generator derives mass from similar quantities. Real pressure data was not available.
+- A single ticket makes calibration worse (one noisy ratio); calibration needs ~5 tickets.
+
 ## 3. Weight-triggered trips (`pipeline/fullload/trips.py`)
 - An approximation, not a day-by-day replay: each device's full payload is extrapolated from its own lifts, a lift
   is triggered at 90 % of it, and the material's maximum interval is respected. Closures, peaks, overflow risk and
@@ -42,15 +49,16 @@ pipeline: when a number changes, change it here.
   today's fill-based rules but unnecessary with a weight trigger). Present the saving as a range.
 
 ## 4. Market simulation (`pipeline/fullload/market.py`, beat 4)
+- **Biowaste excluded** from the market, value and virtual-scale figures (decision 7 Nov).
 - **Stylised**: one region (FI-01, 19 customers, 3 operators + new entrants), one tender round, closed-form bids. No
   routing, capacity limits, learning or repeated games.
 - **Assumptions are placeholders** (`pipeline/fullload/params.yaml`: cost share, margin, risk aversion, entrant
   advantage, route fit, route density, Europress fee, sensor error) until the business-case owner signs them off.
-- **What is robust**: the customer's cost per tonne falls in every tested combination (€122.5 → €106–111/t,
-  −9 to −13 %). **What is not**: who wins each tender. Each customer goes to the single best bid, so the number of
+- **What is robust**: the customer's cost per tonne falls in every tested combination (€113.1 → €96–100/t,
+  −12 to −15 %). **What is not**: who wins each tender. Each customer goes to the single best bid, so the number of
   customers switching ranges from 8 to 19 depending on the assumptions.
-- **Concentration can rise.** With the default assumptions the efficient incumbent wins more volume (HHI ~5,200 →
-  ~6,100). The competition effect shows as price discipline (customers a challenger can win: 0 → 19 of 19), not as
+- **Concentration can rise.** With the default assumptions the efficient incumbent wins more volume (HHI ~5,350 →
+  ~6,170). The competition effect shows as price discipline (customers a challenger can win: 0 → 19 of 19), not as
   lower concentration.
 - **Today's price is observed and checked**: the invoiced amount matches the contract-expected amount to the cent for
   97.6 % of 1,586 validation-period collections (total +0.34 %; the rest are billing discrepancies). Contract
@@ -60,7 +68,7 @@ pipeline: when a number changes, change it here.
 ## 5. Showcase customer (beats 2–3)
 - **Chosen by a fixed rule as the best case**: the largest simulated saving among customers in the region with at
   least 3 devices and one fixed-schedule device (`pipeline/fullload/pick_heroes.py`). Its −31.5 % is not typical;
-  the region-wide figure is about −11 %. Say so when presenting it.
+  the region-wide figure is about −13 %. Say so when presenting it.
 - Per-device forecast errors are shown because errors partly cancel when devices are added up.
 
 ## 6. Premature-lift rule and operator scorecard
@@ -75,9 +83,9 @@ pipeline: when a number changes, change it here.
 
 ## 8. Business case (beat 6, `pipeline/fullload/value.py`, `business.py`)
 - **Value per device is recomputed from our pipeline** and compared with the business team's independent figures.
-  Close: avoidable visits (ours €891–1,547 vs team €1,570), tonnes priced above peers (€1,455 vs €1,245).
-  Higher in ours: operator pricing risk (€3,038 vs €1,930: our forecast-error gap is wider, 27 vs 12 percentage
-  points, and it depends on the market parameters) and invoice above contract (€328 vs €100: the kit's B1 calculator
+  Close: avoidable visits (ours €686–1,469 vs team €1,570), tonnes priced above peers (€1,278 vs €1,245).
+  Higher in ours: operator pricing risk (€2,712 vs €1,930: our forecast-error gap is wider, 27 vs 12 percentage
+  points, and it depends on the market parameters) and invoice above contract (€301 vs €100: the kit's B1 calculator
   leaves gaps, the same reason the scorecard's invoice metric is weak). Contamination is not recomputed.
 - **The business model uses the business team's assumptions** (params.yaml `business`); its scripts are not yet in
   this repo, so its inputs are traceable only to their message. With their €500 hopper cost the investment pays back

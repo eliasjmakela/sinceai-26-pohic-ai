@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from . import business, customer, fleet, value, forecast, market, pick_heroes, premature, scorecard, trips, validate
+from . import business, customer, fleet, value, virtual_scale, forecast, market, pick_heroes, premature, scorecard, trips, validate
 from .config import BUNDLE_PATH, data_root, profile_name
 from .kit import KIT_VERSION, open_dataset
 
@@ -33,6 +33,7 @@ def build_bundle(data: str | None = None) -> dict:
             "hero": customer.hero_view(con, market_section, devices, hero, root),
             "value_per_device": value.value_per_device(con, root, market_section["sigma_inc"], market_section["sigma_ent"]),
             "business": business.business_facts(con),
+            "virtual_scale": virtual_scale.virtual_scale_facts(con),
             # Next sections, in build order (PRODUCT.md §6): reconcile (beat 5), weighing (beat 1).
         }
     finally:

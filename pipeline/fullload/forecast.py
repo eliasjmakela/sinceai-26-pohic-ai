@@ -1,7 +1,7 @@
 """Forecast backtest: how well can an operator predict a site's tonnage with vs without its collection history?
 
 This is the evidence for the incumbent's information advantage (PRODUCT.md §1, §3):
-  * own-history forecast  = what the incumbent (or anyone with FullLoad data) can do
+  * own-history forecast  = what the incumbent (or anyone with OpenWeight data) can do
   * peer forecast         = what a newcomer without history can do: the average of similar devices
                             (same material stream and container size), excluding the device itself
 

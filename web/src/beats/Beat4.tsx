@@ -68,7 +68,7 @@ export function Beat4() {
         </div>
         <div className="inline-flex rounded-lg border border-slate-300 bg-white p-1 text-sm font-medium">
           <button type="button" onClick={() => setAfter(false)} className={`rounded-md px-4 py-2 ${!after ? 'bg-slate-900 text-white' : 'text-slate-600'}`}>Today: per trip, private data</button>
-          <button type="button" onClick={() => setAfter(true)} className={`rounded-md px-4 py-2 ${after ? 'bg-teal-700 text-white' : 'text-slate-600'}`}>FullLoad: per kg, shared data</button>
+          <button type="button" onClick={() => setAfter(true)} className={`rounded-md px-4 py-2 ${after ? 'bg-teal-700 text-white' : 'text-slate-600'}`}>OpenWeight: per kg, shared data</button>
         </div>
       </header>
 
@@ -94,12 +94,12 @@ export function Beat4() {
             <ShareBar shares={s.share_before} ops={ops} />
           </div>
           <div>
-            <div className="mb-2 text-sm text-slate-500">Who wins the per-kg tenders — FullLoad ({s.accounts_switched} of {s.accounts} customers switch)</div>
+            <div className="mb-2 text-sm text-slate-500">Who wins the per-kg tenders — OpenWeight ({s.accounts_switched} of {s.accounts} customers switch)</div>
             <ShareBar shares={after ? s.share_after : s.share_before} ops={ops} />
           </div>
           <p className="text-sm text-slate-600">
             Today a challenger forecasts a site from peers (±{(100 * m.sigma_ent).toFixed(0)} %) and must add a risk premium; the incumbent
-            knows the site (±{(100 * m.sigma_inc).toFixed(0)} %). With FullLoad data everyone forecasts at ±{(100 * res.sigmaAfter).toFixed(0)} %,
+            knows the site (±{(100 * m.sigma_inc).toFixed(0)} %). With OpenWeight data everyone forecasts at ±{(100 * res.sigmaAfter).toFixed(0)} %,
             so price follows efficiency, not history.
           </p>
           <div className="grid grid-cols-2 gap-4 text-sm">

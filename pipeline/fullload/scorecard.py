@@ -1,6 +1,6 @@
 """Operator x region x month service figures (Task B2), from public tables only. Feeds the market simulation.
 
-These are the records a customer (or Europress, with FullLoad) can see without the operator's books:
+These are the records a customer (or Europress, with OpenWeight) can see without the operator's books:
   jobs                    collection_events with status COMPLETED, PARTIAL, MISSED_BY_OPERATOR or WASTED_TRIP
                           (month = local month of scheduled_at)
   tonnes_per_lift         sum(device_estimated_collected_kg) / lifts with a device weight, in t (device estimate)

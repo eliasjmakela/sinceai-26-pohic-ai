@@ -31,7 +31,7 @@ function Box({ title, lines, tone = 'slate' }: { title: string; lines: string[];
 }
 
 const LIFT_ORDER = {
-  schema: 'fullload.lift_order.v1 (illustrative)', synthetic: true, device_id: 'CMP-00280', operator_id: 'OP-E',
+  schema: 'openweight.lift_order.v1 (illustrative)', synthetic: true, device_id: 'CMP-00280', operator_id: 'OP-E',
   trigger: 'WEIGHT', estimated_net_kg: 1850, sigma_kg: 63, fill_pct: 86, window: { earliest: '2026-11-10T06:00', latest: '2026-11-11T18:00' },
   billing_basis: "operator's certified weighbridge", fee_basis: 'verified tonnes (cross-checked against the weighbridge ticket)',
 }
@@ -121,7 +121,7 @@ export function Beat6() {
             <Box title="Operator weighbridge (optional)" lines={['shared tickets', 'used only to calibrate and cross-check']} tone="amber" />
           </div>
           <div className="self-center text-2xl text-slate-400">→</div>
-          <Box title="SMART cloud + FullLoad engine" tone="teal" lines={['fleet self-calibration of every sensor', 'site tonnage forecasts (±10 %)', 'weight-triggered lift orders', 'contract and invoice cross-check', 'AI-summarized customer reports (numbers checked)']} />
+          <Box title="SMART cloud + OpenWeight engine" tone="teal" lines={['fleet self-calibration of every sensor', 'site tonnage forecasts (±10 %)', 'weight-triggered lift orders', 'contract and invoice cross-check', 'AI-summarized customer reports (numbers checked)']} />
           <div className="self-center text-2xl text-slate-400">→</div>
           <div className="space-y-3">
             <Box title="Operators (paying)" tone="violet" lines={['forecast API to price per kg', 'lift orders when full', 'fee per verified tonne / device']} />

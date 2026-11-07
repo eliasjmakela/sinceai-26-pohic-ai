@@ -41,7 +41,7 @@ export function Beat3() {
         <div className="mb-3 text-sm text-slate-500">Forecast of each compactor's monthly tonnes (held-out months) — with its own history vs. guessed from similar compactors</div>
         <table className="w-full text-sm tabular-nums">
           <thead className="text-left text-slate-500">
-            <tr><th className="py-1">Compactor</th><th>Actual t/month</th><th>With FullLoad data</th><th>Error</th><th>Guess from peers</th><th>Error</th></tr>
+            <tr><th className="py-1">Compactor</th><th>Actual t/month</th><th>With OpenWeight data</th><th>Error</th><th>Guess from peers</th><th>Error</th></tr>
           </thead>
           <tbody>
             {o.devices.map((d) => (
@@ -64,7 +64,7 @@ export function Beat3() {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <BidBars title="Per-kg bids today: challengers must guess the volume (incumbent keeps the contract)" bids={o.bids_before_eur} today={o.price_today_eur} />
-        <BidBars title={`Per-kg bids with FullLoad data: ${o.winner_after} wins at ${eur(o.price_after_eur)}`} bids={o.bids_after_eur} today={o.price_today_eur} highlight={o.winner_after} />
+        <BidBars title={`Per-kg bids with OpenWeight data: ${o.winner_after} wins at ${eur(o.price_after_eur)}`} bids={o.bids_after_eur} today={o.price_today_eur} highlight={o.winner_after} />
       </div>
       <p className="text-xs text-slate-500">Bids are simulated with the hypothetical assumptions of the market model (beat 4); operators are fictional.</p>
     </section>

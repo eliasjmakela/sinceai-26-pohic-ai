@@ -1,4 +1,4 @@
-"""FullLoad premature-lift rule (Task B, family PREMATURE_UNJUSTIFIED). Public tables only, no labels.
+"""OpenWeight premature-lift rule (Task B, family PREMATURE_UNJUSTIFIED). Public tables only, no labels.
 
 A lift is flagged as an *unjustified premature lift* when the container was emptied while it held little
 material, and nothing public explains the early lift. "Little material" is measured by **weight first**:

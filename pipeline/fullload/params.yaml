@@ -1,4 +1,4 @@
-# Every HYPOTHETICAL parameter of the FullLoad model lives here, each with a rationale line.
+# Every HYPOTHETICAL parameter of the OpenWeight model lives here, each with a rationale line.
 # Nothing in this file is a Europress price, cost or adoption figure. Values are filled in as the
 # market simulation and business case are built (PRODUCT.md §3, §6). Owner of the values: business-case teammate.
 #
@@ -23,7 +23,7 @@ market:   # PLACEHOLDER values until the business-case teammate signs them off (
   new_entrants:
     value: 1
     unit: count
-    rationale: placeholder; operators from outside the region that bid once FullLoad data is available
+    rationale: placeholder; operators from outside the region that bid once OpenWeight data is available
   entrant_cost_advantage:
     value: 0.05
     unit: share of cost
@@ -35,15 +35,15 @@ market:   # PLACEHOLDER values until the business-case teammate signs them off (
   density_benefit:
     value: 0.10
     unit: share of cost at 100 % regional share
-    rationale: placeholder; denser routes make an operator with a large regional share cheaper (a real advantage, kept after FullLoad)
+    rationale: placeholder; denser routes make an operator with a large regional share cheaper (a real advantage, kept after OpenWeight)
   europress_fee_eur_per_t:
     value: 3.0
     unit: EUR per verified tonne
-    rationale: placeholder; FullLoad service fee paid by the operator
+    rationale: placeholder; OpenWeight service fee paid by the operator
   sigma_sensor:
     value: 0.02
     unit: relative 1-sigma
-    rationale: placeholder until Part 1 v2 lands; systematic sensor error added to the forecast error after FullLoad
+    rationale: placeholder until Part 1 v2 lands; systematic sensor error added to the forecast error after OpenWeight
 business:   # business team assumptions (message of 7 Nov; scripts pending in analysis/business/). HYPOTHETICAL.
   devices_total:
     value: 10000
@@ -52,7 +52,7 @@ business:   # business team assumptions (message of 7 Nov; scripts pending in an
   paying_coverage:
     value: 0.5
     unit: share of devices
-    rationale: business team; half of the devices are served by an operator that pays for FullLoad
+    rationale: business team; half of the devices are served by an operator that pays for OpenWeight
   fee_mode:
     value: per_device_month
     unit: per_device_month | per_tonne

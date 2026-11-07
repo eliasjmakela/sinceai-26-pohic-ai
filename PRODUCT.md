@@ -1,4 +1,4 @@
-# PRODUCT.md — FullLoad
+# PRODUCT.md — OpenWeight
 
 > North star for everyone (humans and coding agents) working in this repo. **The only goal is an impressive,
 > credible end-to-end demo that wins the Europress challenge at Since AI Hackathon 2026.** Not production
@@ -10,7 +10,7 @@
 
 ## 1. Thesis
 
-**FullLoad — pay for tonnes, not trips.**
+**OpenWeight — pay for tonnes, not trips.**
 
 **The core value is a new business model that makes the market switch from per-trip to per-kg billing.**
 Per-kg billing is objectively more efficient: containers are emptied when full, trucks carry more per visit, and
@@ -28,7 +28,7 @@ reasons we can show with data:
    newcomer has) is about **38 %** off. The newcomer must add a risk premium and loses. The information advantage
    becomes a **local monopoly**, and the monopoly has no reason to drive less.
 
-**FullLoad breaks this.** The compactor weighs its own load, and the collection data lives with Europress, not with
+**OpenWeight breaks this.** The compactor weighs its own load, and the collection data lives with Europress, not with
 one operator. Europress sells **weight-based forecasts and verified weights to every operator** on equal terms. Any
 operator can now price per kg with the same precision as the incumbent, so customers can tender on per-kg terms
 and efficient operators, including new entrants, can win.
@@ -59,8 +59,27 @@ and efficient operators, including new entrants, can win.
   a +10 % tonnage difference is flagged on ~85 % of single loads, and a 3 % systematic difference shows after ~2 loads.
   Never claim the device weight is legal for trade.
 
-Pitch line: *"Today the weight — and the knowledge of every site — belongs to the incumbent. FullLoad puts it in the
+Pitch line: *"Today the weight — and the knowledge of every site — belongs to the incumbent. OpenWeight puts it in the
 compactor, so every operator can compete per kilo."*
+
+### Decisions and facts, 7 Nov afternoon
+- **Name: OpenWeight** (for now). The Python package stays `fullload` internally; user-facing text says OpenWeight.
+- **The customer owns the data** and decides who may see it; sharing the weight profile with bidders is a consent step
+  in the customer view.
+- **Source of truth for numbers: this repo's pipeline** (evidence in `bundle.json`, tests, validations). Figures from
+  team documents without scripts are compared, not copied (`value_per_device` shows both).
+- **Biowaste is left out of the business claims** (`config.EXCLUDED_MATERIALS`): hardest stream to weigh. Observed
+  fleet facts keep every stream.
+- **Municipal waste is out of scope**: there the customer cannot choose the operator.
+- **Weighing architecture: combine, open to a better idea.** A virtual scale on every device (existing signals),
+  trained on a small share of devices with a real scale (hopper plate and/or weighing rails), calibrated per device
+  with shared weighbridge tickets. Simulated (`virtual_scale`): ~8 % median error per lift uncalibrated, ~7–8 % after
+  5 tickets, ~5–6 % on monthly totals; fill alone ~16 %; beyond ~5 % reference devices adds little. Synthetic, likely
+  optimistic.
+- **New facts** (team document `TIIMILLE.md`): Europress already sells a weighing product, **Scaletipper X1**, which is
+  expensive, fits only bin-fed sites, and whose data stays in tenant reports (prior art for Part 1). HSY's logistics
+  manager: *"Kuljetusyritys ei suoraan säästä, jopa menettää"* (the transport company does not directly save, it may
+  even lose). SMART promises 37 % fewer emptyings (do not confuse with our forecast-error figures in the pitch).
 
 ### Where we put our effort
 - **The business model and the market before/after is our differentiator** and gets most of the effort. It came from
@@ -109,11 +128,11 @@ explicit about every assumption.
 **Actors**
 - **Customers**: real sites/devices in one region (tonnage, material, container size and lifts from the data).
 - **Incumbent operator**: has the collection history → forecast error σ_inc ≈ 10 % (measured).
-- **Entrant operators (1–3)**: no history → σ_ent ≈ 38 % before (measured peer-based error); ≈ 10 % after (FullLoad forecast).
+- **Entrant operators (1–3)**: no history → σ_ent ≈ 38 % before (measured peer-based error); ≈ 10 % after (OpenWeight forecast).
 - **Europress**: provides weights and forecasts after; fee per verified tonne.
 
 **Regimes**
-| | Before: per trip, private data | After: per kg, FullLoad data |
+| | Before: per trip, private data | After: per kg, OpenWeight data |
 |---|---|---|
 | When lifts happen | actual lifts from the data (schedules, max interval, customer orders) | weight-triggered: lift when the container reaches its typical full payload (device-specific, from its own full on-call lifts), max-interval rule kept |
 | How operators bid | per lift; entrants add a risk premium ∝ σ_ent on unknown volume | per kg; everyone bids with the same σ, premium shrinks |
@@ -142,9 +161,9 @@ One screen state per beat; the presenter never types. Every screen has a deep li
 |---|---|---|---|---|
 | 0 | 0:00–0:25 | **Paid per trip** | Fleet strip: 447 devices, ~37,600 t/year, "€3.6 M of €6.3 M is paid per trip", fill-at-lift histogram (1 in 3 under 60 %) | "Customers pay for trips. Only the operator knows the tonnes." |
 | 1 | 0:25–1:25 | **How we get the weight (Part 1)** | The chosen concept from `briefs/WEIGHING_V2.md` (hopper weighing or weighing rails, decided by the v2 analysis) on a COMBI/DUO sketch; full installed cost vs the ~€2k reference and vs today's platform scales; how the fleet calibrates itself from shared weighbridge tickets (learning curve); accuracy slider. | "Cheap enough that Europress can give it away, and it gets more accurate with every ticket." |
-| 2 | 1:25–1:55 | **Customer view (free)** | Hero customer: a year of lifts coloured by fill at lift; per-trip cost today vs simulated per-kg cost (± band) | Proposal: "Tender your collection on per-kg terms" → customer **Approves** → tender brief | "The customer decides. FullLoad gives them the evidence." |
-| 3 | 1:55–2:20 | **Operator view (paid)** | The same site through an operator's eyes: forecast tonnage with Europress data (±10 %) vs without (±38 %) → the per-kg price an operator can safely bid | "Without the data only the incumbent can bid per kilo. With FullLoad, anyone can." |
-| 4 | 2:20–3:30 | **WOW: the market, before ↔ after** | One region. Toggle *Per trip, private data ↔ Per kg, FullLoad*: trips fall, tonnes per trip rise, customer €/t falls, entrants win tenders, concentration drops, Europress fee revenue appears. Drag sliders (entrant cost, σ) to show the effect holds. | "Same waste, fewer trucks, more competition. Europress doesn't drive a single truck." |
+| 2 | 1:25–1:55 | **Customer view (free)** | Hero customer: a year of lifts coloured by fill at lift; per-trip cost today vs simulated per-kg cost (± band) | Proposal: "Tender your collection on per-kg terms" → customer **Approves** → tender brief | "The customer decides. OpenWeight gives them the evidence." |
+| 3 | 1:55–2:20 | **Operator view (paid)** | The same site through an operator's eyes: forecast tonnage with Europress data (±10 %) vs without (±38 %) → the per-kg price an operator can safely bid | "Without the data only the incumbent can bid per kilo. With OpenWeight, anyone can." |
+| 4 | 2:20–3:30 | **WOW: the market, before ↔ after** | One region. Toggle *Per trip, private data ↔ Per kg, OpenWeight*: trips fall, tonnes per trip rise, customer €/t falls, entrants win tenders, concentration drops, Europress fee revenue appears. Drag sliders (entrant cost, σ) to show the effect holds. | "Same waste, fewer trucks, more competition. Europress doesn't drive a single truck." |
 | 5 | 3:30–3:55 | **Cheap sensors, honest data** | Billing stays on the certified weighbridge, as today. One lift: device weight vs weighbridge with ± σ, "within tolerance"; a second case where **our own sensor drifted** → caught by the cross-check → recalibration proposal | "The bill stays on the certified scale. Our gauges only need to be honest enough to plan, and they check themselves." |
 | 6 | 3:55–4:40 | **The business** | Operators pay per verified tonne; customers free, sensors included; sliders for fee and operator adoption; Europress ARR minus the sensor subsidy, payback per device, sensitivity; SMART integration diagram + API payload. All tagged *hypothetical*. | "Weigh at source. Pay per kilo. Let every operator compete." |
 
@@ -231,7 +250,7 @@ differently:
 | `src/europress_data/` | An installable package (src layout, `pyproject.toml`): `sdk.open_dataset` (DuckDB views, `as_of`, `telemetry_dedup`), `economics.price_event` / `summarize` (contract pricing in integer cents), `evaluate.score_*` (scorers on `labels_dev`); plus the generator and validator | **Import it.** `pip install -e resources/Europress_…_v1.0.1` into our `.venv`. All data access goes through `open_dataset`, all money through `economics`. Never copy or reimplement these. The generator, validator and simulator modules are not used. |
 | `baselines/*.py` | Scripts, not a package; they put `src/` and `baselines/` on `sys.path` themselves. Useful functions: `b1_economic_calculator.compute` (expected charges per lift + mass basis), `b2_rules_anomaly` (premature-lift and invoice rules), `b4_ml_models` (the ML side of the rules-vs-ML comparison), `b5_operator_scorecard.scorecard` | **Import through one adapter**, `pipeline/fullload/kit.py`, which is the only file that touches `sys.path` or kit internals. Everything else imports from `fullload.kit`. If a kit function doesn't fit, wrap it there; don't edit the kit. |
 | `baselines/business_case.py` + `configs/` | A customer-value calculator whose levers (over-servicing, billing review, tendering …) are customer-side; its "future models" put Europress in the middle of transport | **Cross-check only.** Its `over_servicing` lever is our "fewer trips" value seen from the customer. Our revenue model (operators pay per verified tonne, sensors subsidised) is different, so `pipeline/fullload/business.py` is our own and cites the kit's numbers where they overlap. |
-| `examples/` | Small scripts: `weighing_accuracy_value.py`, `recommendation_api_mock.py`, SQL examples | **Adapt with attribution.** Part 1 adapts `weighing_accuracy_value.py` in `part1/scripts/`. Our proposal payload is `fullload.proposal.v1`, which keeps the mock's `smve.recommendation.v0` fields (`requires_human_approval`, `auto_execute`, `evidence.observed/estimated/hypothetical`, `not_proven`) and adds ours. |
+| `examples/` | Small scripts: `weighing_accuracy_value.py`, `recommendation_api_mock.py`, SQL examples | **Adapt with attribution.** Part 1 adapts `weighing_accuracy_value.py` in `part1/scripts/`. Our proposal payload is `openweight.proposal.v1`, which keeps the mock's `smve.recommendation.v0` fields (`requires_human_approval`, `auto_execute`, `evidence.observed/estimated/hypothetical`, `not_proven`) and adds ours. |
 | `data/quickstart/public` (50 devices × 90 d, 19 MB) and `data/competition/public` (447 × 365 d, 116 MB) | Parquet packages; `labels_dev/` holds dev labels | **Read-only input.** Competition pack for the demo; quickstart for fast tests and development loops. |
 | `docs/`, `tests/` | Reference | Read `SCHEMA.md`, `DATA_DICTIONARY.md`, `ECONOMIC_MODEL.md` before using a column or a price. We don't run or extend the kit's tests. |
 

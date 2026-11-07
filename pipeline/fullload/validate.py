@@ -1,11 +1,11 @@
 """Scores against labels_dev, VALIDATION split only (PRODUCT.md §7.2). The only product module that reads labels.
 
-1. Task B, family PREMATURE_UNJUSTIFIED: the FullLoad rule (`premature.py`) vs the kit's rules baseline (B2,
+1. Task B, family PREMATURE_UNJUSTIFIED: the OpenWeight rule (`premature.py`) vs the kit's rules baseline (B2,
    `b2_rules_anomaly.detect_collections`) vs the kit's ML baseline (B4, `b4_ml_models.task_b`, trained on TRAIN-period
    labels exactly as the kit's `run_all.py` does). All three are scored by the kit's own `evaluate.score_b` on the
    validation split, so they are scored on the same label rows with the same metric definitions. Precision, recall,
    F1 and explained cases flagged (EARLY_JUSTIFIED traps) are the kit's numbers.
-2. Task B2: the FullLoad scorecard (`scorecard.py`) vs `labels_dev/operator_scorecard` with the kit's
+2. Task B2: the OpenWeight scorecard (`scorecard.py`) vs `labels_dev/operator_scorecard` with the kit's
    `evaluate.score_b2`, validation months only; kit B5 on the same rows for reference.
 3. Economics check: "today's price" in the market model is the invoiced amount. Per collection (joined by
    operator_job_ref), invoiced totals vs the contract-expected amount in `labels_dev/reference_economics`, plus how
@@ -14,7 +14,7 @@
 
 Leakage guards:
   * the split must exist in the package manifest (the kit scorer silently scores everything otherwise);
-  * the FullLoad rule runs on the kit's leak-free `as_of` view at the END of the validation period, so it sees no
+  * the OpenWeight rule runs on the kit's leak-free `as_of` view at the END of the validation period, so it sees no
     test-period rows; the kit baselines run as the kit runs them (full public package), which is what BENCHMARK.md
     reports;
   * nothing here reads the organisers' private folder or the held-out final period; only SPLIT is scored.
@@ -206,7 +206,7 @@ def validation_facts(root: Path) -> dict:
     return {"split": SPLIT, "available": True, "period": list(period), "family": FAMILY,
             "premature": rows, "premature_variant": variant, "scorecard_b2": scorecard_validation(root),
             "economics_check": economics_check(root, period), "trips_check": trips_check(root, period),
-            "method": ("Kit scorer europress_data.evaluate (score_b, score_b2), validation split. FullLoad rule on the "
+            "method": ("Kit scorer europress_data.evaluate (score_b, score_b2), validation split. OpenWeight rule on the "
                        "as-of view at the validation end; kit B2 rules and B4 gradient boosting as run by the kit "
                        "(B4 trained on train-period labels).")}
 

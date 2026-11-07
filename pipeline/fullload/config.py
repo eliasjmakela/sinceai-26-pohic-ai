@@ -18,6 +18,10 @@ BUNDLE_PATH = REPO_ROOT / "web" / "public" / "data" / "bundle.json"
 _DEFAULT_KIT = REPO_ROOT / "resources" / "Europress_SMART_Material_Value_Engine_v1.0.1"
 PROFILES = ("competition", "quickstart")
 
+# Material streams left out of the business claims (decision 7 Nov): biowaste gives little back-pressure and is the
+# hardest stream to weigh, so the service starts without it. Observed fleet facts (beat 0) keep every stream.
+EXCLUDED_MATERIALS = ("biowaste",)
+
 
 def kit_root() -> Path:
     root = Path(os.environ.get("FULLLOAD_KIT", _DEFAULT_KIT))

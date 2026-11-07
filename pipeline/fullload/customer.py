@@ -2,7 +2,7 @@
 
 Beat 2 (customer, free): a year of lifts coloured by fill at lift, today's per-trip cost vs the simulated per-kg
 price from the market model, a tender proposal the customer approves, and a plain-language AI-summarized report.
-Beat 3 (operator, paid): what an operator can forecast for this customer with and without FullLoad data, and the
+Beat 3 (operator, paid): what an operator can forecast for this customer with and without OpenWeight data, and the
 per-kg bids that follow (from the market model's bid detail).
 
 The AI report text is written once, frozen in `reports/<customer_id>.md`, and checked: every number in it must appear
@@ -136,7 +136,7 @@ def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFram
     report = load_report(customer_id, facts)
 
     proposal = {
-        "schema": "fullload.proposal.v1 (extends smve.recommendation.v0, illustrative)",
+        "schema": "openweight.proposal.v1 (extends smve.recommendation.v0, illustrative)",
         "synthetic": True, "customer_id": customer_id, "region": region,
         "proposal": {"action": "TENDER_PER_KG", "requires_human_approval": True, "auto_execute": False,
                      "contract_term_years": 3,
@@ -162,7 +162,7 @@ def hero_view(con: duckdb.DuckDBPyConnection, market: dict, devices: pd.DataFram
         "figures": {
             "lifts": fig(n_lifts, "count", "completed lifts of the customer's devices in the region"),
             "low_fill_share_pct": fig(facts["low_fill_share_pct"], "%", f"lifts with fill before lift < {LOW_FILL_PCT} % / lifts"),
-            "flagged_lifts": fig(flagged, "count", "lifts flagged by the FullLoad premature-lift rule", tag="estimated"),
+            "flagged_lifts": fig(flagged, "count", "lifts flagged by the OpenWeight premature-lift rule", tag="estimated"),
             "cost_today_eur": fig(facts["cost_today_eur"], "EUR", "trip- and tonne-driven invoice lines, 12 months"),
             "cost_per_t_today": fig(facts["cost_per_t_today_eur"], "EUR/t", "cost today / tonnes"),
             "cost_per_t_after": fig(facts["cost_per_t_after_eur"], "EUR/t", "market model price / tonnes", tag="simulated"),

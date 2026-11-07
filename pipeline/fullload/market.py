@@ -7,7 +7,7 @@ The other operators active in the region, plus `new_entrants` from outside, are 
 Before (per trip, private data)  -- decision (c): the price is what the customer actually paid (observed invoices).
   Challengers could only offer per kg by forecasting the volume from peers, error σ_ent (forecast backtest), so they
   add a risk premium; we report how many accounts a challenger would win even so ("contestable today").
-After (per kg, FullLoad data)
+After (per kg, OpenWeight data)
   Lifts are weight-triggered (trips model). Every operator forecasts with device data, error σ_after
   = sqrt(σ_inc² + σ_sensor²). Every operator pays the Europress fee per tonne. Bids converge; decision (b): the
   winner prices just below the second-best bid, never above today's price and never below its own bid.
@@ -36,7 +36,7 @@ import duckdb
 import pandas as pd
 import yaml
 
-from .config import PARAMS_PATH
+from .config import EXCLUDED_MATERIALS, PARAMS_PATH
 from .figures import Figure
 from .fleet import TONNE_LINES, TRIP_LINES, _in
 from .forecast import backtest, monthly_tonnage
@@ -90,7 +90,7 @@ def account_devices(con: duckdb.DuckDBPyConnection, region: str) -> pd.DataFrame
                sum(round(l.amount_eur * 100)) FILTER (WHERE l.line_type IN {_in(TONNE_LINES)}) AS tonne_cents
         FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts ct ON ct.contract_id = i.contract_id
         JOIN devices d ON d.device_id = ct.device_id JOIN sites s ON s.site_id = d.site_id
-        WHERE s.region_code = ? GROUP BY ALL""", [region]).df()
+        WHERE s.region_code = ? AND d.material_stream NOT IN {_in(EXCLUDED_MATERIALS)} GROUP BY ALL""", [region]).df()
     df = charges.merge(trips, on="device_id")
     df[["trip_cents", "tonne_cents"]] = df[["trip_cents", "tonne_cents"]].fillna(0).astype("int64")
     return df.sort_values("device_id").reset_index(drop=True)
@@ -251,7 +251,7 @@ def market_facts(con: duckdb.DuckDBPyConnection) -> dict:
             "contestable_before": fig(s["accounts_contestable_today"], "count",
                                       "accounts where a challenger's per-kg bid (peer forecast, sigma_ent) beats today's price"),
             "contestable_after": fig(s["accounts_contestable_after"], "count",
-                                     "accounts where a challenger's per-kg bid (FullLoad forecast) beats today's price"),
+                                     "accounts where a challenger's per-kg bid (OpenWeight forecast) beats today's price"),
             "incumbent_margin_before_eur": fig(round(s["operator_margin_before"] / 100, 2), "EUR",
                                                "today's price - cost_share x today's price", tag="hypothetical"),
             "operator_margin_after_eur": fig(round(s["operator_margin_after"] / 100, 2), "EUR",

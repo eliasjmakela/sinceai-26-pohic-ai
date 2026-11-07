@@ -5,7 +5,7 @@ their scripts are not yet in this repo).
 Levers (EUR per device per year):
   avoidable_trips      customer: trip-driven charges x share of lifts that are avoidable.
                        Lower = share flagged by our premature-lift rule; upper = share removed by the trips model.
-  pricing_risk         operator: the risk premium a challenger must add without the data, removed by FullLoad:
+  pricing_risk         operator: the risk premium a challenger must add without the data, removed by OpenWeight:
                        cost_share x tendered charges x (1 + min_margin) x risk_z x (sigma_ent - sigma_inc). Hypothetical
                        (market parameters in params.yaml).
   expensive_tonnes     customer: cost per tonne above the median of peer devices (same material and region) x tonnes,
@@ -22,6 +22,7 @@ from pathlib import Path
 import duckdb
 import pandas as pd
 
+from .config import EXCLUDED_MATERIALS
 from .figures import Figure
 from .fleet import TONNE_LINES, TRIP_LINES, _in
 from .market import load_params
@@ -44,6 +45,7 @@ def _device_charges(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
                sum(l.amount_eur) FILTER (WHERE l.line_type IN {_in(TONNE_LINES)}) AS tonne_eur
         FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts k ON k.contract_id = i.contract_id
         JOIN devices d ON d.device_id = k.device_id JOIN sites s ON s.site_id = d.site_id
+        WHERE d.material_stream NOT IN {_in(EXCLUDED_MATERIALS)}
         GROUP BY ALL ORDER BY 1""").df().fillna({"trip_eur": 0.0, "tonne_eur": 0.0})
 
 
