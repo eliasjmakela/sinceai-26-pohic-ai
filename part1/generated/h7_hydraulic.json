@@ -1,0 +1,66 @@
+{
+ "evidence_tag": "estimate",
+ "design_bore_mm": 80,
+ "force_kn": {
+  "empty_min": 8.8,
+  "full_max": 56.7
+ },
+ "pressure_bar_design_bore": {
+  "empty_min": 18,
+  "full_max": 113
+ },
+ "stroke_margin_mm": 10,
+ "sigma_rel_pct": {
+  "A": {
+   "2.5t": {
+    "low": 5.3,
+    "mid": 10.7,
+    "high": 21.9
+   },
+   "5t": {
+    "low": 5.2,
+    "mid": 10.3,
+    "high": 20.7
+   }
+  },
+  "B": {
+   "2.5t": {
+    "low": 2.6,
+    "mid": 4.4,
+    "high": 9.7
+   },
+   "5t": {
+    "low": 2.2,
+    "mid": 3.5,
+    "high": 6.8
+   }
+  },
+  "C": {
+   "2.5t": {
+    "low": 1.7,
+    "mid": 3.2,
+    "high": 8.4
+   },
+   "5t": {
+    "low": 0.9,
+    "mid": 1.9,
+    "high": 4.8
+   }
+  }
+ },
+ "sigma_abs_kg_floor": {
+  "low": 40.0,
+  "mid": 80.0,
+  "high": 200.0
+ },
+ "fused_with_virtual_scale_pct_2.5t": {
+  "low": 2.5,
+  "mid": 4.1,
+  "high": 7.4
+ },
+ "virtual_scale_pct": {
+  "uncalibrated": 8.3,
+  "after_5_tickets": 7.6,
+  "monthly": 5.5
+ }
+}

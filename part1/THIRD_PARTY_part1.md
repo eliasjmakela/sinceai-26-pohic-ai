@@ -87,3 +87,20 @@ the kit's `configs/assumptions.yaml` (charge masses, weighbridge noise).
 | [37] | OptiCare Expert price list (search listing) | Labour rate upper bound | Facts cited |
 | [38] | Pfreundt roll-off dumper scale catalogue (search listing) | Prior art | Facts cited |
 | – | Claude web search / fetch tools | Finding the sources above | Tool use |
+
+## H7 additions (7 Nov 2026, evening)
+
+No new Python packages (`calc/h7_hydraulic.py` uses the standard library only). `pdftotext` (poppler-utils, GPL,
+local tool, output not redistributed) read the team PDF.
+
+| Ref | Source | Use | Licence / note |
+|---|---|---|---|
+| [39] | Team document *Plus-malli: kestävä versio – yhteenveto* (Mike, PDF) and `reviews/PLUS_MALLI_REVIEW.md` | The H7 idea, geometry, procedure, parts estimate | Team-internal, own work |
+| [40][41] | Google Patents: US 5,285,020; US 5,064,008 / US 5,065,828 (search listings) | Prior art | Patent documents, facts cited; no FTO opinion |
+| [42] | Google Patents: US 2020/0096383 A1 (opened), US 11,320,299 B2 (named there) | Prior art (closest) | Patent documents, facts cited; no FTO opinion |
+| [43] | Google Patents US 7,795,547; logisticsbusiness.com RAVAS article (search listings) | Prior art | Facts cited |
+| [44] | Google Patents DE 4405000 A1 (opened) | Prior art | Patent document, facts cited |
+| [45][47] | Google Patents US 2016/0202111 A1, US 5,117,373 (search listings) | Prior art | Patent documents, facts cited |
+| [46] | Malabar FAQ, aircraft jack load gauges (search listing) | Prior art, seal friction | Facts cited |
+| [48] | EUR-Lex, Regulation (EU) 2023/1230 | Safety / CE | EU law, free reuse |
+| – | `web/public/data/bundle.json → virtual_scale` (team pipeline, synthetic data) | Virtual-scale figures | Own work on the starter kit's synthetic data |

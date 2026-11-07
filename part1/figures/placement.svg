@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 470" width="1100" height="470" font-family="DejaVu Sans, Arial, sans-serif" role="img" aria-labelledby="t d">
   <title id="t">T1 strain-gauge placement, COMBI and DUO</title>
   <desc id="d">Side-view sketch, not to scale. COMBI: four gauge points on the base frame above the four support zones; the sensors travel with the unit. DUO: four gauge points on the stationary container rails; the compactor is not on the rails, so only the container is weighed.</desc>
-  <!-- Self-made sketch for FullLoad Part 1. Not to scale; no Europress drawings used. -->
+  <!-- Self-made sketch for OpenWeight Part 1. Not to scale; no Europress drawings used. -->
   <style>
     .ink{fill:#0b0b0b} .ink2{fill:#52514e} .t{font-size:13px} .s{font-size:11px} .h{font-size:15px;font-weight:bold}
     .steel{fill:#d9dde3;stroke:#52514e;stroke-width:1.5}

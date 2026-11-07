@@ -1,5 +1,5 @@
 """Single source of truth for the weighing tiers (v1: T0/T1/T2; v2: H1 hopper plate, H5 weighing rails, PS platform
-scale) and the T1 error budget.
+scale; H7 hydraulic self-lift) and the T1 error budget.
 
 v2: H1's sigma comes from generated/self_calibration.json (fleet self-calibration after >= 10 tickets) and every
 tier's BOM from part1/installed_cost.json (hardware lines, factory-fit), so run calc/installed_cost.py and
@@ -46,11 +46,15 @@ T1_SIGMA = {k: round(rss([row[i] for row in ERROR_BUDGET_T1]), 1) for i, k in ((
 # Citations for the BOM cell of the comparison table (not part of the JSON shape).
 BOM_CITE = {"T0": "team estimate (software only)", "T1": "[4][5][6][7] + team estimate", "T2": "[8][9][10][11][26] + team estimate",
             "H1": "[6][9][10][22][25] + team estimate", "H5": "[8][9][10][11][23][26] + team estimate",
-            "PS": "[27] + team estimate"}
+            "PS": "[27] + team estimate", "H7": "[39] + team estimate"}
 CHOSEN = "H1"
 COST = json.loads((PART1 / "installed_cost.json").read_text())["candidates"]
 CAL = json.loads((GEN / "self_calibration.json").read_text())["levels"]
 H1_SIGMA = {l: round(CAL[l]["after_10_plus"]["fleet_h2_pct"], 1) for l in ("low", "mid", "high")}
+# H7: one-point lift after H2 ticket calibration at a typical 2.5 t pick-up (calc/h7_hydraulic.py, case B)
+H7 = json.loads((GEN / "h7_hydraulic.json").read_text())
+H7_SIGMA = {l: float(H7["sigma_rel_pct"]["B"]["2.5t"][l]) for l in ("low", "mid", "high")}
+H7_FLOOR = {l: float(H7["sigma_abs_kg_floor"][l]) for l in ("low", "mid", "high")}
 
 
 def bom(tid):
@@ -115,6 +119,20 @@ TIERS = [
         "weak_for": ["RETROFIT_UNITS", "BIOWASTE_LIQUIDS", "NEW_DEVICE_BEFORE_TICKETS"],
         "evidence_tag": "estimate",
         "sources": ["[22]", "[25]", "[28]", "[29]", "[36]"],
+    },
+    {
+        "id": "H7",
+        "name": "Hydraulic self-lift on the compactor's own power pack (team idea, to explore)",
+        "principle": "A cylinder near the door end of a COMBI, driven by the compactor's own hydraulics, lifts that end ~10 mm "
+                     "at rest; lift/lower pressure average x piston area gives the end reaction, and W = (R - R0) L / x_w gives the waste.",
+        "sigma_rel_pct": H7_SIGMA,
+        "sigma_abs_kg": H7_FLOOR,
+        "bom_eur_per_device": bom("H7"),
+        "install_hours": {"low": 12, "high": 24},
+        "suits": ["COMBI"],
+        "weak_for": ["DUO", "RETROFIT_UNITS", "RAILS_AND_PLINTHS", "SOFT_GROUND", "NEW_DEVICE_BEFORE_TICKETS", "SNOW_ON_ROOF"],
+        "evidence_tag": "estimate",
+        "sources": ["[39]", "[40]", "[42]", "[43]", "[48]"],
     },
     {
         "id": "H5",

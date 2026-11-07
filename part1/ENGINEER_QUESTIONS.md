@@ -1,4 +1,4 @@
-# Questions for a Europress engineer (Discord-ready, ≤ 10)
+# Questions for a Europress engineer (Discord-ready, ≤ 14)
 
 Context: our weighing concept v2 (`WEIGHING_CONCEPT.md`) builds on Tommi's hopper idea: a load-cell plate in the
 charging-chamber floor weighs each charge before and after the ram stroke, and the fleet calibrates the sum from
@@ -23,3 +23,16 @@ shared weighbridge tickets. We are not mechanical engineers; these are the facts
 9. **Platform scales.** Why are the existing platform scales "almost as expensive"? Which part dominates: the scale,
    the foundation, installation, or verification?
 10. **Modem.** Does the SMART modem have a free serial / I²C port and power for a 4-channel weighing board?
+
+H7, the team's hydraulic self-lift idea (§19): a COMBI lifts its own door end ~10 mm with one cylinder on its
+own power pack, and the pressure gives the weight.
+
+11. **Rear frame.** Is there room between the runners, 0.5–1 m from the door end, for a cylinder housing (80 mm bore,
+    50 mm stroke)? Could the frame there take a 30–60 kN point load with local reinforcement?
+12. **Hydraulics and safety.** What is the maximum system pressure (we assume ~200 bar)? Is there a free valve section?
+    Would an automatic 10 mm self-lift at night be acceptable in your machinery risk assessment, and is pump noise
+    a problem? Do you have OEM prices for a small cylinder, valve and pressure sensor?
+13. **Ground.** How often do COMBIs stand on guide rails, plinths, gravel or asphalt rather than concrete? How much
+    clearance is there under the frame?
+14. **Fill pattern.** Is the press at the hook end? Where does waste build up first in a CombiMax: at the ram face, or
+    pushed towards the door? Does the ram's pressure rise per stroke show how far the packed waste reaches?

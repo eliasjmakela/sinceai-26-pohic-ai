@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regenerate every calculation, data-derived number and figure of Part 1 (v1 + weighing v2).
+# Regenerate every calculation, data-derived number and figure of Part 1 (v1 + weighing v2 + H7).
 #   part1/scripts/reproduce.sh [<data/<profile>/public>]
 # Default data root: $FULLLOAD_DATA, else the competition package in the main checkout's resources/.
 set -euo pipefail
@@ -12,6 +12,7 @@ cd "$PART1/calc"
 "$PY" loads.py > /dev/null
 "$PY" temperature.py > /dev/null
 "$PY" error_accumulation.py > /dev/null
+"$PY" h7_hydraulic.py > /dev/null
 "$PY" installed_cost.py > /dev/null
 # 2. data-backed analyses (synthetic data, fixed seeds)
 cd "$HERE"
