@@ -167,21 +167,25 @@ cost advantage, number of entrants, sensor/forecast σ (connects to Part 1).
 one tender round). The bidding maths is simple enough to run in the browser for the sliders; the data-derived
 inputs are precomputed.
 
-## 4. Demo storyline (target 4:40, hard max 5:00)
+## 4. Demo storyline (decided 7 Nov 15:30: three screens, target 4:30, hard max 5:00)
 
-One screen state per beat; the presenter never types. Every screen has a deep link (`/#/beat-2`).
+Three pitch screens; the presenter steps with the arrow keys and never types. Deep links `/#/beat-1` … `/#/beat-3`.
+The ecosystem diagram (`web/src/components/Ecosystem.tsx`) is the spine: the **same picture** opens screen 1 in its
+*today* state and returns on screen 3 in its *OpenWeight* state, so the audience sees exactly which arrows change.
 
-| # | Time | Beat | On screen | Line |
+| # | Time | Screen | On screen | Line |
 |---|---|---|---|---|
-| 0 | 0:00–0:25 | **Paid per trip** | Fleet strip: 447 devices, ~37,600 t/year, "€3.6 M of €6.3 M is paid per trip", fill-at-lift histogram (1 in 3 under 60 %) | "Customers pay for trips. Only the operator knows the tonnes." |
-| 1 | 0:25–1:25 | **How we get the weight (Part 1)** | The chosen concept from `briefs/WEIGHING_V2.md` (hopper weighing or weighing rails, decided by the v2 analysis) on a COMBI/DUO sketch; full installed cost vs the ~€2k reference and vs today's platform scales; how the fleet calibrates itself from shared weighbridge tickets (learning curve); accuracy slider. | "Cheap enough that Europress can give it away, and it gets more accurate with every ticket." |
-| 2 | 1:25–1:55 | **Customer view (free)** | Hero customer: a year of lifts coloured by fill at lift; per-trip cost today vs simulated per-kg cost (± band) | Proposal: "Tender your collection on per-kg terms" → customer **Approves** → tender brief | "The customer decides. OpenWeight gives them the evidence." |
-| 3 | 1:55–2:20 | **Operator view (paid)** | The same site through an operator's eyes: forecast tonnage with Europress data (±10 %) vs without (±38 %) → the per-kg price an operator can safely bid | "Without the data only the incumbent can bid per kilo. With OpenWeight, anyone can." |
-| 4 | 2:20–3:30 | **WOW: the market, before ↔ after** | One region. Toggle *Per trip, private data ↔ Per kg, OpenWeight*: trips fall, tonnes per trip rise, customer €/t falls, entrants win tenders, concentration drops, Europress fee revenue appears. Drag sliders (entrant cost, σ) to show the effect holds. | "Same waste, fewer trucks, more competition. Europress doesn't drive a single truck." |
-| 5 | 3:30–3:55 | **Cheap sensors, honest data** | Billing stays on the certified weighbridge, as today. One lift: device weight vs weighbridge with ± σ, "within tolerance"; a second case where **our own sensor drifted** → caught by the cross-check → recalibration proposal | "The bill stays on the certified scale. Our gauges only need to be honest enough to plan, and they check themselves." |
-| 6 | 3:55–4:40 | **The business** | Operators pay ~€20 per device per month; customers free, sensors included; sliders for fee and operator adoption; Europress ARR minus the sensor subsidy, payback per device, sensitivity; SMART integration diagram + API payload. All tagged *hypothetical*. | "Weigh at source. Pay per kilo. Let every operator compete." |
+| 1 | 0:00–1:15 | **The market today** | 3 receipts: 56.5 % of charges are per visit, 1 in 3 visits empties a compactor < 60 % full, 0 of 19 customers a challenger can safely win. Ecosystem diagram, *today*: only the incumbent's weighbridge sees the tonnes; challengers guess at ±37 % | "Customers pay for trips. Only the incumbent knows the tonnes." |
+| 2 | 1:15–2:45 | **How we get the weight** | H7 hydraulic self-lift, animated side view: tare 27 bar → reading 57 bar → 2.5 t; accuracy ±4.4 % (1σ, est.), installed cost vs the ~€2k reference and the platform scale; known limits. Fleet layer: ~10 % reference units weigh, the virtual scale estimates the rest, the certified weighbridge stays the bill and cross-checks every device | "The compactor weighs itself, with the hydraulics it already has." |
+| 3 | 2:45–4:30 | **The value** | Ecosystem diagram, *OpenWeight* (toggle back to today on demand); market KPIs (€/t −13 %, visits −19 %, 19 / 19 contestable); what each party gets: customer free, operators €20 / device / month, Europress service revenue and payback | "Same waste, fewer trucks, open competition. Europress never drives a truck." |
 
-**The wow is beat 4.** Build the simulation first, polish it most.
+**Detail screens** (not in the pitch; for questions, the walkthrough video and judges exploring): Fleet, Customer
+(AI-summarized report, contract check, proposal + approve), Operator (forecast table, bids), Market (all sliders),
+Business (value per device, business cockpit, SMART integration, lift-order payload).
+
+**Cut on 7 Nov (roadmap lines only):** multi-round market simulation; invoice upload and matching; operator
+"due soon" list; ESG panel; daily lift replay; Europress sales-lead view; a customer consent step in the UI (the
+consent arrow in the diagram and the pitch carry it).
 
 ## 5. Where the points come from
 
@@ -238,7 +242,7 @@ Docker, anything in `private_evaluation/`.
 | Fri 22:00–01:30 | Fresh `.venv` (the existing `venv/` is the whisper env — leave it), starter kit editable, scaffold, pipeline skeleton, forecast backtest, trips model; background agent drafts D1 | Review `TOMMI_QUESTIONS.md`; review D1 draft |
 | Sat 08:00–13:00 | Market simulation + beat 4 screen (**wow first**), hero selection | Ask Tommi + Since AI; set hypothetical cost parameters with rationale; hand-check one site's numbers |
 | Sat 13:00–18:00 | Beats 2, 3, 0, 6; proposal/approve; receipts | D3 business case with our numbers; pitch skeleton; D1 final |
-| Sat 18:00–22:00 | Beats 1, 5; polish beat 4; deploy static build; nice-to-have 1 if green | Rehearse on the live build, report bugs |
+| Sat 18:00–22:00 | Three pitch screens (decided 15:30), design pass on them, ecosystem diagram polish; deploy static build | Rehearse on the live build, report bugs |
 | **Sat 22:00 FEATURE FREEZE** | Fixes and copy only | Dry run #1, timed |
 | Sat 22:00–24:00 | Dry-run fixes; record walkthrough | Dry runs #2–3; slides final |
 | **Sun 00:00 DEMO FROZEN** | git tag `demo-frozen`; bundle and build committed | |

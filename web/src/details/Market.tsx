@@ -2,53 +2,10 @@ import { useMemo, useState } from 'react'
 import { bundle } from '../bundle'
 import { FigureValue } from '../components/FigureValue'
 import { simulate, type Params } from '../market/model'
+import { Kpi, ModeToggle, ShareBar, Slider } from '../components/ui'
 
-/** Beat 4 — the market, before ↔ after (PRODUCT.md §3, §4). Slider maths: web/src/market/model.ts (parity-checked). */
-const COLORS = ['#0f766e', '#2563eb', '#a16207', '#7c3aed', '#db2777', '#475569']
-
-function Slider(props: { label: string; value: number; min: number; max: number; step: number; fmt: (v: number) => string; onChange: (v: number) => void }) {
-  return (
-    <label className="block text-sm text-slate-600">
-      <span className="flex justify-between"><span>{props.label}</span><span className="tabular-nums font-medium text-slate-900">{props.fmt(props.value)}</span></span>
-      <input type="range" className="w-full accent-teal-700" min={props.min} max={props.max} step={props.step}
-        value={props.value} onChange={(e) => props.onChange(Number(e.target.value))} />
-    </label>
-  )
-}
-
-function Kpi({ label, before, after, fmt, showAfter }: { label: string; before: number; after: number; fmt: (v: number) => string; showAfter: boolean }) {
-  const v = showAfter ? after : before
-  const delta = before ? (after - before) / before : 0
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="text-sm text-slate-500">{label}</div>
-      <div className="mt-1 text-4xl font-semibold tabular-nums text-slate-900">{fmt(v)}</div>
-      <div className="mt-2 h-5 text-sm tabular-nums">
-        {showAfter && (before === 0
-          ? <span className="text-teal-700">today: {fmt(before)}</span>
-          : <span className={delta < 0 ? 'text-teal-700' : 'text-slate-600'}>{delta >= 0 ? '+' : ''}{(100 * delta).toFixed(1)} % vs today</span>)}
-      </div>
-      <span className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${showAfter ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
-        {showAfter ? 'simulated' : 'observed'}
-      </span>
-    </div>
-  )
-}
-
-function ShareBar({ shares, ops }: { shares: Record<string, number>; ops: string[] }) {
-  return (
-    <div className="flex h-8 w-full overflow-hidden rounded">
-      {ops.map((o, i) => shares[o] > 0.001 && (
-        <div key={o} style={{ width: `${100 * shares[o]}%`, background: COLORS[i % COLORS.length] }}
-          className="flex items-center justify-center text-xs font-medium text-white" title={`${o} ${(100 * shares[o]).toFixed(0)} %`}>
-          {shares[o] > 0.08 ? `${o} ${(100 * shares[o]).toFixed(0)} %` : ''}
-        </div>
-      ))}
-    </div>
-  )
-}
-
-export function Beat4() {
+/** Detail: the market, before ↔ after, with every assumption as a slider (PRODUCT.md §3, §4). Slider maths: web/src/market/model.ts (parity-checked). */
+export function Market() {
   const m = bundle.market
   const [after, setAfter] = useState(true)
   const [p, setP] = useState<Params>(m.params)
@@ -66,10 +23,7 @@ export function Beat4() {
             Region {m.region}: {s.accounts} customers, {Math.round(s.tonnes).toLocaleString('en')} t/year, {m.operators.length} fictional operators.
           </p>
         </div>
-        <div className="inline-flex rounded-lg border border-slate-300 bg-white p-1 text-sm font-medium">
-          <button type="button" onClick={() => setAfter(false)} className={`rounded-md px-4 py-2 ${!after ? 'bg-slate-900 text-white' : 'text-slate-600'}`}>Today: per trip, private data</button>
-          <button type="button" onClick={() => setAfter(true)} className={`rounded-md px-4 py-2 ${after ? 'bg-teal-700 text-white' : 'text-slate-600'}`}>OpenWeight: per kg, shared data</button>
-        </div>
+        <ModeToggle after={after} onChange={setAfter} />
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

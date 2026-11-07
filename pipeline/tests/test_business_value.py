@@ -5,7 +5,7 @@ from dataclasses import replace
 
 import pytest
 
-from fullload import business, value, virtual_scale
+from fullload import business, value, virtual_scale, weighing
 from fullload.config import data_root
 from fullload.kit import open_dataset
 
@@ -47,3 +47,13 @@ def test_virtual_scale_excludes_biowaste_and_runs(con):
     df = virtual_scale.lifts(con)
     assert "biowaste" not in set(df.material_stream)
     assert (df.ref_kg > 0).all()
+
+
+def test_weighing_reads_part1_and_reproduces_the_worked_example():
+    w = weighing.weighing_facts()
+    ex = w["h7"]["example"]
+    # WEIGHING_CONCEPT.md §19.2 worked example: 27 bar tare, 57 bar loaded, ~85 kg of waste per bar, W back = 2.5 t
+    assert (ex["tare_bar"], ex["loaded_bar"], ex["kg_waste_per_bar"], ex["waste_from_reading_t"]) == (27, 57, 85, 2.5)
+    strip = {c["id"]: c["factory_fit_eur"] for c in w["installed_cost"]["strip"]}
+    assert strip["H7"][0] < strip["H7"][1] and set(strip) == set(weighing.COST_STRIP)
+    assert w["h7"]["figures"]["sigma_one_point_pct"]["tag"] == "estimated"

@@ -58,10 +58,11 @@ pipeline/fullload/    Python package (internal name "fullload"): starter-kit dat
   value.py            value per device, compared with the business team's figures
   business.py         Europress business model (mirrored in web/src/business/model.ts)
   virtual_scale.py    virtual scale accuracy and calibration learning curve
+  weighing.py         Part 1 numbers for the demo (installed cost, H7 statics), read from part1/
   validate.py         scores against dev labels (validation split only)
   params.yaml         every hypothetical assumption with its rationale
   reports/            AI-written report templates; numbers filled from the data and checked
-web/                  Vite + React + TypeScript demo; one screen per beat
+web/                  Vite + React + TypeScript demo: src/pitch/ (the three pitch screens), src/details/
 part1/                Part 1 weighing concept, calculations and figures
 briefs/               briefs and reports of the supervised agents that built parts of this repo
 ```

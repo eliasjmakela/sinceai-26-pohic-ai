@@ -1,23 +1,14 @@
 import { useMemo, useState } from 'react'
 import { bundle } from '../bundle'
 import { simulateBusiness, type BizParams } from '../business/model'
+import { Slider } from '../components/ui'
 
-/** Beat 6 — the business and the SMART integration (PRODUCT.md §4). Slider maths: web/src/business/model.ts. */
+/** Detail: the business and the SMART integration (PRODUCT.md §4). Slider maths: web/src/business/model.ts. */
 const eur = (v: number) => `${v < 0 ? '−' : ''}${Math.abs(v) >= 1e6 ? `€${(Math.abs(v) / 1e6).toFixed(2)} M` : `€${Math.round(Math.abs(v)).toLocaleString('en')}`}`
 const LEVER: Record<string, string> = {
   pricing_risk: 'Operator: pricing risk removed', avoidable_trips: 'Customer: avoidable half-empty visits',
   expensive_tonnes: 'Customer: tonnes priced above peers', invoice_differences: 'Customer: invoice above contract',
   contamination: 'Customer: wrong material in the compactor', contract_visibility: 'Customer: is the contract kept?',
-}
-
-function Slider(props: { label: string; value: number; min: number; max: number; step: number; fmt: (v: number) => string; onChange: (v: number) => void }) {
-  return (
-    <label className="block text-sm text-slate-600">
-      <span className="flex justify-between"><span>{props.label}</span><span className="font-medium tabular-nums text-slate-900">{props.fmt(props.value)}</span></span>
-      <input type="range" className="w-full accent-teal-700" min={props.min} max={props.max} step={props.step} value={props.value}
-        onChange={(e) => props.onChange(Number(e.target.value))} />
-    </label>
-  )
 }
 
 function Box({ title, lines, tone = 'slate' }: { title: string; lines: string[]; tone?: 'slate' | 'teal' | 'violet' | 'amber' }) {
@@ -36,7 +27,7 @@ const LIFT_ORDER = {
   billing_basis: "operator's certified weighbridge", fee_basis: 'verified tonnes (cross-checked against the weighbridge ticket)',
 }
 
-export function Beat6() {
+export function Business() {
   const b = bundle.business
   const v = bundle.value_per_device
   const [p, setP] = useState<BizParams>(b.params)

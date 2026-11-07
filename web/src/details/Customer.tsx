@@ -4,8 +4,8 @@ import { bundle } from '../bundle'
 import { FigureValue } from '../components/FigureValue'
 import { Markdownish } from '../components/Markdownish'
 
-/** Beat 2 — the customer's free view (PRODUCT.md §4). */
-export function Beat2() {
+/** Detail: the customer's free view (PRODUCT.md §4). */
+export function Customer() {
   const h = bundle.hero
   const [approved, setApproved] = useState<string | null>(null)
   const pts = h.lifts.filter((l) => l.fill_pct !== null).map((l) => ({ x: Date.parse(l.date), y: l.fill_pct, ...l }))

@@ -1,14 +1,6 @@
 import { useState } from 'react'
 import type { Figure } from '../bundle'
-import { format } from '../format'
-
-const TAG_STYLE: Record<Figure['tag'], string> = {
-  observed: 'bg-emerald-100 text-emerald-800',
-  estimated: 'bg-sky-100 text-sky-800',
-  simulated: 'bg-amber-100 text-amber-800',
-  hypothetical: 'bg-rose-100 text-rose-800',
-}
-
+import { format, TAG_STYLE } from '../format'
 
 /** A number with its evidence tag; click opens the receipt (formula, sources, assumptions). */
 export function FigureValue({ figure, label }: { figure: Figure; label: string }) {

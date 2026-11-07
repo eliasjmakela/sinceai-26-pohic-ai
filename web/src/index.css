@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+/* Ecosystem diagram: data flows move, new text fades in. Respect reduced motion. */
+.eco-flow { animation: eco-dash 1.2s linear infinite; }
+@keyframes eco-dash { to { stroke-dashoffset: -26; } }
+.eco-in { animation: eco-in 450ms ease both; }
+@keyframes eco-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .eco-flow, .eco-in { animation: none; }
+}

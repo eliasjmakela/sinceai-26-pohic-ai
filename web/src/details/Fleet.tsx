@@ -2,8 +2,8 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recha
 import { bundle } from '../bundle'
 import { FigureValue } from '../components/FigureValue'
 
-/** Beat 0 — "Paid per trip" (PRODUCT.md §4). */
-export function Beat0() {
+/** Detail: the fleet, paid per trip (PRODUCT.md §4). */
+export function Fleet() {
   const f = bundle.fleet
   const hist = f.fill_at_lift_histogram.map((b) => ({ ...b, label: `${b.bin_pct}–${b.bin_pct + 10} %` }))
   return (

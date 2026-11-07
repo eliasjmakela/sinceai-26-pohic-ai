@@ -20,7 +20,7 @@
         "sources": [
           "params.yaml: business (business team assumptions)",
           "collection_events (tonnes per device)",
-          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+          "part1/installed_cost.json: factory-fit installed cost per concept"
         ],
         "tag": "hypothetical",
         "unit": "EUR",
@@ -34,7 +34,7 @@
         "sources": [
           "params.yaml: business (business team assumptions)",
           "collection_events (tonnes per device)",
-          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+          "part1/installed_cost.json: factory-fit installed cost per concept"
         ],
         "tag": "hypothetical",
         "unit": "EUR",
@@ -48,7 +48,7 @@
         "sources": [
           "params.yaml: business (business team assumptions)",
           "collection_events (tonnes per device)",
-          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+          "part1/installed_cost.json: factory-fit installed cost per concept"
         ],
         "tag": "hypothetical",
         "unit": "EUR",
@@ -62,7 +62,7 @@
         "sources": [
           "params.yaml: business (business team assumptions)",
           "collection_events (tonnes per device)",
-          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+          "part1/installed_cost.json: factory-fit installed cost per concept"
         ],
         "tag": "hypothetical",
         "unit": "years",
@@ -76,7 +76,7 @@
         "sources": [
           "params.yaml: business (business team assumptions)",
           "collection_events (tonnes per device)",
-          "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+          "part1/installed_cost.json: factory-fit installed cost per concept"
         ],
         "tag": "hypothetical",
         "unit": "EUR",
@@ -93,7 +93,7 @@
         125
       ],
       "note": "Part 1 installed cost includes 6-year maintenance; opex is counted separately here, so the Part 1 figure slightly double-counts upkeep.",
-      "source": "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
+      "source": "part1/installed_cost.json: factory-fit installed cost per concept"
     },
     "params": {
       "device_margin": 0.25,
@@ -6576,5 +6576,139 @@
     "lifts": 5362,
     "reading": "A model trained on a few reference devices estimates every other device's lift weight from signals the compactor already has; compaction cycles and time since the last lift halve the error compared with fill alone. A handful of shared weighbridge tickets per device calibrate it further. Beyond ~5 % reference devices, more reference scales add little.",
     "reference_share": 0.1
+  },
+  "weighing": {
+    "h7": {
+      "design_bore_mm": 80,
+      "example": {
+        "bore_mm": 80,
+        "door_end_share": 0.375,
+        "kg_waste_per_bar": 85,
+        "loaded_bar": 57,
+        "machine_t": 3.75,
+        "tare_bar": 27,
+        "waste_from_reading_t": 2.5,
+        "waste_t": 2.5,
+        "x_w_over_l": 0.6
+      },
+      "figures": {
+        "installed_eur_high": {
+          "assumptions": [
+            "Team estimate, untested: no prototype, no supplier quote"
+          ],
+          "formula": "sum of factory-fit cost lines, high (incl. 6-year upkeep)",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "part1/installed_cost.json",
+            "part1/calc/installed_cost.py"
+          ],
+          "tag": "estimated",
+          "unit": "EUR",
+          "value": 3008
+        },
+        "installed_eur_low": {
+          "assumptions": [
+            "Team estimate, untested: no prototype, no supplier quote"
+          ],
+          "formula": "sum of factory-fit cost lines, low (incl. 6-year upkeep)",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "part1/installed_cost.json",
+            "part1/calc/installed_cost.py"
+          ],
+          "tag": "estimated",
+          "unit": "EUR",
+          "value": 1034
+        },
+        "sigma_one_point_pct": {
+          "assumptions": [
+            "Team estimate, untested: no prototype, no supplier quote",
+            "low / high parameters: 2.6 / 9.7 %"
+          ],
+          "formula": "error budget case B (one-point lift + shared tickets), 2.5 t, RSS of 7 sources, mid parameters",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "part1/generated/h7_hydraulic.json",
+            "part1/calc/h7_hydraulic.py",
+            "part1/WEIGHING_CONCEPT.md §19"
+          ],
+          "tag": "estimated",
+          "unit": "%",
+          "value": 4.4
+        }
+      },
+      "pressure_bar": [
+        18,
+        113
+      ],
+      "sigma_one_point_pct": [
+        2.6,
+        4.4,
+        9.7
+      ],
+      "sigma_two_end_pct": [
+        1.7,
+        3.2,
+        8.4
+      ],
+      "stroke_margin_mm": 10,
+      "system_pressure_bar": 200
+    },
+    "installed_cost": {
+      "reference_eur": 2000,
+      "strip": [
+        {
+          "factory_fit_eur": [
+            10,
+            125
+          ],
+          "id": "T0",
+          "name": "Virtual weight from existing pressure + fill (v1)",
+          "retrofit_eur": [
+            10,
+            215
+          ]
+        },
+        {
+          "factory_fit_eur": [
+            548,
+            2363
+          ],
+          "id": "H1",
+          "name": "Hopper-stage weighing plate (idea: Europress / Tommi)",
+          "retrofit_eur": [
+            1270,
+            4923
+          ]
+        },
+        {
+          "factory_fit_eur": [
+            1034,
+            3008
+          ],
+          "id": "H7",
+          "name": "Hydraulic self-lift on the compactor's own power pack (idea: team)",
+          "retrofit_eur": [
+            1994,
+            6168
+          ]
+        },
+        {
+          "factory_fit_eur": [
+            7860,
+            22160
+          ],
+          "id": "PS",
+          "name": "Platform scale under the whole unit (Europress's existing option)",
+          "retrofit_eur": [
+            8580,
+            23880
+          ]
+        }
+      ]
+    }
   }
 }

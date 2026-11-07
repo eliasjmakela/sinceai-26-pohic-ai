@@ -1,6 +1,6 @@
 import { bundle } from '../bundle'
 
-/** Beat 3 — the same customer through an operator's eyes (PRODUCT.md §4). */
+/** Detail: the same customer through an operator's eyes (PRODUCT.md §4). */
 const eur = (v: number) => `€${Math.round(v).toLocaleString('en')}`
 
 function BidBars({ bids, today, highlight, title }: { bids: Record<string, number>; today: number; highlight?: string; title: string }) {
@@ -26,7 +26,7 @@ function BidBars({ bids, today, highlight, title }: { bids: Record<string, numbe
   )
 }
 
-export function Beat3() {
+export function Operator() {
   const h = bundle.hero
   const o = h.operator_view
   return (
@@ -66,7 +66,7 @@ export function Beat3() {
         <BidBars title="Per-kg bids today: challengers must guess the volume (incumbent keeps the contract)" bids={o.bids_before_eur} today={o.price_today_eur} />
         <BidBars title={`Per-kg bids with OpenWeight data: ${o.winner_after} wins at ${eur(o.price_after_eur)}`} bids={o.bids_after_eur} today={o.price_today_eur} highlight={o.winner_after} />
       </div>
-      <p className="text-xs text-slate-500">Bids are simulated with the hypothetical assumptions of the market model (beat 4); operators are fictional.</p>
+      <p className="text-xs text-slate-500">Bids are simulated with the hypothetical assumptions of the market model (market details); operators are fictional.</p>
     </section>
   )
 }

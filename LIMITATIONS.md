@@ -47,6 +47,9 @@ pipeline: when a number changes, change it here.
 - Hydraulic weighing exists on refuse trucks, forklifts and hook-lifts (closest: Hiab/Cargotec, truck-side, with a
   centre-of-mass estimate); we found no compactor that lifts itself to weigh. No freedom-to-operate check was done.
 
+- The demo's H7 animation is the worked example of §19.2 (mid values), not a simulation of a real unit; the lift is
+  drawn exaggerated. Its numbers come from `part1/generated/h7_hydraulic.json` via `pipeline/fullload/weighing.py`.
+
 ## 3. Weight-triggered trips (`pipeline/fullload/trips.py`)
 - An approximation, not a day-by-day replay: each device's full payload is extrapolated from its own lifts, a lift
   is triggered at 90 % of it, and the material's maximum interval is respected. Closures, peaks, overflow risk and

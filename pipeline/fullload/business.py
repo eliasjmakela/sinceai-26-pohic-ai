@@ -3,7 +3,7 @@
 Europress funds the weighing hardware; operators pay a service fee; customers pay nothing; Europress also sells more
 machines. Inputs are the business team's assumptions (message of 7 Nov; scripts pending) in params.yaml `business`,
 plus two numbers from our own pipeline: tonnes per device-year (fleet average) and the installed-cost ranges from
-Part 1 v2 (`part1/installed_cost.json` on branch weighing-v2) as the alternative hardware cost.
+Part 1 (`part1/installed_cost.json`) as the alternative hardware cost.
 
   investment        = devices x (T0 share x T0 cost + H1 share x H1 cost)                    one-off, EUR
   service revenue   = devices x paying coverage x fee                                       per year, EUR
@@ -24,10 +24,9 @@ import yaml
 
 from .config import PARAMS_PATH
 from .figures import Figure
+from .weighing import installed_cost
 
-INSTALLED_COST_SOURCE = "part1/installed_cost.json (branch weighing-v2): H1 factory-fit EUR 548-2,363, T0 EUR 10-125"
-H1_FACTORY_FIT = (548, 2363)   # copied from the weighing-v2 branch until it is merged (then read from the file)
-T0_FACTORY_FIT = (10, 125)
+INSTALLED_COST_SOURCE = "part1/installed_cost.json: factory-fit installed cost per concept"
 
 
 @dataclass(frozen=True)
@@ -80,7 +79,9 @@ def tonnes_per_device_year(con: duckdb.DuckDBPyConnection) -> float:
 
 
 def parity_cases(base: BizParams) -> list[dict]:
-    variants = [{}, {"fee_mode": "per_tonne"}, {"h1_cost_eur": H1_FACTORY_FIT[1], "t0_cost_eur": T0_FACTORY_FIT[1]},
+    concepts = installed_cost()["concepts"]
+    variants = [{}, {"fee_mode": "per_tonne"}, {"h1_cost_eur": concepts["H1"]["factory_fit_eur"][1],
+                                                 "t0_cost_eur": concepts["T0"]["factory_fit_eur"][1]},
                 {"paying_coverage": 1.0, "sales_growth": 0.0}]
     return [asdict(replace(base, **v)) for v in variants]
 
@@ -88,6 +89,7 @@ def parity_cases(base: BizParams) -> list[dict]:
 def business_facts(con: duckdb.DuckDBPyConnection) -> dict:
     p = load_params(tonnes_per_device_year(con))
     s = simulate(p)
+    concepts = installed_cost()["concepts"]
 
     def fig(v, unit, formula, tag="hypothetical"):
         return Figure(None if v is None else round(v, 1), unit, tag, formula,
@@ -96,7 +98,8 @@ def business_facts(con: duckdb.DuckDBPyConnection) -> dict:
 
     return {
         "params": asdict(p),
-        "installed_cost_ranges": {"H1_factory_fit": H1_FACTORY_FIT, "T0_factory_fit": T0_FACTORY_FIT,
+        "installed_cost_ranges": {"H1_factory_fit": concepts["H1"]["factory_fit_eur"],
+                                  "T0_factory_fit": concepts["T0"]["factory_fit_eur"],
                                   "source": INSTALLED_COST_SOURCE,
                                   "note": "Part 1 installed cost includes 6-year maintenance; opex is counted separately here, "
                                           "so the Part 1 figure slightly double-counts upkeep."},

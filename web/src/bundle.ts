@@ -73,6 +73,23 @@ export interface Hero {
 export interface ValueRow { lever: string; who: string; needs_weight: string; ours: Figure | null; ours_range: [number, number] | null; team: number | null; note?: string }
 export interface TripsCheck { lifts: number; model_removed_pct: number; labelled_premature_pct: number; per_device_pearson: number }
 
+export interface CostConcept { id: string; name: string; factory_fit_eur: [number, number]; retrofit_eur: [number, number] }
+export interface Weighing {
+  h7: {
+    design_bore_mm: number
+    pressure_bar: [number, number]
+    system_pressure_bar: number
+    stroke_margin_mm: number
+    example: { machine_t: number; door_end_share: number; waste_t: number; x_w_over_l: number; bore_mm: number;
+      tare_bar: number; loaded_bar: number; waste_from_reading_t: number; kg_waste_per_bar: number }
+    sigma_one_point_pct: [number, number, number]
+    sigma_two_end_pct: [number, number, number]
+    figures: Record<'sigma_one_point_pct' | 'installed_eur_low' | 'installed_eur_high', Figure>
+  }
+  installed_cost: { reference_eur: number; strip: CostConcept[] }
+}
+export interface VirtualScale { devices: number; lifts: number; reference_share: number; reading: string; headline: Record<string, Figure> }
+
 export interface Bundle {
   schema_version: 1
   provenance: { kit_version: string; data: string; synthetic: boolean }
@@ -86,6 +103,8 @@ export interface Bundle {
     installed_cost_ranges: { H1_factory_fit: [number, number]; T0_factory_fit: [number, number]; source: string; note: string };
     headline: Record<string, Figure> }
   validation: { trips_check?: TripsCheck } & Record<string, unknown>
+  virtual_scale: VirtualScale
+  weighing: Weighing
 }
 
 // Statically imported so the demo has no runtime fetch. The pipeline test checks tags and sources.
