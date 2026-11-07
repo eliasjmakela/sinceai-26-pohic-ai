@@ -37,6 +37,15 @@ pipeline: when a number changes, change it here.
   ~7–8 % after 5 shared weighbridge tickets per device, ~5–6 % on monthly totals; fill alone ~16 %.
 - **Likely optimistic**: the generator derives mass from similar quantities. Real pressure data was not available.
 - A single ticket makes calibration worse (one noisy ratio); calibration needs ~5 tickets.
+- The figures are **median** errors; as a 1σ the calibrated per-lift error is about 11 %.
+
+## 2c. Hydraulic self-lift (H7, `part1/WEIGHING_CONCEPT.md` §19)
+- Team idea, untested: the compactor lifts itself ~10 mm with its own hydraulics and weighs from cylinder pressure.
+  Installed cost €1,034–3,008 factory-fit (team estimates; no supplier prices found), COMBI only, retrofit not
+  recommended. Accuracy target 1σ ≤ 5 % after 10 shared tickets (≤ 3 % lifting both ends, which needs a front
+  cylinder not in the cost).
+- Hydraulic weighing exists on refuse trucks, forklifts and hook-lifts (closest: Hiab/Cargotec, truck-side, with a
+  centre-of-mass estimate); we found no compactor that lifts itself to weigh. No freedom-to-operate check was done.
 
 ## 3. Weight-triggered trips (`pipeline/fullload/trips.py`)
 - An approximation, not a day-by-day replay: each device's full payload is extrapolated from its own lifts, a lift
