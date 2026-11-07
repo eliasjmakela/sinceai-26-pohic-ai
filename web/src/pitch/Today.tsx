@@ -1,10 +1,11 @@
 import { bundle } from '../bundle'
-import { Ecosystem } from '../components/Ecosystem'
 import { FigureValue } from '../components/FigureValue'
 import { Card, TagBadge } from '../components/ui'
 
-/** Pitch screen 1 — the market today: customers pay per visit, so a half-empty visit costs far more per tonne. */
+/** Pitch screen 1 — the market today: customers pay per visit, so a half-empty visit costs far more per tonne.
+ * The ecosystem diagram starts on screen 3. */
 const FILL = [40, 75, 95] // drawn fill level per band (illustrative)
+const SHORT = ['under 60 % full', '60–90 % full', '90–100 % full']
 
 function Compactor({ fill }: { fill: number }) {
   const h = 70
@@ -29,24 +30,22 @@ export function Today() {
         <div className="text-sm font-medium uppercase tracking-wide text-slate-500">1 · The market today</div>
         <h1 className="mt-1 text-4xl font-bold text-slate-900">Customers pay per truck visit, not per tonne.</h1>
         <p className="mt-2 max-w-3xl text-lg text-slate-600">
-          A visit costs about the same whether the compactor is half empty or full. Only the incumbent operator knows the tonnes.
+          A visit costs the same whether the compactor is half empty or full. Only the incumbent knows the tonnes.
         </p>
       </header>
 
       <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
         <Card>
           <div className="flex items-start justify-between gap-3">
-            <div className="text-lg font-semibold text-slate-900">About the same visit price. A {ratio.toFixed(1)}× higher price per tonne when it's half empty.</div>
+            <div className="text-lg font-semibold text-slate-900">{ratio.toFixed(1)}× the price per tonne when it's half empty</div>
             <TagBadge tag="observed" />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-4">
             {bands.map((b, i) => (
               <div key={b.band} className="flex flex-col items-center text-center">
                 <Compactor fill={FILL[i]} />
-                <div className="mt-2 text-sm font-medium text-slate-700">{b.band}</div>
-                <div className="text-xs text-slate-500">{b.share_pct} % of visits</div>
-                <div className="mt-3 text-sm text-slate-600">€{b.visit_eur.value} per visit</div>
-                <div className="text-sm text-slate-600">{((b.kg.value ?? 0) / 1000).toFixed(1)} t collected</div>
+                <div className="mt-2 text-base font-medium text-slate-700">{SHORT[i]}</div>
+                <div className="text-sm text-slate-500">€{b.visit_eur.value} / visit</div>
                 <div className="mt-3 flex h-28 w-14 items-end rounded bg-slate-100">
                   <div className={`w-full rounded ${i === 0 ? 'bg-rose-600' : 'bg-slate-400'}`} style={{ height: `${(100 * (b.eur_per_t.value ?? 0)) / max}%` }} />
                 </div>
@@ -55,10 +54,7 @@ export function Today() {
               </div>
             ))}
           </div>
-          <p className="mt-4 text-xs text-slate-500">
-            Per-visit charges (lift fee, transport, surcharges) divided by the tonnes collected, completed lifts, one year. Processing is charged per tonne
-            on top. Synthetic dataset.
-          </p>
+          <p className="mt-4 text-xs text-slate-500">Per-visit charges ÷ tonnes collected, one year of invoices (synthetic).</p>
         </Card>
         <div className="grid content-start gap-4">
           <FigureValue figure={f.trip_share_pct} label="of all charges are per visit, not per tonne" />
@@ -66,13 +62,6 @@ export function Today() {
         </div>
       </div>
 
-      <Card>
-        <Ecosystem step={0} />
-        <p className="mt-2 text-sm text-slate-600">
-          Why nobody offers per kilo: the incumbent forecasts a site from its own history (±{Math.round(100 * m.sigma_inc)} %); a challenger can only
-          guess from similar sites (±{Math.round(100 * m.sigma_ent)} %) and must add a risk premium, so the customer never gets a better offer.
-        </p>
-      </Card>
     </section>
   )
 }

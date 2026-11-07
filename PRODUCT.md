@@ -170,12 +170,12 @@ inputs are precomputed.
 ## 4. Demo storyline (decided 7 Nov 15:30: three screens, target 4:30, hard max 5:00)
 
 Three pitch screens; the presenter steps with the arrow keys and never types. Deep links `/#/beat-1` … `/#/beat-3`.
-The ecosystem diagram (`web/src/components/Ecosystem.tsx`) is the spine: the **same picture** opens screen 1 in its
-*today* state and returns on screen 3 in its *OpenWeight* state, so the audience sees exactly which arrows change.
+The ecosystem diagram (`web/src/components/Ecosystem.tsx`) carries screen 3: it starts in its *today* state and
+adds one arrow per step. Screen 1 shows only the per-visit vs per-tonne evidence.
 
 | # | Time | Screen | On screen | Line |
 |---|---|---|---|---|
-| 1 | 0:00–1:15 | **The market today** | Per visit vs per tonne, observed: a visit costs about the same (€143–160) whether the compactor is under 60 % or over 90 % full, so per-visit charges are €167/t vs €49/t (3.4×). Receipts: 56.5 % of charges are per visit; 0 of 19 customers a challenger can safely win. Ecosystem diagram, *today*: only the incumbent's weighbridge sees the tonnes; challengers guess at ±37 % | "Customers pay for trips. Only the incumbent knows the tonnes." |
+| 1 | 0:00–1:15 | **The market today** | Per visit vs per tonne, observed: a visit costs about the same (€143–160) whether the compactor is under 60 % or over 90 % full, so per-visit charges are €167/t vs €49/t (3.4×). Receipts: 56.5 % of charges are per visit; 0 of 19 customers a challenger can safely win. No diagram (it starts on screen 3) | "Customers pay for trips. Only the incumbent knows the tonnes." |
 | 2 | 1:15–2:45 | **How we get the weight** | H7 hydraulic self-lift, animated side view: tare 27 bar → reading 57 bar → 2.5 t; accuracy ±4.4 % (1σ, est.), installed cost vs the ~€2k reference and the platform scale; known limits. Fleet layer: ~10 % reference units weigh, the virtual scale estimates the rest, the certified weighbridge stays the bill and cross-checks every device | "The compactor weighs itself, with the hydraulics it already has." |
 | 3 | 2:45–4:30 | **The value** | Ecosystem diagram revealed one arrow per click / → (3 boxes, ≤ 3 arrows, fades only): ① the compactor weighs every lift → Europress, ② the same data to every operator, ③ per-kg bids back to the customer; then the market KPIs (€/t −13 %, visits −19 %, 19 / 19 contestable); what each party gets: customer free, operators €20 / device / month, Europress service revenue and payback | "Same waste, fewer trucks, open competition. Europress never drives a truck." |
 
