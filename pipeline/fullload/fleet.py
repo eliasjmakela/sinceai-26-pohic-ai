@@ -78,9 +78,9 @@ def visit_cost_by_fill(con: duckdb.DuckDBPyConnection, exclude: tuple[str, ...] 
             "visit_eur": Figure(round(med_cents / 100), "EUR", "observed", "median per-visit charges per lift (TRIP_LINES)",
                                 src).to_dict(),
             "kg": Figure(round(med_kg), "kg", "estimated", "median device-estimated kg collected per lift", src).to_dict(),
-            "eur_per_t": Figure(round(cents / kg * 10, 1), "EUR/t", "observed",
+            "eur_per_t": Figure(round(cents / kg * 10, 1), "EUR/t", "estimated",
                                 "sum(per-visit charges) / sum(kg collected) x 1000, this band", src,
-                                assumptions=("Tonnes are the device-side estimate",)).to_dict(),
+                                assumptions=("Charges are observed invoices; tonnes are the device-side estimate",)).to_dict(),
         })
     return out
 

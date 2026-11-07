@@ -38,7 +38,7 @@ export function Today() {
         <Card>
           <div className="flex items-start justify-between gap-3">
             <div className="text-lg font-semibold text-slate-900">{ratio.toFixed(1)}× the price per tonne when it's half empty</div>
-            <TagBadge tag="observed" />
+            <TagBadge tag="estimated" />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-4">
             {bands.map((b, i) => (
