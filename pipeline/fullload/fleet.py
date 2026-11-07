@@ -6,7 +6,9 @@ are when they are emptied.
 from __future__ import annotations
 
 import duckdb
+import pandas as pd
 
+from .config import EXCLUDED_MATERIALS
 from .figures import Figure, eur_from_cents
 
 # Invoice line types whose amount scales with the number of trips (definition, not a hypothesis).
@@ -18,8 +20,32 @@ CREDIT_LINES = ("MATERIAL_CREDIT",)
 LOW_FILL_PCT = 60
 
 
-def _in(values: tuple[str, ...]) -> str:
+def sql_in(values: tuple[str, ...]) -> str:
+    """SQL list literal for constant tuples defined in this package (never for user input)."""
     return "(" + ", ".join(f"'{v}'" for v in values) + ")"
+
+
+def device_charges(con: duckdb.DuckDBPyConnection, region: str | None = None,
+                   exclude: tuple[str, ...] = EXCLUDED_MATERIALS) -> pd.DataFrame:
+    """Trip- and tonne-driven invoice charges per device over the whole period, in integer cents.
+
+    Invoice lines reach a device through invoices.contract_id -> contracts.device_id (one contract per device).
+    """
+    where = [f"d.material_stream NOT IN {sql_in(exclude)}"] if exclude else []
+    params: list = []
+    if region is not None:
+        where.append("s.region_code = ?")
+        params.append(region)
+    df = con.execute(f"""
+        SELECT k.device_id, d.customer_id, d.operator_id, d.material_stream, s.region_code,
+               sum(round(l.amount_eur * 100)) FILTER (WHERE l.line_type IN {sql_in(TRIP_LINES)}) AS trip_cents,
+               sum(round(l.amount_eur * 100)) FILTER (WHERE l.line_type IN {sql_in(TONNE_LINES)}) AS tonne_cents
+        FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts k ON k.contract_id = i.contract_id
+        JOIN devices d ON d.device_id = k.device_id JOIN sites s ON s.site_id = d.site_id
+        {"WHERE " + " AND ".join(where) if where else ""}
+        GROUP BY ALL ORDER BY k.device_id""", params).df()
+    df[["trip_cents", "tonne_cents"]] = df[["trip_cents", "tonne_cents"]].fillna(0).astype("int64")
+    return df
 
 
 def fleet_facts(con: duckdb.DuckDBPyConnection) -> dict:
@@ -28,9 +54,9 @@ def fleet_facts(con: duckdb.DuckDBPyConnection) -> dict:
 
     # Money in integer cents (amount_eur is a float column in the kit's invoice_lines).
     gross, trip, tonne = con.execute(f"""
-        SELECT sum(round(amount_eur * 100)) FILTER (WHERE line_type NOT IN {_in(CREDIT_LINES)}),
-               sum(round(amount_eur * 100)) FILTER (WHERE line_type IN {_in(TRIP_LINES)}),
-               sum(round(amount_eur * 100)) FILTER (WHERE line_type IN {_in(TONNE_LINES)})
+        SELECT sum(round(amount_eur * 100)) FILTER (WHERE line_type NOT IN {sql_in(CREDIT_LINES)}),
+               sum(round(amount_eur * 100)) FILTER (WHERE line_type IN {sql_in(TRIP_LINES)}),
+               sum(round(amount_eur * 100)) FILTER (WHERE line_type IN {sql_in(TONNE_LINES)})
         FROM invoice_lines""").fetchone()
     gross, trip, tonne = int(gross), int(trip), int(tonne)
 

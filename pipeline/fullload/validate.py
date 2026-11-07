@@ -136,14 +136,14 @@ def scorecard_validation(root: Path) -> dict:
 
 
 def economics_check(root: Path, period: tuple[str, str]) -> dict:
-    from .fleet import TONNE_LINES, TRIP_LINES, _in
+    from .fleet import TONNE_LINES, TRIP_LINES, sql_in
     a, b = period
     con = open_dataset(root)
     ref = f"read_parquet('{_labels_dir(root) / 'reference_economics.parquet'}')"
     n, inv_total, exp_total, exact, inv_tendered, ref_tendered = con.execute(f"""
         WITH r AS (SELECT * FROM {ref} WHERE service_date >= DATE '{a}' AND service_date < DATE '{b}'),
              l AS (SELECT operator_job_ref, sum(amount_eur) AS total,
-                          sum(amount_eur) FILTER (WHERE line_type IN {_in(TRIP_LINES + TONNE_LINES)}) AS tendered
+                          sum(amount_eur) FILTER (WHERE line_type IN {sql_in(TRIP_LINES + TONNE_LINES)}) AS tendered
                    FROM invoice_lines GROUP BY 1)
         SELECT count(*), sum(l.total), sum(r.expected_invoice_amount_eur),
                avg(CASE WHEN abs(l.total - r.expected_invoice_amount_eur) <= 0.01 THEN 1.0 ELSE 0.0 END),

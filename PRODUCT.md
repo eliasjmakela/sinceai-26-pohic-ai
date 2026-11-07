@@ -34,7 +34,8 @@ operator can now price per kg with the same precision as the incumbent, so custo
 and efficient operators, including new entrants, can win.
 
 ### Who pays, who uses (decided)
-- **Operators pay**: a **service fee per verified tonne**, as a SMART add-on. They get site forecasts, weight-triggered
+- **Operators pay**: a **service fee of ~€20 per device per month** (decided 7 Nov; ≈ €2.6 per tonne at the fleet's
+  92.6 t per device-year, the equivalent the market model uses), as a SMART add-on. They get site forecasts, weight-triggered
   lift orders and a verified weight to check every bill against. It is what lets them offer per-kg prices without risk.
 - **The weighing hardware is free for customers**, funded (or subsidised) by Europress and paid back from the operators'
   per-tonne fees. Concept: decided by the Part 1 v2 analysis (`briefs/WEIGHING_V2.md`, §7.5), with the full
@@ -81,6 +82,19 @@ compactor, so every operator can compete per kilo."*
   manager: *"Kuljetusyritys ei suoraan säästä, jopa menettää"* (the transport company does not directly save, it may
   even lose). SMART promises 37 % fewer emptyings (do not confuse with our forecast-error figures in the pitch).
 
+### Figure decisions (7 Nov, delegated to Claude by the lead developer; evidence in `bundle.json`)
+Use only these figures in the demo, the pitch and the documents. Other team documents' numbers are superseded.
+| Topic | Use | Why |
+|---|---|---|
+| Incumbent's information advantage | **±10 % vs ±37 %** forecast error (own history vs peers, monthly tonnage, 3 held-out months) | What an operator prices; reproducible backtest. The team's 9 % vs 21 % (per visit) corroborates the direction; do not show both. Never next to SMART's "37 % fewer emptyings". |
+| Fewer trips | **6–18 %** (labels lower bound – model upper) | Validated per device (r = 0.85). |
+| Customer saving | **−13 % cost per tonne** in the region (range −12 to −15 %) | Market model, robust across sensitivity. The showcase customer's −31.9 % only as "best case". |
+| Customer value per device | **avoidable visits €0.7–1.5k/yr**, tonnes priced above peers **~€1.3k/yr** | Agree with the team's independent estimates. |
+| Operator value | **"removes the risk premium on per-kg bids"**, no single € figure | Our €2.7k is parameter-driven and team figures disagree (€1.4k / €1.9k). |
+| Europress | **€20 per device per month**, customer pays €0; payback **1.6 years** at €500 per weighed device, inside the lease below **~€1.9k installed** | Business team assumptions, reproduced in `business.py`; the hardware cost decides. |
+| Weighing | **virtual scale on every device (~8 % per lift, ~5.5 % monthly, synthetic)** + a reference subset with a real scale (H1 hopper plate credited to Europress; **H7 hydraulic self-lift, the team's new idea to explore**) + self-calibration from shared tickets | Software edge where we are strong; H7 shows original thinking. |
+| Live AI Q&A for customers | **Out.** Frozen, number-checked AI reports only | Stage risk; the brief rewards traceability. |
+
 ### Where we put our effort
 - **The business model and the market before/after is our differentiator** and gets most of the effort. It came from
   domain knowledge in our team and lines up with what Europress said at kickoff.
@@ -96,7 +110,7 @@ Source: kickoff recording transcript (`Röst 261106_182238.txt` in the project r
 
 | What was said | What it means for us |
 |---|---|
-| "We are **not** going into transportation operating … we are a technology company." | Europress never owns trucks or becomes the hauler. Fee per verified tonne is a service fee paid by operators. |
+| "We are **not** going into transportation operating … we are a technology company." | Europress never owns trucks or becomes the hauler. The fee (per device per month) is a service fee paid by operators. |
 | The biggest operator owns trucks and "the more transportation they get the more money"; other operators use subcontractors and benefit from transporting as little as possible. A direct integration with a "good operator" was very hard. | The market is split by incentive: one dominant player profits from trips, others from efficiency. Our natural first customers are the efficiency-driven operators. Do not depend on operator data feeds. |
 | Some operators already resell SMART Insights to retail chains to win contracts. Partnerships are strategy. | Selling to operators is already proven. Operator-paid model fits. |
 | Weighing: "cheap as possible, it doesn't need to be all accurate … ballpark but really close." Customers "are not willing to pay almost anything" for extra hardware. | Part 1 leads with the cheapest viable option. Customer side must be free. |
@@ -129,7 +143,7 @@ explicit about every assumption.
 - **Customers**: real sites/devices in one region (tonnage, material, container size and lifts from the data).
 - **Incumbent operator**: has the collection history → forecast error σ_inc ≈ 10 % (measured).
 - **Entrant operators (1–3)**: no history → σ_ent ≈ 38 % before (measured peer-based error); ≈ 10 % after (OpenWeight forecast).
-- **Europress**: provides weights and forecasts after; fee per verified tonne.
+- **Europress**: provides weights and forecasts after; fee per device (per-tonne equivalent in the model).
 
 **Regimes**
 | | Before: per trip, private data | After: per kg, OpenWeight data |
@@ -165,7 +179,7 @@ One screen state per beat; the presenter never types. Every screen has a deep li
 | 3 | 1:55–2:20 | **Operator view (paid)** | The same site through an operator's eyes: forecast tonnage with Europress data (±10 %) vs without (±38 %) → the per-kg price an operator can safely bid | "Without the data only the incumbent can bid per kilo. With OpenWeight, anyone can." |
 | 4 | 2:20–3:30 | **WOW: the market, before ↔ after** | One region. Toggle *Per trip, private data ↔ Per kg, OpenWeight*: trips fall, tonnes per trip rise, customer €/t falls, entrants win tenders, concentration drops, Europress fee revenue appears. Drag sliders (entrant cost, σ) to show the effect holds. | "Same waste, fewer trucks, more competition. Europress doesn't drive a single truck." |
 | 5 | 3:30–3:55 | **Cheap sensors, honest data** | Billing stays on the certified weighbridge, as today. One lift: device weight vs weighbridge with ± σ, "within tolerance"; a second case where **our own sensor drifted** → caught by the cross-check → recalibration proposal | "The bill stays on the certified scale. Our gauges only need to be honest enough to plan, and they check themselves." |
-| 6 | 3:55–4:40 | **The business** | Operators pay per verified tonne; customers free, sensors included; sliders for fee and operator adoption; Europress ARR minus the sensor subsidy, payback per device, sensitivity; SMART integration diagram + API payload. All tagged *hypothetical*. | "Weigh at source. Pay per kilo. Let every operator compete." |
+| 6 | 3:55–4:40 | **The business** | Operators pay ~€20 per device per month; customers free, sensors included; sliders for fee and operator adoption; Europress ARR minus the sensor subsidy, payback per device, sensitivity; SMART integration diagram + API payload. All tagged *hypothetical*. | "Weigh at source. Pay per kilo. Let every operator compete." |
 
 **The wow is beat 4.** Build the simulation first, polish it most.
 
@@ -177,7 +191,7 @@ One screen state per beat; the presenter never types. Every screen has a deep li
 | Customer/business value (25 %) | Customer per-kg cost vs per-trip; fewer trips; competition; operators' risk removed | 2–4 | D3 |
 | Data-driven value & traceable calcs (20 %) | Measured forecast asymmetry (10 % vs 38 %); market simulation with stated parameters; re-pricing with the starter kit's economics; receipts on every €; **rules vs ML comparison** (brief §04): e.g. our premature-lift rule vs kit baseline B4, and simple history forecast vs a slightly richer model | 2–5 | D2 + methods page |
 | Software workflow & SMART pathway (15 %) | Flow: weight → forecast → customer proposal → approval → tender brief → operator bid → per-kg bill checked against device weight; integration diagram (SMART telemetry in, forecasts and lift orders out to operators) extending `examples/recommendation_api_mock.py` | 2–6 | D2 + setup notes |
-| Commercial productisation (10 %) | Operator-paid fee per verified tonne, free customer side, adoption path (efficiency-driven operators first), sensitivity, roadmap | 6 | D3 |
+| Commercial productisation (10 %) | Operator-paid fee per device per month, free customer side, adoption path (efficiency-driven operators first), sensitivity, roadmap | 6 | D3 |
 | Clarity / uncertainty / limits (5 %) | ± on every figure, evidence tags, synthetic banner, "what this does not prove", simulation assumptions on screen | all | all + licence list |
 
 Required submission items (brief §07): (1) illustrated weighing concept; (2) working demo **and** a recorded
@@ -249,7 +263,7 @@ differently:
 |---|---|---|
 | `src/europress_data/` | An installable package (src layout, `pyproject.toml`): `sdk.open_dataset` (DuckDB views, `as_of`, `telemetry_dedup`), `economics.price_event` / `summarize` (contract pricing in integer cents), `evaluate.score_*` (scorers on `labels_dev`); plus the generator and validator | **Import it.** `pip install -e resources/Europress_…_v1.0.1` into our `.venv`. All data access goes through `open_dataset`, all money through `economics`. Never copy or reimplement these. The generator, validator and simulator modules are not used. |
 | `baselines/*.py` | Scripts, not a package; they put `src/` and `baselines/` on `sys.path` themselves. Useful functions: `b1_economic_calculator.compute` (expected charges per lift + mass basis), `b2_rules_anomaly` (premature-lift and invoice rules), `b4_ml_models` (the ML side of the rules-vs-ML comparison), `b5_operator_scorecard.scorecard` | **Import through one adapter**, `pipeline/fullload/kit.py`, which is the only file that touches `sys.path` or kit internals. Everything else imports from `fullload.kit`. If a kit function doesn't fit, wrap it there; don't edit the kit. |
-| `baselines/business_case.py` + `configs/` | A customer-value calculator whose levers (over-servicing, billing review, tendering …) are customer-side; its "future models" put Europress in the middle of transport | **Cross-check only.** Its `over_servicing` lever is our "fewer trips" value seen from the customer. Our revenue model (operators pay per verified tonne, sensors subsidised) is different, so `pipeline/fullload/business.py` is our own and cites the kit's numbers where they overlap. |
+| `baselines/business_case.py` + `configs/` | A customer-value calculator whose levers (over-servicing, billing review, tendering …) are customer-side; its "future models" put Europress in the middle of transport | **Cross-check only.** Its `over_servicing` lever is our "fewer trips" value seen from the customer. Our revenue model (operators pay per device, sensors subsidised) is different, so `pipeline/fullload/business.py` is our own and cites the kit's numbers where they overlap. |
 | `examples/` | Small scripts: `weighing_accuracy_value.py`, `recommendation_api_mock.py`, SQL examples | **Adapt with attribution.** Part 1 adapts `weighing_accuracy_value.py` in `part1/scripts/`. Our proposal payload is `openweight.proposal.v1`, which keeps the mock's `smve.recommendation.v0` fields (`requires_human_approval`, `auto_execute`, `evidence.observed/estimated/hypothetical`, `not_proven`) and adds ours. |
 | `data/quickstart/public` (50 devices × 90 d, 19 MB) and `data/competition/public` (447 × 365 d, 116 MB) | Parquet packages; `labels_dev/` holds dev labels | **Read-only input.** Competition pack for the demo; quickstart for fast tests and development loops. |
 | `docs/`, `tests/` | Reference | Read `SCHEMA.md`, `DATA_DICTIONARY.md`, `ECONOMIC_MODEL.md` before using a column or a price. We don't run or extend the kit's tests. |
@@ -281,7 +295,7 @@ sinceai26-haaste/
       reprice.py                   economics.price_event on actual and per-kg scenarios
       market.py                    region inputs + Python reference implementation of the bidding model
       reconcile.py                 device kg vs weighbridge vs invoice, ± σ (beat 5)
-      business.py                  operator-paid fee per verified tonne, sensor subsidy, payback
+      business.py                  operator-paid fee per device (or per tonne), sensor subsidy, payback
       validate.py                  scores vs labels_dev (validation split only)
       pick_heroes.py               deterministic hero IDs → heroes.json
       export.py                    bundle.json with Figure objects
@@ -380,7 +394,7 @@ commit. Include the starter kit and dataset (terms to confirm), fonts/icons, hos
 | 12 months of data cannot show "time of year" knowledge | State it; the asymmetry is measured on 3-month horizons; seasonality is a named limitation |
 | Free sensors don't pay back | Business case shows sensor cost per device vs per-tonne fee per device-year; payback months on screen; T0 as the zero-hardware fallback |
 | Device weight presented as a legal-for-trade billing weight | Wording rule (§1): billing stays on the certified weighbridge as today; device weight is planning and service data |
-| Europress hears the model as going into transport | Always: operators pay a service fee per verified tonne; Europress never contracts transport |
+| Europress hears the model as going into transport | Always: operators pay a service fee per device; Europress never contracts transport |
 | Part 1 looks weak because no one on the team is a mechanical engineer | Claims ledger, shown working, prior-art check and red-team pass (`briefs/WEIGHING_V2.md`); questions for a Europress engineer; Tommi's hopper hint credited |
 | Simulation overruns | Fallback: static before/after table for the hero region with the same numbers, no sliders |
 | Projector / Wi-Fi / laptop failure | Offline build on two laptops + recorded video + screenshots in slides |

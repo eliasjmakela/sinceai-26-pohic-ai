@@ -54,7 +54,7 @@ pipeline: when a number changes, change it here.
   routing, capacity limits, learning or repeated games.
 - **Assumptions are placeholders** (`pipeline/fullload/params.yaml`: cost share, margin, risk aversion, entrant
   advantage, route fit, route density, Europress fee, sensor error) until the business-case owner signs them off.
-- **What is robust**: the customer's cost per tonne falls in every tested combination (€113.1 → €96–100/t,
+- **What is robust**: the customer's cost per tonne falls in every tested combination (€113.1 → €96–100/t, default €98.0,
   −12 to −15 %). **What is not**: who wins each tender. Each customer goes to the single best bid, so the number of
   customers switching ranges from 8 to 19 depending on the assumptions.
 - **Concentration can rise.** With the default assumptions the efficient incumbent wins more volume (HHI ~5,350 →
@@ -67,7 +67,7 @@ pipeline: when a number changes, change it here.
 
 ## 5. Showcase customer (beats 2–3)
 - **Chosen by a fixed rule as the best case**: the largest simulated saving among customers in the region with at
-  least 3 devices and one fixed-schedule device (`pipeline/fullload/pick_heroes.py`). Its −31.5 % is not typical;
+  least 3 devices and one fixed-schedule device (`pipeline/fullload/pick_heroes.py`). Its −31.9 % is not typical;
   the region-wide figure is about −13 %. Say so when presenting it.
 - Per-device forecast errors are shown because errors partly cancel when devices are added up.
 
@@ -77,9 +77,9 @@ pipeline: when a number changes, change it here.
 - The scorecard's invoice-difference share scores weakly against the labels (0.32); treat it as indicative.
 
 ## 7. AI-summarized customer report
-- Written by Claude (during development; no API call at runtime) from the computed fact sheet and frozen in
-  `pipeline/fullload/reports/`. The build checks that **every number** in the text appears in the facts; it does not
-  check wording or reasoning, so a person must read it before it is shown.
+- Written by Claude (during development; no API call at runtime) as a template in `pipeline/fullload/reports/`;
+  every figure is a placeholder filled from the computed fact sheet at build time, and the build rejects any number
+  that is not in the facts. Wording and reasoning are not checked automatically, so a person must read it.
 
 ## 8. Business case (beat 6, `pipeline/fullload/value.py`, `business.py`)
 - **Value per device is recomputed from our pipeline** and compared with the business team's independent figures.

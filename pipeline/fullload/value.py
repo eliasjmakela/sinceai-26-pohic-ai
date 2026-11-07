@@ -24,7 +24,7 @@ import pandas as pd
 
 from .config import EXCLUDED_MATERIALS
 from .figures import Figure
-from .fleet import TONNE_LINES, TRIP_LINES, _in
+from .fleet import TONNE_LINES, TRIP_LINES, sql_in
 from .market import load_params
 from .premature import flag_lifts
 from .scorecard import _expected_lines
@@ -41,11 +41,11 @@ SOURCES = ("invoice_lines.amount_eur", "invoice_lines.line_type", "contracts.dev
 def _device_charges(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
     return con.execute(f"""
         SELECT k.device_id, d.material_stream, s.region_code,
-               sum(l.amount_eur) FILTER (WHERE l.line_type IN {_in(TRIP_LINES)}) AS trip_eur,
-               sum(l.amount_eur) FILTER (WHERE l.line_type IN {_in(TONNE_LINES)}) AS tonne_eur
+               sum(l.amount_eur) FILTER (WHERE l.line_type IN {sql_in(TRIP_LINES)}) AS trip_eur,
+               sum(l.amount_eur) FILTER (WHERE l.line_type IN {sql_in(TONNE_LINES)}) AS tonne_eur
         FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts k ON k.contract_id = i.contract_id
         JOIN devices d ON d.device_id = k.device_id JOIN sites s ON s.site_id = d.site_id
-        WHERE d.material_stream NOT IN {_in(EXCLUDED_MATERIALS)}
+        WHERE d.material_stream NOT IN {sql_in(EXCLUDED_MATERIALS)}
         GROUP BY ALL ORDER BY 1""").df().fillna({"trip_eur": 0.0, "tonne_eur": 0.0})
 
 

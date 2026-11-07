@@ -37,9 +37,9 @@ market:   # PLACEHOLDER values until the business-case teammate signs them off (
     unit: share of cost at 100 % regional share
     rationale: placeholder; denser routes make an operator with a large regional share cheaper (a real advantage, kept after OpenWeight)
   europress_fee_eur_per_t:
-    value: 3.0
-    unit: EUR per verified tonne
-    rationale: placeholder; OpenWeight service fee paid by the operator
+    value: 2.6
+    unit: EUR per tonne (operator's cost of the service)
+    rationale: decided fee of EUR 20 per device per month = EUR 240 per year / 92.6 t per device-year
   sigma_sensor:
     value: 0.02
     unit: relative 1-sigma
@@ -56,15 +56,15 @@ business:   # business team assumptions (message of 7 Nov; scripts pending in an
   fee_mode:
     value: per_device_month
     unit: per_device_month | per_tonne
-    rationale: open decision (PRODUCT.md §1 says per verified tonne; business team models per device per month)
+    rationale: decided 7 Nov (PRODUCT.md, figure decisions); per tonne kept as a sensitivity toggle
   fee_eur_per_device_month:
     value: 20
     unit: EUR per device per month
     rationale: business team; within 10-30 % of the operator's avoided pricing risk; Enevo charged EUR 10-14
   fee_eur_per_t:
-    value: 3.0
+    value: 2.6
     unit: EUR per verified tonne
-    rationale: same order as EUR 20/month at the fleet's tonnes per device-year
+    rationale: equivalent of EUR 20 per device per month at 92.6 t per device-year (alternative fee unit, sensitivity only)
   t0_share:
     value: 1.0
     unit: share of devices

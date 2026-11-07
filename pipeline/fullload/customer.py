@@ -5,8 +5,9 @@ price from the market model, a tender proposal the customer approves, and a plai
 Beat 3 (operator, paid): what an operator can forecast for this customer with and without OpenWeight data, and the
 per-kg bids that follow (from the market model's bid detail).
 
-The AI report text is written once, frozen in `reports/<customer_id>.md`, and checked: every number in it must appear
-in the fact sheet (`report_numbers_ok`). If the check fails, the bundle carries the report as `unchecked`.
+The AI report is a template written once by an AI (Claude), frozen in `reports/<customer_id>.md`, with every figure as
+a `{fact}` placeholder filled from the fact sheet at build time. A check still rejects any number in the text that is
+not in the fact sheet (`report_numbers_ok`); if it fails, the bundle carries the report as `unchecked`.
 """
 from __future__ import annotations
 
@@ -215,7 +216,11 @@ def load_report(customer_id: str, facts: dict) -> dict:
     path = REPORTS / f"{customer_id}.md"
     if not path.exists():
         return {"status": "missing", "text": None, "facts": facts}
-    text = path.read_text(encoding="utf-8").strip()
-    bad = report_numbers_ok(text, facts)
+    template = path.read_text(encoding="utf-8").strip()
+    # The text was written by an AI (Claude) as a template; every figure is filled from the fact sheet, and the
+    # check below still rejects any number typed into the template that the facts do not contain.
+    bad_template = report_numbers_ok(re.sub(r"\{[^}]*\}", "", template), facts)
+    text = template.format(**facts)
+    bad = bad_template + report_numbers_ok(text, facts)
     return {"status": "checked" if not bad else "unchecked", "unmatched_numbers": bad, "text": text, "facts": facts,
             "label": "AI-summarized (Claude) from the figures on this page; every number checked against the data"}

@@ -38,7 +38,7 @@ import yaml
 
 from .config import EXCLUDED_MATERIALS, PARAMS_PATH
 from .figures import Figure
-from .fleet import TONNE_LINES, TRIP_LINES, _in
+from .fleet import TONNE_LINES, TRIP_LINES, sql_in
 from .forecast import backtest, monthly_tonnage
 from .trips import device_trips
 
@@ -86,11 +86,11 @@ def account_devices(con: duckdb.DuckDBPyConnection, region: str) -> pd.DataFrame
     trips = trips[trips.weight_trips.notna()][["device_id", "actual_lifts", "weight_trips", "annual_kg"]]
     charges = con.execute(f"""
         SELECT ct.device_id, d.customer_id, d.operator_id, s.region_code,
-               sum(round(l.amount_eur * 100)) FILTER (WHERE l.line_type IN {_in(TRIP_LINES)}) AS trip_cents,
-               sum(round(l.amount_eur * 100)) FILTER (WHERE l.line_type IN {_in(TONNE_LINES)}) AS tonne_cents
+               sum(round(l.amount_eur * 100)) FILTER (WHERE l.line_type IN {sql_in(TRIP_LINES)}) AS trip_cents,
+               sum(round(l.amount_eur * 100)) FILTER (WHERE l.line_type IN {sql_in(TONNE_LINES)}) AS tonne_cents
         FROM invoice_lines l JOIN invoices i USING (invoice_id) JOIN contracts ct ON ct.contract_id = i.contract_id
         JOIN devices d ON d.device_id = ct.device_id JOIN sites s ON s.site_id = d.site_id
-        WHERE s.region_code = ? AND d.material_stream NOT IN {_in(EXCLUDED_MATERIALS)} GROUP BY ALL""", [region]).df()
+        WHERE s.region_code = ? AND d.material_stream NOT IN {sql_in(EXCLUDED_MATERIALS)} GROUP BY ALL""", [region]).df()
     df = charges.merge(trips, on="device_id")
     df[["trip_cents", "tonne_cents"]] = df[["trip_cents", "tonne_cents"]].fillna(0).astype("int64")
     return df.sort_values("device_id").reset_index(drop=True)
