@@ -15,8 +15,8 @@ self-lift is **€1,000 per new unit** (decided 7 Nov evening; Part 1 estimates 
 - **€20 does not pay back** (NPV −€2.46 M). At €20 the self-lift would have to cost €690 or less.
 
 So €30 is not a comfortable price; it is the lowest price that works. Every euro the self-lift costs above
-~€1,020 makes it lose money, and every euro below makes it better: at €800 (Part 1's cheapest estimate) €30 gives
-NPV +€3.1 M and payback in year 7.
+~€1,020 makes it lose money, and every euro below makes it better: at €800 capex and €39 upkeep (Part 1's cheapest estimate)
+€30 gives NPV +€3.1 M and payback in year 7.
 
 ## The model
 
@@ -54,7 +54,7 @@ The table shows four things:
 
 - At **€20** the plan works only if the self-lift costs about €700 or less. Payback is no earlier than year 9.
 - At **€30** a self-lift of €1,000 just pays back (year 9). It is reachable at the cheap end of Part 1, where the
-  parts alone are €550–1,100.
+  parts alone are €550–1,300 (the team document says €550–1,100).
 - The tender packages and extra machine sales carry a large share of the result. Without packages the base case needs €50.
 - Revenue is fee × adoption, so €30 at 40 % adoption earns the same as €20 at 60 %. A higher fee only helps if it
   does not cut adoption by more than a third.

@@ -16,12 +16,14 @@ scale. Every weight claim in the PDF should follow this rule.
 
 ## Must fix (the PDF disagrees with the demo)
 
-1. **Business model: keep €30, fix the H7 cost.** The €30 fee and "every new unit weighs itself" are now agreed
-   (see `PRICING.md`). Our model reproduces the PDF's cash flow exactly (NPV 2.49 M€, year 7). But it rests on
-   H7 at €825, a parts-only midpoint. With Part 1's installed cost (capex €800–2,370, mid €1,585, plus €39–106 a
-   year upkeep) NPV is −4.5 M€ at €30. Add one line: **"pays back if the self-lift is built for at most ~€1,000
-   per unit; this is the design-to-cost target and the first thing a pilot must confirm."** Also replace "break-even
-   €21/month" with the €48 that follows from the installed cost, or state both.
+1. **Business model: keep €30, use the €1,000 H7 base.** The €30 fee and "every new unit weighs itself" are now
+   agreed (see `PRICING.md`). Our model reproduces the PDF's cash flow exactly (NPV 2.49 M€, year 7), but that rests
+   on H7 at €825, a parts-only midpoint. The team now plans with **H7 €1,000 capex per new unit plus €73 a year
+   upkeep**. Replace the PDF's headline with: **"NPV +0.18 M€ over 10 years at 8 %, payback year 9, deepest cash
+   −3.83 M€; €30 is the break-even fee and needs ≥ 59 % of weighed units paying (at €20: −2.46 M€)."** Add one line:
+   **"The margin is thin: above ~€1,020 per unit €30 no longer pays back (Part 1's mid estimate €1,585 gives
+   −4.53 M€), so a supplier quote for the self-lift is the first thing to confirm."** Replace "break-even
+   €21/month" with €30. The model assumes all ~1,200 new units a year are weighed (the COMBI/DUO split is unknown).
 2. **The hydraulic scale's numbers.** Do not use these, the review found them unsupported:
    - "±3 % when full" (and "3.1 t ± 0.1 t"). Use: **target 1σ ≤ 5 % after 10 weighbridge tickets, 4.4 % in our
      error budget, untested.** Without tickets the error is about 10 %.
@@ -38,7 +40,7 @@ scale. Every weight claim in the PDF should follow this rule.
    |---|---|
    | forecast error 21 % vs 9 % | **±37 % vs ±10 %** (without vs with the site's own data, monthly tonnes) |
    | 18 % fewer visits | **6–18 % fewer visits** (6 % is the dataset's own label, 18 % our model) |
-   | (missing) | **customer cost per tonne €113 → €98, −13 %** (range −12 to −15 %) |
+   | (missing) | **customer cost per tonne €113.1 → €99.6, −12 %** in the simulated region, with the €30 fee (€3.9/t) |
    | demo saving €2,100–3,400 a year | remove: LIITE itself calls it an invented placeholder |
 
 ## Must fix (errors LIITE §9 already lists)
@@ -90,10 +92,10 @@ seal friction.
    municipal solid waste collection.* Master's thesis, LUT University. https://lutpub.lut.fi/handle/10024/167131 —
    in real HSY data about a third of emptyings happen below 50 % fill. Say it is crane-emptied municipal mixed-waste
    containers, not compactors. It also found sensors pay off only with a changed cost structure.
-2. **Core claim:** Weiergraeber, S. & Wolf, C. (2023). Bidder asymmetries in procurement auctions: Efficiency vs.
+2. **Core claim:** Carnehl, C. & Weiergraeber, S. (2023). Bidder asymmetries in procurement auctions: Efficiency vs.
    information. *International Journal of Industrial Organization* 87, 102902 — the incumbent's dominance came mainly
-   from better information, not lower cost; removing the information gap raised the chance of picking the most
-   efficient bidder by 48 percentage points (median).
+   from better information, not lower cost; in a counterfactual, removing the bidders' strategic response to the
+   information gap raised the chance of picking the most efficient bidder by more than 40 percentage points.
 3. **Core claim, second source:** De Silva, D.G., Dunne, T., Kankanamge, A. & Kosmopoulou, G. (2008). The impact of
    public information on bidding in highway procurement auctions. *European Economic Review* 52(1), 150–181 —
    releasing public cost information narrowed the spread of bids, most where cost uncertainty was largest.

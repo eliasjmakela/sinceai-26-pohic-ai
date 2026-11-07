@@ -28,7 +28,8 @@ pipeline: when a number changes, change it here.
   about ±10 % 1σ without tickets, **±4.4 % 1σ after 10 shared weighbridge tickets** (range 2.6–9.7 %), which
   calibrate each unit. Untested.
 - **DUO containers have no hydraulics**; for DUO the hopper plate (H1) or weighing rails (H5) remain the options.
-  The share of COMBI vs DUO in the ~1,200 new units a year is to confirm with Europress.
+  The share of COMBI vs DUO in the ~1,200 new units a year is unknown (no data); the business model assumes all new
+  units are weighed.
 - **Prior art exists** for hopper-stage weighing, weighing rails and truck-side hydraulic weighing (patents listed in
   `part1/WEIGHING_CONCEPT.md` §11, §19). We claim no mechanical novelty; no freedom-to-operate check was done.
 - **Not legal for trade.** Billing stays on the operator's certified weighbridge (EU Directive 2014/31/EU). The device
@@ -46,7 +47,8 @@ pipeline: when a number changes, change it here.
 ## 2c. Hydraulic self-lift (H7, `part1/WEIGHING_CONCEPT.md` §19)
 - Team idea, untested: the compactor lifts itself ~10 mm with its own hydraulics and weighs from cylinder pressure.
   Installed cost €1,034–3,008 factory-fit incl. 6 years' upkeep (team estimates; no supplier prices found): capex
-  €800–2,370 (mid €1,585) plus upkeep €39–106 a year. Fitted to every new COMBI; retrofit not recommended. A
+  €800–2,370 (mid €1,585) plus upkeep €39–106 a year. The business case plans with €1,000 capex (team decision) and
+  the €73/yr mid upkeep. Fitted to every new COMBI; retrofit not recommended. A
   two-end version (H7-2) is an option for higher accuracy. Accuracy target 1σ ≤ 5 % after 10 shared tickets (≤ 3 % lifting both ends, which needs a front
   cylinder not in the cost).
 - Two failure modes found in the review of the team's paper (`reviews/SELF_WEIGHING_PAPER_REVIEW.md`), not yet in
@@ -90,7 +92,7 @@ pipeline: when a number changes, change it here.
 
 ## 5. Showcase customer (beats 2–3)
 - **Chosen by a fixed rule as the best case**: the largest simulated saving among customers in the region with at
-  least 3 devices and one fixed-schedule device (`pipeline/fullload/pick_heroes.py`). Its −31.9 % is not typical;
+  least 3 devices and one fixed-schedule device (`pipeline/fullload/pick_heroes.py`). Its −30.8 % is not typical;
   the region-wide figure is about −12 %. Say so when presenting it.
 - Per-device forecast errors are shown because errors partly cancel when devices are added up.
 
@@ -111,15 +113,19 @@ pipeline: when a number changes, change it here.
   points, and it depends on the market parameters) and invoice above contract (€301 vs €100: the kit's B1 calculator
   leaves gaps, the same reason the scorecard's invoice metric is weak). Contamination is not recomputed.
 - **The business model reproduces the team document's cash-flow model** (LIITE §6.3) in `pricing.py` (params.yaml
-  `pricing`; all hypothetical). Operators pay €30 per weighed device per month (pending); customers pay nothing.
-  With the team's H7 cost (€825) NPV over 10 years is +€2.49 M, payback year 7. **With Part 1's mid installed cost
-  (capex €1,585, upkeep €73/yr) NPV is −€4.53 M at €30 and never pays back**; the break-even fee is €48. At €30
-  H7 capex must be at most ~€1,020 (design-to-cost target). The hardware cost decides whether the model works.
+  `pricing`; all hypothetical). Operators pay €30 per weighed device per month; customers pay nothing.
+  **Base: H7 €1,000 capex per new unit (team decision), upkeep €73/yr: NPV over 10 years at 8 % is +€0.18 M,
+  payback year 9, deepest cash −€3.83 M**; it needs ≥ 59 % of weighed units paying. €30 is the break-even fee, the
+  lowest that works; €20 gives −€2.46 M. The margin is thin: above ~€1,020 capex €30 loses money. Sensitivity:
+  Part 1's mid installed cost (capex €1,585) gives −€4.53 M at €30 (break-even fee €48); its cheap end (€800) gives
+  +€3.12 M. The team document's H7 €825 gives +€2.49 M, payback year 7. A supplier quote for the self-lift is the
+  first thing to confirm. All ~1,200 new units a year are assumed weighed (COMBI/DUO split unknown).
 - Tender packages and extra machine sales carry a large share of the result; extra machine sales is the most
   uncertain lever. €30 is 82 % of the operator's mid hard gain from fewer visits, a willingness-to-pay risk.
 
 ## 9. Not proven / untested (summary)
-- That H7 (or any weighing design) reaches the stated accuracy, cost or durability, or can be built for ≤ ~€1,020.
+- That H7 (or any weighing design) reaches the stated accuracy, cost or durability, or can be built for the
+  €1,000 planning cost (break-even ~€1,020 at €30).
 - That operators would bid per kg, or that customers would tender on per-kg terms.
 - Real savings, prices or market shares; real operator behaviour.
 - That Europress may share forecasts from compactor data with operators (data ownership and consent).

@@ -47,7 +47,7 @@ plateau not flat, tilt fired, relief valve opened).
    {
      "schema": "openweight.lift_order.v1 (illustrative)", "synthetic": true,
      "device_id": "CMP-00280", "operator_id": "OP-E", "trigger": "WEIGHT",
-     "estimated_net_kg": 1850, "sigma_kg": 63, "fill_pct": 86,
+     "estimated_net_kg": 1850, "sigma_kg": 81, "fill_pct": 86,
      "window": {"earliest": "2026-11-10T06:00", "latest": "2026-11-11T18:00"},
      "billing_basis": "operator's certified weighbridge"
    }

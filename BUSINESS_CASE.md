@@ -10,9 +10,10 @@ brackets (observed, estimated, simulated or hypothetical) and a source number [S
 **In one paragraph.** Customers pay for truck visits, not tonnes. Only the incumbent operator knows how much a site
 produces, so no challenger can safely offer a price per kg. OpenWeight puts a scale in every new compactor and gives
 every operator the same weight data and site forecasts, with the customer's consent. Customers use it free. Operators
-pay Europress €30 per weighed device per month. The bill stays on the operator's certified weighbridge. The plan pays
-back only if the self-weighing hardware can be built for about €1,000 per unit. That is the main risk, and a pilot is
-how we propose to test it.
+pay Europress €30 per weighed device per month. The bill stays on the operator's certified weighbridge. The team plans
+with €1,000 per unit for the self-weighing hardware. At that cost €30 is the break-even fee: NPV +€0.18 M over ten
+years, payback in year 9. The margin is thin, so the hardware cost is the main risk; a supplier quote comes first and
+a pilot tests the rest.
 
 ---
 
@@ -54,7 +55,8 @@ scale costs about as much as the compactor (observed, challenge lead [S12]).
 **The weight.** Every new COMBI compactor gets the H7 hydraulic self-lift, fitted at the factory. One cylinder on
 the unit's own power pack lifts the door end about 10 mm. The pressure gives the weight of the waste. A two-end
 version (H7-2) is an option for higher accuracy. DUO containers have no hydraulics, so for DUO the hopper weighing
-plate (H1) or weighing rails (H5) remain the options. The COMBI/DUO split of new units is still to confirm.
+plate (H1) or weighing rails (H5) remain the options. The COMBI/DUO split of new units is unknown (no data); the business model assumes all ~1,200
+new units a year are weighed.
 
 **The rule for billing.** We bill by the real scales. The hydraulic scale gives estimates. Every bill stays on the
 operator's certified weighbridge, as today (Directive 2014/31/EU). The device weight is used for planning, forecasts
@@ -75,8 +77,9 @@ rebuild the same monopoly. A neutral device maker can sell the same data to ever
 already has the device and the SMART connection on every site.
 
 Research on procurement auctions supports the core claim. In German railway tenders, the incumbent's dominance came
-mainly from better information, not lower cost, and removing the information gap raised the chance of picking the
-most efficient bidder by 48 percentage points (median) [R2]. In US highway auctions, releasing public cost information
+mainly from better information, not lower cost: in the authors' counterfactual, removing the bidders' strategic
+response to the information gap raised the chance of picking the most efficient bidder by more than 40 percentage
+points [R2]. In US highway auctions, releasing public cost information
 reduced the spread of bids, most where cost uncertainty was largest [R3].
 
 ## 3. Customer value
@@ -143,35 +146,41 @@ team document used. Whether operators pay it is untested; it is a pilot hypothes
 **Revenue and cost lines** (all hypothetical [S1]). Ten years, 8 % discount rate. 1,200 new units a year, all
 weighed. Adoption by operators 60 %, reached linearly over 4 years. Tender packages €500 × 2.5 bidders × 35 % of
 contracts, retendered every 3 years. Extra machine sales +5 % of new units × €22,500 × 25 % margin. Fixed cost
-€400k a year, platform €26 per unit a year, plus H7 capex and upkeep per unit.
+€400k a year, platform €26 per unit a year, plus H7 capex and upkeep per unit. **H7 capex €1,000 per new unit (team
+decision, planning figure) and upkeep €73 a year (Part 1 midpoint)**; Part 1's estimate range is shown as scenarios.
 
 **NPV over 10 years (€ M) and payback year** (hypothetical [S1]):
 
 | Scenario | €20 | €25 | €30 | Break-even fee |
 |---|---|---|---|---|
-| Team document (H7 €825, upkeep €50) | −0.15 (y9) | +1.17 (y8) | **+2.49 (y7)** | €21 |
+| **Base: H7 €1,000, upkeep €73 (team decision)** | −2.46 (never) | −1.14 (y10) | **+0.18 (y9)** | **€30** |
+| Team document (H7 €825, upkeep €50) | −0.15 (y9) | +1.17 (y8) | +2.49 (y7) | €21 |
 | Part 1 cheap H7 (€800, upkeep €39) | +0.49 (y9) | +1.80 (y8) | +3.12 (y7) | €19 |
-| **Part 1 mid H7 (€1,585, upkeep €73)** | −7.17 (never) | −5.85 (never) | **−4.53 (never)** | **€48** |
+| Part 1 mid H7 (€1,585, upkeep €73) | −7.17 (never) | −5.85 (never) | −4.53 (never) | €48 |
 | Part 1 dear H7 (€2,370, upkeep €106) | −14.78 | −13.46 | −12.15 | €77 |
-| Mid H7, adoption 40 % | −8.93 | −8.05 | −7.17 | €71 |
-| Mid H7, no tender packages | −12.51 | −11.19 | −9.87 | €68 |
-| Mid H7, no extra machine sales | −8.71 | −7.39 | −6.07 | €54 |
+| Base, adoption 40 % | −4.22 | −3.34 | −2.46 | €44 |
+| Base, no tender packages | −7.80 | −6.48 | −5.16 | €50 |
+| Base, no extra machine sales | −4.00 | −2.68 | −1.36 (y10) | €36 |
 
 **What the table says, plainly.**
 
 - The team document's model is reproduced exactly: at €30 and H7 €825 it gives NPV +€2.49 M, deepest cumulative
   −€2.94 M, payback in year 7 [S1].
-- But €825 is the midpoint of a parts-only range. Part 1's factory-fit estimate is €800–2,370 capex (mid €1,585)
-  plus €39–106 a year upkeep (estimated [S9]). At the mid cost NPV is −€4.5 M at €30 and the plan never pays back.
-- **The design-to-cost target:** at €30, NPV stays at zero or above only if H7 capex is at most €1,020 (upkeep €73)
-  or €1,130 (upkeep €50) (hypothetical [S1]). At €20 the limit is €690, below even our cheapest estimate once upkeep
-  is counted. That is why the fee is €30 and not €20.
+- **Base (H7 €1,000, team decision): at €30 NPV is +€0.18 M, payback in year 9, deepest cumulative −€3.83 M.**
+  It needs at least 59 % of weighed units with a paying operator. €30 is the break-even fee, the lowest that works;
+  €20 gives −€2.46 M (hypothetical [S1]).
+- €825 is the midpoint of a parts-only range. Part 1's factory-fit estimate is €800–2,370 capex (mid €1,585)
+  plus €39–106 a year upkeep (estimated [S9]). At Part 1's mid cost NPV is −€4.53 M at €30 and the plan never pays
+  back; at the cheap end (€800, upkeep €39) it is +€3.12 M.
+- **The margin is thin:** at €30, NPV stays at zero or above only if H7 capex is at most €1,020 (upkeep €73)
+  or €1,130 (upkeep €50) (hypothetical [S1]), just above the €1,000 planning figure. At €20 the limit is €690,
+  below even our cheapest estimate. That is why the fee is €30 and not €20.
 - Tender packages and extra machine sales carry a large share of the result. Revenue is fee × adoption, so a higher
   fee only helps if it does not cut adoption by more than a third.
 
-**This is the main risk of the business case.** We do not hide it behind the team-document NPV. The answer is a
-design-to-cost target of about €1,000 per unit, confirmed by a supplier quote and a pilot before any fleet-wide
-rollout. Charging part of H7 in the machine price would lower the fee needed, but the challenge lead said customers
+**This is the main risk of the business case.** The €1,000 planning figure sits at the cheap end of Part 1's range
+and only about 2 % below the ~€1,020 break-even cost. A supplier quote for the self-lift is the first thing to confirm, then a
+pilot, before any fleet-wide rollout. Charging part of H7 in the machine price would lower the fee needed, but the challenge lead said customers
 are price-sensitive and today's weighing adds about 20 % to the price (observed [S12]), so it is not modelled.
 
 **Why customers do not pay.** If customers had to pay for weighing, some would opt out. An operator will not move
@@ -223,25 +232,26 @@ Before a fleet-wide rollout, a pilot of about 1,000 new units with one challenge
 | Does a challenger win with the data? | Bids and wins in the pilot region | Per-kg bids beat per-visit prices |
 
 If operators do not join, Europress stops the pilot at a loss of about €1.5 M in the team model (hypothetical [S13]).
-That figure uses H7 at €825; at a higher H7 cost the loss is larger, which is one more reason to get the quote first.
+That figure uses H7 at €825; at the €1,000 base or higher the loss is larger, which is one more reason to get the
+quote first.
 
 ## 8. Risks and what is untested
 
 | Risk | Status | Answer |
 |---|---|---|
-| **H7 cost above about €1,000** | Biggest risk. Mid estimate €1,585 gives NPV −€4.5 M | Design-to-cost target; supplier quote first; pilot |
+| **H7 cost above about €1,000** | Biggest risk. Above ~€1,020 €30 no longer pays back; Part 1's mid estimate €1,585 gives NPV −€4.53 M | Supplier quote first; pilot |
 | Operators will not pay €30 | Untested; no reference point | Pitch on contracts won and risk premium removed; pilot |
-| Adoption below 60 % | A guess. At 40 % no fee in range pays back with mid H7 cost [S2] | Pilot |
+| Adoption below 60 % | A guess. At the base the plan needs ≥ 59 % paying at €30; at 40 % NPV is −€2.46 M [S1] | Pilot |
 | H7 physics in the field | Untested: centre of mass, sideways tipping on a narrow three-point support, ice or debris under the runner fronts (only about 1.8 mm of lift at 1 m from the pivot) [S9] | Test loads; contact check; pilot |
 | CE marking | A self-lifting compactor is a new machine function and needs a CE risk assessment (Machinery Directive 2006/42/EC; Regulation (EU) 2023/1230 from 20 Jan 2027) | Risk assessment before the pilot |
-| DUO not costed | H7 is COMBI only; DUO uses H1 or H5 | Confirm the COMBI/DUO split of the 1,200 units |
+| DUO not costed | H7 is COMBI only; DUO uses H1 or H5. The COMBI/DUO split is unknown; the model assumes all 1,200 new units are weighed at the H7 cost | Cost H1/H5 for DUO |
 | Customer consent | Assumed, not asked | Measure in the pilot |
 | Incumbent reaction | Not modelled | Same service on equal terms for all operators |
 | Market concentration | In the simulation it can rise (HHI about 5,350 → 6,170) [S5] | Watch in the pilot |
 | All market numbers are synthetic | One region, one tender round, closed-form bids | Real tender data from the pilot |
 
-Manufacturers that invest in services often see costs rise without matching returns [R5]. The design-to-cost
-target and the pilot gates are our answer to that risk.
+Manufacturers that invest in services often see costs rise without matching returns [R5]. The supplier quote
+for H7 and the pilot gates are our answer to that risk.
 
 **What we will not do.** No route optimisation: Europress does not want to enter transport, and direct integration
 with operators has not worked [S12]. No billing by device weight: the certified weighbridge stays the bill. No
@@ -249,7 +259,7 @@ municipal waste: there the customer cannot choose the operator. Biowaste is left
 
 ## 9. Roadmap
 
-1. **Now:** supplier quote for H7; CE risk assessment; confirm the COMBI/DUO split.
+1. **Now:** supplier quote for H7 (confirm the €1,000 planning figure); CE risk assessment; cost H1/H5 for DUO.
 2. **Pilot (2 years):** about 1,000 new COMBI units, one challenger, the pass conditions in §7.
 3. **Rollout:** H7 on every new COMBI; DUO with H1 or H5 if the pilot supports it; H7-2 where higher accuracy pays.
 4. **Older fleet (for now not in the plan):** a virtual scale could later estimate weights for the existing base of
@@ -291,7 +301,7 @@ municipal waste: there the customer cannot choose the operator. Biowaste is left
 
 - [R1] Paananen, P. (2024). Evaluating the economic impact of implementing fill level sensors in HSY municipal solid
   waste collection. Master's thesis, LUT University. https://lutpub.lut.fi/handle/10024/167131
-- [R2] Weiergraeber, S. & Wolf, C. (2023). Bidder asymmetries in procurement auctions: Efficiency vs. information –
+- [R2] Carnehl, C. & Weiergraeber, S. (2023). Bidder asymmetries in procurement auctions: Efficiency vs. information –
   Evidence from railway passenger services. International Journal of Industrial Organization 87, 102902.
   doi:10.1016/j.ijindorg.2022.102902
 - [R3] De Silva, D.G., Dunne, T., Kankanamge, A. & Kosmopoulou, G. (2008). The impact of public information on
