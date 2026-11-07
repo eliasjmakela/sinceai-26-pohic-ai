@@ -44,6 +44,10 @@ pipeline: when a number changes, change it here.
   Installed cost €1,034–3,008 factory-fit (team estimates; no supplier prices found), COMBI only, retrofit not
   recommended. Accuracy target 1σ ≤ 5 % after 10 shared tickets (≤ 3 % lifting both ends, which needs a front
   cylinder not in the cost).
+- Two failure modes found in the review of the team's paper (`reviews/SELF_WEIGHING_PAPER_REVIEW.md`), not yet in
+  the error budget: **sideways tipping** (the support triangle is ~±0.21 m wide, so an off-centre load can leave one
+  rear runner down) and **runner contact near the pivot** (only ~1.8 mm of lift at 1 m; ice, debris or frozen runners
+  can carry load). Mitigations in §19.6 are untested.
 - Hydraulic weighing exists on refuse trucks, forklifts and hook-lifts (closest: Hiab/Cargotec, truck-side, with a
   centre-of-mass estimate); we found no compactor that lifts itself to weigh. No freedom-to-operate check was done.
 

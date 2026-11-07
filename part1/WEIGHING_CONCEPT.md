@@ -1032,6 +1032,20 @@ calibration. Its half-full figure matches case A.
     foot into "no reading".
 - **Frame.** The rear frame gets a 31–57 kN point load where nothing carries load today. It needs FEA and local
   reinforcement, both in the cost lines (mechanical and NRE) and in ENGINEER_QUESTIONS 11.
+- **Sideways tipping (narrow support triangle).** During a reading the unit stands on three points: the two
+  runner fronts and the foot. With runners ~1 m apart (assumption), the triangle is only about ±0.21 m wide at the
+  loaded centre of mass (x/L ≈ 0.58). An off-centre load (wet waste on one side) can move the centre of mass
+  outside it, so one rear runner stays on the ground and the cylinder reads too low without noticing
+  (SELF_WEIGHING_PAPER_REVIEW row 2). Mitigation: two tilt sensors (pitch and roll) on the frame; a reading is
+  rejected if roll changes during the lift, and the plateau check of §19.4 step 6 catches a partial lift.
+  Alternative: two feet, one under each runner, read separately (cost not estimated).
+- **Runner contact near the pivot (debris, ice, frozen runners).** A 10 mm lift at the cylinder raises the runner
+  only 10 mm × s/L, about 1.8 mm at s = 1 m from the pivot, and frame sag reduces that further. Ice, mud or debris
+  under the front third of the runners will often still touch, carrying load past the cylinder. Runners frozen to
+  the ground can also bias the reading *high* (adhesion) (SELF_WEIGHING_PAPER_REVIEW row 10). Mitigation: compare
+  the lift curve with the expected stiffness (a contact shows as a kink), reject readings below 0 °C after rain
+  until a check lift releases the runners, and flag sites with a step in the nightly trend. Both items are
+  untested and go to ENGINEER_QUESTIONS.
 - **Fatigue.** ≈445 lifts a year (365 nightly + 2 per pick-up at ~40 pick-ups per device a year, review row 4),
   not the PDF's ~1,000. Each lift loads the cylinder for ~30 s, so fatigue is not a concern on paper.
 

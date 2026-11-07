@@ -18,6 +18,7 @@ TRIP_LINES = ("LIFT_FEE", "TRANSPORT", "FUEL_SURCHARGE", "EMERGENCY_SURCHARGE", 
 TONNE_LINES = ("PROCESSING", "HAUL_PER_TONNE")
 CREDIT_LINES = ("MATERIAL_CREDIT",)
 LOW_FILL_PCT = 60
+FULL_FILL_PCT = 90
 
 
 def sql_in(values: tuple[str, ...]) -> str:
@@ -46,6 +47,42 @@ def device_charges(con: duckdb.DuckDBPyConnection, region: str | None = None,
         GROUP BY ALL ORDER BY k.device_id""", params).df()
     df[["trip_cents", "tonne_cents"]] = df[["trip_cents", "tonne_cents"]].fillna(0).astype("int64")
     return df
+
+
+def visit_cost_by_fill(con: duckdb.DuckDBPyConnection, exclude: tuple[str, ...] = EXCLUDED_MATERIALS) -> list[dict]:
+    """Per-visit charges vs per-tonne cost, by how full the compactor was at the lift (screen 1).
+
+    Invoice lines join to lifts by operator_job_ref. Per band: median per-visit charge (TRIP_LINES), median kg
+    collected, and per-visit charges divided by the tonnes collected (EUR per tonne). Completed lifts with a
+    device weight only; excluded materials left out.
+    """
+    rows = con.execute(f"""
+        WITH j AS (SELECT operator_job_ref, sum(round(amount_eur * 100)) AS trip_cents
+                   FROM invoice_lines WHERE line_type IN {sql_in(TRIP_LINES)} GROUP BY 1)
+        SELECT CASE WHEN c.device_fill_pct_before < {LOW_FILL_PCT} THEN 0
+                    WHEN c.device_fill_pct_before < {FULL_FILL_PCT} THEN 1 ELSE 2 END AS band,
+               count(*), median(j.trip_cents), median(c.device_estimated_collected_kg),
+               sum(j.trip_cents), sum(c.device_estimated_collected_kg)
+        FROM collection_events c JOIN j USING (operator_job_ref) JOIN devices d USING (device_id)
+        WHERE c.status = 'COMPLETED' AND c.device_fill_pct_before IS NOT NULL AND c.device_estimated_collected_kg > 0
+          AND d.material_stream NOT IN {sql_in(exclude)}
+        GROUP BY 1 ORDER BY 1""").fetchall()
+    labels = (f"under {LOW_FILL_PCT} % full", f"{LOW_FILL_PCT}–{FULL_FILL_PCT} % full", f"{FULL_FILL_PCT} % full or more")
+    src = ("invoice_lines.line_type", "invoice_lines.amount_eur", "invoice_lines.operator_job_ref",
+           "collection_events.device_fill_pct_before", "collection_events.device_estimated_collected_kg")
+    total = sum(r[1] for r in rows)
+    out = []
+    for band, n, med_cents, med_kg, cents, kg in rows:
+        out.append({
+            "band": labels[band], "lifts": int(n), "share_pct": round(100 * n / total, 1),
+            "visit_eur": Figure(round(med_cents / 100), "EUR", "observed", "median per-visit charges per lift (TRIP_LINES)",
+                                src).to_dict(),
+            "kg": Figure(round(med_kg), "kg", "estimated", "median device-estimated kg collected per lift", src).to_dict(),
+            "eur_per_t": Figure(round(cents / kg * 10, 1), "EUR/t", "observed",
+                                "sum(per-visit charges) / sum(kg collected) x 1000, this band", src,
+                                assumptions=("Tonnes are the device-side estimate",)).to_dict(),
+        })
+    return out
 
 
 def fleet_facts(con: duckdb.DuckDBPyConnection) -> dict:
@@ -99,4 +136,5 @@ def fleet_facts(con: duckdb.DuckDBPyConnection) -> dict:
                                           fill_src).to_dict(),
         "fill_at_lift_histogram": [{"bin_pct": b, "lifts": n} for b, n in hist],
         "fill_by_trigger": [{"trigger_type": t, "lifts": n, "median_fill_pct": m} for t, n, m in by_trigger],
+        "visit_cost_by_fill": visit_cost_by_fill(con),
     }

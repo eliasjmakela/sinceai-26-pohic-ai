@@ -427,7 +427,174 @@
       "tag": "observed",
       "unit": "%",
       "value": 56.5
-    }
+    },
+    "visit_cost_by_fill": [
+      {
+        "band": "under 60 % full",
+        "eur_per_t": {
+          "assumptions": [
+            "Tonnes are the device-side estimate"
+          ],
+          "formula": "sum(per-visit charges) / sum(kg collected) x 1000, this band",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "observed",
+          "unit": "EUR/t",
+          "value": 166.8
+        },
+        "kg": {
+          "assumptions": [],
+          "formula": "median device-estimated kg collected per lift",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "estimated",
+          "unit": "kg",
+          "value": 980
+        },
+        "lifts": 3378,
+        "share_pct": 28.3,
+        "visit_eur": {
+          "assumptions": [],
+          "formula": "median per-visit charges per lift (TRIP_LINES)",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "observed",
+          "unit": "EUR",
+          "value": 143
+        }
+      },
+      {
+        "band": "60–90 % full",
+        "eur_per_t": {
+          "assumptions": [
+            "Tonnes are the device-side estimate"
+          ],
+          "formula": "sum(per-visit charges) / sum(kg collected) x 1000, this band",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "observed",
+          "unit": "EUR/t",
+          "value": 69.6
+        },
+        "kg": {
+          "assumptions": [],
+          "formula": "median device-estimated kg collected per lift",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "estimated",
+          "unit": "kg",
+          "value": 2205
+        },
+        "lifts": 5947,
+        "share_pct": 49.8,
+        "visit_eur": {
+          "assumptions": [],
+          "formula": "median per-visit charges per lift (TRIP_LINES)",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "observed",
+          "unit": "EUR",
+          "value": 150
+        }
+      },
+      {
+        "band": "90 % full or more",
+        "eur_per_t": {
+          "assumptions": [
+            "Tonnes are the device-side estimate"
+          ],
+          "formula": "sum(per-visit charges) / sum(kg collected) x 1000, this band",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "observed",
+          "unit": "EUR/t",
+          "value": 49.0
+        },
+        "kg": {
+          "assumptions": [],
+          "formula": "median device-estimated kg collected per lift",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "estimated",
+          "unit": "kg",
+          "value": 3230
+        },
+        "lifts": 2611,
+        "share_pct": 21.9,
+        "visit_eur": {
+          "assumptions": [],
+          "formula": "median per-visit charges per lift (TRIP_LINES)",
+          "row_ids": [],
+          "sigma": null,
+          "sources": [
+            "invoice_lines.line_type",
+            "invoice_lines.amount_eur",
+            "invoice_lines.operator_job_ref",
+            "collection_events.device_fill_pct_before",
+            "collection_events.device_estimated_collected_kg"
+          ],
+          "tag": "observed",
+          "unit": "EUR",
+          "value": 160
+        }
+      }
+    ]
   },
   "forecast": {
     "by_material": [

@@ -36,3 +36,5 @@ own power pack, and the pressure gives the weight.
     clearance is there under the frame?
 14. **Fill pattern.** Is the press at the hook end? Where does waste build up first in a CombiMax: at the ram face, or
     pushed towards the door? Does the ram's pressure rise per stroke show how far the packed waste reaches?
+15. **Runners.** How far apart are a CombiMax's runners, and how often is waste loaded off-centre (one side heavier)?
+    In winter, do runners freeze to the ground, and is there ice or debris under the front of the runners?

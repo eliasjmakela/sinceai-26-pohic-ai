@@ -26,6 +26,7 @@ export interface Fleet {
   low_fill_lift_share_pct: Figure
   fill_at_lift_histogram: { bin_pct: number; lifts: number }[]
   fill_by_trigger: { trigger_type: string; lifts: number; median_fill_pct: number }[]
+  visit_cost_by_fill: { band: string; lifts: number; share_pct: number; visit_eur: Figure; kg: Figure; eur_per_t: Figure }[]
 }
 
 export interface Market {

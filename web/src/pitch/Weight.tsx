@@ -46,6 +46,8 @@ export function Weight() {
             <li>New COMBI units only; retrofit costs €{retro?.[0].toLocaleString('en')}–{retro?.[1].toLocaleString('en')}</li>
             <li>At most {h7.pressure_bar[1]} bar of the ~{h7.system_pressure_bar} bar system pressure ({h7.design_bore_mm} mm bore)</li>
             <li>{h7.stroke_margin_mm} mm stroke margin: rails and soft ground need a pad</li>
+            <li>Narrow support while lifted: an off-centre load can tip it sideways (tilt sensors reject the reading)</li>
+            <li>Ice or debris under the runner fronts can carry load (lift-curve check)</li>
             <li>A new machine function: CE risk assessment needed</li>
           </ul>
         </Card>
