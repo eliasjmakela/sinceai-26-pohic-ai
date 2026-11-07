@@ -46,7 +46,7 @@ export function Business() {
 
       <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="mb-3 text-sm text-slate-500">Value per device per year, from our pipeline vs the business team's independent estimate (fleet averages, synthetic; do not add up — levers overlap)</div>
-        <table className="w-full text-sm tabular-nums">
+        <div className="overflow-x-auto"><table className="w-full text-sm tabular-nums">
           <thead className="text-left text-slate-500"><tr><th className="py-1">Value</th><th>Needs the weight?</th><th>Our pipeline</th><th>Business team</th></tr></thead>
           <tbody>
             {v.rows.map((row) => (
@@ -61,7 +61,7 @@ export function Business() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table></div>
         <p className="mt-2 text-xs text-slate-500">{v.note}</p>
       </div>
 
