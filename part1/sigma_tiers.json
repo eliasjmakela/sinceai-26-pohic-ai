@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "chosen_tier": "T1",
+  "chosen_tier": "H1",
   "tiers": [
     {
       "id": "T0",
@@ -18,7 +18,7 @@
       },
       "bom_eur_per_device": {
         "low": 0,
-        "high": 0
+        "high": 50
       },
       "install_hours": {
         "low": 0,
@@ -45,9 +45,9 @@
       "name": "Cheap strain gauges on frame / container rails",
       "principle": "Four strain-gauge full bridges on the load-carrying frame (COMBI) or the container rails (DUO) read by a low-cost 24-bit bridge amplifier on the SMART modem, auto-zeroed after each lift.",
       "sigma_rel_pct": {
-        "low": 1.1,
-        "mid": 1.9,
-        "high": 3.5
+        "low": 1.2,
+        "mid": 2.8,
+        "high": 5.3
       },
       "sigma_abs_kg": {
         "low": 20.0,
@@ -67,7 +67,8 @@
         "DUO"
       ],
       "weak_for": [
-        "LOADS_UNDER_0.5T"
+        "LOADS_UNDER_0.5T",
+        "COMBI_SUPPORT_CHANGES"
       ],
       "evidence_tag": "estimate",
       "sources": [
@@ -93,8 +94,8 @@
         "high": 25.0
       },
       "bom_eur_per_device": {
-        "low": 1380,
-        "high": 2860
+        "low": 1160,
+        "high": 2600
       },
       "install_hours": {
         "low": 8,
@@ -112,7 +113,123 @@
         "[10]",
         "[11]",
         "[12]",
-        "[13]"
+        "[13]",
+        "[26]"
+      ]
+    },
+    {
+      "id": "H1",
+      "name": "Hopper-stage weighing plate + fleet self-calibration (hopper idea: Europress)",
+      "principle": "A small load-cell plate in the charging chamber weighs each charge before and after the ram stroke; the device sums the charges and the fleet calibrates the sum from shared weighbridge tickets.",
+      "sigma_rel_pct": {
+        "low": 2.3,
+        "mid": 3.4,
+        "high": 5.4
+      },
+      "sigma_abs_kg": {
+        "low": 5.0,
+        "mid": 10.0,
+        "high": 20.0
+      },
+      "bom_eur_per_device": {
+        "low": 270,
+        "high": 1430
+      },
+      "install_hours": {
+        "low": 10,
+        "high": 20
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [
+        "RETROFIT_UNITS",
+        "BIOWASTE_LIQUIDS",
+        "NEW_DEVICE_BEFORE_TICKETS"
+      ],
+      "evidence_tag": "simulation_target",
+      "sources": [
+        "[22]",
+        "[25]",
+        "[28]",
+        "[29]",
+        "[36]"
+      ]
+    },
+    {
+      "id": "H5",
+      "name": "Weighing guide rails (team idea)",
+      "principle": "The unit (COMBI) or container (DUO) rests only on two guide rails, each on two shear-beam load cells with overload stops and side restraint; weight = sum of the four cells, re-tared at every exchange.",
+      "sigma_rel_pct": {
+        "low": 0.6,
+        "mid": 1.0,
+        "high": 2.0
+      },
+      "sigma_abs_kg": {
+        "low": 10.0,
+        "mid": 20.0,
+        "high": 40.0
+      },
+      "bom_eur_per_device": {
+        "low": 1310,
+        "high": 3100
+      },
+      "install_hours": {
+        "low": 12,
+        "high": 24
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [
+        "SITES_WITHOUT_RAILS",
+        "ICE_AND_DEBRIS"
+      ],
+      "evidence_tag": "estimate",
+      "sources": [
+        "[8]",
+        "[12]",
+        "[13]",
+        "[20]",
+        "[26]",
+        "[27]"
+      ]
+    },
+    {
+      "id": "PS",
+      "name": "Platform scale under the whole unit (Europress's existing option)",
+      "principle": "A steel weighing platform or weighing beams with ramps on a foundation; the whole unit or container stands on it.",
+      "sigma_rel_pct": {
+        "low": 0.2,
+        "mid": 0.5,
+        "high": 1.0
+      },
+      "sigma_abs_kg": {
+        "low": 10.0,
+        "mid": 20.0,
+        "high": 40.0
+      },
+      "bom_eur_per_device": {
+        "low": 4800,
+        "high": 12000
+      },
+      "install_hours": {
+        "low": 16,
+        "high": 32
+      },
+      "suits": [
+        "COMBI",
+        "DUO"
+      ],
+      "weak_for": [
+        "COST"
+      ],
+      "evidence_tag": "estimate",
+      "sources": [
+        "[27]",
+        "[36]"
       ]
     }
   ]

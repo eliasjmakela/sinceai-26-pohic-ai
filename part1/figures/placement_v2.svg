@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="DejaVu Sans, Arial, sans-serif" font-size="12">
+  <title>FullLoad v2 placement: H1 hopper weighing plate and H5 weighing guide rails on COMBI and DUO</title>
+  <!-- Self-made sketch, not to scale. Hand-written SVG; this file is its own source. -->
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0b0b0b"/>
+    </marker>
+    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#52514e" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="960" height="560" fill="#fcfcfb"/>
+  <text x="20" y="28" font-size="15" font-weight="bold" fill="#0b0b0b">Where the sensors go (sketch, not to scale; assumptions in ENGINEER_QUESTIONS.md)</text>
+
+  <!-- ================= COMBI ================= -->
+  <text x="20" y="62" font-size="13" font-weight="bold" fill="#0b0b0b">COMBI: one unit, lifted and transported whole</text>
+  <!-- ground -->
+  <rect x="20" y="246" width="440" height="14" fill="url(#hatch)"/>
+  <!-- container body -->
+  <rect x="40" y="100" width="270" height="120" fill="#eeede9" stroke="#52514e" stroke-width="1.5"/>
+  <text x="110" y="165" fill="#52514e">container (waste)</text>
+  <!-- press section -->
+  <rect x="310" y="120" width="130" height="100" fill="#e4e3df" stroke="#52514e" stroke-width="1.5"/>
+  <!-- hopper opening -->
+  <path d="M330,120 L350,92 L430,92 L440,120" fill="none" stroke="#52514e" stroke-width="1.5"/>
+  <text x="352" y="86" fill="#52514e" font-size="11">infeed / hopper</text>
+  <!-- ram -->
+  <rect x="405" y="150" width="28" height="62" fill="#c9c8c3" stroke="#52514e"/>
+  <text x="401" y="146" fill="#52514e" font-size="10">ram</text>
+  <!-- H1 plate -->
+  <rect x="330" y="208" width="72" height="6" fill="#2a78d6"/>
+  <circle cx="338" cy="217" r="3" fill="#2a78d6"/><circle cx="394" cy="217" r="3" fill="#2a78d6"/>
+  <!-- charge -->
+  <rect x="345" y="184" width="34" height="23" fill="#f3c9a8" stroke="#eb6834"/>
+  <text x="349" y="199" font-size="10" fill="#0b0b0b">charge</text>
+  <!-- ram arrow -->
+  <line x1="402" y1="135" x2="330" y2="135" stroke="#0b0b0b" marker-end="url(#a)"/>
+  <text x="336" y="131" font-size="10" fill="#0b0b0b">stroke</text>
+  <!-- skids/rollers -->
+  <rect x="40" y="220" width="400" height="8" fill="#9c9b96"/>
+  <circle cx="60" cy="236" r="8" fill="#52514e"/>
+  <!-- H5 rails -->
+  <rect x="30" y="232" width="420" height="8" fill="#c9a227"/>
+  <rect x="80" y="240" width="16" height="7" fill="#c9a227" stroke="#7a5f00"/>
+  <rect x="380" y="240" width="16" height="7" fill="#c9a227" stroke="#7a5f00"/>
+  <!-- labels COMBI -->
+  <text x="20" y="284" fill="#2a78d6" font-weight="bold">H1 (blue): load-cell plate in the charging chamber floor.</text>
+  <text x="20" y="300" fill="#0b0b0b">Weighs each charge before and after the stroke; sums the charges. Travels</text>
+  <text x="20" y="316" fill="#0b0b0b">with the unit, but carries only the plate + charge, never the 8–9.5 t unit.</text>
+  <text x="20" y="338" fill="#7a5f00" font-weight="bold">H5 (gold): guide rails on 4 shear-beam cells, on the ground.</text>
+  <text x="20" y="354" fill="#0b0b0b">Weighs machine + waste (8–9.5 t), re-tared when the emptied unit returns.</text>
+  <text x="20" y="370" fill="#0b0b0b">Needs overload stops (set-down), check rods (pull-on force 4–8 t).</text>
+
+  <!-- ================= DUO ================= -->
+  <text x="500" y="62" font-size="13" font-weight="bold" fill="#0b0b0b">DUO: compactor stays, only the container leaves</text>
+  <rect x="500" y="246" width="440" height="14" fill="url(#hatch)"/>
+  <!-- container -->
+  <rect x="510" y="100" width="270" height="124" fill="#eeede9" stroke="#52514e" stroke-width="1.5"/>
+  <text x="575" y="165" fill="#52514e">detachable container</text>
+  <rect x="510" y="224" width="270" height="6" fill="#9c9b96"/>
+  <!-- H5 rails under container only -->
+  <rect x="505" y="232" width="285" height="8" fill="#c9a227"/>
+  <rect x="540" y="240" width="16" height="7" fill="#c9a227" stroke="#7a5f00"/>
+  <rect x="745" y="240" width="16" height="7" fill="#c9a227" stroke="#7a5f00"/>
+  <!-- compactor on own feet -->
+  <rect x="790" y="120" width="140" height="104" fill="#e4e3df" stroke="#52514e" stroke-width="1.5"/>
+  <path d="M810,120 L830,92 L910,92 L920,120" fill="none" stroke="#52514e" stroke-width="1.5"/>
+  <rect x="890" y="150" width="28" height="64" fill="#c9c8c3" stroke="#52514e"/>
+  <rect x="812" y="212" width="72" height="6" fill="#2a78d6"/>
+  <circle cx="820" cy="221" r="3" fill="#2a78d6"/><circle cx="876" cy="221" r="3" fill="#2a78d6"/>
+  <rect x="827" y="188" width="34" height="23" fill="#f3c9a8" stroke="#eb6834"/>
+  <rect x="800" y="224" width="12" height="22" fill="#52514e"/><rect x="910" y="224" width="12" height="22" fill="#52514e"/>
+  <text x="826" y="242" font-size="10" fill="#52514e">own feet</text>
+  <!-- coupling -->
+  <rect x="778" y="150" width="14" height="40" fill="#eb6834" opacity="0.7"/>
+  <text x="742" y="146" font-size="10" fill="#eb6834">coupling</text>
+  <text x="500" y="284" fill="#2a78d6" font-weight="bold">H1: identical plate in the stationary compactor.</text>
+  <text x="500" y="300" fill="#0b0b0b">Container exchange does not matter: the sum restarts at zero when the</text>
+  <text x="500" y="316" fill="#0b0b0b">empty container docks. Same part for COMBI and DUO.</text>
+  <text x="500" y="338" fill="#7a5f00" font-weight="bold">H5: rails carry the container only (2–3 t + up to ~8 t waste).</text>
+  <text x="500" y="354" fill="#0b0b0b">Risk: the coupling to the compactor may carry part of the container</text>
+  <text x="500" y="370" fill="#0b0b0b">weight (bypass). Ram forces pass through it: read only at rest.</text>
+
+  <!-- ================= H1 detail ================= -->
+  <rect x="20" y="392" width="920" height="152" fill="#f4f3f0" stroke="#e4e3df"/>
+  <text x="34" y="414" font-size="13" font-weight="bold" fill="#0b0b0b">H1 detail: differential reading per stroke (why errors do not pile up)</text>
+  <!-- floor -->
+  <rect x="40" y="490" width="360" height="16" fill="#9c9b96"/>
+  <rect x="120" y="478" width="200" height="10" fill="#2a78d6"/>
+  <rect x="135" y="488" width="14" height="6" fill="#1a4f94"/><rect x="291" y="488" width="14" height="6" fill="#1a4f94"/>
+  <rect x="160" y="488" width="10" height="3" fill="#0b0b0b"/><rect x="270" y="488" width="10" height="3" fill="#0b0b0b"/>
+  <text x="122" y="472" font-size="10" fill="#2a78d6">plate 1.4 × 0.8 m on 4 × 500 kg cells</text>
+  <text x="40" y="524" font-size="10" fill="#0b0b0b">black: overload stops, gap 0.24–0.48 mm (calc/loads.py).</text>
+  <text x="40" y="538" font-size="10" fill="#0b0b0b">Impacts up to ~12 t and 7–14 t during the stroke go into the floor.</text>
+  <text x="430" y="446" fill="#0b0b0b">1. door closes → wait 2–3 s → reading B (before stroke)</text>
+  <text x="430" y="464" fill="#0b0b0b">2. ram stroke (cells protected by the stops; readings ignored)</text>
+  <text x="430" y="482" fill="#0b0b0b">3. ram back, settled → reading A (after stroke)</text>
+  <text x="430" y="500" fill="#0b0b0b">4. charge into container = B − A. Material that sticks or falls back</text>
+  <text x="430" y="516" fill="#0b0b0b">   is counted when it finally leaves the plate (the sum telescopes).</text>
+  <text x="430" y="534" fill="#0b0b0b">5. bias (wall bridging) is learned from weighbridge tickets (H2).</text>
+</svg>

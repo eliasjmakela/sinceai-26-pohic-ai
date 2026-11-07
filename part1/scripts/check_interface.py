@@ -1,4 +1,4 @@
-"""QG6 check: sigma_tiers.json has exactly the shape of briefs/PART1_WEIGHING.md section 4, chosen_tier is T1,
+"""QG6 check: sigma_tiers.json has exactly the shape of briefs/PART1_WEIGHING.md section 4 (v2: six tiers, chosen_tier = the v2 recommendation),
 and the comparison, error-budget and accuracy tables in WEIGHING_CONCEPT.md are verbatim copies of the
 generated tables (same numbers)."""
 from __future__ import annotations
@@ -24,10 +24,11 @@ def main() -> int:
     for k, typ in TOP.items():
         if not isinstance(doc.get(k), typ):
             errs.append(f"{k} not {typ.__name__}")
-    if doc.get("schema_version") != 1 or doc.get("chosen_tier") != "T1":
-        errs.append("schema_version must be 1 and chosen_tier T1")
     ids = [t.get("id") for t in doc["tiers"]]
-    if ids != ["T0", "T1", "T2"]:
+    # v2 (briefs/WEIGHING_V2.md): same shape, more tiers; chosen_tier is the v2 recommendation (lead to confirm)
+    if doc.get("schema_version") != 1 or doc.get("chosen_tier") not in ids:
+        errs.append("schema_version must be 1 and chosen_tier one of the tier ids")
+    if ids != ["T0", "T1", "T2", "H1", "H5", "PS"]:
         errs.append(f"tier ids {ids}")
     for t in doc["tiers"]:
         if set(t) != set(TIER):
@@ -50,7 +51,8 @@ def main() -> int:
         if not all(s.startswith("[") and s.endswith("]") for s in t["sources"]):
             errs.append(f"{t['id']}.sources {t['sources']}")
     d1 = (PART1 / "WEIGHING_CONCEPT.md").read_text()
-    for name in ("tiers_table.md", "error_budget.md", "accuracy_summary.md"):
+    for name in ("tiers_table.md", "error_budget.md", "accuracy_summary.md", "calc_installed_cost_summary.md",
+                 "self_calibration.md", "charge_sum.md", "fusion.md"):
         if (GEN / name).read_text().strip() not in d1:
             errs.append(f"WEIGHING_CONCEPT.md does not contain generated/{name} verbatim")
     print("sigma_tiers.json + D1 table:", "OK" if not errs else "FAIL")

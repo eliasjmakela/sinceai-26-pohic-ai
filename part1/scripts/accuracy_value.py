@@ -78,7 +78,8 @@ def main(argv=None):
     root = check_public_root(a.public)
     con = open_dataset(root)
     m = con.sql(SQL).fetchnumpy()["m"]
-    tiers = json.loads((PART1 / "sigma_tiers.json").read_text())["tiers"]
+    doc = json.loads((PART1 / "sigma_tiers.json").read_text())
+    tiers, chosen = doc["tiers"], doc["chosen_tier"]
 
     rows = []
     for t in tiers:
@@ -113,12 +114,12 @@ def main(argv=None):
     md.append(f"Dataset's own simulated device vs ticket: {recon['pairs']} pairs, median |difference| "
               f"{recon['median_abs_diff_pct']} %, p95 {recon['p95_abs_diff_pct']} %.")
     (GEN / "accuracy_value.md").write_text("\n".join(md) + "\n")
-    (GEN / "accuracy_summary.md").write_text(summary_md(rows, tiers))
+    (GEN / "accuracy_summary.md").write_text(summary_md(rows, tiers, chosen))
     print("\n".join(md))
     chart(sweep, rows, tiers)
 
 
-def summary_md(rows, tiers) -> str:
+def summary_md(rows, tiers, chosen) -> str:
     """Mid-sigma summary table pasted verbatim into WEIGHING_CONCEPT.md section 8 (checked by check_interface.py)."""
     out = ["| Tier (mid σ) | 2.5–3.5 t loads within ±100 kg | median cost-per-tonne error | +10 % over-billing flagged on one load | false alarms | loads to see a 3 % difference |",
            "|---|---|---|---|---|---|"]
@@ -127,10 +128,13 @@ def summary_md(rows, tiers) -> str:
         cells = [f"{t['id']} ({r['sigma_rel_pct']:g} %, {r['sigma_abs_kg']:.0f} kg)", f"{r['within_100kg_2.5_3.5t']:.0%}",
                  f"{r['median_eur_per_t_error_pct']:.1f} %", f"{r['detects_+10pct_on_one_load']:.0%}",
                  f"{100 * r['false_alarm_rate']:.1f} %", str(r["loads_to_see_3pct_difference"])]
-        if t["id"] == "T1":
+        if t["id"] == chosen:
             cells = [f"**{c}**" for c in cells]
         out.append("| " + " | ".join(cells) + " |")
     return "\n".join(out) + "\n"
+
+
+OFFSET = {"T1": (-40, 5), "H5": (-30, -16), "PS": (-24, 6), "T2": (6, 6), "H1": (6, -14), "T0": (6, 6)}
 
 
 def chart(sweep, rows, tiers):
@@ -148,7 +152,7 @@ def chart(sweep, rows, tiers):
             ax.plot([mid["sigma_rel_pct"]], [mid[key]], "o", markersize=8, color=TIER_COLOR[t["id"]],
                     markeredgecolor="#fcfcfb", markeredgewidth=2, zorder=5)
             ax.annotate(f"{t['id']} {mid[key]:.0%}", (mid["sigma_rel_pct"], mid[key]), textcoords="offset points",
-                        xytext=(6, -14) if t["id"] == "T1" else (6, 6), fontsize=9, color=INK)
+                        xytext=OFFSET.get(t["id"], (6, 6)), fontsize=9, color=INK)
         ax.set_xscale("log")
         ax.set_xticks([0.25, 0.5, 1, 2, 5, 10, 20], ["0.25", "0.5", "1", "2", "5", "10", "20"])
         ax.set_ylim(0, 1.12)

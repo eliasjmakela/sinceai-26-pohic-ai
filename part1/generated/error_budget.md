@@ -6,4 +6,5 @@
 | Off-centre load / load path | 0.5 | 1.0 | 2.0 | 4 points, sum of bridges |
 | Friction / hysteresis at supports | 0.5 | 0.8 | 1.5 | read after settling, ram retracted |
 | Residue + press-cycle disturbance | 0.3 | 0.5 | 1.0 | auto-zero after each lift; read only at rest |
-| **Combined (root-sum-square)** | **1.1** | **1.9** | **3.5** | estimate |
+| Support position after each set-down (mainly COMBI; v2) | 0.5 | 2.0 | 4.0 | frame strain measures bending, not reactions: ticket cross-check |
+| **Combined (root-sum-square)** | **1.2** | **2.8** | **5.3** | estimate |

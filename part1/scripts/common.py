@@ -22,7 +22,7 @@ INK = "#0b0b0b"
 INK2 = "#52514e"
 GRID = "#e4e3df"
 S1, S2, S3 = "#2a78d6", "#eb6834", "#1baf7a"   # categorical slots 1-3, fixed order
-TIER_COLOR = {"T0": S2, "T1": S1, "T2": S3}
+TIER_COLOR = {"T0": S2, "T1": "#9a6fc0", "T2": S3, "H1": S1, "H5": "#c9a227", "PS": "#7a7a75"}  # v2: H1 takes slot 1
 
 
 def check_public_root(p: str) -> Path:

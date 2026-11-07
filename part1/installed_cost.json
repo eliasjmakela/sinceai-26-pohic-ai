@@ -1,0 +1,739 @@
+{
+ "currency": "EUR",
+ "vat": "excluded",
+ "lease_years": 6,
+ "labour_eur_per_h": [
+  55,
+  90
+ ],
+ "reference_option_eur": 2000,
+ "evidence_tag": "estimate",
+ "candidates": {
+  "T0": {
+   "name": "Virtual weight from existing pressure + fill (v1)",
+   "hardware_eur": {
+    "low": 0,
+    "high": 50
+   },
+   "retrofit_eur": {
+    "low": 10,
+    "high": 215
+   },
+   "factory_fit_eur": {
+    "low": 10,
+    "high": 125
+   },
+   "lines": [
+    {
+     "line": "sensors",
+     "item": "none (existing pressure, ram position, fill)",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "[3] existing sensors"
+    },
+    {
+     "line": "electronics",
+     "item": "none, or a faster pressure log",
+     "retrofit": [
+      0,
+      50
+     ],
+     "factory_fit": [
+      0,
+      50
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "mechanical",
+     "item": "none",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "–"
+    },
+    {
+     "line": "site work",
+     "item": "none",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "–"
+    },
+    {
+     "line": "labour",
+     "item": "remote firmware update; 0–1 h on site",
+     "retrofit": [
+      0,
+      90
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "team estimate × rate [24]"
+    },
+    {
+     "line": "calibration",
+     "item": "learned from shared weighbridge tickets (H2)",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "scripts/self_calibration.py"
+    },
+    {
+     "line": "maintenance (6 y)",
+     "item": "none beyond software",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "development (NRE)",
+     "item": "model, firmware, back end: €50–150k",
+     "retrofit": [
+      10,
+      75
+     ],
+     "factory_fit": [
+      10,
+      75
+     ],
+     "source": "team estimate"
+    }
+   ]
+  },
+  "T1": {
+   "name": "Strain gauges on frame / container rails (v1 choice)",
+   "hardware_eur": {
+    "low": 95,
+    "high": 480
+   },
+   "retrofit_eur": {
+    "low": 419,
+    "high": 1674
+   },
+   "factory_fit_eur": {
+    "low": 226,
+    "high": 1179
+   },
+   "lines": [
+    {
+     "line": "sensors",
+     "item": "16 foil gauges for 4 full bridges",
+     "retrofit": [
+      25,
+      280
+     ],
+     "factory_fit": [
+      25,
+      280
+     ],
+     "source": "[4][5]"
+    },
+    {
+     "line": "electronics",
+     "item": "24-bit bridge board, temperature sensor, connector",
+     "retrofit": [
+      10,
+      60
+     ],
+     "factory_fit": [
+      10,
+      60
+     ],
+     "source": "[6][7] + team estimate"
+    },
+    {
+     "line": "mechanical",
+     "item": "gauge covers, coating, cable, glands, enclosure",
+     "retrofit": [
+      60,
+      140
+     ],
+     "factory_fit": [
+      60,
+      140
+     ],
+     "source": "team estimate (v1 §4)"
+    },
+    {
+     "line": "site work",
+     "item": "none",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "–"
+    },
+    {
+     "line": "labour",
+     "item": "retrofit 4–8 h; factory 1–3 h",
+     "retrofit": [
+      220,
+      720
+     ],
+     "factory_fit": [
+      55,
+      270
+     ],
+     "source": "v1 §5 hours × rate [24]"
+    },
+    {
+     "line": "calibration",
+     "item": "water IBC (~1 t) at two positions, 1–1.5 h",
+     "retrofit": [
+      55,
+      135
+     ],
+     "factory_fit": [
+      28,
+      90
+     ],
+     "source": "v1 §6 × rate [24]"
+    },
+    {
+     "line": "maintenance (6 y)",
+     "item": "30–60 % chance of re-gauging one point (2–4 h + parts)",
+     "retrofit": [
+      39,
+      264
+     ],
+     "factory_fit": [
+      39,
+      264
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "development (NRE)",
+     "item": "gauge layout per family, test rig, firmware: €50–150k",
+     "retrofit": [
+      10,
+      75
+     ],
+     "factory_fit": [
+      10,
+      75
+     ],
+     "source": "team estimate"
+    }
+   ]
+  },
+  "H1": {
+   "name": "Hopper-stage weighing plate (idea: Europress / Tommi)",
+   "hardware_eur": {
+    "low": 270,
+    "high": 1430
+   },
+   "retrofit_eur": {
+    "low": 1270,
+    "high": 4923
+   },
+   "factory_fit_eur": {
+    "low": 548,
+    "high": 2363
+   },
+   "lines": [
+    {
+     "line": "sensors",
+     "item": "4 × 500 kg C3 IP68 cells under the plate",
+     "retrofit": [
+      100,
+      880
+     ],
+     "factory_fit": [
+      100,
+      880
+     ],
+     "source": "[22] €220 each list; low end [25] ≈€12 per cell + team estimate for volume C3"
+    },
+    {
+     "line": "electronics",
+     "item": "4-channel 24-bit ADC / weighing board on the SMART modem, junction",
+     "retrofit": [
+      25,
+      180
+     ],
+     "factory_fit": [
+      20,
+      150
+     ],
+     "source": "[6] HX711 board, [10] €51.95 transmitter, [9] €130 junction box; team estimate"
+    },
+    {
+     "line": "mechanical",
+     "item": "plate 1.4 × 0.8 m wear steel, cell mounts, overload stops, side stays, perimeter seal",
+     "retrofit": [
+      400,
+      1000
+     ],
+     "factory_fit": [
+      150,
+      400
+     ],
+     "source": "team estimate (retrofit: cut the chamber floor and weld a sub-frame)"
+    },
+    {
+     "line": "site work",
+     "item": "none on site; COMBI retrofit: hook-lift round trip to a workshop",
+     "retrofit": [
+      0,
+      400
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "labour",
+     "item": "retrofit 10–20 h (cut, weld, fit, wire); factory 2–4 h on the line",
+     "retrofit": [
+      550,
+      1800
+     ],
+     "factory_fit": [
+      110,
+      360
+     ],
+     "source": "hours team estimate × rate [24]"
+    },
+    {
+     "line": "calibration",
+     "item": "test weights (4 × 25 kg) on the plate, firmware set-up",
+     "retrofit": [
+      55,
+      180
+     ],
+     "factory_fit": [
+      28,
+      90
+     ],
+     "source": "team estimate × rate [24]"
+    },
+    {
+     "line": "maintenance (6 y)",
+     "item": "clean the seal gap at each service (0.25 h/yr), new seal, 30–40 % chance of one cell",
+     "retrofit": [
+      110,
+      283
+     ],
+     "factory_fit": [
+      110,
+      283
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "development (NRE)",
+     "item": "plate design per machine family, firmware gating, field test: €150–400k",
+     "retrofit": [
+      30,
+      200
+     ],
+     "factory_fit": [
+      30,
+      200
+     ],
+     "source": "team estimate"
+    }
+   ]
+  },
+  "H5": {
+   "name": "Weighing guide rails (idea: team)",
+   "hardware_eur": {
+    "low": 1310,
+    "high": 3100
+   },
+   "retrofit_eur": {
+    "low": 3412,
+    "high": 10136
+   },
+   "factory_fit_eur": {
+    "low": 2382,
+    "high": 7056
+   },
+   "lines": [
+    {
+     "line": "sensors",
+     "item": "4 × 5 t shear-beam C3 IP68 cells",
+     "retrofit": [
+      900,
+      1740
+     ],
+     "factory_fit": [
+      900,
+      1740
+     ],
+     "source": "[26] Zemic BM8H $262.50 ≈ €225–250; [8] KERN CT 5000 €435"
+    },
+    {
+     "line": "electronics",
+     "item": "IP68 summing box + weighing transmitter to the SMART modem",
+     "retrofit": [
+      110,
+      460
+     ],
+     "factory_fit": [
+      110,
+      460
+     ],
+     "source": "[9] €130 box (low: board-level summing, team estimate), [10] €51.95–[11] $350 transmitter"
+    },
+    {
+     "line": "mechanical",
+     "item": "rail modification and cell seats, overload stops, lift-off and side restraint (check rods)",
+     "retrofit": [
+      500,
+      1400
+     ],
+     "factory_fit": [
+      300,
+      900
+     ],
+     "source": "team estimate; [23] a 5 t weigh module with lift-off/tip protection lists $1,225"
+    },
+    {
+     "line": "site work",
+     "item": "level and anchor two rail bases (concrete pads), cable conduit to the unit",
+     "retrofit": [
+      800,
+      2500
+     ],
+     "factory_fit": [
+      300,
+      1000
+     ],
+     "source": "team estimate (factory-fit = new site where the base is being built anyway)"
+    },
+    {
+     "line": "labour",
+     "item": "retrofit 12–24 h (2 technicians); new installation 6–12 h extra",
+     "retrofit": [
+      660,
+      2160
+     ],
+     "factory_fit": [
+      330,
+      1080
+     ],
+     "source": "hours team estimate × rate [24]"
+    },
+    {
+     "line": "calibration",
+     "item": "known load on the rails (water IBCs or hired test weights), commissioning",
+     "retrofit": [
+      150,
+      800
+     ],
+     "factory_fit": [
+      150,
+      800
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "maintenance (6 y)",
+     "item": "clean under the rails, ice and debris checks 0.5–1 h/yr; 30–60 % chance of one cell; cable repair",
+     "retrofit": [
+      282,
+      1001
+     ],
+     "factory_fit": [
+      282,
+      1001
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "development (NRE)",
+     "item": "rail design, restraint, firmware: €50–150k",
+     "retrofit": [
+      10,
+      75
+     ],
+     "factory_fit": [
+      10,
+      75
+     ],
+     "source": "team estimate"
+    }
+   ]
+  },
+  "T2": {
+   "name": "Load cells under the unit's own frame (v1)",
+   "hardware_eur": {
+    "low": 1160,
+    "high": 2600
+   },
+   "retrofit_eur": {
+    "low": 1960,
+    "high": 5438
+   },
+   "factory_fit_eur": {
+    "low": 1635,
+    "high": 4338
+   },
+   "lines": [
+    {
+     "line": "sensors",
+     "item": "4 × 5 t shear-beam C3 cells",
+     "retrofit": [
+      900,
+      1740
+     ],
+     "factory_fit": [
+      900,
+      1740
+     ],
+     "source": "[26][8]"
+    },
+    {
+     "line": "electronics",
+     "item": "summing box + transmitter",
+     "retrofit": [
+      110,
+      460
+     ],
+     "factory_fit": [
+      110,
+      460
+     ],
+     "source": "[9][10][11]"
+    },
+    {
+     "line": "mechanical",
+     "item": "cell mounts in the frame, frame adaptation, stops",
+     "retrofit": [
+      200,
+      600
+     ],
+     "factory_fit": [
+      150,
+      400
+     ],
+     "source": "team estimate (v1 §4)"
+    },
+    {
+     "line": "site work",
+     "item": "none (cells travel with a COMBI)",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "–"
+    },
+    {
+     "line": "labour",
+     "item": "retrofit 8–16 h; factory 3–6 h",
+     "retrofit": [
+      440,
+      1440
+     ],
+     "factory_fit": [
+      165,
+      540
+     ],
+     "source": "v1 §5 hours × rate [24]"
+    },
+    {
+     "line": "calibration",
+     "item": "known load, commissioning",
+     "retrofit": [
+      150,
+      500
+     ],
+     "factory_fit": [
+      150,
+      500
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "maintenance (6 y)",
+     "item": "cells travel with a COMBI: 40–80 % chance of one cell, cable",
+     "retrofit": [
+      140,
+      548
+     ],
+     "factory_fit": [
+      140,
+      548
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "development (NRE)",
+     "item": "frame redesign per family, structural review: €100–300k",
+     "retrofit": [
+      20,
+      150
+     ],
+     "factory_fit": [
+      20,
+      150
+     ],
+     "source": "team estimate"
+    }
+   ]
+  },
+  "PS": {
+   "name": "Platform scale under the whole unit (Europress's existing option)",
+   "hardware_eur": {
+    "low": 4800,
+    "high": 12000
+   },
+   "retrofit_eur": {
+    "low": 8580,
+    "high": 23880
+   },
+   "factory_fit_eur": {
+    "low": 7860,
+    "high": 22160
+   },
+   "lines": [
+    {
+     "line": "sensors",
+     "item": "4–6 heavy cells (included in the platform price)",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "in the line below"
+    },
+    {
+     "line": "electronics",
+     "item": "indicator / transmitter (included)",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "in the line below"
+    },
+    {
+     "line": "mechanical",
+     "item": "steel weighing platform or beams with ramps, ~15 t",
+     "retrofit": [
+      4800,
+      12000
+     ],
+     "factory_fit": [
+      4800,
+      12000
+     ],
+     "source": "[27] container scale €4,800–5,620 (beams + ramps, 15 t); full deck high end team estimate"
+    },
+    {
+     "line": "site work",
+     "item": "foundation or pit, ramps, anchoring, drainage",
+     "retrofit": [
+      2000,
+      6000
+     ],
+     "factory_fit": [
+      1500,
+      5000
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "labour",
+     "item": "16–32 h retrofit; 12–24 h new site",
+     "retrofit": [
+      880,
+      2880
+     ],
+     "factory_fit": [
+      660,
+      2160
+     ],
+     "source": "team estimate × rate [24]"
+    },
+    {
+     "line": "calibration",
+     "item": "test weights by a scale service",
+     "retrofit": [
+      400,
+      1500
+     ],
+     "factory_fit": [
+      400,
+      1500
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "maintenance (6 y)",
+     "item": "annual check, cleaning, one cell",
+     "retrofit": [
+      500,
+      1500
+     ],
+     "factory_fit": [
+      500,
+      1500
+     ],
+     "source": "team estimate"
+    },
+    {
+     "line": "development (NRE)",
+     "item": "exists today",
+     "retrofit": [
+      0,
+      0
+     ],
+     "factory_fit": [
+      0,
+      0
+     ],
+     "source": "[36]"
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,188 @@
+{
+ "high": {
+  "biowaste": {
+   "abs_random_kg": 9.66091783079296,
+   "bias_pct": -4.0,
+   "container_pct": 5.0,
+   "device_spread_pct": 5.477225575051661,
+   "floor_after_pct": 6.753806686743763,
+   "n_charges": 47,
+   "random_pct": 4.540253821308316,
+   "rms_before_pct": 9.571515280346409
+  },
+  "cardboard": {
+   "abs_random_kg": 18.257418583505537,
+   "bias_pct": -9.0,
+   "container_pct": 5.0,
+   "device_spread_pct": 8.06225774829855,
+   "floor_after_pct": 5.568566276014892,
+   "n_charges": 167,
+   "random_pct": 2.4513119692055456,
+   "rms_before_pct": 13.304470315287656
+  },
+  "mixed_plastic": {
+   "abs_random_kg": 13.693063937629153,
+   "bias_pct": -8.0,
+   "container_pct": 5.0,
+   "device_spread_pct": 7.348469228349535,
+   "floor_after_pct": 6.193338356653866,
+   "n_charges": 94,
+   "random_pct": 3.6547831673028157,
+   "rms_before_pct": 12.504296861479258
+  },
+  "mixed_waste": {
+   "abs_random_kg": 14.142135623730951,
+   "bias_pct": -6.0,
+   "container_pct": 5.0,
+   "device_spread_pct": 6.164414002968977,
+   "floor_after_pct": 5.892164288273028,
+   "n_charges": 100,
+   "random_pct": 3.1173065296823155,
+   "rms_before_pct": 10.426773230486985
+  },
+  "paper": {
+   "abs_random_kg": 10.660035817780521,
+   "bias_pct": -6.0,
+   "container_pct": 5.0,
+   "device_spread_pct": 6.164414002968977,
+   "floor_after_pct": 6.501311308287947,
+   "n_charges": 57,
+   "random_pct": 4.1553638501667605,
+   "rms_before_pct": 10.782719913234914
+  },
+  "plastic_film": {
+   "abs_random_kg": 14.907119849998598,
+   "bias_pct": -8.0,
+   "container_pct": 5.0,
+   "device_spread_pct": 7.348469228349535,
+   "floor_after_pct": 5.973279017610196,
+   "n_charges": 111,
+   "random_pct": 3.2680364475051715,
+   "rms_before_pct": 12.396776283462659
+  }
+ },
+ "low": {
+  "biowaste": {
+   "abs_random_kg": 2.8982753492378874,
+   "bias_pct": -1.5,
+   "container_pct": 2.0,
+   "device_spread_pct": 2.083266665599966,
+   "floor_after_pct": 2.49425053157972,
+   "n_charges": 47,
+   "random_pct": 1.4903978375875733,
+   "rms_before_pct": 3.57928564301394
+  },
+  "cardboard": {
+   "abs_random_kg": 5.477225575051661,
+   "bias_pct": -6.5,
+   "container_pct": 2.0,
+   "device_spread_pct": 2.7367864366808017,
+   "floor_after_pct": 2.15483023306555,
+   "n_charges": 167,
+   "random_pct": 0.8020556921644115,
+   "rms_before_pct": 7.374502921101417
+  },
+  "mixed_plastic": {
+   "abs_random_kg": 4.107919181288746,
+   "bias_pct": -5.5,
+   "container_pct": 2.0,
+   "device_spread_pct": 2.5495097567963922,
+   "floor_after_pct": 2.320425248383006,
+   "n_charges": 94,
+   "random_pct": 1.1765939543161579,
+   "rms_before_pct": 6.491099547328891
+  },
+  "mixed_waste": {
+   "abs_random_kg": 4.242640687119285,
+   "bias_pct": -3.4999999999999996,
+   "container_pct": 2.0,
+   "device_spread_pct": 2.2494443758403984,
+   "floor_after_pct": 2.246196785680186,
+   "n_charges": 100,
+   "random_pct": 1.0224480426897007,
+   "rms_before_pct": 4.728149743821572
+  },
+  "paper": {
+   "abs_random_kg": 3.1980107453341566,
+   "bias_pct": -3.4999999999999996,
+   "container_pct": 2.0,
+   "device_spread_pct": 2.2494443758403984,
+   "floor_after_pct": 2.4196426482963442,
+   "n_charges": 57,
+   "random_pct": 1.3618628952484702,
+   "rms_before_pct": 4.812968994856973
+  },
+  "plastic_film": {
+   "abs_random_kg": 4.47213595499958,
+   "bias_pct": -5.5,
+   "container_pct": 2.0,
+   "device_spread_pct": 2.5495097567963922,
+   "floor_after_pct": 2.26162331081018,
+   "n_charges": 111,
+   "random_pct": 1.0559071928914965,
+   "rms_before_pct": 6.470312202668431
+  }
+ },
+ "mid": {
+  "biowaste": {
+   "abs_random_kg": 4.83045891539648,
+   "bias_pct": -2.0,
+   "container_pct": 3.0,
+   "device_spread_pct": 3.2015621187164243,
+   "floor_after_pct": 3.862444328463025,
+   "n_charges": 47,
+   "random_pct": 2.4327918510378543,
+   "rms_before_pct": 5.400784775426271
+  },
+  "cardboard": {
+   "abs_random_kg": 9.128709291752768,
+   "bias_pct": -6.999999999999999,
+   "container_pct": 3.0,
+   "device_spread_pct": 4.358898943540673,
+   "floor_after_pct": 3.273596278192012,
+   "n_charges": 167,
+   "random_pct": 1.3101269375875728,
+   "rms_before_pct": 8.872228163916468
+  },
+  "mixed_plastic": {
+   "abs_random_kg": 6.846531968814577,
+   "bias_pct": -6.000000000000001,
+   "container_pct": 3.0,
+   "device_spread_pct": 4.031128874149275,
+   "floor_after_pct": 3.5665333308410285,
+   "n_charges": 94,
+   "random_pct": 1.928771629820389,
+   "rms_before_pct": 8.060406937617977
+  },
+  "mixed_waste": {
+   "abs_random_kg": 7.0710678118654755,
+   "bias_pct": -4.0,
+   "container_pct": 3.0,
+   "device_spread_pct": 3.4999999999999996,
+   "floor_after_pct": 3.433132680220792,
+   "n_charges": 100,
+   "random_pct": 1.669251329189227,
+   "rms_before_pct": 6.327432338634685
+  },
+  "paper": {
+   "abs_random_kg": 5.330017908890261,
+   "bias_pct": -4.0,
+   "container_pct": 3.0,
+   "device_spread_pct": 3.4999999999999996,
+   "floor_after_pct": 3.7343114735943197,
+   "n_charges": 57,
+   "random_pct": 2.2237540740419526,
+   "rms_before_pct": 6.495774178788713
+  },
+  "plastic_film": {
+   "abs_random_kg": 7.453559924999299,
+   "bias_pct": -6.000000000000001,
+   "container_pct": 3.0,
+   "device_spread_pct": 4.031128874149275,
+   "floor_after_pct": 3.4628478966820873,
+   "n_charges": 111,
+   "random_pct": 1.7295420074561807,
+   "rms_before_pct": 8.01506803187319
+  }
+ }
+}
