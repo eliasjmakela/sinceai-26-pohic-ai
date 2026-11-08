@@ -153,7 +153,7 @@ def summary_facts() -> dict:
             g["count"] += 1
             g["eur"] += max(z.get("eur") or 0, 0)
     top = sorted(({"what": w, "count": g["count"], "eur": round(g["eur"])} for w, g in groups.items()), key=lambda x: -x["eur"])[:3]
-    return {"company": CUSTOMER["operator"], "last_30_days": {"waste_tonnes": round(per["tonnes"], 1), "pickups": per["pickups"], "total_cost_eur": round(per["net_eur"]),
+    return {"company": CUSTOMER["operator"], "period_days": 30, "comparison_months": 12, "response_hours": 48, "last_30_days": {"waste_tonnes": round(per["tonnes"], 1), "pickups": per["pickups"], "total_cost_eur": round(per["net_eur"]),
                                                                "recycling_value_eur": round(per["credit_eur"])},
             "contract": {"orders_within_48h": f"{r['within']} of {r['orders']}", "on_schedule_pct": sv["on_time_share_pct"], "tickets_shared_pct": sv["tickets_shared_share_pct"],
                          "invoice_lines_differing": f"{ic['lines_differing']} of {ic['lines_total']}", "invoiced_above_contract_eur": round(ic["above_eur"])},
