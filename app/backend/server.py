@@ -135,6 +135,59 @@ def build_report() -> dict:
     return {"source": source, "month": CUSTOMER["as_of"][:7], "items": items}
 
 
+# ---- the AI summary on the Contract screen ------------------------------------------------------------------------------
+SUMMARY_PROMPT = ("Write a short summary for the property manager of what the data says this month and what to do next: 3 to 4 sentences, "
+                  "plain English, no headings or lists. Cover the waste and its cost in the last 30 days, how well the waste company keeps the contract, "
+                  "the biggest findings, and what a contract with pickups optimized by weight could cost. Name the one most useful next step. "
+                  "Say simulated for the optimized figure.")
+KINDS = {"FAR_FROM_FULL": "pickups that came early", "WRONG_MATERIAL": "loads graded down for wrong material", "INVOICE": "invoice lines above the contract",
+         "LATE_SURCHARGE": "overflow charges after a late pickup", "MISSED_VISIT": "missed visits", "MOISTURE": "weight gained while unused"}
+
+
+def summary_facts() -> dict:
+    sv, ic, r, per, k = CUSTOMER["service"], CUSTOMER["invoice_check"], CUSTOMER["response"], CUSTOMER["periods"]["month"], CUSTOMER["compare"]
+    groups: dict[str, dict] = {}
+    for z in CUSTOMER["findings"]:
+        if z["kind"] in KINDS:
+            g = groups.setdefault(KINDS[z["kind"]], {"count": 0, "eur": 0.0})
+            g["count"] += 1
+            g["eur"] += max(z.get("eur") or 0, 0)
+    top = sorted(({"what": w, "count": g["count"], "eur": round(g["eur"])} for w, g in groups.items()), key=lambda x: -x["eur"])[:3]
+    return {"company": CUSTOMER["operator"], "last_30_days": {"waste_tonnes": round(per["tonnes"], 1), "pickups": per["pickups"], "total_cost_eur": round(per["net_eur"]),
+                                                               "recycling_value_eur": round(per["credit_eur"])},
+            "contract": {"orders_within_48h": f"{r['within']} of {r['orders']}", "on_schedule_pct": sv["on_time_share_pct"], "tickets_shared_pct": sv["tickets_shared_share_pct"],
+                         "invoice_lines_differing": f"{ic['lines_differing']} of {ic['lines_total']}", "invoiced_above_contract_eur": round(ic["above_eur"])},
+            "biggest_findings_12_months": top,
+            "twelve_months": {"current_eur": round(k["today"]["price_eur"]), "optimized_by_weight_simulated_eur": round(k["per_tonne"]["price_eur"]),
+                              "pickups_now": k["today"]["pickups"], "pickups_optimized": k["per_tonne"]["pickups"]},
+            "next_notice_date": CUSTOMER["next_notice"]["date"] if CUSTOMER.get("next_notice") else None}
+
+
+def summary_template(f: dict) -> str:
+    m, c, t = f["last_30_days"], f["contract"], f["twelve_months"]
+    top = f["biggest_findings_12_months"][0] if f["biggest_findings_12_months"] else None
+    text = (f"In the last 30 days your compactors produced {m['waste_tonnes']} t of waste over {m['pickups']} pickups, a total cost of €{m['total_cost_eur']:,} "
+            f"after €{m['recycling_value_eur']:,} of recycling value. {f['company']} picked up {c['orders_within_48h']} orders within 48 hours "
+            f"and {c['invoice_lines_differing']} invoice lines differ from the contract. ")
+    if top:
+        text += f"The biggest finding over 12 months: {top['count']} {top['what']}, €{top['eur']:,}. "
+    text += f"With pickups optimized by weight, 12 months would cost about €{t['optimized_by_weight_simulated_eur']:,} instead of €{t['current_eur']:,} (simulated)."
+    return text
+
+
+def build_summary() -> dict:
+    facts = summary_facts()
+    text, reason = llm.guarded(SUMMARY_PROMPT, facts)
+    if not text:
+        log_.warning("summary from template: %s", reason)
+    return {"text": text or summary_template(facts), "source": "gemini" if text else "template", "facts": facts}
+
+
+@app.get("/api/customer/summary")
+def get_summary():
+    return build_summary()
+
+
 # ---- the invoice query -------------------------------------------------------------------------------------------------
 def query_facts() -> dict:
     q = CUSTOMER["query"]

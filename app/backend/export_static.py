@@ -25,6 +25,7 @@ def main() -> None:
     static = {
         "initial": initial,
         "report": server.build_report(),
+        "summary": server.build_summary(),
         "query_text": server.draft_query_text(),
         "offer_rows": view["rows"],
         "explain": explain,

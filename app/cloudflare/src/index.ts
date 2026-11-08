@@ -62,6 +62,7 @@ async function api(req: Request, url: URL, stub: Store): Promise<Response> {
     if (!state.report) { state.report = S.report; await stub.save(state); }
     return json({ ...state.report, pending: false });
   }
+  if (p === "/api/customer/summary" && method === "GET") return json(S.summary);
   if (p === "/api/customer/decisions" && method === "POST") {
     if (typeof body.id !== "string" || body.id.length > 60) return fail(422, "Invalid decision");
     if (body.decision == null) delete state.decisions[body.id];

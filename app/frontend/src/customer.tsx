@@ -270,6 +270,7 @@ function Contract({ c }: any) {
     <>
       <Bar title={`${c.operator}: ${kept} of ${promises.length} contract terms on target`} sub={asks.length ? `Below target: ${asks.map((p) => p.name.toLowerCase()).join(", ")}` : "All on target"} />
       <div className="canvas">
+        <AiSummary />
         <WasteAndCost periods={c.periods} compare={c.compare} />
         <div className="promises">
           {promises.map((p) => {
@@ -327,6 +328,24 @@ function Contract({ c }: any) {
         </Drawer>
       )}
     </>
+  );
+}
+
+function AiSummary() {
+  const { data: s } = useData("/api/customer/summary");
+  const [show, setShow] = useState(false);
+  if (!s) return null;
+  const ai = s.source === "gemini";
+  return (
+    <section className={cls("ai-card", ai && "ai-card-live")} aria-label="Summary">
+      <div className="ai-head">
+        <span className="ai-badge"><Icon name="spark" />{ai ? "AI summary · Gemini" : "Summary"}</span>
+        <button className="link-btn ai-toggle" onClick={() => setShow(!show)}>{show ? "Hide the data" : "Show the data it used"}</button>
+      </div>
+      <p className="ai-text">{s.text}</p>
+      {show && <pre className="ai-facts">{JSON.stringify(s.facts, null, 2)}</pre>}
+      {ai && <p className="ai-foot">Written from the figures on this page. A check rejects any number that isn't in the data.</p>}
+    </section>
   );
 }
 
@@ -442,7 +461,7 @@ function Offers({ c, t, act, toast, steps }: any) {
     <>
       <Bar title={t.status === "awarded" ? `You chose ${chosen?.operator}` : "Compare the offers"} sub={t.status === "awarded" ? `${eur2(chosen?.price_eur_t)} per tonne, about ${eur(chosen?.annual_eur)} a year.` : `Priced on your ${t1(m.tonnes)} a year.`}><Stepper steps={steps} /></Bar>
       <div className="canvas">
-        {t.status !== "awarded" && summary && <div className="ai-line">{summary}</div>}
+        {t.status !== "awarded" && summary && <div className="ai-line">{worded?.source === "gemini" && <span className="ai-badge ai-badge-dark"><Icon name="spark" />Gemini</span>}{summary}</div>}
         <div className="notice">Offers you've received, uploaded to compare.</div>
         <ul className="offers">
           {row({ id: "today", operator: c.operator, price_eur_t: m.today_price_t, annual_eur: m.today_eur, on_time_pct: today?.on_time_pct, response_h: today?.response_h, tickets_pct: today?.tickets_pct }, true)}

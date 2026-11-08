@@ -470,3 +470,17 @@ th:last-child, td:last-child { padding-right: 0; }
 .period-detail dt { font-size: .78rem; color: var(--ink-2); }
 .period-detail dd { font-size: 1.05rem; font-weight: 700; margin: 2px 0 0; text-align: right; }
 @media (max-width: 640px) { .period-big { font-size: 1.25rem !important; } }
+
+/* AI summary */
+.ai-card { flex: none; background: var(--panel); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(16,35,28,.05); padding: 16px 20px; }
+.ai-card-live { background: linear-gradient(135deg, #0b3d2e 0%, #124d3a 100%); color: #fff; border: 0; }
+.ai-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.ai-badge { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 700; letter-spacing: .02em; color: var(--green-ink); }
+.ai-badge .icon { width: 16px; height: 16px; }
+.ai-card-live .ai-badge { color: #8ff0c6; }
+.ai-badge-dark { color: #8ff0c6; margin-right: 10px; vertical-align: -2px; }
+.ai-text { font-size: 1.08rem; line-height: 1.55; margin-top: 8px; max-width: 980px; }
+.ai-card-live .ai-toggle { color: #cdeee0; }
+.ai-facts { margin-top: 10px; font-size: .78rem; background: rgba(0,0,0,.18); color: inherit; padding: 10px 12px; border-radius: 10px; overflow: auto; max-height: 260px; }
+.ai-card:not(.ai-card-live) .ai-facts { background: var(--bg); }
+.ai-foot { margin-top: 8px; font-size: .78rem; color: #a8d8c4; }
