@@ -5,23 +5,28 @@ import { ForecastChart, TonnesRange } from "./charts";
 import { Bar, Compactor, Drawer, Icon, Kpi, Loading, Panel, Shell, Tabs, Tag, cls, date, eur, eur2, int, kg, pct, shortDate, t1, useToast } from "./ui";
 
 export function HaulerPortal() {
-  const { data: h, error, reload } = useData("/api/hauler");
+  const { data: h, error } = useData("/api/hauler");
   const { data: t } = useData("/api/hauler/tender", 3000);
   const nav = [
-    { to: "/waste-company", label: "Tenders", icon: "tender", end: true, badge: null },
+    { to: "/waste-company", label: "Potential customers", icon: "tender", end: true },
+    { to: "/waste-company/compactors", label: "Compactors", icon: "truck" },
+    { to: "/waste-company/forecast", label: "Forecast", icon: "today" },
   ];
   return (
     <Shell who={h?.operator.name ?? ""} sub={h ? `${h.fleet.length} weighed compactors` : ""} portal="Waste company" nav={nav} liveLabel={h ? `Live · ${date(h.as_of)}` : "Live"}>
       {!h ? <div className="canvas"><Loading error={error} /></div> : (
         <Routes>
-          <Route index element={<Tenders t={t} h={h} />} />
+          <Route index element={<><Bar title="Potential customers" sub="Customers in your region you don't serve yet" /><div className="canvas"><Prospects rows={h.prospects} /></div></>} />
+          <Route path="compactors" element={<Tender t={t} view="compactors" />} />
+          <Route path="forecast" element={<Tender t={t} view="forecast" />} />
         </Routes>
       )}
     </Shell>
   );
 }
 
-function Tenders({ t, h }: any) {
+/** The open tender's bid pack: its compactors or its forecast. */
+function Tender({ t, view }: any) {
   if (!t) return <div className="canvas"><Loading /></div>;
   const n = t.notice;
   return (
@@ -30,7 +35,7 @@ function Tenders({ t, h }: any) {
         <span className="chip chip-ask">{`Offers by ${shortDate(n.offers_due)}`}</span>
       </Bar>
       <div className="canvas">
-        {t.consent ? <Pack t={t} n={n} prospects={h.prospects} /> : (
+        {t.consent ? <Pack view={view} /> : (
           <>
             <div className="notice notice-warn"><strong>Weight data withdrawn by the customer.</strong></div>
             <Panel title="Estimate without weight data">
@@ -45,35 +50,27 @@ function Tenders({ t, h }: any) {
   );
 }
 
-function Pack({ t, n, prospects }: any) {
+function Pack({ view }: any) {
   const { data: p, error } = useData("/api/hauler/tender/pack");
-  const [tab, setTab] = useState("price");
   if (error instanceof ApiError && error.status === 403) return null;
   if (!p) return <Loading error={error} />;
-  return (
-    <>
-      <Tabs value={tab} onChange={setTab} items={[{ id: "price", label: "Potential customers" }, { id: "compactors", label: "The compactors" }, { id: "forecast", label: "Forecast" }]} />
-      {tab === "price" && <Prospects rows={prospects} />}
-      {tab === "compactors" && (
-        <Panel title="The compactors" flush>
-          <div className="table-wrap"><table className="tight">
-            <thead><tr><th>Compactor</th><th className="num">Tonnes a year</th><th className="num">Typical load</th><th className="num">Load range</th><th className="num">Pickups today</th><th className="num">When full</th><th>Contract ends</th></tr></thead>
-            <tbody>{p.rows.map((r: any) => (
-              <tr key={r.site + r.material}>
-                <td><strong>{r.site}, {r.material.toLowerCase()}</strong><div className="fine">{r.container_m3} m³ {r.equipment_class}</div></td>
-                <td className="num">{r.tonnes.toFixed(1)}</td><td className="num">{kg(r.p50)}</td><td className="num">{int(r.p10)}–{int(r.p90)}</td><td className="num">{r.pickups}</td><td className="num">{r.weight_pickups}</td><td>{date(r.contract_end)}</td>
-              </tr>
-            ))}</tbody>
-          </table></div>
-        </Panel>
-      )}
-      {tab === "forecast" && (
-        <div className="tender-grid">
-          <Panel title="Tonnes a month, next 12 months"><ForecastChart rows={p.forecast} /><p className="fine">One year of history, so the seasonal shape is uncertain. <Tag kind="estimate" /></p></Panel>
-          <Panel title="How sure you can be of the tonnes"><TonnesRange blind={p.range_blind} data={p.range_data} /><p className="fine">Tonnes a year. Typical error in a backtest across the data. <Tag kind="estimate" /></p></Panel>
-        </div>
-      )}
-    </>
+  return view === "compactors" ? (
+    <Panel title="The compactors" flush>
+      <div className="table-wrap"><table className="tight">
+        <thead><tr><th>Compactor</th><th className="num">Tonnes a year</th><th className="num">Typical load</th><th className="num">Load range</th><th className="num">Pickups today</th><th className="num">When full</th><th>Contract ends</th></tr></thead>
+        <tbody>{p.rows.map((r: any) => (
+          <tr key={r.site + r.material}>
+            <td><strong>{r.site}, {r.material.toLowerCase()}</strong><div className="fine">{r.container_m3} m³ {r.equipment_class}</div></td>
+            <td className="num">{r.tonnes.toFixed(1)}</td><td className="num">{kg(r.p50)}</td><td className="num">{int(r.p10)}–{int(r.p90)}</td><td className="num">{r.pickups}</td><td className="num">{r.weight_pickups}</td><td>{date(r.contract_end)}</td>
+          </tr>
+        ))}</tbody>
+      </table></div>
+    </Panel>
+  ) : (
+    <div className="tender-grid">
+      <Panel title="Tonnes a month, next 12 months"><ForecastChart rows={p.forecast} /><p className="fine">One year of history, so the seasonal shape is uncertain. <Tag kind="estimate" /></p></Panel>
+      <Panel title="How sure you can be of the tonnes"><TonnesRange blind={p.range_blind} data={p.range_data} /><p className="fine">Tonnes a year. Typical error in a backtest across the data. <Tag kind="estimate" /></p></Panel>
+    </div>
   );
 }
 
@@ -81,7 +78,7 @@ function Prospects({ rows }: any) {
   const lowest = rows.filter((r: any) => r.fit === "Lowest bid");
   return (
     <Panel className="p-prospects">
-      <p className="muted">Customers in your region you don't serve yet, ranked by what you could earn. Estimated on your own costs and the weights they share. Names appear when a customer opens a tender.</p>
+      <p className="muted">Ranked by what you could earn, estimated on your own costs and the weights they share. Names appear when a customer opens a tender.</p>
       <div className="prospect-kpis">
         <div><strong>{lowest.length}</strong><span>where your bid would be lowest</span></div>
         <div><strong>{eur(lowest.reduce((a: number, r: any) => a + (r.margin_eur ?? 0), 0))}</strong><span>margin a year if you win them <Tag kind="simulated" /></span></div>

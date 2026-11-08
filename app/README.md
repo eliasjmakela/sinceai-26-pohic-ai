@@ -9,7 +9,7 @@ This app is the demo. Every screen serves that move:
 | Customer (free) | Contract (opens first) | Is the contract kept? Response to orders, schedule, tickets, invoices. Every pickup traces from the order to the ticket, contract version and invoice lines |
 | | Today | Each compactor's fill level and weight, when it needs a pickup (at 80 % full), cost per tonne before the truck leaves, and the decisions waiting, each with one action |
 | | Tender | Offer comparison: the offers the customer received, uploaded to compare per tonne with service beside price |
-| Waste company | Tenders | Offer planning for a tender request it uploaded (bid pack: the compactors and the forecast), opening on **Potential customers**: accounts in its region it doesn't serve yet, with contract end, its price and estimated margin (no customer names or prices) |
+| Waste company | Potential customers (opens first), Compactors, Forecast | **Potential customers**: accounts in its region it doesn't serve yet, with contract end, its price and estimated margin (no customer names or prices) |
 
 Each list holds only what needs doing, with one action per row. A finished item leaves the list, can be undone, and an empty list says so plainly.
 
