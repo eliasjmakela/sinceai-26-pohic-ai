@@ -89,9 +89,9 @@ def report_items() -> list[dict]:
     return [
         {"id": "trips", "figure": f"{f['low_fill_share_pct']:.0f} %", "figure_label": "of pickups under 60 % full", "evidence": None,
          "headline": "Pickups before the container is full",
-         "body": f"{f['low_fill_lifts']} of {f['lifts']} pickups were under 60 % full. Cost per tonne: €{bands[0]['eur_per_t']:.0f} under 60 % full, €{bands[2]['eur_per_t']:.0f} at 90 % or more. Ordering by weight: {f['lifts_after']}–{f['lifts_after_lower']} pickups a year.",
+         "body": f"{f['low_fill_lifts']} of {f['lifts']} pickups were under 60 % full. Cost per tonne: €{bands[0]['eur_per_t']:.0f} under 60 % full, €{bands[2]['eur_per_t']:.0f} at 90 % or more. Ordering when full: {f['lifts_after']}–{f['lifts_after_lower']} pickups a year.",
          "calc": [f"Pickups under 60 % full: {f['low_fill_lifts']} of {f['lifts']}"] + [f"{b['label']}: {b['pickups']} pickups, €{b['eur_per_pickup']:.0f} per pickup, €{b['eur_per_t']:.0f} per tonne" for b in bands] + [f"Flagged as early: {f['flagged_lifts']} pickups, €{whole(CUSTOMER['early_eur'])}", "SMART still orders a pickup if waiting would break hygiene limits or overflow."],
-         "action": {"id": "order-by-weight", "kind": "approve", "label": "Order by weight", "done": "Ordering by weight", "reversal": "You can switch back at any time."}, "link": "/customer/contract"},
+         "action": {"id": "order-by-weight", "kind": "approve", "label": "Order when full", "done": "Ordering when full", "reversal": "You can switch back at any time."}, "link": "/customer/contract"},
         {"id": "contract", "figure": f"{r['within'] / r['orders'] * 100:.0f} %", "figure_label": f"of orders within {r['hours']} h", "evidence": "assumption",
          "headline": "Contract follow-up",
          "body": f"Orders within {r['hours']} h: {r['within']} of {r['orders']}. Missed visits: {sv['missed_visits']}. Invoice lines differing from the contract: {ic['lines_differing']} of {ic['lines_total']}, €{whole(ic['above_eur'])} above.",

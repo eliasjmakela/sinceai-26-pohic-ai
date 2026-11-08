@@ -89,35 +89,35 @@ export function PriceWaterfall({ blind, fullLoads, withData, labels }: { blind: 
 }
 
 /** The weight nobody could see: the last weeks of readings, then where it is heading. */
-export function WeightTrend({ trend, target, kgPerDay, asOf }: { trend: { date: string; kg: number | null }[]; target: number; kgPerDay: number; asOf: string }) {
+export function FillTrend({ trend, target, perDay }: { trend: { date: string; fill: number | null; kg: number | null }[]; target: number; perDay: number }) {
   const [ref, w] = useWidth();
   const [tip, setTip] = useState<Tip>(null);
   const h = 214, l = 46, r = 12, t = 16, b = 24;
-  const pts = trend.filter((p) => p.kg != null).map((p) => ({ time: new Date(p.date).getTime(), kg: p.kg as number }));
+  const pts = trend.filter((p) => p.fill != null).map((p) => ({ time: new Date(p.date).getTime(), v: p.fill as number, kg: p.kg }));
   const last = pts[pts.length - 1];
-  const days = Math.max(0, Math.min(21, (target - last.kg) / (kgPerDay || 1)));
+  const days = Math.max(0, Math.min(21, (target - last.v) / (perDay || 1)));
   const end = last.time + days * 864e5;
   const min = pts[0].time, max = Math.max(end, last.time + 864e5);
-  const top = niceMax(Math.max(target * 1.05, ...pts.map((p) => p.kg)));
+  const top = 100;
   const x = (v: number) => l + (w - l - r) * ((v - min) / (max - min));
   const y = (v: number) => t + (h - t - b) * (1 - v / top);
-  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(p.time).toFixed(1)},${y(p.kg).toFixed(1)}`).join(" ");
+  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(p.time).toFixed(1)},${y(p.v).toFixed(1)}`).join(" ");
   const area = `${line} L${x(last.time).toFixed(1)},${y(0)} L${x(pts[0].time).toFixed(1)},${y(0)} Z`;
   return (
     <div ref={ref} className="chart" onMouseLeave={() => setTip(null)}
-      onMouseMove={(e) => { const box = e.currentTarget.getBoundingClientRect(); const px = e.clientX - box.left; const near = pts.reduce((a, p) => Math.abs(x(p.time) - px) < Math.abs(x(a.time) - px) ? p : a, pts[0]); setTip({ x: x(near.time), y: y(near.kg), text: `${shortDate(near.time)}: ${int(near.kg)} kg` }); }}>
-      <svg width={w} height={h} role="img" aria-label={`Weight over recent weeks, ${int(last.kg)} kg now, target ${int(target)} kg`}>
-        {[0, 0.5, 1].map((f) => <g key={f}><line x1={l} x2={w - r} y1={y(top * f)} y2={y(top * f)} className={f === 0 ? "axis" : "grid"} /><text x={l - 8} y={y(top * f) + 4} textAnchor="end" className="tick">{top * f >= 1000 ? `${(top * f / 1000).toFixed(1)} t` : `${int(top * f)} kg`}</text></g>)}
+      onMouseMove={(e) => { const box = e.currentTarget.getBoundingClientRect(); const px = e.clientX - box.left; const near = pts.reduce((a, p) => Math.abs(x(p.time) - px) < Math.abs(x(a.time) - px) ? p : a, pts[0]); setTip({ x: x(near.time), y: y(near.v), text: `${shortDate(near.time)}: ${int(near.v)} % full${near.kg != null ? `, ${int(near.kg)} kg` : ""}` }); }}>
+      <svg width={w} height={h} role="img" aria-label={`Fill level over recent weeks, ${int(last.v)} % now, pickup at ${target} %`}>
+        {[0, 50, 100].map((f) => <g key={f}><line x1={l} x2={w - r} y1={y(f)} y2={y(f)} className={f === 0 ? "axis" : "grid"} /><text x={l - 8} y={y(f) + 4} textAnchor="end" className="tick">{f} %</text></g>)}
         <line x1={l} x2={w - r} y1={y(target)} y2={y(target)} className="target-line" />
-        <text x={l + 4} y={y(target) - 6} className="tick tick-strong">Target {int(target)} kg</text>
+        <text x={l + 4} y={y(target) - 6} className="tick tick-strong">Pickup at {target} %</text>
         <path d={area} className="band" />
         <path d={line} className="line-green" />
-        {days > 0 && <line x1={x(last.time)} y1={y(last.kg)} x2={x(end)} y2={y(target)} className="projection" />}
+        {days > 0 && <line x1={x(last.time)} y1={y(last.v)} x2={x(end)} y2={y(target)} className="projection" />}
         {days > 0 && <circle cx={x(end)} cy={y(target)} r={5} className="proj-dot" />}
-        <circle cx={x(last.time)} cy={y(last.kg)} r={6} className="range-dot" />
+        <circle cx={x(last.time)} cy={y(last.v)} r={6} className="range-dot" />
         <text x={l} y={h - 6} className="tick">{shortDate(min)}</text>
         <text x={x(last.time)} y={h - 6} textAnchor="middle" className="tick tick-strong">Now</text>
-        {days > 0 && <text x={x(end)} y={t + (y(target) - t) - 22 < 2 ? y(target) + 18 : y(target) - 22} textAnchor="end" className="tick">Full ~{shortDate(end)}</text>}
+        {days > 0 && <text x={x(end)} y={y(target) + 18} textAnchor="end" className="tick">~{shortDate(end)}</text>}
       </svg>
       <TipBox tip={tip} w={w} />
     </div>

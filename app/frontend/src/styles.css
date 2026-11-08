@@ -435,3 +435,9 @@ th:last-child, td:last-child { padding-right: 0; }
   .signin-split { grid-template-columns: 1fr; gap: 28px; padding: 28px 16px; }
   .value-facts { grid-template-columns: 1fr; }
 }
+
+/* Compactor list grouped by when a pickup is needed */
+.list-group > ul { list-style: none; margin: 0; padding: 0; }
+.list-sep { padding: 10px 14px 6px; font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1px solid var(--line-2); }
+.select-muted { opacity: .62; }
+.select-muted:hover, .select-muted.select-on { opacity: 1; }

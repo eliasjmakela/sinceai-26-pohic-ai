@@ -63,7 +63,7 @@ function Pack({ t, n }: any) {
       {tab === "compactors" && (
         <Panel title="The compactors" flush>
           <div className="table-wrap"><table className="tight">
-            <thead><tr><th>Compactor</th><th className="num">Tonnes a year</th><th className="num">Typical load</th><th className="num">Load range</th><th className="num">Pickups today</th><th className="num">By weight</th><th>Contract ends</th></tr></thead>
+            <thead><tr><th>Compactor</th><th className="num">Tonnes a year</th><th className="num">Typical load</th><th className="num">Load range</th><th className="num">Pickups today</th><th className="num">When full</th><th>Contract ends</th></tr></thead>
             <tbody>{p.rows.map((r: any) => (
               <tr key={r.site + r.material}>
                 <td><strong>{r.site}, {r.material.toLowerCase()}</strong><div className="fine">{r.container_m3} m³ {r.equipment_class}</div></td>
@@ -161,7 +161,7 @@ function FullLoads({ h, reload }: any) {
   const recommend = async (on: boolean) => { await post("/api/hauler/recommend", { on }); reload(); if (on) toast("Passed to Europress", () => recommend(false)); };
   return (
     <>
-      <Bar title={todo.length ? `${todo.length} full loads to plan` : "Every full load is planned"} sub="Compactors reaching a full load within 3 days" />
+      <Bar title={todo.length ? `${todo.length} full loads to plan` : "Every full load is planned"} sub="Compactors reaching the pickup fill level (80 %) within 3 days" />
       <div className="canvas">
         <div className="kpis">
           <Kpi label="Tonnes to collect" value={`${tonnes(todo).toFixed(0)} t`} sub={`${todo.length} compactors`} tag="estimate" />
@@ -191,10 +191,10 @@ function FullLoads({ h, reload }: any) {
               <ul className="work">
                 {shown.map((x: any) => (
                   <li key={x.id} className="work-row">
-                    <Compactor share={(x.mass_kg / x.full_kg) * 100} size="small" />
+                    <Compactor share={x.fill_pct} size="small" />
                     <div className="work-name"><strong>{x.site}, {x.material.toLowerCase()}</strong><span className="fine">{x.container_m3} m³{region ? "" : ` · ${x.region}`}</span></div>
-                    <div className="work-kg"><strong>{kg(x.mass_kg)}</strong><span className="fine">of {kg(x.full_kg)}</span></div>
-                    <div className={x.days_to_full < 0.5 ? "work-when work-now" : "work-when"}>{x.days_to_full < 0.5 ? "Full now" : `${x.days_to_full.toFixed(1)} days`}</div>
+                    <div className="work-kg"><strong>{pct(x.fill_pct)} full</strong><span className="fine">{kg(x.mass_kg)}</span></div>
+                    <div className={x.days_to_full < 0.5 ? "work-when work-now" : "work-when"}>{x.days_to_full < 0.5 ? "Ready now" : `${x.days_to_full.toFixed(1)} days`}</div>
                     <button className="btn btn-small" onClick={() => mark(x, true)}>Confirm</button>
                   </li>
                 ))}

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Route, Routes, useLocation, useSearchParams } from "react-router-dom";
 import { post, useData } from "./api";
-import { FillScatter, WeightTrend } from "./charts";
+import { FillScatter, FillTrend } from "./charts";
 import { Bar, Compactor, Drawer, Icon, Kpi, Loading, Panel, Shell, Tabs, Tag, cls, date, eur, eur2, int, kg, monthName, pct, shortDate, t1, useToast } from "./ui";
 
 const BASIS: Record<string, string> = { WEIGHBRIDGE: "Weighing ticket", INVOICE_QUANTITY: "Invoice tonnage, no ticket shared", DEVICE_ESTIMATE: "Compactor weight", UNKNOWN: "Not known" };
@@ -9,6 +9,8 @@ const STATUS: Record<string, string> = { MISSED_BY_OPERATOR: "Visit missed", PAR
 const PRICING: Record<string, string> = { FIXED_PER_LIFT: "Per pickup", HYBRID: "Per pickup + per tonne", HYBRID_MIN: "Per pickup + per tonne", PER_TONNE: "Per tonne" };
 
 const isDone = (a: any, c: any) => a === "tender" ? c.tender_status === "awarded" : a === "contract" ? c.query_state.status === "sent" : Boolean(c.decisions?.["order-by-weight"]);
+
+const soon = (x: any) => x.days_to_full <= 3;
 
 export function CustomerPortal() {
   const { data: c, error, reload } = useData("/api/customer");
@@ -39,10 +41,12 @@ function Today({ c, reload, pending }: any) {
   const total = c.live.reduce((s: number, x: any) => s + x.mass_kg, 0);
   const soonest = c.live.reduce((a: any, x: any) => (x.days_to_full < a.days_to_full ? x : a), c.live[0]);
   const selected = c.live.find((x: any) => x.id === params.get("c")) ?? soonest;
+  const byDays = [...c.live].sort((a: any, b: any) => a.days_to_full - b.days_to_full);
+  const groups: [string, any[]][] = [["Pickup within 3 days", byDays.filter(soon)], ["Later", byDays.filter((x: any) => !soon(x))]];
   const select = (id: string) => setParams({ c: id }, { replace: true });
   return (
     <>
-      <Bar title={soonest.days_to_full < 0.5 ? `${soonest.name} is full now` : `Nothing needs a truck for ${soonest.days_to_full.toFixed(0)} days`} sub={monthName(c.as_of.slice(0, 7), true)} />
+      <Bar title={soonest.days_to_full < 0.5 ? `${soonest.name} is ready for pickup` : `Next pickup in ${soonest.days_to_full.toFixed(0)} days`} sub={monthName(c.as_of.slice(0, 7), true)} />
       <div className="canvas">
         <div className="kpis">
           <Kpi label="In your compactors now" value={kg(total)} sub={`${c.live.length} weighing live`} />
@@ -53,12 +57,17 @@ function Today({ c, reload, pending }: any) {
         <div className="today-grid">
           <Panel title="Compactors" flush className="p-list">
             <ul className="select-list">
-              {c.live.map((x: any) => (
-                <li key={x.id}>
-                  <button className={cls("select-row", selected.id === x.id && "select-on")} aria-pressed={selected.id === x.id} onClick={() => select(x.id)}>
-                    <Compactor share={x.share_pct} size="small" />
-                    <span className="sr-main"><strong>{x.name}</strong><span>{kg(x.mass_kg)} · {x.days_to_full < 0.5 ? "full now" : `full in ${x.days_to_full.toFixed(0)} d`}</span></span>
-                  </button>
+              {groups.map(([label, xs]) => xs.length > 0 && (
+                <li key={label} className="list-group">
+                  <div className="list-sep">{label} · {xs.length}</div>
+                  <ul>{xs.map((x: any) => (
+                    <li key={x.id}>
+                      <button className={cls("select-row", selected.id === x.id && "select-on", !soon(x) && "select-muted")} aria-pressed={selected.id === x.id} onClick={() => select(x.id)}>
+                        <Compactor share={x.fill_pct} size="small" />
+                        <span className="sr-main"><strong>{x.name}</strong><span>{pct(x.fill_pct)} · {kg(x.mass_kg)} · {x.days_to_full < 0.5 ? "ready now" : `pickup in ${x.days_to_full.toFixed(0)} d`}</span></span>
+                      </button>
+                    </li>
+                  ))}</ul>
                 </li>
               ))}
             </ul>
@@ -80,21 +89,21 @@ function CompactorDetail({ x, c, tabParam, focus }: any) {
       {tab === "now" ? (
         <div className="detail-now">
           <div className="detail-top">
-            <div className="detail-glyph"><Compactor share={x.share_pct} /></div>
+            <div className="detail-glyph"><Compactor share={x.fill_pct} /></div>
             <div className="detail-figs">
               <div className="big-kg">{kg(x.mass_kg)}</div>
-              <div className="muted">{pct(x.share_pct)} of its {kg(x.usual_kg)} target</div>
-              <div className="detail-when">{x.days_to_full < 0.5 ? "Full now" : `Full in about ${x.days_to_full.toFixed(0)} days`}</div>
+              <div className="muted">{pct(x.fill_pct)} full · pickup at {x.full_fill_pct} %</div>
+              <div className="detail-when">{x.days_to_full < 0.5 ? "Ready for pickup" : `Pickup in about ${x.days_to_full.toFixed(0)} days`}</div>
             </div>
             <dl className="detail-cost">
-              <div><dt>Picked up now</dt><dd>{x.eur_t_now == null || x.share_pct < 25 ? "–" : `${eur(x.eur_t_now)}/t`}</dd></div>
-              <div><dt>At target</dt><dd className="tone-good">{eur(x.eur_t_full)}/t</dd></div>
+              <div><dt>Picked up now</dt><dd>{x.eur_t_now == null || x.fill_pct < 25 ? "–" : `${eur(x.eur_t_now)}/t`}</dd></div>
+              <div><dt>Picked up full</dt><dd className="tone-good">{eur(x.eur_t_full)}/t</dd></div>
             </dl>
           </div>
-          <WeightTrend trend={x.trend} target={x.usual_kg} kgPerDay={x.kg_per_day} asOf={c.as_of} />
+          <FillTrend trend={x.trend} target={x.full_fill_pct} perDay={x.fill_per_day} />
           <dl className="mini-stats">
             <div><dt>Pickups a year</dt><dd>{x.pickups}</dd></div>
-            <div><dt>If ordered by weight</dt><dd>{x.weight_pickups} <Tag kind="estimate" /></dd></div>
+            <div><dt>If ordered when full</dt><dd>{x.weight_pickups} <Tag kind="estimate" /></dd></div>
             <div><dt>Tonnes a year</dt><dd>{x.tonnes.toFixed(1)}</dd></div>
             <div><dt>Material credits</dt><dd>{eur(x.credit_eur)}</dd></div>
           </dl>
@@ -290,7 +299,7 @@ function Contract({ c }: any) {
           </Panel>
           <Panel title="Your compactors" className="p-comp" flush>
             <div className="table-wrap"><table className="tight">
-              <thead><tr><th>Compactor</th><th>You pay</th><th className="num">Pickups</th><th className="num">By weight <Tag kind="estimate" /></th><th className="num">Tonnes</th><th className="num">Credits</th></tr></thead>
+              <thead><tr><th>Compactor</th><th>You pay</th><th className="num">Pickups</th><th className="num">When full <Tag kind="estimate" /></th><th className="num">Tonnes</th><th className="num">Credits</th></tr></thead>
               <tbody>{c.compactors.map((x: any) => (
                 <tr key={x.id}>
                   <td><Link className="row-link" to={`/customer?c=${x.id}`}>{x.municipality}, {x.material.toLowerCase()}</Link></td>

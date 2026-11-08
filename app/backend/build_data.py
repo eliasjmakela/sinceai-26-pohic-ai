@@ -42,6 +42,7 @@ CYCLE_YEARS = 3  # the challenge lead: contracts are retendered about every thre
 RESPONSE_HOURS = 48  # assumption: a real service reads the agreed response time from the customer's contract
 QUERY_WINDOW_DAYS = 125  # C2 rules: invoices issued in the last 90 days; invoices come out about 35 days after service
 WEIGHT_TOLERANCE = 0.033  # ECONOMIC_MODEL.md section 2b, the kit's example
+FULL_FILL_PCT = 80  # pickup is ordered at this fill level (volume, fill sensor; SMART orders at ~80 % today). Weight varies by material, so it is not the target
 UNDERFILL_SHARE = 0.50  # a pickup counts as far from full below this share of the usual load (best F1 on validation)
 TRUCK_BIAS_KG = 100  # a truck is worth checking when compactors disagree with its tickets by this much, in the median
 TRUCK_MIN_PICKUPS = 20
@@ -385,8 +386,9 @@ def main() -> None:
     for c_ in compactors:
         v = views[c_["id"]]
         t = daily[daily.device_id == c_["id"]].sort_values("date")
-        cur, inc = t.iloc[-1], t.tail(30).mass_kg_last_valid.diff()
-        rate = float(inc[inc > 0].mean())
+        cur, inc = t.iloc[-1], t.tail(30).fill_pct_last.diff()
+        rate = float(inc[inc > 0].mean())  # fill points per day while filling
+        fill = float(cur.fill_pct_last)
         usual = v["usual_full_kg"]
         recent = [x for x in v["pickups"] if x["status"] == "COMPLETED" and x["billed_kg"]][:8]
         tonnes = sum(x["billed_kg"] for x in recent) / 1000
@@ -394,7 +396,7 @@ def main() -> None:
         per_t = (sum(x["treatment_eur"] for x in recent) - sum(x["credit_eur"] for x in recent)) / tonnes
         mass = float(cur.mass_kg_last_valid)
         cost_now, cost_full = visit + per_t * mass / 1000, visit + per_t * usual / 1000
-        live.append({"id": c_["id"], "name": f"{c_['municipality']}, {c_['material'].lower()}", "mass_kg": mass, "usual_kg": usual, "share_pct": mass / usual * 100, "days_to_full": max(0.0, (usual - mass) / rate), "cost_now": cost_now, "cost_full": cost_full, "eur_t_now": cost_now / (mass / 1000) if mass > 50 else None, "eur_t_full": cost_full / (usual / 1000), "read_on": str(cur.date), "kg_per_day": rate, "trend": [{"date": str(q.date), "kg": None if pd.isna(q.mass_kg_last_valid) else float(q.mass_kg_last_valid)} for q in t.tail(35).itertuples()], "pickups": c_["pickups"], "weight_pickups": c_["weight_pickups"], "tonnes": c_["tonnes"], "median_fill": c_["median_fill"], "equipment_class": c_["equipment_class"], "container_m3": c_["container_m3"], "pricing_model": c_["pricing_model"], "contract_end": c_["contract_end"], "notice_by": c_["notice_by"], "credit_eur": views[c_["id"]]["totals"]["credit"], "municipality": c_["municipality"], "material": c_["material"]})
+        live.append({"id": c_["id"], "name": f"{c_['municipality']}, {c_['material'].lower()}", "mass_kg": mass, "usual_kg": usual, "fill_pct": fill, "full_fill_pct": FULL_FILL_PCT, "share_pct": fill, "days_to_full": max(0.0, (FULL_FILL_PCT - fill) / rate), "cost_now": cost_now, "cost_full": cost_full, "eur_t_now": cost_now / (mass / 1000) if mass > 50 else None, "eur_t_full": cost_full / (usual / 1000), "read_on": str(cur.date), "fill_per_day": rate, "trend": [{"date": str(q.date), "fill": None if pd.isna(q.fill_pct_last) else float(q.fill_pct_last), "kg": None if pd.isna(q.mass_kg_last_valid) else float(q.mass_kg_last_valid)} for q in t.tail(35).itertuples()], "pickups": c_["pickups"], "weight_pickups": c_["weight_pickups"], "tonnes": c_["tonnes"], "median_fill": c_["median_fill"], "equipment_class": c_["equipment_class"], "container_m3": c_["container_m3"], "pricing_model": c_["pricing_model"], "contract_end": c_["contract_end"], "notice_by": c_["notice_by"], "credit_eur": views[c_["id"]]["totals"]["credit"], "municipality": c_["municipality"], "material": c_["material"]})
 
     # response on the customer's own on-call orders: the SLA the challenge lead described
     orders = [x for v in views.values() for x in v["pickups"] if x["hours_to_pickup"] is not None and x["status"] in ("COMPLETED", "PARTIAL")]
@@ -500,14 +502,15 @@ def main() -> None:
         t = daily[daily.device_id == x.device_id].sort_values("date")
         if not len(t):
             continue
-        cur, inc = t.iloc[-1], t.tail(30).mass_kg_last_valid.diff()
+        cur, inc = t.iloc[-1], t.tail(30).fill_pct_last.diff()
         rate = float(inc[inc > 0].mean()) if (inc > 0).any() else 0.0
         cap = float(full.get(x.device_id, np.nan))
         mass = None if pd.isna(cur.mass_kg_last_valid) else float(cur.mass_kg_last_valid)
-        if mass is None or not np.isfinite(cap) or rate <= 0:
+        if mass is None or pd.isna(cur.fill_pct_last) or not np.isfinite(cap) or rate <= 0:
             continue
+        fill = float(cur.fill_pct_last)
         s = site_ix.loc[x.site_id]
-        fleet.append({"id": x.device_id, "site": site_label(s.site_name), "region": region_names[s.region_code], "material": MATERIAL_TEXT[x.material_stream], "container_m3": x.container_volume_m3, "mass_kg": mass, "full_kg": cap, "days_to_full": max(0.0, (cap - mass) / rate)})
+        fleet.append({"id": x.device_id, "site": site_label(s.site_name), "region": region_names[s.region_code], "material": MATERIAL_TEXT[x.material_stream], "container_m3": x.container_volume_m3, "mass_kg": mass, "full_kg": cap, "fill_pct": fill, "days_to_full": max(0.0, (FULL_FILL_PCT - fill) / rate)})
     fleet.sort(key=lambda z: z["days_to_full"])
     unweighed = dv[(dv.operator_id == CHALLENGER) & ~dv.has_weight_measurement]
     not_weighing = {"compactors": len(unweighed), "sites": int(unweighed.site_id.nunique()), "customers": int(unweighed.customer_id.nunique())}
