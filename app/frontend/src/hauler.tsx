@@ -52,8 +52,8 @@ function Pack({ t, n, prospects }: any) {
   if (!p) return <Loading error={error} />;
   return (
     <>
-      <Tabs value={tab} onChange={setTab} items={[{ id: "price", label: "Your price" }, { id: "compactors", label: "The compactors" }, { id: "forecast", label: "Forecast" }]} />
-      {tab === "price" && <Calculator p={p} t={t} n={n} prospects={prospects} />}
+      <Tabs value={tab} onChange={setTab} items={[{ id: "price", label: "Potential customers" }, { id: "compactors", label: "The compactors" }, { id: "forecast", label: "Forecast" }]} />
+      {tab === "price" && <Prospects rows={prospects} />}
       {tab === "compactors" && (
         <Panel title="The compactors" flush>
           <div className="table-wrap"><table className="tight">
@@ -77,63 +77,10 @@ function Pack({ t, n, prospects }: any) {
   );
 }
 
-function Calculator({ p, t, n, prospects }: any) {
-  const m = p.model, T = p.tonnes;
-  const [perPickup, setPerPickup] = useState<number>(m.cost_per_pickup);
-  const [perTonne, setPerTonne] = useState<number>(m.cost_per_t);
-  const [margin, setMargin] = useState<number>(m.margin_pct);
-  const [costs, setCosts] = useState(false);
-  const mg = 1 + margin / 100;
-  const blindRisk = 1 + (m.risk_z * p.sigma_blind_pct) / 100;
-  const dataRisk = 1 + (m.risk_z * p.sigma_data_pct) / 100;
-  const costToday = perPickup * p.pickups_today + perTonne * T;
-  const costByWeight = perPickup * p.pickups_by_weight + (perTonne + m.fee_t) * T;
-  const blind = (costToday * mg * blindRisk) / T;
-  const fullLoads = (costByWeight * mg * blindRisk) / T;
-  const withData = (costByWeight * mg * dataRisk) / T;
-  const [price, setPrice] = useState<number>(Math.round(withData * 1.04));
-  const profit = price * T - costByWeight;
-  const lowT = T * (1 - p.sigma_own_pct / 100);
-  const profitLow = price * lowT - (perPickup * p.pickups_by_weight + (perTonne + m.fee_t) * lowT);
-  const field = (label: string, v: number, set: (n: number) => void, unit: string, id: string) => (
-    <div className="field"><label htmlFor={id}>{label}</label><div className="input"><input id={id} type="number" step="any" value={v} onChange={(e) => { const n = Number(e.target.value); if (Number.isFinite(n)) set(n); }} /><em>{unit}</em></div></div>
-  );
-  const rec = t.my_record;
-  return (
-    <div className="price-grid">
-      <Panel title="Plan your offer" className="p-offer" meta={<button className="link-btn" onClick={() => setCosts(true)}>Your costs</button>}>
-        <label className="offer-big" htmlFor="offer">{eur(price)}<small> per tonne</small></label>
-        <input id="offer" className="slider" type="range" min={Math.floor(withData * 0.8)} max={Math.ceil(blind)} step={1} value={price} onChange={(e) => setPrice(Number(e.target.value))} />
-        <dl className="offer-out">
-          <div><dt>Revenue a year, {t1(T)}</dt><dd>{eur(price * T)}</dd></div>
-          <div><dt>Profit, as expected</dt><dd className={profit < 0 ? "warn" : "tone-good"}>{eur(profit)}</dd></div>
-          <div><dt>If tonnes come in {p.sigma_own_pct.toFixed(0)} % low</dt><dd className={profitLow < 0 ? "warn" : ""}>{eur(profitLow)}</dd></div>
-        </dl>
-        <div className="offer-asks"><h3>The customer asks for</h3><ul className="ask-list">{n.asks.map((a: string) => <li key={a}>{a}</li>)}</ul></div>
-        {rec && <p className="fine">Your service record: {pct(rec.on_time_pct)} on time, {rec.response_h.toFixed(0)} h response, {pct(rec.tickets_pct)} tickets shared.</p>}
-                <p className="fine center">Bid pack: {eur(n.price_per_pack_eur)} per tender.</p>
-      </Panel>
-      <Prospects rows={prospects} />
-      {costs && (
-        <Drawer title="Your costs" onClose={() => setCosts(false)}>
-          <p className="muted">Starting values. Enter your own; the price updates as you type. <Tag kind="assumption" /></p>
-          <div className="fields">
-            {field("Cost per pickup", perPickup, setPerPickup, "€", "c1")}
-            {field("Cost per tonne", perTonne, setPerTonne, "€/t", "c2")}
-            {field("Margin you need", margin, setMargin, "%", "c3")}
-          </div>
-          <p className="fine">Includes the OpenWeight fee: €30 per weighed compactor a month (about {eur2(m.fee_t)} a tonne at average tonnage).</p>
-          <div className="drawer-fig"><strong>{eur2(withData)}</strong><span>per tonne with the weights</span></div>
-        </Drawer>
-      )}
-    </div>
-  );
-}
-
 function Prospects({ rows }: any) {
   const lowest = rows.filter((r: any) => r.fit === "Lowest bid");
   return (
-    <Panel title="Potential customers" className="p-prospects">
+    <Panel className="p-prospects">
       <p className="muted">Customers in your region you don't serve yet, ranked by what you could earn. Estimated on your own costs and the weights they share. Names appear when a customer opens a tender.</p>
       <div className="prospect-kpis">
         <div><strong>{lowest.length}</strong><span>where your bid would be lowest</span></div>

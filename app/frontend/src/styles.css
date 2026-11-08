@@ -502,3 +502,4 @@ th:last-child, td:last-child { padding-right: 0; }
 .p-prospects .prospect-kpis { margin-top: 10px; }
 .price-grid { grid-template-columns: minmax(300px, 520px) minmax(0, 1fr); }
 @media (max-width: 1000px) { .price-grid { grid-template-columns: minmax(0, 1fr); } }
+.p-prospects { max-width: 980px; }
