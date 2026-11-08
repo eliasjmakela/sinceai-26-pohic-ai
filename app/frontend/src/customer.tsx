@@ -10,7 +10,7 @@ const PRICING: Record<string, string> = { FIXED_PER_LIFT: "Per pickup", HYBRID: 
 
 const isDone = (a: any, c: any) => a === "tender" ? c.tender_status === "awarded" : a === "contract" ? c.query_state.status === "sent" : Boolean(c.decisions?.["order-by-weight"]);
 
-const soon = (x: any) => x.days_to_full <= 3;
+const soon = (x: any) => x.fill_pct >= 60 || x.days_to_full <= 1;  // nearly full: worth a look
 
 export function CustomerPortal() {
   const { data: c, error, reload } = useData("/api/customer");
@@ -41,8 +41,8 @@ function Today({ c, reload, pending }: any) {
   const total = c.live.reduce((s: number, x: any) => s + x.mass_kg, 0);
   const soonest = c.live.reduce((a: any, x: any) => (x.days_to_full < a.days_to_full ? x : a), c.live[0]);
   const selected = c.live.find((x: any) => x.id === params.get("c")) ?? soonest;
-  const byDays = [...c.live].sort((a: any, b: any) => a.days_to_full - b.days_to_full);
-  const groups: [string, any[]][] = [["Pickup within 3 days", byDays.filter(soon)], ["Later", byDays.filter((x: any) => !soon(x))]];
+  const byFill = [...c.live].sort((a: any, b: any) => b.fill_pct - a.fill_pct);
+  const groups: [string, any[]][] = [["Nearly full", byFill.filter(soon)], ["Others", byFill.filter((x: any) => !soon(x))]];
   const select = (id: string) => setParams({ c: id }, { replace: true });
   return (
     <>
