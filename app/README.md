@@ -15,16 +15,20 @@ Each list holds only what needs doing, with one action per row. A finished item 
 
 ## Run
 
-From the repository root:
+From the repository root (Python ≥ 3.11, Node ≥ 23):
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 .venv/bin/pip install -r app/requirements.txt
-.venv/bin/python app/backend/build_data.py      # about 30 s; writes app/backend/data/
 (cd app/frontend && npm install && npm run build)
 echo "GEMINI_API_KEY=your-key" > app/.env       # optional
 .venv/bin/uvicorn server:app --app-dir app/backend --port 8000
 ```
+
+`app/backend/data/` is committed, so this runs without the starter kit. To regenerate it (needs the kit and
+`pipeline` installed, see the root README's "Rebuild the numbers"), run `.venv/bin/python app/backend/build_data.py`
+(about 30 s) before starting the server. For hot reload, run `npm run dev` in `app/frontend` alongside the server;
+Vite proxies `/api` to port 8000.
 
 Open http://127.0.0.1:8000 and sign in as the customer or the waste company. The waste company plans its price for a tender request it has already uploaded; the customer compares offers it has already uploaded and chooses. OpenWeight does not pass offers between them: Europress doesn't want to sit in the middle of a tender, so offers travel the usual way. "Reset the demo" on the sign-in page clears the state.
 

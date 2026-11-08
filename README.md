@@ -26,10 +26,23 @@ every price hypothetical.
 Internal: [`PRODUCT.md`](PRODUCT.md) (spec), [`MASTER.md`](MASTER.md) (decisions and numbers ledger),
 [`SUBMISSION.md`](SUBMISSION.md) (checklist), [`reviews/`](reviews/), [`briefs/`](briefs/).
 
+## Tech stack
+
+| Layer | Technologies |
+|---|---|
+| Data pipeline (`pipeline/`) | Python 3.11+, pandas, NumPy, PyArrow (Parquet), DuckDB, PyYAML, scikit-learn (kit's ML baseline only); the Europress starter kit's own SDK and pricing code |
+| Backend (`app/backend/`) | FastAPI + Uvicorn, Pydantic, SQLite (demo state), Google Gemini via `google-genai` (wording only, behind a number guard) |
+| Frontend (`app/frontend/`) | React 19, React Router 7, TypeScript, Vite, Manrope font |
+| Hosted demo (`app/cloudflare/`) | Cloudflare Workers (static assets + API), Durable Objects (one per visitor session), Wrangler |
+| Part 1 weighing concept (`part1/`) | Python calculation scripts, hand-written and generated SVG figures |
+| Tooling | pytest, ruff, npm |
+
+Versions and licences: [`docs/THIRD_PARTY.md`](docs/THIRD_PARTY.md).
+
 ## Run the demo
 
-Requires Python ≥ 3.11 (tested on 3.14) and Node ≥ 23 (tested on 24). The app's data is committed
-(`app/backend/data/`), so the demo runs without the starter kit:
+Requires **Python ≥ 3.11** (tested on 3.14) and **Node ≥ 23** (tested on 24). The app's data is committed
+(`app/backend/data/`), so the demo runs from a fresh clone without the starter kit. From the repository root:
 
 ```bash
 python3 -m venv .venv
@@ -42,6 +55,18 @@ echo "GEMINI_API_KEY=your-key" > app/.env      # optional; without it the texts 
 Open http://127.0.0.1:8000, sign in as the customer or the waste company (each in its own tab). "Reset the demo" on
 the sign-in page clears the demo state. More in [`app/README.md`](app/README.md).
 
+**Frontend development** (hot reload): keep the Uvicorn server running on port 8000, then
+`cd app/frontend && npm run dev` and open the URL Vite prints; it proxies `/api` to port 8000.
+
+**Troubleshooting**
+
+- *Blank page or 404 on `/`*: the frontend isn't built; run `npm run build` in `app/frontend` (the server serves
+  `app/frontend/dist/`).
+- *Port in use*: pass another `--port`; for frontend dev, also change the proxy target in `app/frontend/vite.config.ts`.
+- *Stale demo state*: "Reset the demo" on the sign-in page, or stop the server and delete `app/backend/state.db`.
+- *No Gemini key*: everything works; report texts use templates. `GEMINI_MODEL` overrides the model.
+- *`build_data.py` fails with a missing kit*: it is only needed to regenerate the data; see "Rebuild the numbers".
+
 ## Hosted demo (Cloudflare)
 
 https://openweight.eliasmakela.fi runs the same app on Cloudflare (`app/cloudflare/`): the React build as static
@@ -50,8 +75,13 @@ visitors don't affect each other. All texts and figures are exported from the Py
 
 ```bash
 .venv/bin/python app/backend/export_static.py          # → app/cloudflare/src/static.json
-cd app/cloudflare && npm install && npm run deploy      # builds app/frontend, deploys the Worker
+cd app/cloudflare && npm install
+npm run build && npm run dev                            # local Worker via wrangler dev (no Cloudflare account needed)
+npm run deploy                                          # builds app/frontend, deploys the Worker (needs `wrangler login`)
 ```
+
+The Worker calls no language model at runtime; `static.json` already holds the texts. The route in
+`app/cloudflare/wrangler.jsonc` is our domain: change it before deploying to your own account.
 
 ## Rebuild the numbers from the starter kit
 
