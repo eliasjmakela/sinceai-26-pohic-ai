@@ -22,3 +22,6 @@ web/dist/
 # Agent worktrees
 .claude/worktrees/
 web/.shots/
+
+# Internal reviews (local only)
+reviews/

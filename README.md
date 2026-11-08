@@ -24,7 +24,7 @@ every price hypothetical.
 | Walkthrough video | recorded separately |
 
 Internal: [`PRODUCT.md`](PRODUCT.md) (spec), [`MASTER.md`](MASTER.md) (decisions and numbers ledger),
-[`SUBMISSION.md`](SUBMISSION.md) (checklist), [`reviews/`](reviews/), [`briefs/`](briefs/).
+[`SUBMISSION.md`](SUBMISSION.md) (checklist), [`briefs/`](briefs/).
 
 ## Tech stack
 
@@ -126,7 +126,7 @@ app/                  THE DEMO: backend/ (FastAPI server, build_data.py, Gemini 
 docs/                 submission documents (business case, pricing, limitations, SMART integration, licences, script)
 docs/fi/              superseded Finnish team working material (first business-case PDF, LIITE, papers, cash-flow
                       scripts); not a deliverable, see docs/fi/README.md
-reviews/              independent reviews and the team briefing page
+reviews/              independent reviews and the team briefing page (local only, not in git)
 talks/                recordings and transcripts of the Europress talks (local only, not in git)
 part1/                Part 1 weighing concept, calculations and figures
 briefs/               briefs and reports of the supervised agents that built parts of this repo
