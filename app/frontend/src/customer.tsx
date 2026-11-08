@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Route, Routes, useLocation, useSearchParams } from "react-router-dom";
 import { post, useData } from "./api";
-import { FillScatter, FillTrend } from "./charts";
+import { FillTrend } from "./charts";
 import { Bar, Compactor, Drawer, Icon, Kpi, Loading, Panel, Shell, Tabs, Tag, cls, date, eur, eur2, int, kg, monthName, pct, shortDate, t1, useToast } from "./ui";
 
 const BASIS: Record<string, string> = { WEIGHBRIDGE: "Weighing ticket", INVOICE_QUANTITY: "Invoice tonnage, no ticket shared", DEVICE_ESTIMATE: "Compactor weight", UNKNOWN: "Not known" };
@@ -270,6 +270,7 @@ function Contract({ c }: any) {
     <>
       <Bar title={`${c.operator}: ${kept} of ${promises.length} contract terms on target`} sub={asks.length ? `Below target: ${asks.map((p) => p.name.toLowerCase()).join(", ")}` : "All on target"} />
       <div className="canvas">
+        <WasteAndCost periods={c.periods} compare={c.compare} />
         <div className="promises">
           {promises.map((p) => {
             const ok = p.value >= KEPT_AT;
@@ -285,18 +286,6 @@ function Contract({ c }: any) {
           })}
         </div>
         <div className="contract-grid">
-          <Panel title="Fill level at pickup" className="p-chart">
-            <FillScatter rows={c.scatter} />
-            <div className="bands">{c.bands.map((b: any) => <div key={b.label}><strong>{eur(b.eur_per_t)}/t</strong><span>{b.label}</span></div>)}</div>
-          </Panel>
-          <Panel title="Findings" className="p-look" flush>
-            <ul className="look-list">
-              {groups.map((g) => (
-                <li key={g.kind}><button className="look-row" onClick={() => setGroup(g)}><span>{g.title(g.rows.length)}</span>{g.sum > 0 && <strong>{eur(g.sum)}</strong>}<Icon name="chevron" /></button></li>
-              ))}
-            </ul>
-            <p className="list-note">A difference can come from the device, the data or the company.</p>
-          </Panel>
           <Panel title="Your compactors" className="p-comp" flush>
             <div className="table-wrap"><table className="tight">
               <thead><tr><th>Compactor</th><th>You pay</th><th className="num">Pickups</th><th className="num">When full <Tag kind="estimate" /></th><th className="num">Tonnes</th><th className="num">Credits</th></tr></thead>
@@ -307,6 +296,14 @@ function Contract({ c }: any) {
                 </tr>
               ))}</tbody>
             </table></div>
+          </Panel>
+          <Panel title="Findings" className="p-look" flush>
+            <ul className="look-list">
+              {groups.map((g) => (
+                <li key={g.kind}><button className="look-row" onClick={() => setGroup(g)}><span>{g.title(g.rows.length)}</span>{g.sum > 0 && <strong>{eur(g.sum)}</strong>}<Icon name="chevron" /></button></li>
+              ))}
+            </ul>
+            <p className="list-note">A difference can come from the device, the data or the company.</p>
           </Panel>
           <Panel title="Materials" meta={<span className="esg">{pct(c.recycled_pct)} <small>into recycling streams</small></span>} className="p-esg">
             <div className="stack" role="img" aria-label="Tonnes by material">{c.materials.map((z: any, i: number) => <div key={z.material} className={`stack-seg seg-${i}`} style={{ flexGrow: z.tonnes }} />)}</div>
@@ -330,6 +327,46 @@ function Contract({ c }: any) {
         </Drawer>
       )}
     </>
+  );
+}
+
+function WasteAndCost({ periods, compare: k }: any) {
+  const cols = [["Last 7 days", periods.week], ["Last 30 days", periods.month]] as const;
+  return (
+    <Panel title="Waste and cost" className="p-waste" flush>
+      <div className="table-wrap"><table className="waste-table">
+        <thead><tr><th /><th className="num">Waste</th><th className="num">Cost</th><th className="num">Recycling value</th><th className="num">Total</th></tr></thead>
+        <tbody>{cols.map(([label, p]: any) => (
+          <tr key={label}>
+            <th scope="row">{label}<div className="fine">{p.pickups} pickups</div></th>
+            <td className="num">{t1(p.tonnes)}</td>
+            <td className="num">{eur(p.cost_eur)}</td>
+            <td className="num tone-good">−{eur(p.credit_eur)}</td>
+            <td className="num strong">{eur(p.net_eur)}</td>
+          </tr>
+        ))}</tbody>
+      </table></div>
+      <p className="list-note">Cost covers pickups, transport and treatment. Recycling value is the material credit for cardboard and plastic.</p>
+      <h3 className="waste-sub">Your contract against a price per tonne, 12 months</h3>
+      <div className="table-wrap"><table className="waste-table compare-table">
+        <thead><tr><th /><th className="num">Today, per visit</th><th className="num">Price per tonne <Tag kind="simulated" /></th><th className="num">Difference</th></tr></thead>
+        <tbody>
+          {(() => {
+            const row = (label: string, a: number, b: number, f: (v: number) => string) => (
+              <tr key={label}><th scope="row">{label}</th><td className="num">{f(a)}</td><td className="num">{f(b)}</td><td className="num tone-good">{b - a < 0 ? "−" : "+"}{f(Math.abs(b - a))}</td></tr>
+            );
+            return [row("You pay", k.today.price_eur, k.per_tonne.price_eur, eur)];
+          })()}
+          <tr className="compare-split"><th scope="row">Of which waste company's cost <Tag kind="assumption" /></th><td className="num">{eur(k.today.cost_eur)}</td><td className="num">{eur(k.per_tonne.cost_eur)}</td><td /></tr>
+          <tr className="compare-split"><th scope="row">Of which waste company's margin <Tag kind="assumption" /></th><td className="num">{eur(k.today.margin_eur)}</td><td className="num">{eur(k.per_tonne.margin_eur)}</td><td /></tr>
+          <tr className="compare-split"><th scope="row">Of which OpenWeight fee</th><td className="num">–</td><td className="num">{eur(k.per_tonne.fee_eur)}</td><td /></tr>
+          {[["Per tonne", k.today.price_eur / k.tonnes, k.per_tonne.price_eur / k.tonnes, eur2], ["Pickups", k.today.pickups, k.per_tonne.pickups, int]].map(([label, a, b, f]: any) => (
+            <tr key={label}><th scope="row">{label}</th><td className="num">{f(a)}</td><td className="num">{f(b)}</td><td className="num tone-good">{b - a < 0 ? "−" : "+"}{f(Math.abs(b - a))}</td></tr>
+          ))}
+        </tbody>
+      </table></div>
+      <p className="list-note">Today's charges are from your invoices ({eur(k.today.per_visit_eur)} per visit, {eur(k.today.per_tonne_part_eur)} per tonne). The waste company's own cost isn't in the data: assumed to be {k.cost_share_pct.toFixed(0)} % of today's price. With full loads and a price per tonne, the cost falls with the number of pickups, and competition for the contract lowers the margin. Lowest offer in the market simulation: {k.per_tonne.winner}.</p>
+    </Panel>
   );
 }
 

@@ -441,3 +441,22 @@ th:last-child, td:last-child { padding-right: 0; }
 .list-sep { padding: 10px 14px 6px; font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1px solid var(--line-2); }
 .select-muted { opacity: .62; }
 .select-muted:hover, .select-muted.select-on { opacity: 1; }
+
+/* Waste and cost (Contract) */
+.p-waste { flex: none; }
+.waste-table { width: 100%; border-collapse: collapse; }
+.waste-table th, .waste-table td { padding: 12px 16px; border-bottom: 1px solid var(--line-2); text-align: left; }
+.waste-table thead th { font-size: .78rem; font-weight: 600; color: var(--ink-2); }
+.waste-table tbody th { font-weight: 700; }
+.waste-table td { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; }
+.waste-table .num { text-align: right; }
+@media (max-width: 640px) {
+  .waste-table th, .waste-table td { padding: 10px 8px; }
+  .waste-table td { font-size: 1rem; }
+  .waste-table thead th { font-size: .7rem; }
+}
+.waste-sub { font-size: .95rem; font-weight: 700; padding: 18px 16px 4px; }
+.compare-table td { font-size: 1.05rem; }
+.compare-split th { font-weight: 500; color: var(--ink-2); padding-left: 28px; }
+.compare-split td { font-size: .95rem; font-weight: 600; color: var(--ink-2); }
+@media (max-width: 640px) { .compare-table th:last-child, .compare-table td:last-child { display: none; } }

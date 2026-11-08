@@ -382,6 +382,30 @@ def main() -> None:
     compactors.sort(key=lambda c: c["months_left"])
 
     # right now: the weight in each container, and what the next pickup would cost before the truck leaves
+    # waste and money in the last 7 and 30 days, from the pickups (cost: pickups, transport, treatment; value: material credits)
+    def period(days: int) -> dict:
+        start = str((AS_OF - pd.Timedelta(days=days - 1)).date())
+        done = [x for v in views.values() for x in v["pickups"] if x["status"] in ("COMPLETED", "PARTIAL") and x["date"] >= start]
+        cost, credit = sum(x["cost_eur"] for x in done), sum(x["credit_eur"] for x in done)
+        return {"days": days, "from": start, "pickups": len(done), "tonnes": sum(x["billed_kg"] or 0 for x in done) / 1000,
+                "cost_eur": cost, "credit_eur": credit, "net_eur": cost - credit}
+    periods = {"week": period(7), "month": period(30)}
+
+    # today's contract against a price per tonne, 12 months. Charges are observed (invoices); the waste company's own
+    # cost is not in the data, so cost and margin use the market model's stated assumption (params.yaml: market.cost_share)
+    mrow = next(r for r in market["default"]["rows"] if r["customer_id"] == hero["customer_id"])
+    minp = next(r for r in market["inputs"] if r["customer_id"] == hero["customer_id"])
+    cost_share = market["params"]["cost_share"]
+    fee_eur = mrow["europress_fee"] / 100
+    after_eur, after_margin = mrow["price_after"] / 100, mrow["operator_margin_after"] / 100
+    compare = {
+        "tonnes": mrow["tonnes"], "cost_share_pct": cost_share * 100,
+        "today": {"price_eur": mrow["price_before"] / 100, "per_visit_eur": minp["trip_cents"] / 100, "per_tonne_part_eur": minp["tonne_cents"] / 100,
+                  "pickups": facts["lifts"], "cost_eur": mrow["price_before"] / 100 - mrow["operator_margin_before"] / 100, "margin_eur": mrow["operator_margin_before"] / 100, "fee_eur": 0.0},
+        "per_tonne": {"price_eur": after_eur, "pickups": facts["lifts_after"], "cost_eur": after_eur - after_margin - fee_eur, "margin_eur": after_margin, "fee_eur": fee_eur,
+                      "winner": names[mrow["winner_after"]]},
+    }
+
     live = []
     for c_ in compactors:
         v = views[c_["id"]]
@@ -533,7 +557,7 @@ def main() -> None:
     weighed_not = dv[(dv.customer_id == "ORG-0036") & (dv.operator_id == ov["incumbent"]) & ~dv.has_weight_measurement & dv.site_id.isin(sites[sites.region_code == hero["region"]].site_id)]
     customer = {
         "as_of": str(AS_OF.date()), "name": facts["customer_name"], "region": region_names[hero["region"]], "response_hours": RESPONSE_HOURS,
-        "facts": facts, "service": sv, "operator": names[ov["incumbent"]], "operator_id": ov["incumbent"], "bands": bands, "compactors": compactors, "not_weighed": len(weighed_not), "query": query, "invoice_check": invoice_check, "scatter": hero["lifts"], "live": live, "response": response, "materials": materials, "recycled_pct": recycled_pct, "credits_eur": sum(z["credit_eur"] for z in materials), "next_notice": next_notice,
+        "facts": facts, "service": sv, "operator": names[ov["incumbent"]], "operator_id": ov["incumbent"], "bands": bands, "compactors": compactors, "not_weighed": len(weighed_not), "query": query, "invoice_check": invoice_check, "scatter": hero["lifts"], "live": live, "response": response, "periods": periods, "compare": compare, "materials": materials, "recycled_pct": recycled_pct, "credits_eur": sum(z["credit_eur"] for z in materials), "next_notice": next_notice,
         "findings": sorted([z for z in findings if z["kind"] in ("FAR_FROM_FULL", "INVOICE", "LATE_SURCHARGE", "TRUCK_TARE", "MISSED_VISIT", "REFERENCE", "WRONG_MATERIAL", "CALIBRATION", "MOISTURE")], key=lambda z: z["date"], reverse=True), "early_eur": float(sum(z["eur"] for z in findings if z["kind"] == "FAR_FROM_FULL")),
         "market": {"today_eur": facts["cost_today_eur"], "tonnes": t_year, "price_after_eur": facts["price_per_kg_regime_eur"], "saving_eur": facts["saving_eur"], "saving_pct": facts["saving_pct"], "region_saving_pct": (1 - market["headline"]["cost_per_t_after"]["value"] / market["headline"]["cost_per_t_before"]["value"]) * 100, "contestable_before": market["headline"]["contestable_before"]["value"], "contestable_after": market["headline"]["contestable_after"]["value"], "accounts": market["headline"]["contestable_after"]["value"], "today_price_t": today / t_year, "sigma_blind_pct": market["sigma_ent"] * 100, "sigma_data_pct": sigma_after * 100},
         "offers": offers, "cards": cards, "challenger": {"id": CHALLENGER, "name": names[CHALLENGER]}, "offers_due": pack["offers_due"], "term_years": CYCLE_YEARS, "c2_note": None, "truck_stats": truck_stats,
