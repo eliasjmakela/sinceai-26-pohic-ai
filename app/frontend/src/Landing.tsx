@@ -42,7 +42,7 @@ export function Landing() {
           </Link>
           <Link to="/waste-company" className="role">
             <span className="role-icon"><Icon name="truck" /></span>
-            <span className="role-text"><strong>Waste company · €{a?.fee_eur_per_device_month ?? 30} per compactor a month</strong><span>Price per tonne without guessing, and send trucks only to full loads</span></span>
+            <span className="role-text"><strong>Waste company · €{a?.fee_eur_per_device_month ?? 30} per compactor a month</strong><span>Price tenders per tonne without guessing, and check every ticket against the compactor</span></span>
             <Icon name="chevron" />
           </Link>
         </div>

@@ -7,11 +7,10 @@ This app is the demo. Every screen serves that move:
 | Portal | Screen | What it does |
 |---|---|---|
 | Sign-in | – | The core value in one view: pay for tonnes, not trips; a bidder's estimate ±37 % → ±10 %; 0 → 19 of 19 customers winnable; about −12 % per tonne (simulated region, fee included); what each side gets and pays. Facts from `data/about.json` (the pipeline's bundle) |
-| Customer (free) | Today | Each compactor's live weight and cost per tonne before the truck leaves, and the decisions waiting, each with one action |
-| | Contract | Is the contract kept? Response to orders, schedule, tickets, invoices. Every pickup traces from the order to the ticket, contract version and invoice lines |
+| Customer (free) | Contract (opens first) | Is the contract kept? Response to orders, schedule, tickets, invoices. Every pickup traces from the order to the ticket, contract version and invoice lines |
+| | Today | Each compactor's fill level and weight, when it needs a pickup (at 80 % full), cost per tonne before the truck leaves, and the decisions waiting, each with one action |
 | | Tender | Offer comparison: the offers the customer received, uploaded to compare per tonne with service beside price |
 | Waste company | Tenders | Offer planning for a tender request it uploaded: bid pack, and the price with and without the weights |
-| | Full loads | Which compactors reach a full load within 3 days, and a recommendation for those that don't weigh yet |
 | | Weight check | Trucks whose tickets differ from the compactors |
 
 Each list holds only what needs doing, with one action per row. A finished item leaves the list, can be undone, and an empty list says so plainly.

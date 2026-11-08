@@ -201,13 +201,12 @@ consent step now live in the product demo below.
 **Product demo (`app/`, built by the team on 7 Nov evening, merged into this repo on 7 Nov night). Decided 7 Nov
 night: this is the demo of record** for the video and the judges; the three pitch screens above are an earlier
 prototype. Same numbers (it reads `bundle.json`; the hero is ORG-0036).
-- **Customer portal (free):** *Today* (live weight and € per tonne before the truck leaves, a three-item report with
-  Approve / Not now / Undo), *Contract* (is the contract kept: response, schedule, tickets; every pickup traces order
-  → ticket → contract version → invoice lines; invoice query the customer reads before it goes), *Tender* (offer
+- **Customer portal (free):** *Contract*, the first screen (is the contract kept: response, schedule, tickets; every
+  pickup traces order → ticket → contract version → invoice lines), *Today* (fill level with pickup at 80 %, weight and
+  € per tonne before the truck leaves, a three-item report with Approve / Not now / Undo, invoice query), *Tender* (offer
   comparison: uploaded offers per tonne, service record beside price; share or withdraw the weights).
 - **Waste company portal (paid):** *Tenders* (offer planning for a tender request it uploaded: bid pack, forecast,
-  price with and without the weights on its own costs), *Full loads* (compactors full within 3 days; units that do
-  not weigh yet can be passed to Europress as a sales lead), *Weight check* (trucks whose tickets disagree with the
+  price with and without the weights on its own costs), *Weight check* (trucks whose tickets disagree with the
   compactors: tare errors).
 
 ## 5. Where the points come from

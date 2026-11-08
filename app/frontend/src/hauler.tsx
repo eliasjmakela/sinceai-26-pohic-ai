@@ -7,11 +7,9 @@ import { Bar, Compactor, Drawer, Icon, Kpi, Loading, Panel, Shell, Tabs, Tag, cl
 export function HaulerPortal() {
   const { data: h, error, reload } = useData("/api/hauler");
   const { data: t } = useData("/api/hauler/tender", 3000);
-  const soon = h ? h.fleet.filter((x: any) => x.days_to_full <= 3 && !h.confirmed.includes(x.id)).length : 0;
   const trucks = h ? h.trucks.filter((x: any) => !h.checked.includes(x.truck)).length : 0;
   const nav = [
     { to: "/waste-company", label: "Tenders", icon: "tender", end: true, badge: null },
-    { to: "/waste-company/full-loads", label: "Full loads", icon: "truck", badge: soon || null },
     { to: "/waste-company/weight-check", label: "Weight check", icon: "scale", badge: trucks || null },
   ];
   return (
@@ -19,7 +17,6 @@ export function HaulerPortal() {
       {!h ? <div className="canvas"><Loading error={error} /></div> : (
         <Routes>
           <Route index element={<Tenders t={t} />} />
-          <Route path="full-loads" element={<FullLoads h={h} reload={reload} />} />
           <Route path="weight-check" element={<WeightCheck h={h} reload={reload} />} />
         </Routes>
       )}
@@ -136,74 +133,6 @@ function Calculator({ p, t, n }: any) {
         </Drawer>
       )}
     </div>
-  );
-}
-
-function FullLoads({ h, reload }: any) {
-  const toast = useToast();
-  const [region, setRegion] = useState<string | null>(null);
-  const nw = h.not_weighing, e = h.efficiency;
-  const soon = h.fleet.filter((x: any) => x.days_to_full <= 3);
-  const todo = soon.filter((x: any) => !h.confirmed.includes(x.id));
-  const done = soon.filter((x: any) => h.confirmed.includes(x.id));
-  const tonnes = (xs: any[]) => xs.reduce((sum: number, x: any) => sum + x.full_kg, 0) / 1000;
-  const regions = useMemo(() => {
-    const m = new Map<string, any[]>();
-    todo.forEach((x: any) => m.set(x.region, [...(m.get(x.region) ?? []), x]));
-    return [...m.entries()].sort((p, q) => q[1].length - p[1].length);
-  }, [h.confirmed]);
-  useEffect(() => { if (region && !regions.some(([r]) => r === region)) setRegion(null); }, [regions, region]);
-  const shown = region ? todo.filter((x: any) => x.region === region) : todo;
-  const mark = async (x: any, on: boolean) => {
-    await post("/api/hauler/pickups", { id: x.id, on }); reload();
-    if (on) toast(`Pickup confirmed: ${x.site}`, async () => { await post("/api/hauler/pickups", { id: x.id, on: false }); reload(); });
-  };
-  const recommend = async (on: boolean) => { await post("/api/hauler/recommend", { on }); reload(); if (on) toast("Passed to Europress", () => recommend(false)); };
-  return (
-    <>
-      <Bar title={todo.length ? `${todo.length} full loads to plan` : "Every full load is planned"} sub="Compactors reaching the pickup fill level (80 %) within 3 days" />
-      <div className="canvas">
-        <div className="kpis">
-          <Kpi label="Tonnes to collect" value={`${tonnes(todo).toFixed(0)} t`} sub={`${todo.length} compactors`} tag="estimate" />
-          <Kpi label="Confirmed" value={done.length} sub={done.length ? `${tonnes(done).toFixed(1)} t planned` : "None yet"} tone={done.length ? "good" : undefined} />
-          <Kpi label="Came early last year" value={int(e.early)} sub={`${pct(e.share_pct)} of ${int(e.pickups)} pickups`} tag="estimate" />
-          <Kpi label="Billed for those visits" value={eur(e.visit_eur)} sub="Lost under a price per tonne" tag="estimate" />
-        </div>
-        <div className="loads-grid">
-          <div className="stack-col">
-            <Panel title="Regions" flush>
-              <ul className="select-list">
-                <li><button className={cls("region-row", !region && "select-on")} onClick={() => setRegion(null)}><strong>All regions</strong><span>{tonnes(todo).toFixed(1)} t</span></button></li>
-                {regions.map(([r, xs]) => <li key={r}><button className={cls("region-row", region === r && "select-on")} onClick={() => setRegion(r)}><strong>{r}</strong><span>{xs.length} · {tonnes(xs).toFixed(1)} t</span></button></li>)}
-              </ul>
-            </Panel>
-            {nw.compactors > 0 && (
-              <Panel title={`${nw.compactors} compactors you can't plan by weight`}>
-                <p className="fine">{nw.customers} customers. New Europress compactors include weighing at no extra cost.</p>
-                {h.recommended
-                  ? <div className="inline-done"><span className="tone-good strong">Passed to Europress</span><button className="link-btn" onClick={() => recommend(false)}>Undo</button></div>
-                  : <button className="btn btn-block" onClick={() => recommend(true)}>Send to Europress as a lead</button>}
-              </Panel>
-            )}
-          </div>
-          <Panel title={region ?? "All regions"} meta={<span className="fine">Soonest first</span>} flush className="p-work">
-            {shown.length === 0 ? <div className="empty-mini"><Icon name="check" />Nothing left to plan here.</div> : (
-              <ul className="work">
-                {shown.map((x: any) => (
-                  <li key={x.id} className="work-row">
-                    <Compactor share={x.fill_pct} size="small" />
-                    <div className="work-name"><strong>{x.site}, {x.material.toLowerCase()}</strong><span className="fine">{x.container_m3} m³{region ? "" : ` · ${x.region}`}</span></div>
-                    <div className="work-kg"><strong>{pct(x.fill_pct)} full</strong><span className="fine">{kg(x.mass_kg)}</span></div>
-                    <div className={x.days_to_full < 0.5 ? "work-when work-now" : "work-when"}>{x.days_to_full < 0.5 ? "Ready now" : `${x.days_to_full.toFixed(1)} days`}</div>
-                    <button className="btn btn-small" onClick={() => mark(x, true)}>Confirm</button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Panel>
-        </div>
-      </div>
-    </>
   );
 }
 

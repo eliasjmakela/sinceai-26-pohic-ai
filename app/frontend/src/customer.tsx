@@ -18,16 +18,16 @@ export function CustomerPortal() {
   useEffect(() => { reload(); }, [pathname, reload]);
   const pending = c ? ["trips", "contract", "tender"].filter((id) => !isDone(id, c)).length : 0;
   const nav = [
-    { to: "/customer", label: "Today", icon: "today", end: true, badge: pending || null },
-    { to: "/customer/contract", label: "Contract", icon: "contract" },
+    { to: "/customer", label: "Contract", icon: "contract", end: true },
+    { to: "/customer/today", label: "Today", icon: "today", badge: pending || null },
     { to: "/customer/tender", label: "Tender", icon: "tender", badge: c && c.tender_status === "open" ? "Open" : null },
   ];
   return (
     <Shell who={c?.name ?? ""} sub={c ? `${c.facts.devices} compactors, ${c.region}` : ""} portal="Customer" nav={nav} liveLabel={c ? `Live · ${date(c.as_of)}` : "Live"}>
       {!c ? <div className="canvas"><Loading error={error} /></div> : (
         <Routes>
-          <Route index element={<Today c={c} reload={reload} pending={pending} />} />
-          <Route path="contract" element={<Contract c={c} />} />
+          <Route index element={<Contract c={c} />} />
+          <Route path="today" element={<Today c={c} reload={reload} pending={pending} />} />
           <Route path="tender" element={<Tender c={c} onChange={reload} />} />
         </Routes>
       )}
@@ -302,7 +302,7 @@ function Contract({ c }: any) {
               <thead><tr><th>Compactor</th><th>You pay</th><th className="num">Pickups</th><th className="num">When full <Tag kind="estimate" /></th><th className="num">Tonnes</th><th className="num">Credits</th></tr></thead>
               <tbody>{c.compactors.map((x: any) => (
                 <tr key={x.id}>
-                  <td><Link className="row-link" to={`/customer?c=${x.id}`}>{x.municipality}, {x.material.toLowerCase()}</Link></td>
+                  <td><Link className="row-link" to={`/customer/today?c=${x.id}`}>{x.municipality}, {x.material.toLowerCase()}</Link></td>
                   <td>{PRICING[x.pricing_model]}</td><td className="num">{x.pickups}</td><td className="num">{x.weight_pickups}</td><td className="num">{x.tonnes.toFixed(1)}</td><td className="num">{eur(x.credit_eur)}</td>
                 </tr>
               ))}</tbody>
@@ -323,7 +323,7 @@ function Contract({ c }: any) {
               <li key={z.id}>
                 <span className="fine nowrap">{shortDate(z.date)}</span>
                 <span>{z.site}, {z.material.toLowerCase()}. {z.detail}</span>
-                {z.pickup ? <Link className="inline-link nowrap" to={`/customer?c=${z.compactor}&tab=pickups&pickup=${z.pickup}`}>Open</Link> : <span />}
+                {z.pickup ? <Link className="inline-link nowrap" to={`/customer/today?c=${z.compactor}&tab=pickups&pickup=${z.pickup}`}>Open</Link> : <span />}
               </li>
             ))}
           </ul>
