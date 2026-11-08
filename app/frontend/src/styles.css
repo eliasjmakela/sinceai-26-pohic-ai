@@ -499,3 +499,6 @@ th:last-child, td:last-child { padding-right: 0; }
 .prospect-figs dt { font-size: .72rem; color: var(--ink-2); }
 .prospect-figs dd { font-weight: 700; margin: 2px 0 0; font-size: .92rem; }
 @media (max-width: 640px) { .prospect-figs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.p-prospects .prospect-kpis { margin-top: 10px; }
+.price-grid { grid-template-columns: minmax(300px, 520px) minmax(0, 1fr); }
+@media (max-width: 1000px) { .price-grid { grid-template-columns: minmax(0, 1fr); } }

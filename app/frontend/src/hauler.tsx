@@ -22,17 +22,15 @@ export function HaulerPortal() {
 }
 
 function Tenders({ t, h }: any) {
-  const [prospects, setProspects] = useState(false);
   if (!t) return <div className="canvas"><Loading /></div>;
   const n = t.notice;
   return (
     <>
       <Bar title={`${n.compactors} compactors in ${n.region}, price per tonne`} sub={`${n.materials.join(", ")} · ${n.term_years}-year contract · tender request uploaded ${shortDate(n.uploaded)}`}>
         <span className="chip chip-ask">{`Offers by ${shortDate(n.offers_due)}`}</span>
-        <button className="btn btn-primary btn-small" onClick={() => setProspects(true)}>Potential customers</button>
       </Bar>
       <div className="canvas">
-        {t.consent ? <Pack t={t} n={n} /> : (
+        {t.consent ? <Pack t={t} n={n} prospects={h.prospects} /> : (
           <>
             <div className="notice notice-warn"><strong>Weight data withdrawn by the customer.</strong></div>
             <Panel title="Estimate without weight data">
@@ -43,12 +41,11 @@ function Tenders({ t, h }: any) {
           </>
         )}
       </div>
-      {prospects && <Prospects rows={h.prospects} onClose={() => setProspects(false)} />}
     </>
   );
 }
 
-function Pack({ t, n }: any) {
+function Pack({ t, n, prospects }: any) {
   const { data: p, error } = useData("/api/hauler/tender/pack");
   const [tab, setTab] = useState("price");
   if (error instanceof ApiError && error.status === 403) return null;
@@ -56,7 +53,7 @@ function Pack({ t, n }: any) {
   return (
     <>
       <Tabs value={tab} onChange={setTab} items={[{ id: "price", label: "Your price" }, { id: "compactors", label: "The compactors" }, { id: "forecast", label: "Forecast" }]} />
-      {tab === "price" && <Calculator p={p} t={t} n={n} />}
+      {tab === "price" && <Calculator p={p} t={t} n={n} prospects={prospects} />}
       {tab === "compactors" && (
         <Panel title="The compactors" flush>
           <div className="table-wrap"><table className="tight">
@@ -80,7 +77,7 @@ function Pack({ t, n }: any) {
   );
 }
 
-function Calculator({ p, t, n }: any) {
+function Calculator({ p, t, n, prospects }: any) {
   const m = p.model, T = p.tonnes;
   const [perPickup, setPerPickup] = useState<number>(m.cost_per_pickup);
   const [perTonne, setPerTonne] = useState<number>(m.cost_per_t);
@@ -103,7 +100,7 @@ function Calculator({ p, t, n }: any) {
   );
   const rec = t.my_record;
   return (
-    <div className="price-grid price-grid-single">
+    <div className="price-grid">
       <Panel title="Plan your offer" className="p-offer" meta={<button className="link-btn" onClick={() => setCosts(true)}>Your costs</button>}>
         <label className="offer-big" htmlFor="offer">{eur(price)}<small> per tonne</small></label>
         <input id="offer" className="slider" type="range" min={Math.floor(withData * 0.8)} max={Math.ceil(blind)} step={1} value={price} onChange={(e) => setPrice(Number(e.target.value))} />
@@ -116,6 +113,7 @@ function Calculator({ p, t, n }: any) {
         {rec && <p className="fine">Your service record: {pct(rec.on_time_pct)} on time, {rec.response_h.toFixed(0)} h response, {pct(rec.tickets_pct)} tickets shared.</p>}
                 <p className="fine center">Bid pack: {eur(n.price_per_pack_eur)} per tender.</p>
       </Panel>
+      <Prospects rows={prospects} />
       {costs && (
         <Drawer title="Your costs" onClose={() => setCosts(false)}>
           <p className="muted">Starting values. Enter your own; the price updates as you type. <Tag kind="assumption" /></p>
@@ -132,10 +130,10 @@ function Calculator({ p, t, n }: any) {
   );
 }
 
-function Prospects({ rows, onClose }: any) {
+function Prospects({ rows }: any) {
   const lowest = rows.filter((r: any) => r.fit === "Lowest bid");
   return (
-    <Drawer title="Potential customers" onClose={onClose}>
+    <Panel title="Potential customers" className="p-prospects">
       <p className="muted">Customers in your region you don't serve yet, ranked by what you could earn. Estimated on your own costs and the weights they share. Names appear when a customer opens a tender.</p>
       <div className="prospect-kpis">
         <div><strong>{lowest.length}</strong><span>where your bid would be lowest</span></div>
@@ -159,6 +157,6 @@ function Prospects({ rows, onClose }: any) {
         ))}
       </ul>
       <p className="fine">From the market simulation on synthetic data. <Tag kind="simulated" /></p>
-    </Drawer>
+    </Panel>
   );
 }
