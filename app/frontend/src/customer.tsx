@@ -26,7 +26,7 @@ export function CustomerPortal() {
         <Routes>
           <Route index element={<Today c={c} reload={reload} pending={pending} />} />
           <Route path="contract" element={<Contract c={c} />} />
-          <Route path="tender" element={<Tender c={c} />} />
+          <Route path="tender" element={<Tender c={c} onChange={reload} />} />
         </Routes>
       )}
     </Shell>
@@ -87,7 +87,7 @@ function CompactorDetail({ x, c, tabParam, focus }: any) {
               <div className="detail-when">{x.days_to_full < 0.5 ? "Full now" : `Full in about ${x.days_to_full.toFixed(0)} days`}</div>
             </div>
             <dl className="detail-cost">
-              <div><dt>Picked up now</dt><dd>{x.eur_t_now == null ? "–" : `${eur(x.eur_t_now)}/t`}</dd></div>
+              <div><dt>Picked up now</dt><dd>{x.eur_t_now == null || x.share_pct < 25 ? "–" : `${eur(x.eur_t_now)}/t`}</dd></div>
               <div><dt>At target</dt><dd className="tone-good">{eur(x.eur_t_full)}/t</dd></div>
             </dl>
           </div>
@@ -329,11 +329,11 @@ function Stepper({ steps }: { steps: { label: string; on: boolean }[] }) {
   return <ol className="stepper" aria-label="Tender progress">{steps.map((s, i) => <li key={i} className={s.on ? "step step-on" : "step"}><b>{s.on ? <Icon name="check" /> : i + 1}</b>{s.label}</li>)}</ol>;
 }
 
-function Tender({ c }: any) {
+function Tender({ c, onChange }: any) {
   const { data: t, setData } = useData("/api/customer/tender", 3000);
   const toast = useToast();
   if (!t) return <div className="canvas"><Loading /></div>;
-  const act = async (path: string, body?: any) => setData(await post(path, body));
+  const act = async (path: string, body?: any) => { setData(await post(path, body)); onChange?.(); };
   const steps = [{ label: "Weights shared", on: t.consent }, { label: `${t.rows.length} offers uploaded`, on: t.rows.length > 0 }, { label: "You choose", on: t.status === "awarded" }];
   return <Offers c={c} t={t} act={act} toast={toast} steps={steps} />;
 }
@@ -370,7 +370,7 @@ function Offers({ c, t, act, toast, steps }: any) {
   const choose = async (r: any) => { await act("/api/customer/tender/award", { offer_id: r.id }); toast(`You chose ${r.operator}. Nothing is signed yet.`, () => act("/api/customer/tender/reopen")); };
   const row = (r: any, isToday = false) => (
     <li key={r.id} className={cls("offer", isToday && "offer-today", t.awarded === r.id && "offer-chosen")}>
-      <div className="offer-who"><strong>{r.operator}</strong><span>{isToday ? "Today, paying per trip" : <>{r.kind} <Tag kind="simulated" /></>}</span></div>
+      <div className="offer-who"><strong>{r.operator}</strong><span>{isToday ? "Today, paying per trip" : <>{r.kind} · uploaded {shortDate(r.uploaded)} <Tag kind="simulated" /></>}</span></div>
       <div className="offer-price">
         <div className="offer-figures"><strong>{eur2(r.price_eur_t)}<small>/t</small></strong><span>{eur(r.annual_eur)} a year{!isToday && <em> {r.saving_eur > 0 ? "−" : "+"}{eur(Math.abs(r.saving_eur))}</em>}</span></div>
         <div className="offer-bar"><div className={isToday ? "bar-today" : "bar-offer"} style={{ width: `${Math.min(100, (r.price_eur_t / m.today_price_t) * 100)}%` }} /></div>

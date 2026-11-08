@@ -32,7 +32,7 @@ function Tenders({ t }: any) {
   const n = t.notice;
   return (
     <>
-      <Bar title={`${n.compactors} compactors in ${n.region}, price per tonne`} sub={`${n.materials.join(", ")} · ${n.term_years}-year contract · uploaded tender request`}>
+      <Bar title={`${n.compactors} compactors in ${n.region}, price per tonne`} sub={`${n.materials.join(", ")} · ${n.term_years}-year contract · tender request uploaded ${shortDate(n.uploaded)}`}>
         <span className="chip chip-ask">{`Offers by ${shortDate(n.offers_due)}`}</span>
       </Bar>
       <div className="canvas">
@@ -225,7 +225,7 @@ function WeightCheck({ h, reload }: any) {
         <div className="kpis kpis-3">
           <Kpi label="Pickups compared" value={int(s.pickups)} sub="Single loads with no side waste" />
           <Kpi label="Median difference" value={pct(s.median_pct, 1)} sub="Ticket to compactor" />
-          <Kpi label="Within ±3.3 %" value={pct(s.within_pct)} sub="Typical tolerance" />
+          <Kpi label="Within ±10 %" value={pct(s.within10_pct)} sub="Of pickups compared" />
         </div>
         <div className="loads-grid">
           <Panel title="Trucks" flush>

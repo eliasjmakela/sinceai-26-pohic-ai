@@ -452,7 +452,8 @@ def main() -> None:
     # Quoted prices follow the market model: each bidder offers its own floor, and the winner prices at the runner-up's
     # bid (market.py), so the lowest offer is the pitch's best case (price_after_eur), not the winner's floor.
     quoted = {o: (ov["price_after_eur"] if o == ov["winner_after"] else v) for o, v in ov["bids_after_eur"].items()}
-    offers = [{"id": f"model-{o}", "operator_id": o, "operator": names.get(o, "New entrant"), "annual_eur": float(v), "price_eur_t": v / t_year, "model_winner": o == ov["winner_after"], "kind": "Current company" if o == ov["incumbent"] else ("New to the region" if o not in names else "Another company in the region")} for o, v in quoted.items()]
+    received = {o: str((AS_OF - pd.Timedelta(days=d)).date()) for o, d in zip(sorted(quoted), (6, 4, 3, 1, 2, 5))}
+    offers = [{"id": f"model-{o}", "uploaded": received[o], "operator_id": o, "operator": names.get(o, "New entrant"), "annual_eur": float(v), "price_eur_t": v / t_year, "model_winner": o == ov["winner_after"], "kind": "Current company" if o == ov["incumbent"] else ("New to the region" if o not in names else "Another company in the region")} for o, v in quoted.items()]
     cards = {}
     for op, g in sc[sc.region_code == hero["region"]].groupby("operator_id"):
         cards[op] = {"on_time_pct": float(g.on_time_rate.mean()) * 100, "missed_pct": float(g.missed_visit_rate.mean()) * 100, "tickets_pct": float(g.weighbridge_shared_7d_rate.mean()) * 100, "billed_above_pct": float(g.billing_overcharge_pct.mean()), "response_h": float(g.median_order_to_lift_hours.mean())}
@@ -482,7 +483,7 @@ def main() -> None:
         "range_blind": {"estimate": peer_year, "low": peer_year * (1 - market["sigma_ent"]), "high": peer_year * (1 + market["sigma_ent"])}, "range_data": {"estimate": own_year, "low": own_year * (1 - market["sigma_inc"]), "high": own_year * (1 + market["sigma_inc"])},
         "model": {"cost_per_pickup": round(cost_per_pickup, 2), "cost_per_t": round(cost_per_t, 2), "fee_t": fee_t, "margin_pct": p["min_margin"] * 100, "risk_z": p["risk_z"]}, "price_per_pack_eur": team["pricing"]["params"].get("package_eur", 500) if isinstance(team.get("pricing", {}).get("params"), dict) else 500,
     }
-    notice = {"id": pack["id"], "region": pack["region"], "compactors": pack["compactors"], "offers_due": pack["offers_due"], "term_years": pack["term_years"], "response_hours": RESPONSE_HOURS, "price_per_pack_eur": pack["price_per_pack_eur"], "asks": ["A net price per tonne", "Pickups ordered by weight", f"Response within {RESPONSE_HOURS} hours of an order", "Weighing tickets shared within 7 days", "The bill stays on your certified weighbridge"], "sigma_blind_pct": pack["sigma_blind_pct"], "sigma_data_pct": pack["sigma_data_pct"], "range_blind": pack["range_blind"], "materials": sorted({c["material"] for c in compactors}), "blind_price_t": ov["bids_before_eur"][CHALLENGER] / t_year}
+    notice = {"id": pack["id"], "uploaded": str((AS_OF - pd.Timedelta(days=8)).date()), "region": pack["region"], "compactors": pack["compactors"], "offers_due": pack["offers_due"], "term_years": pack["term_years"], "response_hours": RESPONSE_HOURS, "price_per_pack_eur": pack["price_per_pack_eur"], "asks": ["A net price per tonne", "Pickups ordered by weight", f"Response within {RESPONSE_HOURS} hours of an order", "Weighing tickets shared within 7 days", "The bill stays on your certified weighbridge"], "sigma_blind_pct": pack["sigma_blind_pct"], "sigma_data_pct": pack["sigma_data_pct"], "range_blind": pack["range_blind"], "materials": sorted({c["material"] for c in compactors}), "blind_price_t": ov["bids_before_eur"][CHALLENGER] / t_year}
 
     me_card = {}
     allc = []
@@ -524,7 +525,7 @@ def main() -> None:
     visit_cost = b1l[b1l.line_type.isin(VISIT_LINES)].groupby("collection_id").amount_eur.sum()
     mine_done = mine_f[mine_f.status.eq("COMPLETED")]
     efficiency = {"pickups": len(mine_done), "early": len(mine_low), "share_pct": float(len(mine_low) / max(1, len(mine_done)) * 100), "visit_eur": float(mine_low.collection_id.map(visit_cost).fillna(0).sum())}
-    hauler = {"as_of": str(AS_OF.date()), "operator": {"id": CHALLENGER, "name": names[CHALLENGER]}, "fleet": fleet, "trucks": trucks, "weight_stats": {"pickups": len(mine), "within_pct": float((rel_diff <= WEIGHT_TOLERANCE).mean()) * 100, "median_pct": float(rel_diff.median()) * 100}, "record": {"me": me_card, "others": others}, "efficiency": efficiency, "not_weighing": not_weighing}
+    hauler = {"as_of": str(AS_OF.date()), "operator": {"id": CHALLENGER, "name": names[CHALLENGER]}, "fleet": fleet, "trucks": trucks, "weight_stats": {"pickups": len(mine), "within_pct": float((rel_diff <= WEIGHT_TOLERANCE).mean()) * 100, "within10_pct": float((rel_diff <= 0.10).mean()) * 100, "median_pct": float(rel_diff.median()) * 100}, "record": {"me": me_card, "others": others}, "efficiency": efficiency, "not_weighing": not_weighing}
 
     weighed_not = dv[(dv.customer_id == "ORG-0036") & (dv.operator_id == ov["incumbent"]) & ~dv.has_weight_measurement & dv.site_id.isin(sites[sites.region_code == hero["region"]].site_id)]
     customer = {

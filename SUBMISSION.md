@@ -6,7 +6,7 @@ What the brief asks for, and which file answers it. Submit via Since AI by **Sun
 | Brief asks for | Our answer | Status |
 |---|---|---|
 | (1) Short illustrated weighing concept: principle, placement, indicative BOM and cost, installation, calibration, error sources, validation plan | `part1/WEIGHING_ONEPAGER.md` (with `part1/figures/h7_side_view.svg`); full detail in `part1/WEIGHING_CONCEPT.md` §19–20 | draft, text pass pending (E) |
-| (2) Working software demo **or** recorded walkthrough using synthetic weight data | **`app/`** (customer and waste company portals; run steps in `README.md` and `app/README.md`; data committed, no starter kit needed) | demo ready; video being recorded (E) |
+| (2) Working software demo **or** recorded walkthrough using synthetic weight data | **Live: https://openweight.eliasmakela.fi**; code `app/` (customer and waste company portals; run steps in `README.md` and `app/README.md`; data committed, no starter kit needed) | demo ready; video being recorded (E) |
 | (2) Code / setup notes | `README.md` (deliverables map, run the demo, rebuild from the kit), `app/README.md` | ready |
 | (2) Traceable economics | In the app every figure opens its calculation and every pickup traces order → ticket → contract version → invoice lines; in the pipeline every number is a Figure with tag, formula and sources; `docs/PRICING.md`, `pipeline/fullload/pricing.py` | ready |
 | (2) Proposed SMART integration | `docs/SMART_INTEGRATION.md` | draft, text pass pending (E) |

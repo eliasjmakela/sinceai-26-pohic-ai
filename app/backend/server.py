@@ -240,15 +240,23 @@ def post_decision(body: Decision):
     return state["decisions"]
 
 
-@app.post("/api/customer/query/draft")
-def post_query_draft():
+QUERY_PROMPT = "Write a short, polite message from the customer to the waste company asking it to check these invoice differences and charges. Keep the amount above the contract (above_contract_eur) apart from the overflow charges; do not add them up. Plain text, no subject line, at most 120 words plus the list of items. Neutral: there may be a good reason. Quote dates and amounts as given."
+
+
+def draft_query_text() -> str:
     facts = query_facts()
-    text, reason = llm.guarded("Write a short, polite message from the customer to the waste company asking it to check these invoice differences and charges. Keep the amount above the contract (above_contract_eur) apart from the overflow charges; do not add them up. Plain text, no subject line, at most 120 words plus the list of items. Neutral: there may be a good reason. Quote dates and amounts as given.", facts)
+    text, reason = llm.guarded(QUERY_PROMPT, facts)
     if not text:
         log_.warning("query from template: %s", reason)
+    return text or query_template(facts)
+
+
+@app.post("/api/customer/query/draft")
+def post_query_draft():
+    text = draft_query_text()
     with _lock:
         state = load()
-        state["query"] = {"status": "draft", "text": text or query_template(facts), "sent_at": None}
+        state["query"] = {"status": "draft", "text": text, "sent_at": None}
         save(state)
     return state["query"]
 

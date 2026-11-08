@@ -116,7 +116,8 @@ def generate(prompt: str, facts, schema: dict | None = None) -> tuple[str | None
     try:
         _requests += 1
         log.warning("Gemini request %d since start", _requests)
-        reply = genai.Client(api_key=key).models.generate_content(
+        client = genai.Client(api_key=key)  # keep a reference: a temporary client is closed before the call
+        reply = client.models.generate_content(
             model=MODEL,
             contents=f"{prompt}\n\nFACTS (JSON):\n{json.dumps(facts, ensure_ascii=False)}",
             config=config,

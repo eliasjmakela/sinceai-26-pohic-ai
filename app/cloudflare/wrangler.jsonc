@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "openweight",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  // The React portals (built into ../frontend/dist) are static assets; the Worker runs first to set the session cookie.
+  "assets": {
+    "directory": "../frontend/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true
+  },
+  // One Durable Object per browser session holds that visitor's demo state, so visitors don't interfere.
+  "durable_objects": { "bindings": [{ "name": "SESSIONS", "class_name": "Session" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Session"] }],
+  "routes": [{ "pattern": "openweight.eliasmakela.fi", "custom_domain": true }],
+  "observability": { "enabled": true }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "openweight-cloudflare",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "cd ../frontend && npm run build",
+    "dev": "wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "wrangler": "^4.158.0"
+  }
+}

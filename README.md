@@ -14,7 +14,7 @@ every price hypothetical.
 | Brief asks for | Where |
 |---|---|
 | (1) Illustrated weighing concept: principle, placement, BOM and cost, installation, calibration, error sources, validation plan | [`part1/WEIGHING_ONEPAGER.md`](part1/WEIGHING_ONEPAGER.md); full working in [`part1/WEIGHING_CONCEPT.md`](part1/WEIGHING_CONCEPT.md) §19–20 |
-| (2) Working software demo on synthetic weight data | **[`app/`](app/README.md)**: the customer's free portal and the waste company's paid portal |
+| (2) Working software demo on synthetic weight data | **Live: https://openweight.eliasmakela.fi** · code in [`app/`](app/README.md): the customer's free portal and the waste company's paid portal |
 | (2) Code and setup notes | this file and [`app/README.md`](app/README.md) |
 | (2) Traceable economics | every figure in the app opens its calculation, and every pickup traces order → ticket → contract version → invoice lines; the business model in [`docs/PRICING.md`](docs/PRICING.md) and `pipeline/fullload/pricing.py` |
 | (2) Proposed SMART integration | [`docs/SMART_INTEGRATION.md`](docs/SMART_INTEGRATION.md) |
@@ -41,6 +41,17 @@ echo "GEMINI_API_KEY=your-key" > app/.env      # optional; without it the texts 
 
 Open http://127.0.0.1:8000, sign in as the customer or the waste company (each in its own tab). "Reset the demo" on
 the sign-in page clears the demo state. More in [`app/README.md`](app/README.md).
+
+## Hosted demo (Cloudflare)
+
+https://openweight.eliasmakela.fi runs the same app on Cloudflare (`app/cloudflare/`): the React build as static
+assets, and a Worker that serves the same API with each visitor's demo state in its own Durable Object, so
+visitors don't affect each other. All texts and figures are exported from the Python server's own code:
+
+```bash
+.venv/bin/python app/backend/export_static.py          # → app/cloudflare/src/static.json
+cd app/cloudflare && npm install && npm run deploy      # builds app/frontend, deploys the Worker
+```
 
 ## Rebuild the numbers from the starter kit
 
