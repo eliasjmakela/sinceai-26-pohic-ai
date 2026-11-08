@@ -206,8 +206,8 @@ prototype. Same numbers (it reads `bundle.json`; the hero is ORG-0036).
   € per tonne before the truck leaves, a three-item report with Approve / Not now / Undo, invoice query), *Tender* (offer
   comparison: uploaded offers per tonne, service record beside price; share or withdraw the weights).
 - **Waste company portal (paid):** *Tenders* (offer planning for a tender request it uploaded: bid pack, forecast,
-  price with and without the weights on its own costs), *Weight check* (trucks whose tickets disagree with the
-  compactors: tare errors).
+  price on its own costs) and *Potential customers* (accounts it doesn't serve yet: size, materials, contract end, its
+  price and estimated margin; no names or prices of the customer).
 
 ## 5. Where the points come from
 

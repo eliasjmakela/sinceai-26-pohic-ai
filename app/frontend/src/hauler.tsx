@@ -1,36 +1,35 @@
 import { useEffect, useMemo, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ApiError, post, useData } from "./api";
-import { ForecastChart, PriceWaterfall, TonnesRange } from "./charts";
+import { ForecastChart, TonnesRange } from "./charts";
 import { Bar, Compactor, Drawer, Icon, Kpi, Loading, Panel, Shell, Tabs, Tag, cls, date, eur, eur2, int, kg, pct, shortDate, t1, useToast } from "./ui";
 
 export function HaulerPortal() {
   const { data: h, error, reload } = useData("/api/hauler");
   const { data: t } = useData("/api/hauler/tender", 3000);
-  const trucks = h ? h.trucks.filter((x: any) => !h.checked.includes(x.truck)).length : 0;
   const nav = [
     { to: "/waste-company", label: "Tenders", icon: "tender", end: true, badge: null },
-    { to: "/waste-company/weight-check", label: "Weight check", icon: "scale", badge: trucks || null },
   ];
   return (
     <Shell who={h?.operator.name ?? ""} sub={h ? `${h.fleet.length} weighed compactors` : ""} portal="Waste company" nav={nav} liveLabel={h ? `Live · ${date(h.as_of)}` : "Live"}>
       {!h ? <div className="canvas"><Loading error={error} /></div> : (
         <Routes>
-          <Route index element={<Tenders t={t} />} />
-          <Route path="weight-check" element={<WeightCheck h={h} reload={reload} />} />
+          <Route index element={<Tenders t={t} h={h} />} />
         </Routes>
       )}
     </Shell>
   );
 }
 
-function Tenders({ t }: any) {
+function Tenders({ t, h }: any) {
+  const [prospects, setProspects] = useState(false);
   if (!t) return <div className="canvas"><Loading /></div>;
   const n = t.notice;
   return (
     <>
       <Bar title={`${n.compactors} compactors in ${n.region}, price per tonne`} sub={`${n.materials.join(", ")} · ${n.term_years}-year contract · tender request uploaded ${shortDate(n.uploaded)}`}>
         <span className="chip chip-ask">{`Offers by ${shortDate(n.offers_due)}`}</span>
+        <button className="btn btn-primary btn-small" onClick={() => setProspects(true)}>Potential customers</button>
       </Bar>
       <div className="canvas">
         {t.consent ? <Pack t={t} n={n} /> : (
@@ -44,6 +43,7 @@ function Tenders({ t }: any) {
           </>
         )}
       </div>
+      {prospects && <Prospects rows={h.prospects} onClose={() => setProspects(false)} />}
     </>
   );
 }
@@ -103,12 +103,8 @@ function Calculator({ p, t, n }: any) {
   );
   const rec = t.my_record;
   return (
-    <div className="price-grid">
-      <Panel title={`Price per tonne: ${eur(blind)} without weight data, ${eur(withData)} with`} meta={<button className="link-btn" onClick={() => setCosts(true)}>Your costs</button>}>
-        <PriceWaterfall blind={blind} fullLoads={fullLoads} withData={withData} labels={["Guessing the tonnes", `Full loads: ${((1 - p.pickups_by_weight / p.pickups_today) * 100).toFixed(1)} % fewer pickups`, `Risk: ±${p.sigma_blind_pct.toFixed(0)} % → ±${p.sigma_data_pct.toFixed(0)} %`, "With the weights"]} />
-        <p className="fine">The price that keeps your margin, on your costs. <Tag kind="simulated" /></p>
-      </Panel>
-      <Panel title="Plan your offer" className="p-offer">
+    <div className="price-grid price-grid-single">
+      <Panel title="Plan your offer" className="p-offer" meta={<button className="link-btn" onClick={() => setCosts(true)}>Your costs</button>}>
         <label className="offer-big" htmlFor="offer">{eur(price)}<small> per tonne</small></label>
         <input id="offer" className="slider" type="range" min={Math.floor(withData * 0.8)} max={Math.ceil(blind)} step={1} value={price} onChange={(e) => setPrice(Number(e.target.value))} />
         <dl className="offer-out">
@@ -136,51 +132,33 @@ function Calculator({ p, t, n }: any) {
   );
 }
 
-function WeightCheck({ h, reload }: any) {
-  const toast = useToast();
-  const s = h.weight_stats;
-  const [sel, setSel] = useState<string | null>(null);
-  const todo = h.trucks.filter((t: any) => !h.checked.includes(t.truck));
-  const selected = todo.find((t: any) => t.truck === sel) ?? todo[0];
-  const done = h.trucks.filter((t: any) => h.checked.includes(t.truck));
-  const mark = async (id: string, on: boolean) => {
-    await post("/api/hauler/trucks", { id, on }); reload();
-    if (on) toast(`Truck ${id} marked as weighed`, () => mark(id, false));
-  };
+function Prospects({ rows, onClose }: any) {
+  const lowest = rows.filter((r: any) => r.fit === "Lowest bid");
   return (
-    <>
-      <Bar title={todo.length > 1 ? `${todo.length} trucks to weigh empty` : todo.length === 1 ? "1 truck to weigh empty" : "Your tickets and the compactors agree"} sub="Ticket weights compared with compactor weights. Billing stays on your weighbridge." />
-      <div className="canvas">
-        <div className="kpis kpis-3">
-          <Kpi label="Pickups compared" value={int(s.pickups)} sub="Single loads with no side waste" />
-          <Kpi label="Median difference" value={pct(s.median_pct, 1)} sub="Ticket to compactor" />
-          <Kpi label="Within ±10 %" value={pct(s.within10_pct)} sub="Of pickups compared" />
-        </div>
-        <div className="loads-grid">
-          <Panel title="Trucks" flush>
-            <ul className="select-list">
-              {todo.map((t: any) => (
-                <li key={t.truck}><button className={cls("region-row", selected?.truck === t.truck && "select-on")} onClick={() => setSel(t.truck)}><strong>{t.truck}</strong><span>{int(Math.abs(t.median_diff_kg))} kg</span></button></li>
-              ))}
-              {done.map((t: any) => (
-                <li key={t.truck} className="done-row"><Icon name="check" /><span>{t.truck}</span><button className="link-btn" onClick={() => mark(t.truck, false)}>Undo</button></li>
-              ))}
-            </ul>
-          </Panel>
-          {selected ? (
-            <Panel title={`Truck ${selected.truck}`} meta={<button className="btn btn-primary btn-small" onClick={() => mark(selected.truck, true)}>Mark as weighed</button>} className="p-work">
-              <div className="truck-head">
-                <div className="truck-num"><strong>{int(Math.abs(selected.median_diff_kg))} kg</strong><span>{selected.median_diff_kg < 0 ? "tickets above compactors" : "compactors above tickets"}, median</span></div>
-                <p className="muted">{selected.pickups} pickups at {selected.compactors} compactors. Likely cause: outdated truck tare.</p>
-              </div>
-              <div className="table-wrap"><table className="tight">
-                <thead><tr><th>Date</th><th>Ticket</th><th className="num">Ticket</th><th className="num">Compactor</th><th className="num">Difference</th></tr></thead>
-                <tbody>{selected.recent.map((r: any) => <tr key={r.ticket_id}><td>{date(r.date)}</td><td className="fine">{r.ticket_id}</td><td className="num">{kg(r.ticket_kg)}</td><td className="num">{kg(r.compactor_kg)}</td><td className="num">{r.diff_kg > 0 ? "+" : "−"}{int(Math.abs(r.diff_kg))} kg</td></tr>)}</tbody>
-              </table></div>
-            </Panel>
-          ) : <div className="empty"><Icon name="check" /><h2>Nothing to check</h2><p>All flagged trucks weighed.</p></div>}
-        </div>
+    <Drawer title="Potential customers" onClose={onClose}>
+      <p className="muted">Customers in your region you don't serve yet, ranked by what you could earn. Estimated on your own costs and the weights they share. Names appear when a customer opens a tender.</p>
+      <div className="prospect-kpis">
+        <div><strong>{lowest.length}</strong><span>where your bid would be lowest</span></div>
+        <div><strong>{eur(lowest.reduce((a: number, r: any) => a + (r.margin_eur ?? 0), 0))}</strong><span>margin a year if you win them <Tag kind="simulated" /></span></div>
       </div>
-    </>
+      <ul className="prospects">
+        {rows.map((r: any) => (
+          <li key={r.id} className={cls("prospect", r.fit !== "Lowest bid" && "prospect-muted")}>
+            <div className="prospect-top">
+              <strong>{r.sector}</strong>
+              <span className={cls("chip", r.fit === "Lowest bid" ? "chip-good" : "")}>{r.fit === "Lowest bid" ? "Your bid lowest" : "Others bid lower"}</span>
+            </div>
+            <div className="fine">{r.compactors} compactors · {t1(r.tonnes)} a year · {r.materials.join(", ").toLowerCase()}</div>
+            <dl className="prospect-figs">
+              <div><dt>Contract ends</dt><dd>{r.contract_end ? date(r.contract_end) : "–"}</dd></div>
+              <div><dt>Your price</dt><dd>{eur2(r.price_t)}/t</dd></div>
+              <div><dt>A year</dt><dd>{eur(r.annual_eur)}</dd></div>
+              <div><dt>Margin</dt><dd className={r.margin_eur ? "tone-good" : ""}>{r.margin_eur ? `${eur(r.margin_eur)} · ${pct(r.margin_pct)}` : "–"}</dd></div>
+            </dl>
+          </li>
+        ))}
+      </ul>
+      <p className="fine">From the market simulation on synthetic data. <Tag kind="simulated" /></p>
+    </Drawer>
   );
 }

@@ -484,3 +484,18 @@ th:last-child, td:last-child { padding-right: 0; }
 .ai-facts { margin-top: 10px; font-size: .78rem; background: rgba(0,0,0,.18); color: inherit; padding: 10px 12px; border-radius: 10px; overflow: auto; max-height: 260px; }
 .ai-card:not(.ai-card-live) .ai-facts { background: var(--bg); }
 .ai-foot { margin-top: 8px; font-size: .78rem; color: #a8d8c4; }
+
+/* Potential customers */
+.price-grid-single { grid-template-columns: minmax(0, 560px); }
+.prospect-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+.prospect-kpis div { background: var(--mint-2); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; }
+.prospect-kpis strong { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; }
+.prospect-kpis span { font-size: .8rem; color: var(--ink-2); }
+.prospects { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.prospect { border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 14px; }
+.prospect-muted { opacity: .7; }
+.prospect-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 2px; }
+.prospect-figs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 10px 0 0; }
+.prospect-figs dt { font-size: .72rem; color: var(--ink-2); }
+.prospect-figs dd { font-weight: 700; margin: 2px 0 0; font-size: .92rem; }
+@media (max-width: 640px) { .prospect-figs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

@@ -552,7 +552,31 @@ def main() -> None:
     visit_cost = b1l[b1l.line_type.isin(VISIT_LINES)].groupby("collection_id").amount_eur.sum()
     mine_done = mine_f[mine_f.status.eq("COMPLETED")]
     efficiency = {"pickups": len(mine_done), "early": len(mine_low), "share_pct": float(len(mine_low) / max(1, len(mine_done)) * 100), "visit_eur": float(mine_low.collection_id.map(visit_cost).fillna(0).sum())}
-    hauler = {"as_of": str(AS_OF.date()), "operator": {"id": CHALLENGER, "name": names[CHALLENGER]}, "fleet": fleet, "trucks": trucks, "weight_stats": {"pickups": len(mine), "within_pct": float((rel_diff <= WEIGHT_TOLERANCE).mean()) * 100, "within10_pct": float((rel_diff <= 0.10).mean()) * 100, "median_pct": float(rel_diff.median()) * 100}, "record": {"me": me_card, "others": others}, "efficiency": efficiency, "not_weighing": not_weighing}
+    # potential customers: accounts in the simulated region that this company doesn't serve yet. No names or prices of
+    # the customer (they stay with the customer until a tender opens): only size, materials, contract end and what this
+    # company could earn there, from the market simulation with its own costs.
+    custs = r("reference/customers").set_index("customer_id")
+    ct_dev = ct.set_index("device_id")
+    prospects = []
+    for row in market["default"]["rows"]:
+        if row["incumbent"] == CHALLENGER:
+            continue
+        devs = dv[(dv.customer_id == row["customer_id"]) & dv.site_id.isin(sites[sites.region_code == market["region"]].site_id)]
+        ends = [next_end(ct_dev.loc[d].contract_start) for d in devs.device_id if d in ct_dev.index]
+        wins = row["winner_after"] == CHALLENGER
+        my_bid = row["bids_after"].get(CHALLENGER)
+        if my_bid is None:
+            continue
+        price = row["price_after"] if wins else my_bid
+        margin = row["operator_margin_after"] if wins else None
+        prospects.append({"id": row["customer_id"], "sector": str(custs.loc[row["customer_id"]].primary_sector).replace("_", " ").capitalize(),
+                          "region": region_names[market["region"]], "compactors": int(len(devs)), "tonnes": row["tonnes"],
+                          "materials": sorted({MATERIAL_TEXT[m] for m in devs.material_stream}), "contract_end": str(min(ends).date()) if ends else None,
+                          "price_t": price / 100 / row["tonnes"], "annual_eur": price / 100, "margin_eur": None if margin is None else margin / 100,
+                          "margin_pct": None if margin is None else margin / price * 100, "fit": "Lowest bid" if wins else "Not lowest"})
+    prospects.sort(key=lambda z: (z["fit"] != "Lowest bid", -(z["margin_eur"] or 0), -z["tonnes"]))
+
+    hauler = {"prospects": prospects, "as_of": str(AS_OF.date()), "operator": {"id": CHALLENGER, "name": names[CHALLENGER]}, "fleet": fleet, "trucks": trucks, "weight_stats": {"pickups": len(mine), "within_pct": float((rel_diff <= WEIGHT_TOLERANCE).mean()) * 100, "within10_pct": float((rel_diff <= 0.10).mean()) * 100, "median_pct": float(rel_diff.median()) * 100}, "record": {"me": me_card, "others": others}, "efficiency": efficiency, "not_weighing": not_weighing}
 
     weighed_not = dv[(dv.customer_id == "ORG-0036") & (dv.operator_id == ov["incumbent"]) & ~dv.has_weight_measurement & dv.site_id.isin(sites[sites.region_code == hero["region"]].site_id)]
     customer = {

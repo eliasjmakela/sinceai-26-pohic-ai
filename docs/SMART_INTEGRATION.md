@@ -84,7 +84,7 @@ plateau not flat, tilt fired, relief valve opened).
 |---|---|
 | H7 hardware in new COMBIs; the reading routine in the SMART firmware | Transport, routing, truck scheduling |
 | The OpenWeight engine on SMART cloud: calibration, forecasts, lift orders, reports | Billing (stays with the operator's weighbridge) |
-| Operator API and portal (bid pack, offer planning, weight check) and the customer portal | A marketplace that sets prices, or a channel for offers: offers go from operator to customer the usual way, and the customer uploads them to compare |
+| Operator API and portal (bid pack, offer planning, potential customers) and the customer portal | A marketplace that sets prices, or a channel for offers: offers go from operator to customer the usual way, and the customer uploads them to compare |
 
 ## In this repo
 
