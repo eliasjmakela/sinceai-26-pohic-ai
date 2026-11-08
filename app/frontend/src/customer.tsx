@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link, Route, Routes, useLocation, useSearchParams } from "react-router-dom";
 import { post, useData } from "./api";
 import { FillTrend } from "./charts";
@@ -332,24 +332,34 @@ function Contract({ c }: any) {
 
 function WasteAndCost({ periods, compare: k }: any) {
   const cols = [["Last 7 days", periods.week], ["Last 30 days", periods.month]] as const;
+  const [open, setOpen] = useState<string | null>(null);
   return (
     <Panel title="Waste and cost" className="p-waste" flush>
       <div className="table-wrap"><table className="waste-table">
-        <thead><tr><th /><th className="num">Waste</th><th className="num">Cost</th><th className="num">Recycling value</th><th className="num">Total</th></tr></thead>
+        <thead><tr><th /><th className="num">Waste</th><th className="num">Total cost</th></tr></thead>
         <tbody>{cols.map(([label, p]: any) => (
-          <tr key={label}>
-            <th scope="row">{label}<div className="fine">{p.pickups} pickups</div></th>
-            <td className="num">{t1(p.tonnes)}</td>
-            <td className="num">{eur(p.cost_eur)}</td>
-            <td className="num tone-good">−{eur(p.credit_eur)}</td>
-            <td className="num strong">{eur(p.net_eur)}</td>
-          </tr>
+          <Fragment key={label}>
+            <tr className="period-row">
+              <th scope="row">{label}<div className="fine">{p.pickups} pickups</div></th>
+              <td className="num period-big">{t1(p.tonnes)}</td>
+              <td className="num period-big">
+                <button className="total-btn" aria-expanded={open === label} onClick={() => setOpen(open === label ? null : label)}>
+                  {eur(p.net_eur)}<span className={open === label ? "chev chev-open" : "chev"}><Icon name="chevron" /></span>
+                </button>
+              </td>
+            </tr>
+            {open === label && (
+              <tr className="period-detail"><td colSpan={3}>
+                <dl><div><dt>Pickups, transport and treatment</dt><dd>{eur(p.cost_eur)}</dd></div><div><dt>Recycling value (material credits)</dt><dd className="tone-good">−{eur(p.credit_eur)}</dd></div><div><dt>Total</dt><dd>{eur(p.net_eur)}</dd></div></dl>
+              </td></tr>
+            )}
+          </Fragment>
         ))}</tbody>
       </table></div>
-      <p className="list-note">Cost covers pickups, transport and treatment. Recycling value is the material credit for cardboard and plastic.</p>
-      <h3 className="waste-sub">Your contract against a price per tonne, 12 months</h3>
+      <p className="list-note">Click a total for the cost and the recycling value behind it.</p>
+      <h3 className="waste-sub">Current pickups against pickups optimized by weight, 12 months</h3>
       <div className="table-wrap"><table className="waste-table compare-table">
-        <thead><tr><th /><th className="num">Today, per visit</th><th className="num">Price per tonne <Tag kind="simulated" /></th><th className="num">Difference</th></tr></thead>
+        <thead><tr><th /><th className="num">Current pickups</th><th className="num">Pickups optimized by weight <Tag kind="simulated" /></th><th className="num">Difference</th></tr></thead>
         <tbody>
           {(() => {
             const row = (label: string, a: number, b: number, f: (v: number) => string) => (
@@ -357,9 +367,8 @@ function WasteAndCost({ periods, compare: k }: any) {
             );
             return [row("You pay", k.today.price_eur, k.per_tonne.price_eur, eur)];
           })()}
-          <tr className="compare-split"><th scope="row">Of which waste company's cost <Tag kind="assumption" /></th><td className="num">{eur(k.today.cost_eur)}</td><td className="num">{eur(k.per_tonne.cost_eur)}</td><td /></tr>
+          <tr className="compare-split"><th scope="row">Of which waste company's cost <Tag kind="assumption" /></th><td className="num">{eur(k.today.cost_eur)}</td><td className="num">{eur(k.per_tonne.cost_eur + k.per_tonne.fee_eur)}</td><td /></tr>
           <tr className="compare-split"><th scope="row">Of which waste company's margin <Tag kind="assumption" /></th><td className="num">{eur(k.today.margin_eur)}</td><td className="num">{eur(k.per_tonne.margin_eur)}</td><td /></tr>
-          <tr className="compare-split"><th scope="row">Of which OpenWeight fee</th><td className="num">–</td><td className="num">{eur(k.per_tonne.fee_eur)}</td><td /></tr>
           {[["Per tonne", k.today.price_eur / k.tonnes, k.per_tonne.price_eur / k.tonnes, eur2], ["Pickups", k.today.pickups, k.per_tonne.pickups, int]].map(([label, a, b, f]: any) => (
             <tr key={label}><th scope="row">{label}</th><td className="num">{f(a)}</td><td className="num">{f(b)}</td><td className="num tone-good">{b - a < 0 ? "−" : "+"}{f(Math.abs(b - a))}</td></tr>
           ))}

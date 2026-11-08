@@ -460,3 +460,13 @@ th:last-child, td:last-child { padding-right: 0; }
 .compare-split th { font-weight: 500; color: var(--ink-2); padding-left: 28px; }
 .compare-split td { font-size: .95rem; font-weight: 600; color: var(--ink-2); }
 @media (max-width: 640px) { .compare-table th:last-child, .compare-table td:last-child { display: none; } }
+.period-big { font-size: 1.7rem !important; font-weight: 800 !important; letter-spacing: -.02em; }
+.total-btn { background: none; border: 0; padding: 0; font: inherit; color: inherit; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.total-btn .chev { display: inline-flex; width: 16px; color: var(--ink-2); transform: rotate(90deg); transition: transform .12s; }
+.total-btn .chev-open { transform: rotate(-90deg); }
+.total-btn:hover { color: var(--green-ink); }
+.period-detail td { background: var(--bg); padding: 10px 16px !important; }
+.period-detail dl { display: flex; flex-wrap: wrap; gap: 8px 32px; justify-content: flex-end; margin: 0; }
+.period-detail dt { font-size: .78rem; color: var(--ink-2); }
+.period-detail dd { font-size: 1.05rem; font-weight: 700; margin: 2px 0 0; text-align: right; }
+@media (max-width: 640px) { .period-big { font-size: 1.25rem !important; } }
